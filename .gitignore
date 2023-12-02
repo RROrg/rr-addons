@@ -1,9 +1,13 @@
+/_
+*.addon
+test.sh
+.nvram
+
 # Prerequisites
-*.d
 
 # Object files
 *.o
-*.ko
+#*.ko
 *.obj
 *.elf
 
@@ -24,8 +28,8 @@
 
 # Shared objects (inc. Windows DLLs)
 *.dll
-*.so
-*.so.*
+#*.so
+#*.so.*
 *.dylib
 
 # Executables
@@ -45,8 +49,11 @@
 # Kernel Module Compile Results
 *.mod*
 *.cmd
+.vscode
+addons.zip
 .tmp_versions/
 modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+powersched/src/powersched
