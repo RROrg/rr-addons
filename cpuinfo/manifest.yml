@@ -1,6 +1,6 @@
 version: 1
 name: cpuinfo
-description: "Adds correct CPU Info, from FOXBI & arabezar" # https://github.com/FOXBI/ch_cpuinfo
+description: "Adds correct CPU Info, from FOXBI & arabezar(https://github.com/arabezar/ch_cpuinfo)" # https://github.com/foxbi/ch_cpuinfo
 all:
   install-script: "install.sh"
   copy: "all"

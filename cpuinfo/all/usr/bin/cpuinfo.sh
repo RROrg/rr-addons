@@ -1,7 +1,9 @@
 #!/bin/sh
 # Updated 2023.03.05 - By FOXBI
+# https://github.com/foxbi/ch_cpuinfo
 # Updated 2023.10.13 - By Arabezar
-# htttps://github.com/foxbi/ch_cpuinfo
+# https://github.com/arabezar/ch_cpuinfo
+
 ver="4.2.1-r01-1"
 temp_file_patch=$(pwd)/cpu_info_patch.txt # text file - web page with Processor Specification - saved from any browser as .txt file; actual for Intel only
 # ==============================================================================
