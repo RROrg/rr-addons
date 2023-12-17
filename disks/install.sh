@@ -110,20 +110,34 @@ function checkSynoboot() {
   [ -b /dev/synoboot -a -b /dev/synoboot1 -a -b /dev/synoboot2 ] && return
   [ -z "${BOOTDISK}" ] && return
 
-  [ ! -b /dev/synoboot -a -d /sys/block/${BOOTDISK} ] &&
+  if [ ! -b /dev/synoboot -a -d /sys/block/${BOOTDISK} ]; then
     /bin/mknod /dev/synoboot b $(cat /sys/block/${BOOTDISK}/dev | sed 's/:/ /') >/dev/null 2>&1
+    rm -vf /dev/${BOOTDISK}
+  fi
   # sataN, nvmeXnN, mmcblkN
-  [ ! -b /dev/synoboot1 -a -d /sys/block/${BOOTDISK}/${BOOTDISK}p1 ] &&
+  if [ ! -b /dev/synoboot1 -a -d /sys/block/${BOOTDISK}/${BOOTDISK}p1 ]; then
     /bin/mknod /dev/synoboot1 b $(cat /sys/block/${BOOTDISK}/${BOOTDISK}p1/dev | sed 's/:/ /') >/dev/null 2>&1
-  [ ! -b /dev/synoboot2 -a -d /sys/block/${BOOTDISK}/${BOOTDISK}p2 ] &&
+    rm -vf /dev/${BOOTDISK}p1
+  fi
+  if [ ! -b /dev/synoboot2 -a -d /sys/block/${BOOTDISK}/${BOOTDISK}p2 ]; then
     /bin/mknod /dev/synoboot2 b $(cat /sys/block/${BOOTDISK}/${BOOTDISK}p2/dev | sed 's/:/ /') >/dev/null 2>&1
+    rm -vf /dev/${BOOTDISK}p2
+  fi
+  if [ ! -b /dev/${BOOTDISK} -a -b /dev/${BOOTDISK}p3 ]; then
+    rm -vf /dev/${BOOTDISK}p3
+  fi
   # sdN, vdN
-  [ ! -b /dev/synoboot1 -a -d /sys/block/${BOOTDISK}/${BOOTDISK}1 ] &&
+  if [ ! -b /dev/synoboot1 -a -d /sys/block/${BOOTDISK}/${BOOTDISK}1 ]; then
     /bin/mknod /dev/synoboot1 b $(cat /sys/block/${BOOTDISK}/${BOOTDISK}1/dev | sed 's/:/ /') >/dev/null 2>&1
-  [ ! -b /dev/synoboot2 -a -d /sys/block/${BOOTDISK}/${BOOTDISK}2 ] &&
+    rm -vf /dev/${BOOTDISK}1
+  fi
+  if [ ! -b /dev/synoboot2 -a -d /sys/block/${BOOTDISK}/${BOOTDISK}2 ]; then
     /bin/mknod /dev/synoboot2 b $(cat /sys/block/${BOOTDISK}/${BOOTDISK}2/dev | sed 's/:/ /') >/dev/null 2>&1
-
-  # rm -vf /dev/${BOOTDISK}*  # TODO: need remove?
+    rm -vf /dev/${BOOTDISK}2
+  fi
+  if [ ! -b /dev/${BOOTDISK} -a -b /dev/${BOOTDISK}3 ]; then
+    rm -vf /dev/${BOOTDISK}3
+  fi
 }
 
 # USB ports
