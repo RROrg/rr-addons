@@ -103,7 +103,9 @@ function _kernelVersion() {
 BOOTDISK=""
 BOOTDISK_PART3=$(blkid -L RR3 | sed 's/\/dev\///')
 [ -n "${BOOTDISK_PART3}" ] && BOOTDISK=$(ls -d /sys/block/*/${BOOTDISK_PART3} | cut -d'/' -f4)
+[ -n "${BOOTDISK}" ] && BOOTDISK_PHYSDEVPATH="$(cat /sys/block/${BOOTDISK}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" || BOOTDISK_PHYSDEVPATH=""
 echo "BOOTDISK=${BOOTDISK}"
+echo "BOOTDISK_PHYSDEVPATH=${BOOTDISK_PHYSDEVPATH}"
 
 # synoboot
 function checkSynoboot() {
@@ -176,6 +178,8 @@ function getUsbPorts() {
 
 #
 function dtModel() {
+  checkSynoboot
+
   DEST="/addons/model.dts"
   UNIQUE=$(_get_conf_kv unique)
   if [ ! -f "${DEST}" ]; then # Users can put their own dts.
@@ -212,16 +216,14 @@ function dtModel() {
           PCIPATH="00:${PCIPATH:1}" # 5.10- kernel
         fi
 
-        [ -n "${BOOTDISK}" ] && PHYSDEVPATH="$(cat /sys/block/${BOOTDISK}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" || PHYSDEVPATH=""
-        if echo "${PHYSDEVPATH}" | grep -q "${P}"; then
-          ATAPORT=$(grep 'ata_port_no' /sys/block/${BOOTDISK}/device/syno_block_info | cut -d'=' -f2)
-          checkSynoboot
-        else
-          ATAPORT=""
+        IDX=""
+        if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && echo "${BOOTDISK_PHYSDEVPATH}" | grep -q "${P}"; then
+          IDX=$(ls -l /sys/class/scsi_host 2>/dev/null | grep ${P} | sort -V | grep -n "${BOOTDISK_PHYSDEVPATH%%target*}" | head -1 | cut -d: -f1)
+          echo "bootloader: PCIPATH:${PCIPATH}; IDX:${IDX}"
         fi
 
         for J in $(seq 0 $((${HOSTNUM} - 1))); do
-          [ "${J}" = "${ATAPORT}" ] && continue
+          [ "${J}" = "${IDX}" ] && continue
           echo "    internal_slot@${I} {" >>${DEST}
           echo "        protocol_type = \"sata\";" >>${DEST}
           echo "        ahci {" >>${DEST}
@@ -237,8 +239,8 @@ function dtModel() {
         while true; do
           [ ! -d /sys/block/sata${J} ] && break
           if cat /sys/block/sata${J}/uevent | grep 'PHYSDEVPATH' | grep -q "${P}"; then
-            if [ "sata${J}" = "${BOOTDISK}" ]; then
-              checkSynoboot
+            if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat /sys/block/sata${J}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+              echo "bootloader: /sys/block/sata${J}"
             else
               PCIEPATH=$(grep 'pciepath' /sys/block/sata${J}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)
               ATAPORT=$(grep 'ata_port_no' /sys/block/sata${J}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)
@@ -262,8 +264,8 @@ function dtModel() {
       J=1
       while true; do
         [ ! -d /sys/block/sata${J} ] && break
-        if [ "sata${J}" = "${BOOTDISK}" ]; then
-          checkSynoboot
+        if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat /sys/block/sata${J}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+          echo "bootloader: /sys/block/sata${J}"
         else
           PCIEPATH=$(grep 'pciepath' /sys/block/sata${J}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)
           ATAPORT=$(grep 'ata_port_no' /sys/block/sata${J}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)
@@ -292,8 +294,8 @@ function dtModel() {
     # NVME ports
     COUNT=1
     for P in $(ls -d /sys/block/nvme* 2>/dev/null); do
-      if [ "/sys/block/${BOOTDISK}" = "${P}" ]; then
-        checkSynoboot
+      if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat ${P}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+        echo "bootloader: ${P}"
         continue
       fi
       PCIEPATH=$(grep 'pciepath' ${P}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)
@@ -305,8 +307,6 @@ function dtModel() {
         COUNT=$((${COUNT} + 1))
       fi
     done
-
-    checkSynoboot
 
     # USB ports
     COUNT=1
@@ -387,14 +387,15 @@ function nondtModel() {
   if [ "${1}" = "true" ]; then
     echo "TODO: no-DT's sort!!!"
   fi
+
   checkSynoboot
 
   # NVME
   COUNT=1
   echo "[pci]" >/etc/extensionPorts
   for P in $(ls -d /sys/block/nvme* 2>/dev/null); do
-    if [ "/sys/block/${BOOTDISK}" = "${P}" ]; then
-      checkSynoboot
+    if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat ${P}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+      echo "bootloader: ${P}"
       continue
     fi
     PCIEPATH=$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'/' -f4)
