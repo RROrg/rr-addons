@@ -1,6 +1,6 @@
 version: 1
 name: nvmecache
-description: "Enable M2 cache of DS918+,DS1019+,DS1621xs+, from PeterSuh-Q3" # https://github.com/PeterSuh-Q3/tcrp-addons/tree/main/nvme-cache
+description: "Enable M2 cache of DS918+,DS1019+,DS1621xs+,RS1619xs+ from PeterSuh-Q3" # https://github.com/PeterSuh-Q3/tcrp-addons/tree/main/nvme-cache
 all:
   install-script: "install.sh"
   copy: "all"
