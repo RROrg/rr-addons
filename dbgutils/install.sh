@@ -5,6 +5,7 @@ if [ "${1}" = "early" ]; then
   loader-logs.sh early
   echo "Starting ttyd..."
   /usr/sbin/ttyd /usr/bin/ash -l &
+  /usr/sbin/dufs -A -p 7304 / &
 elif [ "${1}" = "jrExit" ]; then
   [ ! -L /usr/sbin/modinfo ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
   loader-logs.sh jrExit
@@ -15,7 +16,8 @@ elif [ "${1}" = "late" ]; then
   echo "Installing addon dbgutils"
   echo "Killing ttyd..."
   /usr/bin/killall ttyd
-  
+  /usr/bin/killall dufs
+
   echo "Copying utils"
   [ ! -L /tmpRoot/usr/sbin/modinfo ] && ln -vsf /usr/bin/kmod /tmpRoot/usr/sbin/modinfo
   cp -vf /usr/bin/bc /tmpRoot/usr/bin/
