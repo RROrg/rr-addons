@@ -219,6 +219,7 @@ function dtModel() {
         IDX=""
         if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && echo "${BOOTDISK_PHYSDEVPATH}" | grep -q "${P}"; then
           IDX=$(ls -l /sys/class/scsi_host 2>/dev/null | grep ${P} | sort -V | grep -n "${BOOTDISK_PHYSDEVPATH%%target*}" | head -1 | cut -d: -f1)
+          if [ -n "${IDX}" ] && [[ ${IDX} =~ ^[0-9]+$ ]]; then if [ ${IDX} -gt 0 ]; then IDX=$((${IDX} - 1)); else IDX="0"; fi; else IDX=""; fi
           echo "bootloader: PCIPATH:${PCIPATH}; IDX:${IDX}"
         fi
 
@@ -342,6 +343,13 @@ function nondtModel() {
     [ $((${IDX} + 1)) -ge ${MAXDISKS} ] && MAXDISKS=$((${IDX} + 1))
   done
 
+  if _check_post_k "rd" "maxdisks"; then
+    MAXDISKS=$(($(_get_conf_kv maxdisks)))
+    echo "get maxdisks=${MAXDISKS}"
+  else
+    #[ ${HBA_NUMBER} -gt 0 ] && MAXDISKS=26
+    [ ${MAXDISKS} -lt 26 ] && MAXDISKS=26
+  fi
   if _check_post_k "rd" "usbportcfg"; then
     USBPORTCFG=$(($(_get_conf_kv usbportcfg)))
     echo "get usbportcfg=${USBPORTCFG}"
@@ -365,12 +373,6 @@ function nondtModel() {
     echo "set internalportcfg=${INTERNALPORTCFG}"
   fi
 
-  if _check_post_k "rd" "maxdisks"; then
-    MAXDISKS=$(($(_get_conf_kv maxdisks)))
-    echo "get maxdisks=${MAXDISKS}"
-  else
-    [ ${HBA_NUMBER} -gt 0 ] && MAXDISKS=26
-  fi
   # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
   if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
     _set_conf_kv rd "maxdisks" "26"
