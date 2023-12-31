@@ -1,6 +1,6 @@
 version: 1
 name: reboottoloader
-description: "Add a script to restart to arpl in the DSM scheduled task, making it easy to access arpl without a screen or keyboard."
+description: "Add a script to restart to RR in the DSM scheduled task, making it easy to access RR with not have a screen and keyboard."
 # system: true
 all:
   install-script: "install.sh"

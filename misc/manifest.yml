@@ -1,6 +1,6 @@
 version: 1
 name: misc
-description: "Miscellaneous functions"
+description: "Miscellaneous functions.(a collection of some minor modifications.)"
 system: true
 all:
   install-script: "install.sh"

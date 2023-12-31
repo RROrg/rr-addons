@@ -1,6 +1,6 @@
 version: 1
 name: wol
-description: "Force enable the Wake-on-lan on first ethernet device"
+description: "Force enable the Wake-on-lan on ethernet devices"
 system: true
 all:
   install-script: "install.sh"
