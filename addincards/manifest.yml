@@ -1,6 +1,6 @@
 version: 1
 name: addincards
-description: "Remove the model restrictions on official Add in cards and update usb.map."
+description: "Remove the model restrictions of official Addin cards and update usb.map."
 all:
   install-script: "install.sh"
   copy: "all"
