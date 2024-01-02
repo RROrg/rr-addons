@@ -131,10 +131,10 @@ make -i CFLAGS="-DSG_FLAG_LUN_INHIBIT=2" DESTDIR=/source/output install
 rm -Rf /source/output/usr/share /source/output/usr/include /source/output/usr/lib/pkgconfig /source/output/usr/lib/libudev.*
 cp -f ${ToolChainSysRoot}/usr/lib/libblkid.so.1 /source/output/usr/lib/libblkid.so.1
 ln -sf /usr/bin/kmod /source/output/usr/sbin/depmod
-cp -f /source/input/99-usb-realtek-net.rules /source/output/usr/lib/udev/rules.d/99-usb-realtek-net.rules
-rm -f /source/output/usr/lib/udev/rules.d/60-persistent-storage.rules
-rm -f /source/output/usr/lib/udev/rules.d/60-persistent-storage-tape.rules
-rm -f /source/output/usr/lib/udev/rules.d/80-net-name-slot.rules
+cp -f /source/input/50-usb-realtek-net.rules /source/output/usr/lib/udev/rules.d/50-usb-realtek-net.rules
+mv -f /source/output/usr/lib/udev/rules.d/60-persistent-storage.rules /source/output/usr/lib/udev/rules.d/60-persistent-storage.rules.bak
+mv -f /source/output/usr/lib/udev/rules.d/60-persistent-storage-tape.rules /source/output/usr/lib/udev/rules.d/60-persistent-storage-tape.rules.bak
+mv -f /source/output/usr/lib/udev/rules.d/80-net-name-slot.rules /source/output/usr/lib/udev/rules.d/80-net-name-slot.rules.bak
 chown 1000.1000 -R /source/output
 EOF
   sudo mv -f script.sh "${ENV_PATH}/script.sh"
