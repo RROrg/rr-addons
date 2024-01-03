@@ -100,13 +100,6 @@ function _kernelVersion() {
   /bin/echo ${_release%%[-+]*} | /usr/bin/cut -d'.' -f1-3
 }
 
-BOOTDISK=""
-BOOTDISK_PART3=$(blkid -L RR3 | sed 's/\/dev\///')
-[ -n "${BOOTDISK_PART3}" ] && BOOTDISK=$(ls -d /sys/block/*/${BOOTDISK_PART3} | cut -d'/' -f4)
-[ -n "${BOOTDISK}" ] && BOOTDISK_PHYSDEVPATH="$(cat /sys/block/${BOOTDISK}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" || BOOTDISK_PHYSDEVPATH=""
-echo "BOOTDISK=${BOOTDISK}"
-echo "BOOTDISK_PHYSDEVPATH=${BOOTDISK_PHYSDEVPATH}"
-
 # synoboot
 function checkSynoboot() {
   [ -b /dev/synoboot -a -b /dev/synoboot1 -a -b /dev/synoboot2 ] && return
@@ -420,6 +413,14 @@ function nondtModel() {
 #
 if [ "${1}" = "patches" ]; then
   echo "Adjust disks related configs automatically - patches"
+
+  BOOTDISK=""
+  BOOTDISK_PART3=$(blkid -L RR3 | sed 's/\/dev\///')
+  [ -n "${BOOTDISK_PART3}" ] && BOOTDISK=$(ls -d /sys/block/*/${BOOTDISK_PART3} | cut -d'/' -f4)
+  [ -n "${BOOTDISK}" ] && BOOTDISK_PHYSDEVPATH="$(cat /sys/block/${BOOTDISK}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" || BOOTDISK_PHYSDEVPATH=""
+  echo "BOOTDISK=${BOOTDISK}"
+  echo "BOOTDISK_PHYSDEVPATH=${BOOTDISK_PHYSDEVPATH}"
+
   [ "$(_get_conf_kv supportportmappingv2)" = "yes" ] && dtModel "${2}" || nondtModel "${2}"
 
 elif [ "${1}" = "late" ]; then
