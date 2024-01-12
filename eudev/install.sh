@@ -40,16 +40,29 @@ if [ "${1}" = "modules" ]; then
   sleep 10
   # Remove from memory to not conflict with RAID mount scripts
   /usr/bin/killall udevd
+  # Remove kvm module
+  /usr/sbin/lsmod | grep -q ^kvm_intel && /usr/sbin/rmmod kvm_intel || true  # kvm-intel.ko
+  /usr/sbin/lsmod | grep -q ^kvm_amd && /usr/sbin/rmmod kvm_amd || true  # kvm-amd.ko
+  /usr/sbin/lsmod | grep -q ^kvm && /usr/sbin/rmmod kvm || true
+  /usr/sbin/lsmod | grep -q ^irqbypass && /usr/sbin/rmmod irqbypass || true
+
 elif [ "${1}" = "late" ]; then
   echo "Starting eudev daemon - late"
-  # The modules of SA6400 still have compatibility issues, temporarily canceling the copy. TODO: to be resolved
-  #if [ ! "${ModuleUnique}" = "synology_epyc7002_sa6400" ]; then
-    echo "copy modules"
-    export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
-    /tmpRoot/bin/cp -rnf /usr/lib/firmware/* /tmpRoot/usr/lib/firmware/
-    #/tmpRoot/bin/cp -rnf /usr/lib/modules/* /tmpRoot/usr/lib/modules/
-    #/usr/sbin/depmod -a -b /tmpRoot/
-  #fi
+
+  echo "copy modules"
+  export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
+  /tmpRoot/bin/cp -rnf /usr/lib/firmware/* /tmpRoot/usr/lib/firmware/
+  cat /addons/modulelist 2>/dev/null | /tmpRoot/bin/sed '/^\s*$/d' | while IFS=' ' read -r O M; do
+    [ "${O:0:1}" = "#" ] && continue
+    [ -z "${M}" -o -z "$(ls /usr/lib/modules/${M} 2>/dev/null)" ] && continue
+    if [ "${O}" = "F" ] || [ "${O}" = "f" ]; then
+      /tmpRoot/bin/cp -vrf /usr/lib/modules/${M} /tmpRoot/usr/lib/modules/
+    else
+      /tmpRoot/bin/cp -vrn /usr/lib/modules/${M} /tmpRoot/usr/lib/modules/
+    fi
+  done
+  /usr/sbin/depmod -a -b /tmpRoot/
+
   echo "Copy rules"
   cp -vf /usr/lib/udev/rules.d/* /tmpRoot/usr/lib/udev/rules.d/
   if [ "${MajorVersion}" -lt "7" ]; then # < 7
