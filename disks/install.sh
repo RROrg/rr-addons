@@ -212,7 +212,7 @@ function dtModel() {
         IDX=""
         if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && echo "${BOOTDISK_PHYSDEVPATH}" | grep -q "${P}"; then
           IDX=$(ls -l /sys/class/scsi_host 2>/dev/null | grep ${P} | sort -V | grep -n "${BOOTDISK_PHYSDEVPATH%%target*}" | head -1 | cut -d: -f1)
-          if [ -n "${IDX}" ] && [[ ${IDX} =~ ^[0-9]+$ ]]; then if [ ${IDX} -gt 0 ]; then IDX=$((${IDX} - 1)); else IDX="0"; fi; else IDX=""; fi
+          if [ -n "${IDX}" ] && echo "${IDX}" | grep -q -E '^[0-9]+$'; then if [ ${IDX} -gt 0 ]; then IDX=$((${IDX} - 1)); else IDX="0"; fi; else IDX=""; fi
           echo "bootloader: PCIPATH:${PCIPATH}; IDX:${IDX}"
         fi
 
@@ -228,7 +228,7 @@ function dtModel() {
           I=$((${I} + 1))
         done
       done
-      for P in $(lspci -d ::107 2>/dev/null | cut -d' ' -f1); do
+      for P in $(lspci -d ::107 2>/dev/null | cut -d' ' -f1) $(lspci -d ::104 2>/dev/null | cut -d' ' -f1) $(lspci -d ::100 2>/dev/null | cut -d' ' -f1); do
         J=1
         while true; do
           [ ! -d /sys/block/sata${J} ] && break
