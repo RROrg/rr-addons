@@ -1,7 +1,7 @@
 #!/usr/bin/env ash
 
 if [ "${1}" = "jrExit" ]; then
-  for N in $(ls /sys/class/net/ | grep eth); do
+  for N in $(ls /sys/class/net/ 2>/dev/null | grep eth); do
     /usr/bin/ethtool -s ${N} wol g 2>/dev/null
   done
 elif [ "${1}" = "late" ]; then

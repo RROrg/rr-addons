@@ -137,7 +137,7 @@ function checkSynoboot() {
 
 # USB ports
 function getUsbPorts() {
-  for I in $(ls -d /sys/bus/usb/devices/usb*); do
+  for I in $(ls -d /sys/bus/usb/devices/usb* 2>/dev/null); do
     # ROOT
     DCLASS=$(cat ${I}/bDeviceClass)
     [ ! "${DCLASS}" = "09" ] && continue
@@ -184,7 +184,7 @@ function dtModel() {
 
     # NVME power_limit
     POWER_LIMIT=""
-    NVME_PORTS=$(ls /sys/class/nvme | wc -w)
+    NVME_PORTS=$(ls /sys/class/nvme 2>/dev/null | wc -w)
     for I in $(seq 0 $((${NVME_PORTS} - 1))); do
       [ ${I} -eq 0 ] && POWER_LIMIT="100" || POWER_LIMIT="${POWER_LIMIT},100"
     done
@@ -329,7 +329,7 @@ function nondtModel() {
   INTERNALPORTCFG=0
   HBA_NUMBER=$(lspci -d ::107 2>/dev/null | wc -l)
 
-  for I in $(ls -d /sys/block/sd*); do
+  for I in $(ls -d /sys/block/sd* 2>/dev/null); do
     IDX=$(_atoi ${I/\/sys\/block\/sd/})
     ISUSB="$(cat ${I}/uevent 2>/dev/null | grep PHYSDEVPATH | grep usb)"
     [ -n "${ISUSB}" ] && USBPORTCFG=$((${USBPORTCFG} | $((1 << ${IDX}))))
@@ -416,7 +416,7 @@ if [ "${1}" = "patches" ]; then
 
   BOOTDISK=""
   BOOTDISK_PART3=$(blkid -L RR3 | sed 's/\/dev\///')
-  [ -n "${BOOTDISK_PART3}" ] && BOOTDISK=$(ls -d /sys/block/*/${BOOTDISK_PART3} | cut -d'/' -f4)
+  [ -n "${BOOTDISK_PART3}" ] && BOOTDISK=$(ls -d /sys/block/*/${BOOTDISK_PART3} 2>/dev/null | cut -d'/' -f4)
   [ -n "${BOOTDISK}" ] && BOOTDISK_PHYSDEVPATH="$(cat /sys/block/${BOOTDISK}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" || BOOTDISK_PHYSDEVPATH=""
   echo "BOOTDISK=${BOOTDISK}"
   echo "BOOTDISK_PHYSDEVPATH=${BOOTDISK_PHYSDEVPATH}"
