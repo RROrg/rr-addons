@@ -15,7 +15,7 @@ else
     echo "Installing daemon for nvmecache patches"
     BOOTDISK=""
     BOOTDISK_PART3=$(blkid -L RR3 | sed 's/\/dev\///')
-    [ -n "${BOOTDISK_PART3}" ] && BOOTDISK=$(ls -d /sys/block/*/${BOOTDISK_PART3} | cut -d'/' -f4)
+    [ -n "${BOOTDISK_PART3}" ] && BOOTDISK=$(ls -d /sys/block/*/${BOOTDISK_PART3} 2>/dev/null | cut -d'/' -f4)
     [ -n "${BOOTDISK}" ] && BOOTDISK_PHYSDEVPATH="$(cat /sys/block/${BOOTDISK}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" || BOOTDISK_PHYSDEVPATH=""
     echo "BOOTDISK=${BOOTDISK}"
     echo "BOOTDISK_PHYSDEVPATH=${BOOTDISK_PHYSDEVPATH}"
