@@ -25,7 +25,6 @@ lsmod >"/mnt/p1/logs/${1}/lsmod.log"
 lsusb >"/mnt/p1/logs/${1}/lsusb.log"
 lspci -Qnnk >"/mnt/p1/logs/${1}/lspci.log" || true
 sysctl -a >"/mnt/p1/logs/${1}/sysctl.log" || true
-journalctl >"/mnt/p1/logs/${1}/journalctl.log" || true
 ls -l /dev/ >"/mnt/p1/logs/${1}/disk-dev.log" || true
 ls -l /dev/disk/by-id/ >"/mnt/p1/logs/${1}/disk-by-id.log" || true
 ls -l /sys/class/scsi_host >"/mnt/p1/logs/${1}/disk-scsi_host.log" || true
