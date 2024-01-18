@@ -99,9 +99,8 @@ source ~/.bashrc
 sed -i 's/^CFLAGS=/#CFLAGS=/g; s/^CXXFLAGS=/#CXXFLAGS=/g' /env${BUILD_ARCH}.mak
 while read line; do if [ ${line:0:1} != "#" ]; then export ${line%%=*}="${line#*=}"; fi; done < /env${BUILD_ARCH}.mak
 # build kmod
-git clone -c http.sslVerify=false --single-branch https://github.com/kmod-project/kmod.git /tmp/kmod
-cd /tmp/kmod
-git checkout v30
+git clone -c http.sslVerify=false -b v30 https://github.com/kmod-project/kmod.git
+pushd kmod
 patch -p1 < /source/input/kmod.patch
 ./autogen.sh
 ./configure CC=${CC} CFLAGS='-O2' --host=${HOST} --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib --enable-tools --disable-manpages --disable-python --without-zstd --without-xz --without-zlib --without-openssl
@@ -109,23 +108,24 @@ patch -p1 < /source/input/kmod.patch
 make all
 make install
 make DESTDIR=/source/output install
+popd
 # build eudev
-git clone -c http.sslVerify=false --single-branch https://github.com/systemd/systemd.git /tmp/systemd
-git clone -c http.sslVerify=false --single-branch https://github.com/eudev-project/eudev.git /tmp/eudev
-cd /tmp/eudev
-git checkout v3.2.14
+git clone -c http.sslVerify=false https://github.com/systemd/systemd.git
+git clone -c http.sslVerify=false -b v3.2.14 https://github.com/eudev-project/eudev.git
+cp -vf ./systemd/hwdb.d/*.ids ./systemd/hwdb.d/*.hwdb ./eudev/hwdb/
+pushd eudev
 # error: 'for' loop initial declarations are only allowed in C99 or C11 mode
 if [ "${1}" = "6.2" ]; then
   sed -i 's/for (char \*p/char \*p = NULL; for (p/g' ./src/shared/util.h
   sed -i 's/for (size_t a/size_t a = 0; for(a/g; s/for (size_t i/size_t i = 0; for(i/g; s/for (uint16_t i/uint16_t i = 0; for(i/g' ./src/dmi_memory_id/dmi_memory_id.c
   sed -i 's/for (size_t pos/size_t pos = 0; for (pos/g; s/for (size_t i/size_t i = 0; for(i/g' ./src/fido_id/fido_id_desc.c
 fi
-cp -vf /tmp/systemd/hwdb.d/*.ids /tmp/systemd/hwdb.d/*.hwdb hwdb/
 ./autogen.sh
 ./configure CC=${CC} --host=${HOST} --prefix=/usr --sysconfdir=/etc --disable-manpages --disable-selinux --disable-mtd_probe --enable-kmod
 [ -z "`grep 'env.mak' Makefile`" ] && sed -i '1 i include /env.mak' Makefile
 make -i CFLAGS="-DSG_FLAG_LUN_INHIBIT=2" all
 make -i CFLAGS="-DSG_FLAG_LUN_INHIBIT=2" DESTDIR=/source/output install
+popd
 # ldd /source/output/usr/bin/kmod | awk  '{if (match($3,"/")){ printf("%s "),$3 } }'
 # ldd /source/output/usr/bin/udevadm | awk  '{if (match($3,"/")){ printf("%s "),$3 } }'
 rm -Rf /source/output/usr/share /source/output/usr/include /source/output/usr/lib/pkgconfig /source/output/usr/lib/libudev.*
