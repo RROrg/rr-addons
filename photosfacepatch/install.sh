@@ -9,7 +9,7 @@ if [ "${1}" = "late" ]; then
       cp -vfp "/tmpRoot/usr/lib/libsynosdk.so.7" "/tmpRoot/usr/lib/libsynosdk.so.7.bak"
     fi
     echo "Patching libsynosdk.so.7"
-    PatchELFSharp "/usr/lib/libsynosdk.so.7" "SYNOFSIsRemoteFS" "B8 00 00 00 00 C3"
+    PatchELFSharp "/tmpRoot/usr/lib/libsynosdk.so.7" "SYNOFSIsRemoteFS" "B8 00 00 00 00 C3"
   else
     echo "libsynosdk.so.7 not found"
   fi
@@ -19,7 +19,7 @@ if [ "${1}" = "late" ]; then
       cp -vfp "/tmpRoot/var/packages/SynologyPhotos/target/usr/lib/libsynophoto-plugin-platform.so" "/tmpRoot/var/packages/SynologyPhotos/target/usr/lib/libsynophoto-plugin-platform.so.bak"
     fi
     echo "Patching libsynophoto-plugin-platform.so"
-    PatchELFSharp "/var/packages/SynologyPhotos/target/usr/lib/libsynophoto-plugin-platform.so" "_ZN9synophoto6plugin8platform20IsSupportedIENetworkEv" "B8 00 00 00 00 C3"
+    PatchELFSharp "/tmpRoot/var/packages/SynologyPhotos/target/usr/lib/libsynophoto-plugin-platform.so" "_ZN9synophoto6plugin8platform20IsSupportedIENetworkEv" "B8 00 00 00 00 C3"
   else
     echo "libsynophoto-plugin-platform.so not found"
   fi
