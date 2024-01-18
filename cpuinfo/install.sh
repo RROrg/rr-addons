@@ -3,7 +3,7 @@
 if [ "${1}" = "late" ]; then
   echo "Installing daemon for CPU Info"
   cp -vf /usr/bin/cpuinfo.sh /tmpRoot/usr/bin/cpuinfo.sh
-
+  shift
   DEST="/tmpRoot/usr/lib/systemd/system/cpuinfo.service"
   echo "[Unit]"                               >${DEST}
   echo "Description=Adds correct CPU Info"   >>${DEST}
@@ -12,7 +12,7 @@ if [ "${1}" = "late" ]; then
   echo "[Service]"                           >>${DEST}
   echo "Type=oneshot"                        >>${DEST}
   echo "RemainAfterExit=true"                >>${DEST}
-  echo "ExecStart=/usr/bin/cpuinfo.sh"       >>${DEST}
+  echo "ExecStart=/usr/bin/cpuinfo.sh $@"    >>${DEST}
   echo                                       >>${DEST}
   echo "[Install]"                           >>${DEST}
   echo "WantedBy=multi-user.target"          >>${DEST}
