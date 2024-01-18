@@ -9,7 +9,6 @@
 # DSM version
 MajorVersion=$(/bin/get_key_value /etc.defaults/VERSION majorversion)
 MinorVersion=$(/bin/get_key_value /etc.defaults/VERSION minorversion)
-ModuleUnique=$(/bin/get_key_value /etc.defaults/VERSION unique) # Avoid confusion with global variables
 
 echo "MajorVersion:${MajorVersion} MinorVersion:${MinorVersion}"
 
@@ -50,6 +49,7 @@ elif [ "${1}" = "late" ]; then
   echo "Starting eudev daemon - late"
 
   echo "copy modules"
+  isChange=0
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   /tmpRoot/bin/cp -rnf /usr/lib/firmware/* /tmpRoot/usr/lib/firmware/
   cat /addons/modulelist 2>/dev/null | /tmpRoot/bin/sed '/^\s*$/d' | while IFS=' ' read -r O M; do
@@ -60,8 +60,9 @@ elif [ "${1}" = "late" ]; then
     else
       /tmpRoot/bin/cp -vrn /usr/lib/modules/${M} /tmpRoot/usr/lib/modules/
     fi
+    isChange=1
   done
-  /usr/sbin/depmod -a -b /tmpRoot/
+  [ "${isChange}" = "1" ] && /usr/sbin/depmod -a -b /tmpRoot/
 
   echo "Copy rules"
   cp -vf /usr/lib/udev/rules.d/* /tmpRoot/usr/lib/udev/rules.d/

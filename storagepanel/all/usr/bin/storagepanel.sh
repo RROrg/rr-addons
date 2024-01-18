@@ -43,10 +43,7 @@ else
 fi
 FILE_GZ="${FILE_JS}.gz"
 
-if [ ! -f "${FILE_JS}" ]; then
-  echo "${FILE_JS} file does not exist"
-  exit
-fi
+[ ! -f "${FILE_JS}" -a ! -f "${FILE_GZ}" ] && echo "${FILE_JS} file does not exist" && exit 0
 
 HDD_BAY_LIST=(RACK_0_Bay RACK_2_Bay RACK_4_Bay RACK_8_Bay RACK_10_Bay RACK_12_Bay RACK_12_Bay_2 RACK_16_Bay RACK_20_Bay RACK_24_Bay RACK_60_Bay
   TOWER_1_Bay TOWER_2_Bay TOWER_4_Bay TOWER_4_Bay_J TOWER_4_Bay_S TOWER_5_Bay TOWER_6_Bay TOWER_8_Bay TOWER_12_Bay)
@@ -86,6 +83,7 @@ if [ -f "${FILE_GZ}.bak" ]; then
 else
   cp -f "${FILE_JS}.bak" "${FILE_JS}"
 fi
+echo "storagepanel set to ${HDD_BAY} ${SSD_BAY}"
 OLD="driveShape:\"Mdot2-shape\",major:\"row\",rowDir:\"UD\",colDir:\"LR\",driveSection:\[{top:14,left:18,rowCnt:1,colCnt:2,xGap:6,yGap:6}\]},"
 NEW="driveShape:\"Mdot2-shape\",major:\"row\",rowDir:\"UD\",colDir:\"LR\",driveSection:\[{top:14,left:18,rowCnt:${SSD_BAY%%X*},colCnt:${SSD_BAY##*X},xGap:6,yGap:6}\]},"
 sed -i "s/\"${_UNIQUE}\",//g; s/,\"${_UNIQUE}\"//g; s/${HDD_BAY}:\[\"/${HDD_BAY}:\[\"${_UNIQUE}\",\"/g; s/M2X1:\[\"/M2X1:\[\"${_UNIQUE}\",\"/g; s/${OLD}/${NEW}/g" "${FILE_JS}"
