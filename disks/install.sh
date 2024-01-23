@@ -102,7 +102,7 @@ function _kernelVersion() {
 
 # synoboot
 function checkSynoboot() {
-  [ -b /dev/synoboot -a -b /dev/synoboot1 -a -b /dev/synoboot2 ] && return
+  [ -b /dev/synoboot -a -b /dev/synoboot1 -a -b /dev/synoboot2 -a -b /dev/synoboot3 ] && return
   [ -z "${BOOTDISK}" ] && return
 
   if [ ! -b /dev/synoboot -a -d /sys/block/${BOOTDISK} ]; then
@@ -118,7 +118,8 @@ function checkSynoboot() {
     /bin/mknod /dev/synoboot2 b $(cat /sys/block/${BOOTDISK}/${BOOTDISK}p2/dev | sed 's/:/ /') >/dev/null 2>&1
     rm -vf /dev/${BOOTDISK}p2
   fi
-  if [ ! -b /dev/${BOOTDISK} -a -b /dev/${BOOTDISK}p3 ]; then
+  if [ ! -b /dev/synoboot3 -a -d /sys/block/${BOOTDISK}/${BOOTDISK}p3 ]; then
+    /bin/mknod /dev/synoboot3 b $(cat /sys/block/${BOOTDISK}/${BOOTDISK}p3/dev | sed 's/:/ /') >/dev/null 2>&1
     rm -vf /dev/${BOOTDISK}p3
   fi
   # sdN, vdN
@@ -130,7 +131,8 @@ function checkSynoboot() {
     /bin/mknod /dev/synoboot2 b $(cat /sys/block/${BOOTDISK}/${BOOTDISK}2/dev | sed 's/:/ /') >/dev/null 2>&1
     rm -vf /dev/${BOOTDISK}2
   fi
-  if [ ! -b /dev/${BOOTDISK} -a -b /dev/${BOOTDISK}3 ]; then
+  if [ ! -b /dev/synoboot3 -a -d /sys/block/${BOOTDISK}/${BOOTDISK}3 ]; then
+    /bin/mknod /dev/synoboot3 b $(cat /sys/block/${BOOTDISK}/${BOOTDISK}3/dev | sed 's/:/ /') >/dev/null 2>&1
     rm -vf /dev/${BOOTDISK}3
   fi
 }
@@ -171,8 +173,6 @@ function getUsbPorts() {
 
 #
 function dtModel() {
-  checkSynoboot
-
   DEST="/addons/model.dts"
   UNIQUE=$(_get_conf_kv unique)
   if [ ! -f "${DEST}" ]; then # Users can put their own dts.
@@ -383,8 +383,6 @@ function nondtModel() {
     echo "TODO: no-DT's sort!!!"
   fi
 
-  checkSynoboot
-
   # NVME
   COUNT=1
   echo "[pci]" >/etc/extensionPorts
@@ -420,6 +418,7 @@ if [ "${1}" = "patches" ]; then
   [ -n "${BOOTDISK}" ] && BOOTDISK_PHYSDEVPATH="$(cat /sys/block/${BOOTDISK}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" || BOOTDISK_PHYSDEVPATH=""
   echo "BOOTDISK=${BOOTDISK}"
   echo "BOOTDISK_PHYSDEVPATH=${BOOTDISK_PHYSDEVPATH}"
+  checkSynoboot
 
   [ "$(_get_conf_kv supportportmappingv2)" = "yes" ] && dtModel "${2}" || nondtModel "${2}"
 
