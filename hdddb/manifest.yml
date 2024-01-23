@@ -1,6 +1,17 @@
 version: 1
 name: hdddb
-description: "Add HDDs/SSDs drives to your dsm's databases, from 007revad(https://github.com/007revad/Synology_HDD_db)" # https://github.com/007revad/Synology_HDD_db
+description: # https://github.com/007revad/Synology_HDD_db
+  en_US: "Add HDDs/SSDs drives to your dsm's databases, from 007revad."
+  es_ES: "Agregue unidades de disco duro / SSD a las bases de datos de su dsm, de 007revad."
+  de_DE: "Fügt HDDs/SSDs zu den Datenbanken Ihres DSM hinzu, von 007revad."
+  fr_FR: "Ajoutez des disques durs / SSD à vos bases de données DSM, de 007revad."
+  ko_KR: "007revad의 dsm의 데이터베이스에 HDD / SSD 드라이브를 추가하십시오."
+  ru_RU: "Добавьте жесткие диски / твердотельные накопители в базы данных DSM, от 007revad."
+  uk-UA: "Додайте жорсткі диски / твердотільні накопичувачі до баз даних DSM, від 007revad."
+  vi-VN: "Thêm ổ cứng / ổ đĩa SSD vào cơ sở dữ liệu DSM của bạn, từ 007revad."
+  zh_CN: "将 HDD / SSD 驱动器添加到 DSM 的数据库中，来自 007revad。"
+  zh_HK: "將 HDD / SSD 驅動器添加到 DSM 的數據庫中，來自 007revad。"
+  zh_TW: "將 HDD / SSD 驅動器添加到 DSM 的數據庫中，來自 007revad。"
 all:
   install-script: "install.sh"
   copy: "all"

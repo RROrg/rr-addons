@@ -1,6 +1,17 @@
 version: 1
 name: console
-description: "Give a screen console via framebuffer"
+description:
+  en_US: "Give a screen console via framebuffer."
+  es_ES: "Proporciona una consola de pantalla a través de framebuffer."
+  de_DE: "Gibt eine Bildschirmkonsole über Framebuffer aus."
+  fr_FR: "Donne une console d'écran via framebuffer."
+  ko_KR: "프레임 버퍼를 통해 화면 콘솔을 제공합니다."
+  ru_RU: "Предоставляет консоль экрана через буфер кадров."
+  uk-UA: "Надає консоль екрана через буфер кадрів."
+  vi-VN: "Cung cấp một bảng điều khiển màn hình thông qua framebuffer."
+  zh_CN: "通过帧缓冲区提供屏幕控制台。"
+  zh_HK: "透過幀緩衝區提供螢幕控制台。"
+  zh_TW: "透過幀緩衝區提供螢幕控制台。"
 all:
   install-script: "install.sh"
   copy: "all"

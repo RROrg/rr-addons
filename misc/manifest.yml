@@ -1,6 +1,17 @@
 version: 1
 name: misc
-description: "Miscellaneous functions.(a collection of some minor modifications.)"
+description: 
+  en_US: "Miscellaneous functions.(a collection of some minor modifications.)"
+  es_ES: "Funciones varias.(una colección de algunas modificaciones menores.)"
+  de_DE: "Verschiedene Funktionen.(eine Sammlung von einigen kleineren Modifikationen.)"
+  fr_FR: "Fonctions diverses.(une collection de quelques modifications mineures.)"
+  ko_KR: "기타 기능.(일부 작은 수정의 모음입니다.)"
+  ru_RU: "Различные функции.(сборник некоторых незначительных модификаций.)"
+  uk-UA: "Різні функції.(колекція деяких незначних модифікацій.)"
+  vi-VN: "Các chức năng khác nhau.(một bộ sưu tập của một số sửa đổi nhỏ.)"
+  zh_CN: "杂项功能。(一些小修改的集合。)"
+  zh_HK: "雜項功能。(一些小修改的集合。)"
+  zh_TW: "雜項功能。(一些小修改的集合。)"
 system: true
 all:
   install-script: "install.sh"

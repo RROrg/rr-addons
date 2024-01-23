@@ -1,6 +1,17 @@
 version: 1
 name: lsiutil
-description: "A tool for working with some LSI RAID controllers"
+description: 
+  en_US: "A tool for working with some LSI RAID controllers."
+  es_ES: "Una herramienta para trabajar con algunos controladores RAID LSI."
+  de_DE: "Ein Werkzeug zum Arbeiten mit einigen LSI RAID Controllern."
+  fr_FR: "Un outil pour travailler avec certains contrôleurs RAID LSI."
+  ko_KR: "LSI RAID 컨트롤러와 함께 작업하는 도구입니다."
+  ru_RU: "Инструмент для работы с некоторыми контроллерами RAID LSI."
+  uk-UA: "Інструмент для роботи з деякими контролерами RAID LSI."
+  vi-VN: "Một công cụ để làm việc với một số bộ điều khiển RAID LSI."
+  zh_CN: "用于处理某些 LSI RAID 控制器的工具。"
+  zh_HK: "用於處理某些 LSI RAID 控制器的工具。"
+  zh_TW: "用於處理某些 LSI RAID 控制器的工具。"
 all:
   install-script: "install.sh"
   copy: "all"

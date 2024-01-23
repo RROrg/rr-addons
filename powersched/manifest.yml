@@ -1,6 +1,17 @@
 version: 1
 name: powersched
-description: "Utility to configure RTC according to DSM power schedule"
+description: 
+  en_US: "Utility to configure RTC according to DSM power schedule."
+  es_ES: "Utilidad para configurar RTC según el calendario de energía DSM."
+  de_DE: "Hilfsprogramm zum Konfigurieren der RTC gemäß DSM-Energieschema."
+  fr_FR: "Utilitaire pour configurer RTC selon le calendrier d'alimentation DSM."
+  ko_KR: "DSM 전원 일정에 따라 RTC를 구성하는 유틸리티입니다."
+  ru_RU: "Утилита для настройки RTC в соответствии с графиком питания DSM."
+  uk-UA: "Утиліта для налаштування RTC відповідно до графіка живлення DSM."
+  vi-VN: "Tiện ích để cấu hình RTC theo lịch trình nguồn DSM."
+  zh_CN: "根据 DSM 电源计划配置 RTC 的实用程序。"
+  zh_HK: "根據 DSM 電源計劃配置 RTC 的實用程序。"
+  zh_TW: "根據 DSM 電源計劃配置 RTC 的實用程序。"
 compile-script: compile.sh
 all:
   install-script: "install.sh"

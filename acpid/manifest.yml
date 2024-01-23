@@ -1,6 +1,17 @@
 version: 1
 name: acpid
-description: "ACPI Daemon that handles power button events"
+description:
+  en_US: "ACPI Daemon that handles power button events."
+  es_ES: "Demonio ACPI que maneja los eventos del botón de encendido."
+  de_DE: "ACPI Daemon, der die Power-Button-Ereignisse behandelt."
+  fr_FR: "Démon ACPI qui gère les événements du bouton d'alimentation."
+  ko_KR: "전원 버튼 이벤트를 처리하는 ACPI 데몬."
+  ru_RU: "Демон ACPI, обрабатывающий события кнопки питания."
+  uk-UA: "Демон ACPI, який обробляє події кнопки живлення."
+  vi-VN: "ACPI Daemon xử lý các sự kiện nút nguồn."
+  zh_CN: "处理电源按钮事件的ACPI守护程序."
+  zh_HK: "處理電源按鈕事件的ACPI守护程序."
+  zh_TW: "處理電源按鈕事件的ACPI守护程序."
 all:
   install-script: "install.sh"
   copy: "all"
