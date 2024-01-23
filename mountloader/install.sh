@@ -11,7 +11,7 @@ if [ "${1}" = "late" ]; then
 
   SED_PATH='/tmpRoot/usr/bin/sed'
 
-  ${SED_PATH} -i 's|^.*PermitRootLogin.*$|PermitRootLogin yes|' /tmpRoot/etc/ssh/sshd_config  
+  ${SED_PATH} -i 's|^.*PermitRootLogin.*$|PermitRootLogin yes|' /tmpRoot/etc/ssh/sshd_config
 
   if [ ! -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
     echo "copy esynoscheduler.db"
@@ -23,6 +23,7 @@ if [ "${1}" = "late" ]; then
   /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
 DELETE FROM task WHERE task_name LIKE 'MountLoaderDisk';
 INSERT INTO task VALUES('MountLoaderDisk', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
+echo 1 > /proc/sys/kernel/syno_install_flag
 mkdir -p /mnt/loader1 /mnt/loader2 /mnt/loader3
 mount /dev/synoboot1 /mnt/loader1 2>/dev/null
 mount /dev/synoboot2 /mnt/loader2 2>/dev/null
@@ -35,6 +36,7 @@ umount /mnt/loader1 2>/dev/null
 umount /mnt/loader2 2>/dev/null
 umount /mnt/loader3 2>/dev/null
 rm -rf /mnt/loader1 /mnt/loader2 /mnt/loader3
+echo 0 > /proc/sys/kernel/syno_install_flag
 ', 'script', '{}', '', '', '{}', '{}');
 EOF
 fi
