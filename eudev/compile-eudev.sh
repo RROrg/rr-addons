@@ -128,7 +128,7 @@ make -i CFLAGS="-DSG_FLAG_LUN_INHIBIT=2" DESTDIR=/source/output install
 popd
 # ldd /source/output/usr/bin/kmod | awk  '{if (match($3,"/")){ printf("%s "),$3 } }'
 # ldd /source/output/usr/bin/udevadm | awk  '{if (match($3,"/")){ printf("%s "),$3 } }'
-rm -Rf /source/output/usr/share /source/output/usr/include /source/output/usr/lib/pkgconfig /source/output/usr/lib/libudev.*
+rm -Rf /source/output/usr/share /source/output/usr/include /source/output/usr/lib/pkgconfig /source/output/usr/lib/libudev.* /source/output/usr/lib/*.a /source/output/usr/lib/*.la
 cp -f ${ToolChainSysRoot}/usr/lib/libblkid.so.1 /source/output/usr/lib/libblkid.so.1
 ln -sf /usr/bin/kmod /source/output/usr/sbin/depmod
 cp -f /source/input/50-usb-realtek-net.rules /source/output/usr/lib/udev/rules.d/50-usb-realtek-net.rules
