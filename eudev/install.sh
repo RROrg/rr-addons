@@ -23,8 +23,10 @@ if [ "${1}" = "modules" ]; then
       tar zxf /addons/eudev-7.2.tgz -C /
     fi
   fi
+  # mv -f /usr/lib/udev/rules.d/60-persistent-storage.rules /usr/lib/udev/rules.d/60-persistent-storage.rules.bak
+  # mv -f /usr/lib/udev/rules.d/60-persistent-storage-tape.rules /usr/lib/udev/rules.d/60-persistent-storage-tape.rules.bak
+  # mv -f /usr/lib/udev/rules.d/80-net-name-slot.rules /usr/lib/udev/rules.d/80-net-name-slot.rules.bak
   [ -e /proc/sys/kernel/hotplug ] && printf '\000\000\000\000' >/proc/sys/kernel/hotplug
-  chmod 755 /usr/sbin/udevd /usr/bin/kmod /usr/bin/udevadm /usr/lib/udev/*
   /usr/sbin/depmod -a
   /usr/sbin/udevd -d || {
     echo "FAIL"
@@ -49,7 +51,7 @@ elif [ "${1}" = "late" ]; then
   echo "Starting eudev daemon - late"
 
   echo "copy modules"
-  isChange=0
+  isChange="false"
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   /tmpRoot/bin/cp -rnf /usr/lib/firmware/* /tmpRoot/usr/lib/firmware/
   cat /addons/modulelist 2>/dev/null | /tmpRoot/bin/sed '/^\s*$/d' | while IFS=' ' read -r O M; do
@@ -60,13 +62,25 @@ elif [ "${1}" = "late" ]; then
     else
       /tmpRoot/bin/cp -vrn /usr/lib/modules/${M} /tmpRoot/usr/lib/modules/
     fi
-    isChange=1
+    # isChange="true"
+    # In Bash, the pipe operator | creates a subshell to execute the commands in the pipe. 
+    # This means that if you modify a variable inside a while loop, 
+    # the modification is not visible outside the loop because the while loop is executed in a subshell.
+    echo "true" > /tmp/modulesChange
   done
-  [ "${isChange}" = "1" ] && /usr/sbin/depmod -a -b /tmpRoot/
+  isChange="$(cat /tmp/modulesChange 2>/dev/null || echo "false")"
+  echo "isChange: ${isChange}"
+  [ "${isChange}" = "true" ] && /usr/sbin/depmod -a -b /tmpRoot/
+  
+  # Restore kvm module
+  /usr/sbin/insmod /usr/lib/modules/irqbypass.ko || true
+  /usr/sbin/insmod /usr/lib/modules/kvm.ko || true
+  /usr/sbin/insmod /usr/lib/modules/kvm-intel.ko || true  # kvm-intel.ko
+  /usr/sbin/insmod /usr/lib/modules/kvm-amd.ko || true  # kvm-amd.ko
 
   echo "Copy rules"
   cp -vf /usr/lib/udev/rules.d/* /tmpRoot/usr/lib/udev/rules.d/
-  if [ "${MajorVersion}" -lt "7" ]; then # < 7
+  if [ ${MajorVersion:-0} -lt 7 ]; then # < 7
     mkdir -p /tmpRoot/etc/init
     DEST=/tmpRoot/etc/init/eudev.conf
     echo 'description "EUDEV daemon"'                                              >${DEST}
