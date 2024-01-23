@@ -1,6 +1,17 @@
 version: 1
 name: photosfacepatch
-description: "Photos Facial Recognition Patch, from jinlife(https://github.com/jinlife/Synology_Photos_Face_Patch)" # https://github.com/jinlife/Synology_Photos_Face_Patch
+description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
+  en_US: "Photos Facial Recognition Patch, from jinlife."
+  es_ES: "Photos Parche de reconocimiento facial, de jinlife."
+  de_DE: "Photos Gesichtserkennung Patch, von jinlife."
+  fr_FR: "Patch de reconnaissance faciale Photos, de jinlife."
+  ko_KR: "사진 얼굴 인식 패치, jinlife."
+  ru_RU: "Фотографии Патч распознавания лиц, от jinlife."
+  uk-UA: "Фотографії Патч розпізнавання облич, від jinlife."
+  vi-VN: "Ảnh Patch nhận diện khuôn mặt, từ jinlife."
+  zh_CN: "照片面部识别补丁，来自 jinlife。"
+  zh_HK: "照片面部識別補丁，來自 jinlife。"
+  zh_TW: "照片面部識別補丁，來自 jinlife。"
 all:
   install-script: "install.sh"
   copy: "all"

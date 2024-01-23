@@ -1,10 +1,21 @@
 version: 1
 name: setrootpw
-description: "Enable root permissions for ssh/sftp. Please modify PW=\"\" to the required password in the DSM scheduled task and execute it."
+description: 
+  en_US: "Enable root permissions for ssh/sftp. Please modify PW=\"\" to the required password in the DSM scheduled task and execute it."
+  es_ES: "Habilitar permisos de root para ssh/sftp. Modifique PW=\"\" a la contraseña requerida en la tarea programada de DSM y ejecútela."
+  de_DE: "Root-Rechte für ssh/sftp aktivieren. Bitte PW=\"\" im DSM geplanten Task auf das benötigte Passwort ändern und ausführen."
+  fr_FR: "Activer les permissions root pour ssh/sftp. Veuillez modifier PW=\"\" dans la tâche planifiée DSM et l'exécuter."
+  ko_KR: "ssh/sftp에 대한 루트 권한을 활성화합니다. DSM 예약된 작업에서 PW=\"\"를 필요한 암호로 수정하고 실행하십시오."
+  ru_RU: "Включить root-права для ssh/sftp. Пожалуйста, измените PW=\"\" на необходимый пароль в запланированной задаче DSM и выполните ее."
+  uk-UA: "Увімкніть кореневі права для ssh/sftp. Будь ласка, змініть PW=\"\" на необхідний пароль у запланованому завданні DSM та виконайте його."
+  vi-VN: "Bật quyền root cho ssh/sftp. Vui lòng sửa đổi PW=\"\" thành mật khẩu yêu cầu trong tác vụ được lên lịch DSM và thực hiện nó."
+  zh_CN: "启用 ssh/sftp 的 root 权限。请在 DSM 计划任务中将 PW=\"\" 修改为所需的密码并执行它。"
+  zh_HK: "啟用 ssh/sftp 的 root 權限。請在 DSM 計劃任務中將 PW=\"\" 修改為所需的密碼並執行它。"
+  zh_TW: "啟用 ssh/sftp 的 root 權限。請在 DSM 計劃任務中將 PW=\"\" 修改為所需的密碼並執行它。"
 # system: true
 all:
   install-script: "install.sh"
-  copy: all
+  copy: "all"
 available-for:
   apollolake-4.4.59:
   apollolake-4.4.180:

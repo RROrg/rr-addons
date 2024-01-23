@@ -1,6 +1,17 @@
 version: 1
 name: bootwait
-description: "This script-only extension ensures boot process waits until boot device (`/dev/synoboot`) is available before other processes start launching."
+description: 
+  en_US: "This script-only extension ensures boot process waits until boot device (`/dev/synoboot`) is available before other processes start launching."
+  es_ES: "Esta extensión solo de script garantiza que el proceso de arranque espere hasta que el dispositivo de arranque (`/dev/synoboot`) esté disponible antes de que comiencen a iniciarse otros procesos."
+  de_DE: "Diese nur aus einem Skript bestehende Erweiterung stellt sicher, dass der Bootvorgang erst fortgesetzt wird, wenn das Bootgerät (`/dev/synoboot`) verfügbar ist."
+  fr_FR: "Cette extension composée uniquement d'un script garantit que le processus de démarrage attend que le périphérique de démarrage (`/dev/synoboot`) soit disponible avant que les autres processus ne commencent à se lancer."
+  ko_KR: "이 스크립트 전용 확장은 부팅 장치 (`/dev/synoboot`)가 다른 프로세스가 시작되기 전에 사용 가능할 때까지 부팅 프로세스가 대기하도록합니다."
+  ru_RU: "Это расширение, состоящее только из сценария, гарантирует, что процесс загрузки будет ожидать, пока устройство загрузки (`/dev/synoboot`) не станет доступным, прежде чем запускать другие процессы."
+  uk-UA: "Це розширення, що складається лише з сценарію, гарантує, що процес завантаження буде чекати, доки пристрій завантаження (`/dev/synoboot`) не стане доступним, перш ніж запускати інші процеси."
+  vi-VN: "Phần mở rộng chỉ bao gồm kịch bản này đảm bảo quá trình khởi động đợi cho đến khi thiết bị khởi động (`/dev/synoboot`) có sẵn trước khi các quy trình khác bắt đầu khởi chạy."
+  zh_CN: "这个仅由脚本组成的扩展确保启动过程在启动设备（`/dev/synoboot`）可用之前等待，然后才启动其他进程。"
+  zh_HK: "這個僅由腳本組成的擴展確保啟動過程在啟動設備（`/dev/synoboot`）可用之前等待，然後才啟動其他進程。"
+  zh_TW: "這個僅由腳本組成的擴展確保啟動過程在啟動設備（`/dev/synoboot`）可用之前等待，然後才啟動其他進程。"
 system: true
 all:
   install-script: "install.sh"

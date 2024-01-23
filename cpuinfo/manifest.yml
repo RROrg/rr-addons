@@ -1,6 +1,17 @@
 version: 1
 name: cpuinfo
-description: "Adds correct CPU Info.(Obtained automatically by default, acceptable parameters --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))"
+description:
+  en_US: "Adds correct CPU Info.(Obtained automatically by default, acceptable parameters --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
+  es_ES: "Añade información correcta de la CPU. (Obtenido automáticamente por defecto, parámetros aceptables --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
+  de_DE: "Fügt korrekte CPU-Informationen hinzu. (Standardmäßig automatisch abgerufen, akzeptable Parameter --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
+  fr_FR: "Ajoute les informations CPU correctes. (Obtenu automatiquement par défaut, paramètres acceptables --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
+  ko_KR: "올바른 CPU 정보를 추가합니다. (기본적으로 자동으로 얻어집니다. --vendor=, --family=, --series=, --cores=, --speed=, -r(restore)로 허용되는 매개 변수)."
+  ru_RU: "Добавляет правильную информацию о процессоре. (По умолчанию получается автоматически, допустимые параметры --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
+  uk-UA: "Додає правильну інформацію про процесор. (За замовчуванням отримується автоматично, прийнятні параметри --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
+  vi-VN: "Thêm thông tin CPU chính xác. (Mặc định được lấy tự động, các tham số chấp nhận được --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
+  zh_CN: "添加正确的 CPU 信息。(默认情况下自动获取，可接受的参数 --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
+  zh_HK: "添加正確的 CPU 信息。(默認情況下自動獲取，可接受的參數 --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))." 
+  zh_TW: "添加正確的 CPU 信息。(默認情況下自動獲取，可接受的參數 --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
 all:
   install-script: "install.sh"
   copy: "all"

@@ -1,6 +1,17 @@
 version: 1
 name: dbgutils
-description: "Binaries to facilitate debug in the junior mode"
+description:
+  en_US: "Binaries to facilitate debug in the junior mode."
+  es_ES: "Binarios para facilitar la depuración en el modo junior."
+  de_DE: "Binärdateien zur Erleichterung der Fehlersuche im Junior-Modus."
+  fr_FR: "Binaires pour faciliter le débogage en mode junior."
+  ko_KR: "junior 모드에서 디버그를 용이하게하는 바이너리입니다."
+  ru_RU: "Бинарные файлы для облегчения отладки в режиме junior."
+  uk-UA: "Бінарні файли для полегшення налагодження в режимі junior."
+  vi-VN: "Các tệp nhị phân để tạo điều kiện cho gỡ lỗi trong chế độ junior."
+  zh_CN: "用于在 junior 模式下进行调试的二进制文件。"
+  zh_HK: "用於在 junior 模式下進行調試的二進制文件。"
+  zh_TW: "用於在 junior 模式下進行調試的二進制文件。"
 all:
   install-script: "install.sh"
   copy: "all"

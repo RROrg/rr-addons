@@ -1,6 +1,17 @@
 version: 1
 name: wol
-description: "Force enable the Wake-on-lan on ethernet devices"
+description: 
+  en_US: "Force enable the Wake-on-lan on ethernet devices."
+  es_ES: "Forzar la activación de Wake-on-lan en dispositivos Ethernet."
+  de_DE: "Erzwingt die Aktivierung von Wake-on-lan auf Ethernet-Geräten."
+  fr_FR: "Force l'activation du Wake-on-lan sur les périphériques Ethernet."
+  ko_KR: "이더넷 장치에서 Wake-on-lan을 강제로 활성화합니다."
+  ru_RU: "Принудительно включает Wake-on-lan на сетевых устройствах."
+  uk-UA: "Примусово вмикає Wake-on-lan на мережевих пристроях."
+  vi-VN: "Bắt buộc kích hoạt Wake-on-lan trên các thiết bị Ethernet."
+  zh_CN: "强制在以太网设备上启用 Wake-on-lan。"
+  zh_HK: "強制在乙太網設備上啟用 Wake-on-lan。"
+  zh_TW: "強制在乙太網設備上啟用 Wake-on-lan。"
 system: true
 all:
   install-script: "install.sh"

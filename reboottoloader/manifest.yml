@@ -1,10 +1,21 @@
 version: 1
 name: reboottoloader
-description: "Add a script to restart to RR in the DSM scheduled task, making it easy to access RR with not have a screen and keyboard."
+description: 
+  en_US: "Add a script to restart to RR in the DSM scheduled task, making it easy to access RR with not have a screen and keyboard."
+  es_ES: "Agregue un script para reiniciar a RR en la tarea programada de DSM, lo que facilita el acceso a RR sin tener una pantalla y un teclado."
+  de_DE: "Fügt einen Skript zum Neustart zu RR in der DSM geplanten Aufgabe, so dass es einfach, RR mit nicht haben einen Bildschirm und Tastatur zugreifen."
+  fr_FR: "Ajoutez un script pour redémarrer à RR dans la tâche planifiée DSM, ce qui rend facile d'accéder à RR avec ne pas avoir un écran et un clavier."
+  ko_KR: "DSM 예약 된 작업에서 RR로 재시작하는 스크립트를 추가하여 화면과 키보드가없는 RR에 쉽게 액세스 할 수 있습니다."
+  ru_RU: "Добавьте сценарий для перезапуска в RR в запланированной задаче DSM, что облегчает доступ к RR без наличия экрана и клавиатуры."
+  uk-UA: "Додайте сценарій для перезапуску в RR в запланованому завданні DSM, що полегшує доступ до RR без наявності екрана та клавіатури."
+  vi-VN: "Thêm một tập lệnh để khởi động lại RR trong nhiệm vụ được lên lịch DSM, làm cho nó dễ dàng truy cập RR với không có màn hình và bàn phím."
+  zh_CN: "在 DSM 计划任务中添加一个脚本以重新启动到 RR，这使得很容易访问 RR 而不需要屏幕和键盘。"
+  zh_HK: "在 DSM 計劃任務中添加一個腳本以重新啟動到 RR，這使得很容易訪問 RR 而不需要屏幕和鍵盤。"
+  zh_TW: "在 DSM 計劃任務中添加一個腳本以重新啟動到 RR，這使得很容易訪問 RR 而不需要屏幕和鍵盤。"
 # system: true
 all:
   install-script: "install.sh"
-  copy: all
+  copy: "all"
 available-for:
   apollolake-4.4.59:
   apollolake-4.4.180:
