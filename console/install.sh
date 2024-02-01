@@ -1,7 +1,7 @@
 #!/usr/bin/env ash
 
 if [ "${1}" = "modules" ]; then
-  echo "Loading FB and console modules..."
+  echo "Installing addon console - ${1}"
   if [ -n "${2}" ]; then
     /usr/sbin/modprobe ${2}
   else
@@ -11,7 +11,7 @@ if [ "${1}" = "modules" ]; then
     done
   fi
   /usr/sbin/modprobe fbcon
-  echo "ARPL console - wait..." >/dev/tty1
+  echo "RR console - wait..." >/dev/tty1
   # Workaround for DVA1622
   if [ "${MODEL}" = "DVA1622" ]; then
     echo >/dev/tty2
@@ -19,6 +19,7 @@ if [ "${1}" = "modules" ]; then
     /usr/bin/ioctl /dev/tty0 22022 -v 1
   fi
 elif [ "${1}" = "rcExit" ]; then
+  # echo "Installing addon console - ${1}"
   # Run only in junior mode (DSM not installed)
   echo -e "Junior mode\n" >/etc/issue
   echo "Starting getty..."
@@ -31,7 +32,10 @@ elif [ "${1}" = "rcExit" ]; then
     /usr/bin/ioctl /dev/tty0 22022 -v 1
   fi
 elif [ "${1}" = "late" ]; then
-  echo "Installing addon console"
+  echo "Installing addon console - ${1}"
+  mkdir -p "/tmpRoot/usr/rr/addons/"
+  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  
   SED_PATH='/tmpRoot/usr/bin/sed'
   # run when boot installed DSM
   cp -fv /tmpRoot/lib/systemd/system/serial-getty\@.service /tmpRoot/lib/systemd/system/getty\@.service
@@ -63,4 +67,15 @@ elif [ "${1}" = "late" ]; then
     /usr/bin/ioctl /dev/tty0 22022 -v 2
     /usr/bin/ioctl /dev/tty0 22022 -v 1
   fi
+elif [ "${1}" = "uninstall" ]; then
+  echo "Installing addon console - ${1}"
+
+  rm -f "/tmpRoot/lib/systemd/system/getty.target.wants/getty\@tty1.service"
+  rm -f "/tmpRoot/lib/systemd/system/getty\@.service"
+  rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/keymap.service"
+  rm -f "/tmpRoot/lib/systemd/system/keymap.service"
+
+  rm -rf /tmpRoot/usr/share/keymaps
+  rm -f /tmpRoot/usr/bin/loadkeys
+  rm -f /tmpRoot/usr/bin/setleds
 fi

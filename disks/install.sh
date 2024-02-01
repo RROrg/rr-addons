@@ -410,8 +410,7 @@ function nondtModel() {
 
 #
 if [ "${1}" = "patches" ]; then
-  echo "Adjust disks related configs automatically - patches"
-
+  echo "Installing addon disks - ${1}"
   BOOTDISK=""
   BOOTDISK_PART3=$(blkid -L RR3 | sed 's/\/dev\///')
   [ -n "${BOOTDISK_PART3}" ] && BOOTDISK=$(ls -d /sys/block/*/${BOOTDISK_PART3} 2>/dev/null | cut -d'/' -f4)
@@ -423,7 +422,7 @@ if [ "${1}" = "patches" ]; then
   [ "$(_get_conf_kv supportportmappingv2)" = "yes" ] && dtModel "${2}" || nondtModel "${2}"
 
 elif [ "${1}" = "late" ]; then
-  echo "Adjust disks related configs automatically - late"
+  echo "Installing addon disks - ${1}"
   if [ "$(_get_conf_kv supportportmappingv2)" = "yes" ]; then
     echo "Copying /etc.defaults/model.dtb"
     # copy file

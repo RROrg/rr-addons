@@ -13,7 +13,7 @@ if [ -z "${MLINK}" -o -z "${MCHECKSUM}" ]; then
 fi
 
 if [ "${1}" = "modules" ]; then
-  echo "Installing addon localrss - modules"
+  echo "Installing addon localrss - ${1}"
 
   # MajorVersion=`/bin/get_key_value /etc.defaults/VERSION majorversion`
   # MinorVersion=`/bin/get_key_value /etc.defaults/VERSION minorversion`

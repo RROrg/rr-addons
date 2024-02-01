@@ -7,7 +7,9 @@
 #
 
 if [ "${1}" = "late" ]; then
-  echo "Installing addon reboottoloader - late"
+  echo "Installing addon reboottoloader - ${1}"
+  mkdir -p "/tmpRoot/usr/rr/addons/"
+  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
 
   cp -vf /usr/bin/loader-reboot.sh /tmpRoot/usr/bin
   cp -vf /usr/bin/grub-editenv /tmpRoot/usr/bin
@@ -23,4 +25,17 @@ if [ "${1}" = "late" ]; then
 DELETE FROM task WHERE task_name LIKE 'RebootToLoader';
 INSERT INTO task VALUES('RebootToLoader', '', 'shutdown', '', 0, 0, 0, 0, '', 0, '/usr/bin/loader-reboot.sh "config"', 'script', '{}', '', '', '{}', '{}');
 EOF
+elif [ "${1}" = "uninstall" ]; then
+  echo "Installing addon reboottoloader - ${1}"
+
+  rm -f /tmpRoot/usr/bin/loader-reboot.sh
+  rm -f /tmpRoot/usr/bin/grub-editenv
+
+  if [ -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
+    echo "delete reboottoloader task from esynoscheduler.db"
+    export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
+    /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
+DELETE FROM task WHERE task_name LIKE 'RebootToLoader';
+EOF
+  fi
 fi

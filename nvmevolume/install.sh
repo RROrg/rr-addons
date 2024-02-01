@@ -1,7 +1,10 @@
 #!/usr/bin/env ash
 
 if [ "${1}" = "late" ]; then
-  echo "Installing daemon for nvmevolume"
+  echo "Installing addon nvmevolume - ${1}"
+  mkdir -p "/tmpRoot/usr/rr/addons/"
+  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  
   cp -vf /usr/bin/nvmevolume.sh /tmpRoot/usr/bin/nvmevolume.sh
 
   DEST="/tmpRoot/usr/lib/systemd/system/nvmevolume.service"
@@ -19,4 +22,13 @@ if [ "${1}" = "late" ]; then
 
   mkdir -vp /tmpRoot/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/nvmevolume.service /tmpRoot/lib/systemd/system/multi-user.target.wants/nvmevolume.service
+elif [ "${1}" = "uninstall" ]; then
+  echo "Installing addon nvmevolume - ${1}"
+
+  rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/nvmevolume.service"
+  rm -f "/tmpRoot/usr/lib/systemd/system/nvmevolume.service"
+
+  [ ! -f "/tmpRoot/usr/rr/revert.sh" ] && echo '#!/usr/bin/env bash' >/tmpRoot/usr/rr/revert.sh && chmod +x /tmpRoot/usr/rr/revert.sh
+  echo "/usr/bin/nvmevolume.sh --restore" >>/tmpRoot/usr/rr/revert.sh
+  echo "rm -f /usr/bin/nvmevolume.sh" >>/tmpRoot/usr/rr/revert.sh
 fi
