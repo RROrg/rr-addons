@@ -14,7 +14,7 @@
 # fi
 
 if [ "${1}" = "patches" ]; then
-  echo "Installing daemon for i915le10th patches"
+  echo "Installing addon i915le10th - ${1}"
   if [ -n "${2}" ]; then
     GPU="$(echo "${2}" | sed 's/://g' | tr '[:upper:]' '[:lower:]')"
   else
@@ -37,9 +37,16 @@ if [ "${1}" = "patches" ]; then
     [ "${isLoad}" = "1" ] && /usr/sbin/modprobe "/usr/lib/modules/i915.ko"
   fi
 elif [ "${1}" = "late" ]; then
-  echo "Installing daemon for i915le10th late"
-
+  echo "Installing addon i915le10th - ${1}"
+  mkdir -p "/tmpRoot/usr/rr/addons/"
+  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  
   KO_FILE="/tmpRoot/usr/lib/modules/i915.ko"
   [ ! -f "${KO_FILE}.bak" ] && cp -vf "${KO_FILE}" "${KO_FILE}.bak"
   cp -vf "/usr/lib/modules/i915.ko" "${KO_FILE}"
+elif [ "${1}" = "uninstall" ]; then
+  echo "Installing addon i915le10th - ${1}"
+
+  KO_FILE="/tmpRoot/usr/lib/modules/i915.ko"
+  [ -f "${KO_FILE}.bak" ] && mv -f "${KO_FILE}.bak" "${KO_FILE}"
 fi

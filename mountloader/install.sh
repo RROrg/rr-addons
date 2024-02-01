@@ -7,11 +7,9 @@
 #
 
 if [ "${1}" = "late" ]; then
-  echo "Installing daemon for mountloader"
-
-  SED_PATH='/tmpRoot/usr/bin/sed'
-
-  ${SED_PATH} -i 's|^.*PermitRootLogin.*$|PermitRootLogin yes|' /tmpRoot/etc/ssh/sshd_config
+  echo "Installing addon mountloader - ${1}"
+  mkdir -p "/tmpRoot/usr/rr/addons/"
+  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
 
   if [ ! -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
     echo "copy esynoscheduler.db"
@@ -39,4 +37,15 @@ rm -rf /mnt/loader1 /mnt/loader2 /mnt/loader3
 echo 0 > /proc/sys/kernel/syno_install_flag
 ', 'script', '{}', '', '', '{}', '{}');
 EOF
+elif [ "${1}" = "uninstall" ]; then
+  echo "Installing addon mountloader - ${1}"
+
+  if [ -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
+    echo "delete mountloader task from esynoscheduler.db"
+    export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
+    /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
+DELETE FROM task WHERE task_name LIKE 'MountLoaderDisk';
+DELETE FROM task WHERE task_name LIKE 'UnMountLoaderDisk';
+EOF
+  fi
 fi

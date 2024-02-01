@@ -7,7 +7,7 @@
 #
 
 if [ "${1}" = "patches" ]; then
-  echo "Installing daemon for sortnetif"
+  echo "Installing addon sortnetif - ${1}"
 
   ETHLIST=""
   ETHX=$(ls /sys/class/net/ 2>/dev/null | grep eth) # real network cards list

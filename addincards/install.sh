@@ -6,7 +6,9 @@
 # See /LICENSE for more information.
 
 if [ "${1}" = "late" ]; then
-  echo "Installing daemon for addincards"
+  echo "Installing addon addincards - ${1}"
+  mkdir -p "/tmpRoot/usr/rr/addons/"
+  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
 
   MODEL="$(cat /proc/sys/kernel/syno_hw_version)"
   FILE="/tmpRoot/usr/syno/etc.defaults/adapter_cards.conf"
@@ -17,4 +19,9 @@ if [ "${1}" = "late" ]; then
     echo "${N}" >>"${FILE}"
     echo "${MODEL}=yes" >>"${FILE}"
   done
+elif [ "${1}" = "uninstall" ]; then
+  echo "Installing addon addincards - ${1}"
+
+  FILE="/tmpRoot/usr/syno/etc.defaults/adapter_cards.conf"
+  [ -f "${FILE}.bak" ] && mv -f "${FILE}.bak" "${FILE}"
 fi

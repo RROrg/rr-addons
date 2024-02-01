@@ -1,6 +1,12 @@
 #!/usr/bin/env ash
+#
+# Copyright (C) 2022 Ing <https://github.com/wjz304>
+#
+# This is free software, licensed under the MIT License.
+# See /LICENSE for more information.
 
 if [ "${1}" = "early" ]; then
+  echo "Installing addon bootwait - ${1}"
   wait_time=30 # maximum wait time in seconds
 
   dump_all_partitions() {

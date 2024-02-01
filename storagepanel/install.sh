@@ -1,7 +1,10 @@
 #!/usr/bin/env ash
 
 if [ "${1}" = "late" ]; then
-  echo "Installing daemon for storagepanel"
+  echo "Installing addon storagepanel - ${1}"
+  mkdir -p "/tmpRoot/usr/rr/addons/"
+  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  
   cp -vf /usr/bin/storagepanel.sh /tmpRoot/usr/bin/storagepanel.sh
   shift
   DEST="/tmpRoot/usr/lib/systemd/system/storagepanel.service"
@@ -19,4 +22,13 @@ if [ "${1}" = "late" ]; then
 
   mkdir -vp /tmpRoot/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/storagepanel.service /tmpRoot/lib/systemd/system/multi-user.target.wants/storagepanel.service
+elif [ "${1}" = "uninstall" ]; then
+  echo "Installing addon storagepanel - ${1}"
+
+  rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/storagepanel.service"
+  rm -f "/tmpRoot/usr/lib/systemd/system/storagepanel.service"
+
+  [ ! -f "/tmpRoot/usr/rr/revert.sh" ] && echo '#!/usr/bin/env bash' >/tmpRoot/usr/rr/revert.sh && chmod +x /tmpRoot/usr/rr/revert.sh
+  echo "/usr/bin/storagepanel.sh -r" >>/tmpRoot/usr/rr/revert.sh
+  echo "rm -f /usr/bin/storagepanel.sh" >>/tmpRoot/usr/rr/revert.sh
 fi

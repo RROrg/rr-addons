@@ -13,7 +13,7 @@ MinorVersion=$(/bin/get_key_value /etc.defaults/VERSION minorversion)
 echo "MajorVersion:${MajorVersion} MinorVersion:${MinorVersion}"
 
 if [ "${1}" = "modules" ]; then
-  echo "Starting eudev daemon - modules"
+  echo "Installing addon eudev - ${1}"
   if [ "${MajorVersion}" -lt "7" ]; then # < 7
     tar zxf /addons/eudev-6.2.tgz -C /
   else
@@ -48,7 +48,7 @@ if [ "${1}" = "modules" ]; then
   /usr/sbin/lsmod | grep -q ^irqbypass && /usr/sbin/rmmod irqbypass || true
 
 elif [ "${1}" = "late" ]; then
-  echo "Starting eudev daemon - late"
+  echo "Installing addon eudev - ${1}"
 
   echo "copy modules"
   isChange="false"

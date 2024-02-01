@@ -2,13 +2,13 @@
 
 case "${1}" in
 "early" | "jrExit")
-  echo "Installing addon dbgutils ${1}"
-  [ ! -L /usr/sbin/modinfo ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
+  echo "Installing addon dbgutils - ${1}"
+  [ ! -L "/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
   loader-logs.sh "${1}"
   ;;
 "rcExit")
-  echo "Installing addon dbgutils ${1}"
-  [ ! -L /usr/sbin/modinfo ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
+  echo "Installing addon dbgutils - ${1}"
+  [ ! -L "/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
   loader-logs.sh "${1}"
   echo "Starting ttyd ..."
   if /usr/bin/lsof -Pi :7681 -sTCP:LISTEN -t >/dev/null; then
@@ -24,8 +24,11 @@ case "${1}" in
   /usr/sbin/dufs -A -p 7304 / &
   ;;
 "late")
-  echo "Installing addon dbgutils ${1}"
-  [ ! -L /usr/sbin/modinfo ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
+  echo "Installing addon dbgutils - ${1}"
+  mkdir -p "/tmpRoot/usr/rr/addons/"
+  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  
+  [ ! -L "/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
   loader-logs.sh "${1}"
 
   echo "Installing addon dbgutils"
@@ -35,7 +38,7 @@ case "${1}" in
   /usr/bin/killall dufs
 
   echo "Copying utils"
-  [ ! -L /tmpRoot/usr/sbin/modinfo ] && ln -vsf /usr/bin/kmod /tmpRoot/usr/sbin/modinfo
+  [ ! -L "/tmpRoot/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /tmpRoot/usr/sbin/modinfo
   cp -vf /usr/bin/bc /tmpRoot/usr/bin/
   cp -vf /usr/bin/dtc /tmpRoot/usr/bin/
   cp -vf /usr/bin/lsscsi /tmpRoot/usr/bin/
@@ -45,8 +48,6 @@ case "${1}" in
   cp -vf /usr/bin/loader-logs.sh /tmpRoot/usr/bin/
   cp -vf /usr/sbin/ttyd /tmpRoot/usr/sbin/
   cp -vf /usr/sbin/dufs /tmpRoot/usr/sbin/
-
-  loader-logs.sh late
 
   DEST="/tmpRoot/lib/systemd/system/savelogs.service"
   echo "[Unit]"                                      >${DEST}
@@ -63,8 +64,24 @@ case "${1}" in
   mkdir -p /tmpRoot/lib/systemd/system/multi-user.target.wants
   ln -vsf /lib/systemd/system/savelogs.service /tmpRoot/lib/systemd/system/multi-user.target.wants/savelogs.service
   ;;
+"uninstall")
+  echo "Installing addon dbgutils - ${1}"
+
+  rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/savelogs.service"
+  rm -f "/tmpRoot/lib/systemd/system/savelogs.service"
+
+  #rm -f /tmpRoot/usr/bin/bc
+  #rm -f /tmpRoot/usr/bin/dtc
+  #rm -f /tmpRoot/usr/bin/lsscsi
+  #rm -f /tmpRoot/usr/bin/nano
+  #rm -f /tmpRoot/usr/bin/strace
+  #rm -f /tmpRoot/usr/bin/lsof
+  rm -f /tmpRoot/bin/loader-logs.sh
+  #rm -f /tmpRoot/usr/sbin/ttyd
+  #rm -f /tmpRoot/usr/sbin/dufs
+  ;;
 *)
-  echo "dbgutils nothing to do with argument ${1}"
+  echo "Installing addon dbgutils - ${1} - nothing to do!"
   exit 0
   ;;
 esac
