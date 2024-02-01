@@ -27,7 +27,7 @@
 # Now warns if script is located on an M.2 volume.
 
 
-scriptver="v3.4.79"
+scriptver="v3.4.84"
 script=Synology_HDD_db
 repo="007revad/Synology_HDD_db"
 scriptname=syno_hdd_db
@@ -40,7 +40,7 @@ if [ ! "$(basename "$BASH")" = bash ]; then
 fi
 
 # Check script is running on a Synology NAS
-if ! uname -a | grep -i synology >/dev/null; then
+if ! /usr/bin/uname -a | grep -i synology >/dev/null; then
     echo "This script is NOT running on a Synology NAS!"
     echo "Copy the script to a folder on the Synology"
     echo "and run it from there."
@@ -60,12 +60,16 @@ Usage: $(basename "$0") [options]
 Options:
   -s, --showedits       Show edits made to <model>_host db and db.new file(s)
   -n, --noupdate        Prevent DSM updating the compatible drive databases
-  -m, --m2              Don't process M.2 drives
-  -f, --force           Force DSM to not check drive compatibility
-  -r, --ram             Disable memory compatibility checking (DSM 7.x only),
+  -r, --ram             Disable memory compatibility checking (DSM 7.x only)
                         and sets max memory to the amount of installed memory
-  -w, --wdda            Disable WD WDDA
-  -e, --email           Disable colored text in output scheduler emails.
+  -f, --force           Force DSM to not check drive compatibility
+                        Do not use this option unless absolutely needed
+  -i, --incompatible    Change incompatible drives to supported
+                        Do not use this option unless absolutely needed
+  -w, --wdda            Disable WD Device Analytics to prevent DSM showing
+                        a false warning for WD drives that are 3 years old
+                          DSM 7.2.1 already has WDDA disabled
+  -e, --email           Disable colored text in output scheduler emails
       --restore         Undo all changes made by the script
       --autoupdate=AGE  Auto update script (useful when script is scheduled)
                           AGE is how many days old a release must be before
@@ -94,7 +98,7 @@ args=("$@")
 
 # Check for flags with getopt
 if options="$(getopt -o abcdefghijklmnopqrstuvwxyz0123456789 -l \
-    restore,showedits,noupdate,nodbupdate,m2,force,ram,wdda,immutable,email,autoupdate:,help,version,debug \
+    restore,showedits,noupdate,nodbupdate,m2,force,incompatible,ram,wdda,email,autoupdate:,help,version,debug \
     -- "$@")"; then
     eval set -- "$options"
     while true; do
@@ -115,10 +119,13 @@ if options="$(getopt -o abcdefghijklmnopqrstuvwxyz0123456789 -l \
             -f|--force)         # Disable "support_disk_compatibility"
                 force=yes
                 ;;
+            -i|--incompatible)  # Change incompatible drives to supported
+                incompatible=yes
+                ;;
             -r|--ram)           # Disable "support_memory_compatibility"
                 ram=yes
                 ;;
-            -w|--wdda)          # Disable "support_memory_compatibility"
+            -w|--wdda)          # Disable "support_wdda"
                 wdda=no
                 ;;
             -e|--email)         # Disable colour text in task scheduler emails
@@ -381,7 +388,7 @@ if ! printf "%s\n%s\n" "$tag" "$scriptver" |
                                 "extract $script-$shorttag.tar.gz!"
                             syslog_set warn "$script failed to extract $script-$shorttag.tar.gz!"
                         else
-                            # Set permissions on script sh files
+                            # Set script sh files as executable
                             if ! chmod a+x "/tmp/$script-$shorttag/"*.sh ; then
                                 permerr=1
                                 echo -e "${Error}ERROR${Off} Failed to set executable permissions"
@@ -393,7 +400,7 @@ if ! printf "%s\n%s\n" "$tag" "$scriptver" |
                             then
                                 copyerr=1
                                 echo -e "${Error}ERROR${Off} Failed to copy"\
-                                    "$script-$shorttag .sh file(s) to:\n $scriptpath"
+                                    "$script-$shorttag sh file(s) to:\n $scriptpath/${scriptfile}"
                                 syslog_set warn "$script failed to copy $tag to script location"
                             fi
 
@@ -420,6 +427,13 @@ if ! printf "%s\n%s\n" "$tag" "$scriptver" |
 
                             # Copy new CHANGES.txt file to script location (if script on a volume)
                             if [[ $scriptpath =~ /volume* ]]; then
+                                # Set permissions on CHANGES.txt
+                                if ! chmod 664 "/tmp/$script-$shorttag/CHANGES.txt"; then
+                                    permerr=1
+                                    echo -e "${Error}ERROR${Off} Failed to set permissions on:"
+                                    echo "$scriptpath/CHANGES.txt"
+                                fi
+
                                 # Copy new CHANGES.txt file to script location
                                 if ! cp -p "/tmp/$script-$shorttag/CHANGES.txt"\
                                     "${scriptpath}/${scriptname}_CHANGES.txt";
@@ -428,17 +442,11 @@ if ! printf "%s\n%s\n" "$tag" "$scriptver" |
                                     echo -e "${Error}ERROR${Off} Failed to copy"\
                                         "$script-$shorttag/CHANGES.txt to:\n $scriptpath"
                                 else
-                                    # Set permissions on CHANGES.txt
-                                    if ! chmod 664 "$scriptpath/${scriptname}_CHANGES.txt"; then
-                                        if [[ $autoupdate != "yes" ]]; then permerr=1; fi
-                                        echo -e "${Error}ERROR${Off} Failed to set permissions on:"
-                                        echo "$scriptpath/CHANGES.txt"
-                                    fi
                                     changestxt=" and changes.txt"
                                 fi
                             fi
 
-                            # Delete downloaded .tar.gz file and extracted tmp files
+                            # Delete downloaded tmp files
                             cleanup_tmp
 
                             # Notify of success (if there were no errors)
@@ -448,7 +456,7 @@ if ! printf "%s\n%s\n" "$tag" "$scriptver" |
 
                                 # Reload script
                                 printf -- '-%.0s' {1..79}; echo  # print 79 -
-                                exec "$0" "${args[@]}"
+                                exec "${scriptpath}/$scriptfile" "${args[@]}"
                             else
                                 syslog_set warn "$script update to $tag had errors"
                             fi
@@ -1157,6 +1165,24 @@ updatedb(){
                 editdb7 "append" "$2"
             fi
         fi
+
+        # Edit existing drives in db with compatibility:unverified  # Issue #224
+        if grep 'unverified' "$2" >/dev/null; then
+            sed -i 's/unverified/support/g' "$2"
+            if ! grep 'unverified' "$2" >/dev/null; then
+                echo -e "Edited unverified drives in ${Cyan}$(basename -- "$2")${Off}" >&2
+            fi
+        fi
+
+        # Edit existing drives in db with compatibility:not_support
+        if [[ $incompatible == "yes" ]]; then
+            if grep 'not_support' "$2" >/dev/null; then
+                sed -i 's/not_support/support/g' "$2"
+                if ! grep 'not_support' "$2" >/dev/null; then
+                    echo -e "Edited incompatible drives in ${Cyan}$(basename -- "$2")${Off}" >&2
+                fi
+            fi
+        fi
     elif [[ $dbtype -eq "6" ]]; then
         if grep "$hdmodel" "$2" >/dev/null; then
             echo -e "${Yellow}$hdmodel${Off} already exists in ${Cyan}$(basename -- "$2")${Off}" >&2
@@ -1787,7 +1813,7 @@ fi
 setting="$(get_key_value $synoinfo support_wdda)"
 if [[ $wdda == "no" ]]; then
     if [[ $setting == "yes" ]]; then
-        # Disable support_memory_compatibility
+        # Disable support_wdda
         synosetkeyvalue "$synoinfo" support_wdda "no"
         setting="$(get_key_value "$synoinfo" support_wdda)"
         if [[ $setting == "no" ]]; then
