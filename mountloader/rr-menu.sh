@@ -12,7 +12,7 @@ export PATH=$PATH:/opt/bin
 
 echo 1 > /proc/sys/kernel/syno_install_flag
 
-LOADER_DISK_PART3="$(blkid -L RR3 | cut -d':' -f1)"
+LOADER_DISK_PART3="$(blkid -L RR3)"
 LOADER_DISK_PART2="${LOADER_DISK_PART3/3/2}"
 LOADER_DISK_PART1="${LOADER_DISK_PART3/3/1}"
 LOADER_DISK="/dev/$(realpath /sys/block/*/${LOADER_DISK_PART3/\/dev\//} | awk -F'/' '{print $(NF-1)}')"
