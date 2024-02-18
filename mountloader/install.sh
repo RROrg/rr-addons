@@ -22,18 +22,26 @@ if [ "${1}" = "late" ]; then
 DELETE FROM task WHERE task_name LIKE 'MountLoaderDisk';
 INSERT INTO task VALUES('MountLoaderDisk', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
 echo 1 > /proc/sys/kernel/syno_install_flag
-mkdir -p /mnt/loader1 /mnt/loader2 /mnt/loader3
-mount /dev/synoboot1 /mnt/loader1 2>/dev/null
-mount /dev/synoboot2 /mnt/loader2 2>/dev/null
-mount /dev/synoboot3 /mnt/loader3 2>/dev/null
+mkdir -p /mnt/p1 /mnt/p2 /mnt/p3
+mount /dev/synoboot1 /mnt/p1 2>/dev/null
+mount /dev/synoboot2 /mnt/p2 2>/dev/null
+mount /dev/synoboot3 /mnt/p3 2>/dev/null
+export LOADER_DISK=/dev/synoboot
+export LOADER_DISK_PART1=/dev/synoboot1
+export LOADER_DISK_PART2=/dev/synoboot2
+export LOADER_DISK_PART3=/dev/synoboot3
 ', 'script', '{}', '', '', '{}', '{}');
 DELETE FROM task WHERE task_name LIKE 'UnMountLoaderDisk';
 INSERT INTO task VALUES('UnMountLoaderDisk', '', 'shutdown', '', 0, 0, 0, 0, '', 0, '
 sync
-umount /mnt/loader1 2>/dev/null
-umount /mnt/loader2 2>/dev/null
-umount /mnt/loader3 2>/dev/null
-rm -rf /mnt/loader1 /mnt/loader2 /mnt/loader3
+export LOADER_DISK=
+export LOADER_DISK_PART1=
+export LOADER_DISK_PART2=
+export LOADER_DISK_PART3=
+umount /mnt/p1 2>/dev/null
+umount /mnt/p2 2>/dev/null
+umount /mnt/p3 2>/dev/null
+rm -rf /mnt/p1 /mnt/p2 /mnt/p3
 echo 0 > /proc/sys/kernel/syno_install_flag
 ', 'script', '{}', '', '', '{}', '{}');
 EOF
