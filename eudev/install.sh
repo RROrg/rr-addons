@@ -54,23 +54,40 @@ elif [ "${1}" = "late" ]; then
   isChange="false"
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   /tmpRoot/bin/cp -rnf /usr/lib/firmware/* /tmpRoot/usr/lib/firmware/
-  cat /addons/modulelist 2>/dev/null | /tmpRoot/bin/sed '/^\s*$/d' | while IFS=' ' read -r O M; do
-    [ "${O:0:1}" = "#" ] && continue
-    [ -z "${M}" -o -z "$(ls /usr/lib/modules/${M} 2>/dev/null)" ] && continue
-    if [ "${O}" = "F" ] || [ "${O}" = "f" ]; then
-      /tmpRoot/bin/cp -vrf /usr/lib/modules/${M} /tmpRoot/usr/lib/modules/
+  if cat /proc/version | grep -q 'RR@RR'; then
+    if [ -d /tmpRoot/usr/lib/modules.bak ]; then
+      /tmpRoot/bin/rm -rf /tmpRoot/usr/lib/modules
+      /tmpRoot/bin/cp -rf /tmpRoot/usr/lib/modules.bak /tmpRoot/usr/lib/modules
     else
-      /tmpRoot/bin/cp -vrn /usr/lib/modules/${M} /tmpRoot/usr/lib/modules/
+      echo "RR@RR, backup modules."
+      /tmpRoot/bin/cp -rf /tmpRoot/usr/lib/modules /tmpRoot/usr/lib/modules.bak
     fi
-    # isChange="true"
-    # In Bash, the pipe operator | creates a subshell to execute the commands in the pipe. 
-    # This means that if you modify a variable inside a while loop, 
-    # the modification is not visible outside the loop because the while loop is executed in a subshell.
-    echo "true" > /tmp/modulesChange
-  done
+    /tmpRoot/bin/cp -rf /usr/lib/modules/* /tmpRoot/usr/lib/modules
+    echo "true" >/tmp/modulesChange
+  else
+    if [ -d /tmpRoot/usr/lib/modules.bak ]; then
+      echo "RR@RR, restore modules from backup."
+      /tmpRoot/bin/rm -rf /tmpRoot/usr/lib/modules
+      /tmpRoot/bin/mv -rf /tmpRoot/usr/lib/modules.bak /tmpRoot/usr/lib/modules
+    fi
+    cat /addons/modulelist 2>/dev/null | /tmpRoot/bin/sed '/^\s*$/d' | while IFS=' ' read -r O M; do
+      [ "${O:0:1}" = "#" ] && continue
+      [ -z "${M}" -o -z "$(ls /usr/lib/modules/${M} 2>/dev/null)" ] && continue
+      if [ "${O}" = "F" ] || [ "${O}" = "f" ]; then
+        /tmpRoot/bin/cp -vrf /usr/lib/modules/${M} /tmpRoot/usr/lib/modules/
+      else
+        /tmpRoot/bin/cp -vrn /usr/lib/modules/${M} /tmpRoot/usr/lib/modules/
+      fi
+      # isChange="true"
+      # In Bash, the pipe operator | creates a subshell to execute the commands in the pipe.
+      # This means that if you modify a variable inside a while loop,
+      # the modification is not visible outside the loop because the while loop is executed in a subshell.
+      echo "true" >/tmp/modulesChange
+    done
+  fi
   isChange="$(cat /tmp/modulesChange 2>/dev/null || echo "false")"
   echo "isChange: ${isChange}"
-  [ "${isChange}" = "true" ] && /usr/sbin/depmod -a -b /tmpRoot/
+  [ "${isChange}" = "true" ] && /usr/sbin/depmod -a -b /tmpRoot
   
   # Restore kvm module
   /usr/sbin/insmod /usr/lib/modules/irqbypass.ko || true
