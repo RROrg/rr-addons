@@ -338,11 +338,19 @@ function nondtModel() {
 
   if _check_post_k "rd" "maxdisks"; then
     MAXDISKS=$(($(_get_conf_kv maxdisks)))
+    # fix isSingleBay issue: if maxdisks is 1, there is no create button in the storage panel
+    [ ${MAXDISKS} -le 2 ] && MAXDISKS=4
     echo "get maxdisks=${MAXDISKS}"
   else
-    #[ ${HBA_NUMBER} -gt 0 ] && MAXDISKS=26
     [ ${MAXDISKS} -lt 26 ] && MAXDISKS=26
   fi
+
+  # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
+  if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
+    MAXDISKS=26
+    echo "set maxdisks=26 [${MAXDISKS}]"
+  fi
+
   if _check_post_k "rd" "usbportcfg"; then
     USBPORTCFG=$(($(_get_conf_kv usbportcfg)))
     echo "get usbportcfg=${USBPORTCFG}"
@@ -366,18 +374,8 @@ function nondtModel() {
     echo "set internalportcfg=${INTERNALPORTCFG}"
   fi
 
-  # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
-  if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
-    _set_conf_kv rd "maxdisks" "26"
-    echo "set maxdisks=26 [${MAXDISKS}]"
-  # fix isSingleBay issue: if maxdisks is 1, there is no create button in the storage panel
-  elif ! _check_rootraidstatus && [ ${MAXDISKS} -le 2 ]; then
-    _set_conf_kv rd "maxdisks" "4"
-    echo "set maxdisks=4 [${MAXDISKS}]"
-  else
-    _set_conf_kv rd "maxdisks" "${MAXDISKS}"
-    echo "set maxdisks=${MAXDISKS}"
-  fi
+  _set_conf_kv rd "maxdisks" "${MAXDISKS}"
+  echo "set maxdisks=${MAXDISKS}"
 
   if [ "${1}" = "true" ]; then
     echo "TODO: no-DT's sort!!!"
