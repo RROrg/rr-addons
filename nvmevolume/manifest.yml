@@ -1,17 +1,17 @@
 version: 1
 name: nvmevolume
-description: # https://github.com/007revad/Synology_enable_M2_volume
-  en_US: "Enable M2 volume, from 007revad."
-  es_ES: "Habilitar el volumen M2, de 007revad."
-  de_DE: "Aktivieren Sie das M2-Volume von 007revad."
-  fr_FR: "Activer le volume M2, de 007revad."
-  ko_KR: "007revad의 M2 볼륨 활성화."
-  ru_RU: "Включить том M2, от 007revad."
-  uk-UA: "Увімкніть том M2, від 007revad."
-  vi-VN: "Bật ổ M2, từ 007revad."
-  zh_CN: "启用 M2 存储，来自 007revad。"
-  zh_HK: "啟用 M2 存储，來自 007revad。"
-  zh_TW: "啟用 M2 存储，來自 007revad。"
+description: # https://github.com/PeterSuh-Q3/tcrp-addons/blob/main/nvmevolume-onthefly
+  en_US: "Enable M2 volume, from PeterSuh-Q3."
+  es_ES: "Habilitar el volumen M2, de PeterSuh-Q3."
+  de_DE: "Aktivieren Sie das M2-Volume von PeterSuh-Q3."
+  fr_FR: "Activer le volume M2, de PeterSuh-Q3."
+  ko_KR: "PeterSuh-Q3의 M2 볼륨 활성화."
+  ru_RU: "Включить том M2, от PeterSuh-Q3."
+  uk-UA: "Увімкніть том M2, від PeterSuh-Q3."
+  vi-VN: "Bật ổ M2, từ PeterSuh-Q3."
+  zh_CN: "启用 M2 存储，来自 PeterSuh-Q3"
+  zh_HK: "啟用 M2 存储，來自 PeterSuh-Q3"
+  zh_TW: "啟用 M2 存储，來自 PeterSuh-Q3"
 all:
   install-script: "install.sh"
   copy: "all"

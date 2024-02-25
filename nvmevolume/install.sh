@@ -5,36 +5,20 @@
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
+# From: https://github.com/PeterSuh-Q3/tcrp-addons/blob/main/nvmevolume-onthefly/src/install.sh
+#
 
 if [ "${1}" = "late" ]; then
   echo "Installing addon nvmevolume - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
   
-  cp -vf /usr/bin/nvmevolume.sh /tmpRoot/usr/bin/nvmevolume.sh
-
-  DEST="/tmpRoot/usr/lib/systemd/system/nvmevolume.service"
-  echo "[Unit]"                                    >${DEST}
-  echo "Description=Enable M2 volume"             >>${DEST}
-  echo "After=multi-user.target"                  >>${DEST}
-  echo                                            >>${DEST}
-  echo "[Service]"                                >>${DEST}
-  echo "Type=oneshot"                             >>${DEST}
-  echo "RemainAfterExit=true"                     >>${DEST}
-  echo "ExecStart=/usr/bin/nvmevolume.sh -ne"     >>${DEST}
-  echo                                            >>${DEST}
-  echo "[Install]"                                >>${DEST}
-  echo "WantedBy=multi-user.target"               >>${DEST}
-
-  mkdir -vp /tmpRoot/lib/systemd/system/multi-user.target.wants
-  ln -vsf /usr/lib/systemd/system/nvmevolume.service /tmpRoot/lib/systemd/system/multi-user.target.wants/nvmevolume.service
+  SO_FILE="/tmpRoot/usr/lib/libhwcontrol.so.1"
+  [ ! -f "${SO_FILE}.bak" ] && cp -vf "${SO_FILE}" "${SO_FILE}.bak"
+  xxd -c $(xxd -p "${SO_FILE}.bak" | wc -c) -p "${SO_FILE}.bak" | sed "s/803e00b8010000007524488b/803e00b8010000009090488b/" | xxd -r -p > "${SO_FILE}"
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon nvmevolume - ${1}"
 
-  rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/nvmevolume.service"
-  rm -f "/tmpRoot/usr/lib/systemd/system/nvmevolume.service"
-
-  [ ! -f "/tmpRoot/usr/rr/revert.sh" ] && echo '#!/usr/bin/env bash' >/tmpRoot/usr/rr/revert.sh && chmod +x /tmpRoot/usr/rr/revert.sh
-  echo "/usr/bin/nvmevolume.sh --restore" >>/tmpRoot/usr/rr/revert.sh
-  echo "rm -f /usr/bin/nvmevolume.sh" >>/tmpRoot/usr/rr/revert.sh
+  SO_FILE="/tmpRoot/usr/lib/libhwcontrol.so.1"
+  [ -f "${SO_FILE}.bak" ] && mv -f "${SO_FILE}.bak" "${SO_FILE}"
 fi
