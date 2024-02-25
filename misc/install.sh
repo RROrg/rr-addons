@@ -6,7 +6,29 @@
 # See /LICENSE for more information.
 #
 
-if [ "${1}" = "late" ]; then
+if [ "${1}" = "rcExit" ]; then
+  # clear system disk space
+  mkdir -p /usr/syno/web/webman
+  cat >/usr/syno/web/webman/clean_system_disk.cgi <<EOF
+#!/bin/sh
+
+echo -ne "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
+if [ -b /dev/md0 ]; then
+  mkdir -p /mnt/md0
+  mount /dev/md0 /mnt/md0/
+  rm -rf /mnt/md0/@autoupdate/*
+  rm -rf /mnt/md0/upd@te/*
+  rm -rf /mnt/md0/.log.junior/*
+  umount /mnt/md0/
+  rm -rf /mnt/md0/
+  echo '{"success": true}'
+else
+  echo '{"success": false}'
+fi
+EOF
+  chmod +x /usr/syno/web/webman/clean_system_disk.cgi
+
+elif [ "${1}" = "late" ]; then
   echo "Script for fixing missing HW features dependencies and another functions"
 
   mount -t sysfs sysfs /sys
