@@ -60,19 +60,35 @@ elif [ "${1}" = "late" ]; then
   # (/dev/ does exist, but there is no useful information.)
   # (The information obtained by lspci is incomplete and an error will be reported.)
   # Therefore, the device path is obtained in the early stage and stored in /etc/nvmePorts.
+  declare -A PCI1ST
+  PCI1ST[0]=$(echo -n "0000:00:13.1" | xxd -ps)
+  PCI1ST[1]=$(echo -n "0000:00:03.2" | xxd -ps)
+  PCI1ST[2]=$(echo -n "0000:00:14.1" | xxd -ps)
+  PCI1ST[3]=$(echo -n "0000:00:01.1" | xxd -ps)
+  declare -A PCI2ND
+  PCI2ND[0]=$(echo -n "0000:00:13.2" | xxd -ps)
+  PCI2ND[1]=$(echo -n "0000:00:03.3" | xxd -ps)
+  PCI2ND[2]=$(echo -n "0000:00:99.9" | xxd -ps) # dummy
+  PCI2ND[3]=$(echo -n "0000:00:01.0" | xxd -ps)
 
   SO_FILE="/tmpRoot/usr/lib/libsynonvme.so.1"
   [ ! -f "${SO_FILE}.bak" ] && cp -vf "${SO_FILE}" "${SO_FILE}.bak"
-
+  
   cp -vf "${SO_FILE}.bak" "${SO_FILE}"
-
   num=1
   for N in $(cat /etc/nvmePorts 2>/dev/null); do
-    echo "${num} - ${N}"
+    LOCHEX=$(echo -n "${N}" | xxd -c 256 -ps)
+    echo "${num} - ${N} - ${LOCHEX}"
     if [ ${num} -eq 1 ]; then
-      sed -i "s/0000:00:13.1/${N}/; s/0000:00:03.2/${N}/; s/0000:00:14.1/${N}/; s/0000:00:01.1/${N}/" "${SO_FILE}"
+      xxd -c $(xxd -p "${SO_FILE}" | wc -c) -p "${SO_FILE}" > "so.hex"
+      sed -i "s/${PCI1ST[0]}/$LOCHEX/; s/${PCI1ST[1]}/$LOCHEX/; s/${PCI1ST[2]}/$LOCHEX/; s/${PCI1ST[3]}/$LOCHEX/" "so.hex" 
+      xxd -r -p "so.hex" "${SO_FILE}"
+      rm -f "so.hex"
     elif [ ${num} -eq 2 ]; then
-      sed -i "s/0000:00:13.2/${N}/; s/0000:00:03.3/${N}/; s/0000:00:99.9/${N}/; s/0000:00:01.0/${N}/" "${SO_FILE}"
+      xxd -c $(xxd -p "${SO_FILE}" | wc -c) -p "${SO_FILE}" > "so.hex" 
+      sed -i "s/${PCI2ND[0]}/$LOCHEX/; s/${PCI2ND[1]}/$LOCHEX/; s/${PCI2ND[2]}/$LOCHEX/; s/${PCI2ND[3]}/$LOCHEX/" "so.hex" 
+      xxd -r -p "so.hex" "${SO_FILE}"
+      rm -f "so.hex"
     else
       break
     fi
