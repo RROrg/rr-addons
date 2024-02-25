@@ -28,6 +28,28 @@ fi
 EOF
   chmod +x /usr/syno/web/webman/clean_system_disk.cgi
 
+  if [ -n "$(grep force_junior /proc/cmdline)" ] && [ -n "$(grep recovery /proc/cmdline)" ]; then
+    echo "Starting ttyd ..."
+    if /usr/bin/lsof -Pi :7681 -sTCP:LISTEN -t >/dev/null; then
+      echo "Port 7681 is already in use. Terminating the existing process..."
+      /usr/bin/lsof -i :7681
+    fi
+    MSG=""
+    MSG="${MSG}RR Recovery Mode\n"
+    MSG="${MSG}To 'Force re-install DSM': please visit http://<ip>:5000/web_install.html\n" 
+    MSG="${MSG}To 'Modify system files' : please mount /dev/md0\n" 
+    /usr/sbin/ttyd /usr/bin/ash -c "echo -e \"${MSG}\"; ash" -l &
+    echo "Starting dufs ..."
+    if /usr/bin/lsof -Pi :7304 -sTCP:LISTEN -t >/dev/null; then
+      echo "Port 7304 is already in use. Terminating the existing process..."
+      /usr/bin/lsof -i :7304
+    fi
+    /usr/sbin/dufs -A -p 7304 / &
+
+    cp -f /usr/syno/web/web_index.html /usr/syno/web/web_install.html
+    cp -f /addons/web_index.html /usr/syno/web/web_index.html
+  fi
+
 elif [ "${1}" = "late" ]; then
   echo "Script for fixing missing HW features dependencies and another functions"
 
