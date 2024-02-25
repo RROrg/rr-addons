@@ -4,6 +4,7 @@
 #
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
+#
 
 # usb.map
 FILE="/usr/syno/etc.defaults/usb.map"
