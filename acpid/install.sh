@@ -4,6 +4,7 @@
 #
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
+#
 
 MajorVersion=$(/bin/get_key_value /etc.defaults/VERSION majorversion)
 MinorVersion=$(/bin/get_key_value /etc.defaults/VERSION minorversion)
