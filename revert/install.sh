@@ -41,4 +41,9 @@ if [ "${1}" = "late" ]; then
     rm -f "/tmpRoot/usr/lib/systemd/system/revert.service"
     rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/revert.service"
   fi
+
+  # Version
+  echo "LOADERLABEL=${LOADERLABEL}"      >"/tmpRoot/usr/rr/VERSION"
+  echo "LOADERVERSION=${LOADERVERSION}" >>"/tmpRoot/usr/rr/VERSION"
+
 fi
