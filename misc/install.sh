@@ -7,6 +7,7 @@
 #
 
 if [ "${1}" = "rcExit" ]; then
+  echo "Installing addon misc - ${1}"
   # clear system disk space
   mkdir -p /usr/syno/web/webman
   cat >/usr/syno/web/webman/clean_system_disk.cgi <<EOF
@@ -36,8 +37,8 @@ EOF
     fi
     MSG=""
     MSG="${MSG}RR Recovery Mode\n"
-    MSG="${MSG}To 'Force re-install DSM': please visit http://<ip>:5000/web_install.html\n" 
-    MSG="${MSG}To 'Modify system files' : please mount /dev/md0\n" 
+    MSG="${MSG}To 'Force re-install DSM': please visit http://<ip>:5000/web_install.html\n"
+    MSG="${MSG}To 'Modify system files' : please mount /dev/md0\n"
     /usr/sbin/ttyd /usr/bin/ash -c "echo -e \"${MSG}\"; ash" -l &
     echo "Starting dufs ..."
     if /usr/bin/lsof -Pi :7304 -sTCP:LISTEN -t >/dev/null; then
@@ -51,8 +52,8 @@ EOF
   fi
 
 elif [ "${1}" = "late" ]; then
-  echo "Script for fixing missing HW features dependencies and another functions"
-
+  echo "Installing addon misc - ${1}"
+  
   mount -t sysfs sysfs /sys
   modprobe acpi-cpufreq
   # CPU performance scaling
