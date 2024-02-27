@@ -11,6 +11,14 @@ if [ "${1}" = "late" ]; then
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
 
+  cp -vf /usr/bin/yq /tmpRoot/usr/bin/yq
+  cp -vf /usr/bin/cpio /tmpRoot/usr/bin/cpio
+  cp -vf /usr/bin/unzip /tmpRoot/usr/bin/unzip
+  cp -vf /usr/bin/rr-update.sh /tmpRoot/usr/bin/rr-update.sh
+  cp -vf /usr/bin/rr-loaderdisk.sh /tmpRoot/usr/bin/rr-loaderdisk.sh
+  
+  rm -f /tmpRoot/usr/rr/.mountloader
+
   if [ ! -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
     echo "copy esynoscheduler.db"
     mkdir -p /tmpRoot/usr/syno/etc/esynoscheduler
@@ -20,33 +28,18 @@ if [ "${1}" = "late" ]; then
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
 DELETE FROM task WHERE task_name LIKE 'MountLoaderDisk';
-INSERT INTO task VALUES('MountLoaderDisk', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
-echo 1 > /proc/sys/kernel/syno_install_flag
-mkdir -p /mnt/p1 /mnt/p2 /mnt/p3
-mount /dev/synoboot1 /mnt/p1 2>/dev/null
-mount /dev/synoboot2 /mnt/p2 2>/dev/null
-mount /dev/synoboot3 /mnt/p3 2>/dev/null
-export LOADER_DISK=/dev/synoboot
-export LOADER_DISK_PART1=/dev/synoboot1
-export LOADER_DISK_PART2=/dev/synoboot2
-export LOADER_DISK_PART3=/dev/synoboot3
-', 'script', '{}', '', '', '{}', '{}');
+INSERT INTO task VALUES('MountLoaderDisk', '', 'bootup', '', 0, 0, 0, 0, '', 0, '/usr/bin/rr-loaderdisk.sh mountLoaderDisk', 'script', '{}', '', '', '{}', '{}');
 DELETE FROM task WHERE task_name LIKE 'UnMountLoaderDisk';
-INSERT INTO task VALUES('UnMountLoaderDisk', '', 'shutdown', '', 0, 0, 0, 0, '', 0, '
-sync
-export LOADER_DISK=
-export LOADER_DISK_PART1=
-export LOADER_DISK_PART2=
-export LOADER_DISK_PART3=
-umount /mnt/p1 2>/dev/null
-umount /mnt/p2 2>/dev/null
-umount /mnt/p3 2>/dev/null
-rm -rf /mnt/p1 /mnt/p2 /mnt/p3
-echo 0 > /proc/sys/kernel/syno_install_flag
-', 'script', '{}', '', '', '{}', '{}');
+INSERT INTO task VALUES('UnMountLoaderDisk', '', 'shutdown', '', 0, 0, 0, 0, '', 0, '/usr/bin/rr-loaderdisk.sh unmountLoaderDisk', 'script', '{}', '', '', '{}', '{}');
 EOF
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon mountloader - ${1}"
+
+  #rm -f "/tmpRoot/usr/bin/yq"
+  #rm -f "/tmpRoot/lib/usr/bin/cpio"
+  #rm -f "/tmpRoot/lib/usr/bin/unzip"
+  rm -f "/tmpRoot/usr/bin/rr-update.sh"
+  rm -f "/tmpRoot/usr/bin/rr-loaderdisk.sh"
 
   if [ -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
     echo "delete mountloader task from esynoscheduler.db"
