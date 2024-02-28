@@ -71,29 +71,32 @@ elif [ "${1}" = "late" ]; then
   PCI2ND[2]=$(echo -n "0000:00:99.9" | xxd -ps) # dummy
   PCI2ND[3]=$(echo -n "0000:00:01.0" | xxd -ps)
 
+  declare -A DUMMYA
+  DUMMYA[0]=$(echo -n "0000:99:99.0" | xxd -ps)
+  DUMMYA[1]=$(echo -n "0000:99:99.1" | xxd -ps)
+
   SO_FILE="/tmpRoot/usr/lib/libsynonvme.so.1"
   [ ! -f "${SO_FILE}.bak" ] && cp -vf "${SO_FILE}" "${SO_FILE}.bak"
-  
+
   cp -vf "${SO_FILE}.bak" "${SO_FILE}"
-  num=1
+  xxd -c $(xxd -p "${SO_FILE}" | wc -c) -p "${SO_FILE}" >"so.hex"
+  sed -i "s/${PCI1ST[0]}/${DUMMYA[0]}/; s/${PCI1ST[1]}/${DUMMYA[0]}/; s/${PCI1ST[2]}/${DUMMYA[0]}/; s/${PCI1ST[3]}/${DUMMYA[0]}/" "so.hex"
+  sed -i "s/${PCI2ND[0]}/${DUMMYA[1]}/; s/${PCI2ND[1]}/${DUMMYA[1]}/; s/${PCI2ND[2]}/${DUMMYA[1]}/; s/${PCI2ND[3]}/${DUMMYA[1]}/" "so.hex"
+  idx=0
   for N in $(cat /etc/nvmePorts 2>/dev/null); do
     LOCHEX=$(echo -n "${N}" | xxd -c 256 -ps)
-    echo "${num} - ${N} - ${LOCHEX}"
-    if [ ${num} -eq 1 ]; then
-      xxd -c $(xxd -p "${SO_FILE}" | wc -c) -p "${SO_FILE}" > "so.hex"
-      sed -i "s/${PCI1ST[0]}/$LOCHEX/; s/${PCI1ST[1]}/$LOCHEX/; s/${PCI1ST[2]}/$LOCHEX/; s/${PCI1ST[3]}/$LOCHEX/" "so.hex" 
-      xxd -r -p "so.hex" "${SO_FILE}"
-      rm -f "so.hex"
-    elif [ ${num} -eq 2 ]; then
-      xxd -c $(xxd -p "${SO_FILE}" | wc -c) -p "${SO_FILE}" > "so.hex" 
-      sed -i "s/${PCI2ND[0]}/$LOCHEX/; s/${PCI2ND[1]}/$LOCHEX/; s/${PCI2ND[2]}/$LOCHEX/; s/${PCI2ND[3]}/$LOCHEX/" "so.hex" 
-      xxd -r -p "so.hex" "${SO_FILE}"
-      rm -f "so.hex"
+    echo "${idx} - ${N} - ${LOCHEX}"
+    if [ ${idx} -eq 0 ]; then
+      sed -i "s/${DUMMYA[0]}/${LOCHEX}/g" "so.hex"
+    elif [ ${idx} -eq 1 ]; then
+      sed -i "s/${DUMMYA[1]}/${LOCHEX}/g" "so.hex"
     else
       break
     fi
-    num=$((num + 1))
+    idx=$((idx + 1))
   done
+  xxd -r -p "so.hex" "${SO_FILE}"
+  rm -f "so.hex"
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon nvmecache - ${1}"
 
