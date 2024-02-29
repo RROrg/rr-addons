@@ -35,8 +35,8 @@ elif [ "${1}" = "uninstall" ]; then
   rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/expands.service"
   rm -f "/tmpRoot/usr/lib/systemd/system/expands.service"
 
-  FILE="/usr/syno/etc.defaults/usb.map"
-  [ -f "/tmpRoot${FILE}.bak" ] && mv -f "/tmpRoot${FILE}.bak" "/tmpRoot${FILE}"
-  FILE="/etc/ssl/certs/ca-certificates.crt"
-  [ -f "/tmpRoot${FILE}.bak" ] && mv -f "/tmpRoot${FILE}.bak" "/tmpRoot${FILE}"
+  FILE="/tmpRoot/usr/syno/etc.defaults/usb.map"
+  [ -f "${FILE}.bak" ] && mv -f "${FILE}.bak" "${FILE}"
+  FILE="/tmpRoot/etc/ssl/certs/ca-certificates.crt"
+  [ -f "${FILE}.bak" ] && mv -f "${FILE}.bak" "${FILE}"
 fi
