@@ -6,7 +6,7 @@
 # See /LICENSE for more information.
 #
 
-set -x
+#set -x
 
 function makeEnvDeploy() {
   ROOT_PATH=$(realpath "${1}")
@@ -16,15 +16,16 @@ function makeEnvDeploy() {
   if [ ! -d "${ROOT_PATH}/pkgscripts-ng" ]; then
     git clone https://github.com/SynologyOpenSource/pkgscripts-ng.git ${ROOT_PATH}/pkgscripts-ng
   fi
-  cd "${ROOT_PATH}/pkgscripts-ng"
+  pushd "${ROOT_PATH}/pkgscripts-ng"
   git reset --hard
   git pull
   # if VERSION == 6.2, checkout 6.2.4
   git checkout DSM${VERSION}$([ "${VERSION}" = "6.2" ] && echo ".4")
   sudo ./EnvDeploy -v ${VERSION}$([ "${VERSION}" = "6.2" ] && echo ".4") -l # Get Available PLATFORMs
   sudo ./EnvDeploy -q -v ${VERSION} -p ${PLATFORM}
-  [ $? -ne 0 ] && echo "EnvDeploy failed." && return 1
-  cd "${ROOT_PATH}"
+  RET=$?
+  popd
+  [ ${RET} -ne 0 ] && echo "EnvDeploy failed." && return 1
 
   ENV_PATH="${ROOT_PATH}/build_env/ds.${PLATFORM}-${VERSION}"
   sudo cp -al "${ROOT_PATH}/pkgscripts-ng" "${ENV_PATH}/"
@@ -60,7 +61,8 @@ EOF
   sudo mv -f script.sh "${ENV_PATH}/script.sh"
   sudo chmod +x "${ENV_PATH}/script.sh"
   sudo chroot "${ENV_PATH}" "/script.sh" "${VERSION}" "${PLATFORM}"
-  [ $? -ne 0 ] && echo "Chroot build failed." && return 1
+  RET=$?
+  [ ${RET} -ne 0 ] && echo "Chroot build failed." && return 1
   return 0
 }
 
@@ -82,8 +84,8 @@ function makeeudev() {
   ROOT_PATH=$(realpath "${1}")
   VERSION=${2}
   PLATFORM=${3}
-  INPUT=${4}
-  OUTPUT=${5}
+  INPUT=$(realpath "${4}")
+  OUTPUT=$(realpath "${5}")
 
   ENV_PATH="${ROOT_PATH}/build_env/ds.${PLATFORM}-${VERSION}"
   [ ! -d "${ENV_PATH}" ] && echo "ds.${PLATFORM}-${VERSION} not exist." && return 1
@@ -142,7 +144,7 @@ EOF
   sudo chroot "${ENV_PATH}" "/script.sh" "${VERSION}" "${PLATFORM}"
   [ $? -ne 0 ] && echo "Chroot build failed." && return 1
 
-  mkdir -p ${OUTPUT}
+  mkdir -p "${OUTPUT}"
   sudo cp -a "${ENV_PATH}/source/output/"* "${OUTPUT}/"
   return 0
 }
