@@ -11,9 +11,16 @@ if [ "${1}" = "late" ]; then
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
 
-  [ ! -f "/tmpRoot/etc/ssh/sshd_config.bak" ] && cp -f "/tmpRoot/etc/ssh/sshd_config" "/tmpRoot/etc/ssh/sshd_config.bak"
+  mkdir -p /tmpRoot/usr/lib/openssh
+  cp -vf /usr/lib/openssh/sftp-server /tmpRoot/usr/lib/openssh/sftp-server
+
+  FILE="/tmpRoot/etc/ssh/sshd_config"
+  [ ! -f "${FILE}.bak" ] && cp -f "${FILE}" "${FILE}.bak"
+
   SED_PATH='/tmpRoot/usr/bin/sed'
-  ${SED_PATH} -i 's|^.*PermitRootLogin.*$|PermitRootLogin yes|' /tmpRoot/etc/ssh/sshd_config
+  cp -f "${FILE}.bak" "${FILE}"
+  ${SED_PATH} -i 's|^.*PermitRootLogin.*$|PermitRootLogin yes|' ${FILE}
+  ${SED_PATH} -i 's|^Subsystem.*$|Subsystem	sftp	/usr/lib/openssh/sftp-server|' ${FILE}
 
   if [ ! -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
     echo "copy esynoscheduler.db"
@@ -24,12 +31,22 @@ if [ "${1}" = "late" ]; then
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
 DELETE FROM task WHERE task_name LIKE 'SetRootPw';
-INSERT INTO task VALUES('SetRootPw', '', 'bootup', '', 0, 0, 0, 0, '', 0, 'PW=""; [ -n "\${PW}" ] && /usr/syno/sbin/synouser --setpw root \${PW}; systemctl restart sshd', 'script', '{}', '', '', '{}', '{}');
+INSERT INTO task VALUES('SetRootPw', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
+PW=""    # Please change to the password you need.
+if [ -n "\${PW}" ]; then
+  /usr/syno/sbin/synouser --setpw root \${PW}
+  systemctl restart sshd
+  synowebapi --exec api=SYNO.Core.Terminal method=set version=3 enable_ssh=true ssh_port=22
+fi
+', 'script', '{}', '', '', '{}', '{}');
 EOF
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon setrootpw - ${1}"
 
-  [ -f "/tmpRoot/etc/ssh/sshd_config.bak" ] && mv -f "/tmpRoot/etc/ssh/sshd_config.bak" "/tmpRoot/etc/ssh/sshd_config"
+  rm -f /tmpRoot/usr/lib/openssh/sftp-server
+
+  FILE="/tmpRoot/etc/ssh/sshd_config"
+  [ -f "${FILE}.bak" ] && mv -f "${FILE}.bak" "${FILE}"
 
   if [ -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
     echo "delete setrootpw task from esynoscheduler.db"
