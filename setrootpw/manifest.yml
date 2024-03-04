@@ -1,17 +1,17 @@
 version: 1
 name: setrootpw
 description: 
-  en_US: "Enable root permissions for ssh/sftp. Please modify PW=\"\" to the required password in the DSM scheduled task and execute it."
-  es_ES: "Habilitar permisos de root para ssh/sftp. Modifique PW=\"\" a la contraseña requerida en la tarea programada de DSM y ejecútela."
-  de_DE: "Root-Rechte für ssh/sftp aktivieren. Bitte PW=\"\" im DSM geplanten Task auf das benötigte Passwort ändern und ausführen."
-  fr_FR: "Activer les permissions root pour ssh/sftp. Veuillez modifier PW=\"\" dans la tâche planifiée DSM et l'exécuter."
-  ko_KR: "ssh/sftp에 대한 루트 권한을 활성화합니다. DSM 예약된 작업에서 PW=\"\"를 필요한 암호로 수정하고 실행하십시오."
-  ru_RU: "Включить root-права для ssh/sftp. Пожалуйста, измените PW=\"\" на необходимый пароль в запланированной задаче DSM и выполните ее."
-  uk-UA: "Увімкніть кореневі права для ssh/sftp. Будь ласка, змініть PW=\"\" на необхідний пароль у запланованому завданні DSM та виконайте його."
-  vi-VN: "Bật quyền root cho ssh/sftp. Vui lòng sửa đổi PW=\"\" thành mật khẩu yêu cầu trong tác vụ được lên lịch DSM và thực hiện nó."
-  zh_CN: "启用 ssh/sftp 的 root 权限。请在 DSM 计划任务中将 PW=\"\" 修改为所需的密码并执行它。"
-  zh_HK: "啟用 ssh/sftp 的 root 權限。請在 DSM 計劃任務中將 PW=\"\" 修改為所需的密碼並執行它。"
-  zh_TW: "啟用 ssh/sftp 的 root 權限。請在 DSM 計劃任務中將 PW=\"\" 修改為所需的密碼並執行它。"
+  en_US: "Set root password and enable ssh/sftp. Please modify PW=\"\" to the desired password in DSM Task Scheduler and run the task."
+  es_ES: "Establece la contraseña de root y habilita ssh/sftp. Por favor, modifique PW=\"\" a la contraseña deseada en el Programador de Tareas de DSM y ejecute la tarea."
+  de_DE: "Legen Sie das Root-Passwort fest und aktivieren Sie ssh/sftp. Bitte ändern Sie PW=\"\" in der DSM-Aufgabenplanung in das gewünschte Passwort und führen Sie die Aufgabe aus."
+  fr_FR: "Définissez le mot de passe root et activez ssh/sftp. Veuillez modifier PW=\"\" en le mot de passe souhaité dans le planificateur de tâches DSM et exécutez la tâche."
+  ko_KR: "루트 암호를 설정하고 ssh/sftp를 활성화합니다. DSM 작업 스케줄러에서 PW=\"\"를 원하는 암호로 수정하고 작업을 실행하십시오."
+  ru_RU: "Установите пароль root и включите ssh/sftp. Пожалуйста, измените PW=\"\" на желаемый пароль в планировщике задач DSM и запустите задачу."
+  uk_UA: "Встановіть пароль root та увімкніть ssh/sftp. Будь ласка, змініть PW=\"\" на бажаний пароль в планувальнику завдань DSM та запустіть завдання."
+  vi_VN: "Đặt mật khẩu root và kích hoạt ssh/sftp. Vui lòng sửa đổi PW=\"\" thành mật khẩu mong muốn trong Lịch trình nhiệm vụ DSM và chạy nhiệm vụ."
+  zh_CN: "设置 root 密码并启用 ssh/sftp。请在 DSM 计划任务中将 PW=\"\" 修改为所需的密码并运行该任务。"
+  zh_HK: "設置 root 密碼並啟用 ssh/sftp。請在 DSM 計劃任務中將 PW=\"\" 修改為所需的密碼並運行該任務。"
+  zh_TW: "設置 root 密碼並啟用 ssh/sftp。請在 DSM 計劃任務中將 PW=\"\" 修改為所需的密碼並執行該任務。"
 # system: true
 all:
   install-script: "install.sh"

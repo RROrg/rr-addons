@@ -1,17 +1,17 @@
 version: 1
 name: storagepanel
 description: 
-  en_US: "Modify storage panel (default: RACK_24_Bay 1X8)."
-  es_ES: "Modifica el panel de almacenamiento (por defecto: RACK_24_Bay 1X8)."
-  de_DE: "Ändert das Speicherpanel (Standard: RACK_24_Bay 1X8)."
-  fr_FR: "Modifie le panneau de stockage (par défaut : RACK_24_Bay 1X8)."
-  ko_KR: "스토리지 패널을 수정합니다 (기본값: RACK_24_Bay 1X8)."
-  ru_RU: "Изменить панель хранения (по умолчанию: RACK_24_Bay 1X8)."
-  uk-UA: "Змінити панель зберігання (за замовчуванням: RACK_24_Bay 1X8)."
-  vi-VN: "Sửa đổi bảng lưu trữ (mặc định: RACK_24_Bay 1X8)."
-  zh_CN: "修改存储面板（默认：RACK_24_Bay 1X8）。"
-  zh_HK: "修改存儲面板（默認：RACK_24_Bay 1X8）。"
-  zh_TW: "修改儲存面板（預設：RACK_24_Bay 1X8）。"
+  en_US: "Change the storage panel disk display (default: RACK_24_Bay 1X8)."
+  es_ES: "Cambie el panel de almacenamiento de disco de visualización (predeterminado: RACK_24_Bay 1X8)."
+  de_DE: "Ändern Sie die Speicherpanel-Disk-Anzeige (Standard: RACK_24_Bay 1X8)."
+  fr_FR: "Changer l'affichage du disque du panneau de stockage (par défaut : RACK_24_Bay 1X8)."
+  ko_KR: "스토리지 패널 디스크 표시 변경(기본값: RACK_24_Bay 1X8)."
+  ru_RU: "Изменить отображение диска панели хранения (по умолчанию: RACK_24_Bay 1X8)."
+  uk_UA: "Змінити відображення диска панелі зберігання (за замовчуванням: RACK_24_Bay 1X8)."
+  vi_VN: "Thay đổi hiển thị ổ đĩa của bảng lưu trữ (mặc định: RACK_24_Bay 1X8)."
+  zh_CN: "修改存储面板磁盘显示（默认：RACK_24_Bay 1X8）。"
+  zh_HK: "修改存儲面板磁盤顯示（默認：RACK_24_Bay 1X8）。"
+  zh_TW: "修改存儲面板磁盤顯示（默認：RACK_24_Bay 1X8）。"
 all:
   install-script: "install.sh"
   copy: "all"

@@ -1,17 +1,17 @@
 version: 1
 name: nvmecache
 description: # https://github.com/PeterSuh-Q3/tcrp-addons/tree/main/nvme-cache
-  en_US: "Enable M2 cache of DS918+,DS1019+,DS1621xs+,RS1619xs+ from PeterSuh-Q3."
-  es_ES: "Habilitar la caché M2 de DS918+, DS1019+, DS1621xs+, RS1619xs+ de PeterSuh-Q3."
-  de_DE: "Aktivieren Sie den M2-Cache von DS918+, DS1019+, DS1621xs+, RS1619xs+ von PeterSuh-Q3."
-  fr_FR: "Activer le cache M2 de DS918+, DS1019+, DS1621xs+, RS1619xs+ de PeterSuh-Q3."
-  ko_KR: "PeterSuh-Q3의 DS918+, DS1019+, DS1621xs+, RS1619xs+의 M2 캐시를 활성화합니다."
-  ru_RU: "Включить кэш M2 DS918+, DS1019+, DS1621xs+, RS1619xs+ от PeterSuh-Q3."
-  uk-UA: "Увімкніть кеш M2 DS918+, DS1019+, DS1621xs+, RS1619xs+ від PeterSuh-Q3."
-  vi-VN: "Bật bộ nhớ cache M2 của DS918+, DS1019+, DS1621xs+, RS1619xs+ từ PeterSuh-Q3."
-  zh_CN: "启用 DS918+, DS1019+, DS1621xs+, RS1619xs+的M2缓存，参考自 PeterSuh-Q3"
-  zh_HK: "啟用 DS918+, DS1019+, DS1621xs+, RS1619xs+的M2緩存，参考自 PeterSuh-Q3"
-  zh_TW: "啟用 DS918+, DS1019+, DS1621xs+, RS1619xs+的M2緩存，参考自 PeterSuh-Q3"
+  en_US: "Enable M2 disk support for DS918+, DS1019+, DS1621xs+, RS1619xs+. from PeterSuh-Q3"
+  es_ES: "Habilitar soporte de disco M2 para DS918+, DS1019+, DS1621xs+, RS1619xs+. de PeterSuh-Q3"
+  de_DE: "Aktivieren Sie die M2-Disk-Unterstützung für DS918+, DS1019+, DS1621xs+, RS1619xs+. von PeterSuh-Q3"
+  fr_FR: "Activer la prise en charge du disque M2 pour DS918+, DS1019+, DS1621xs+, RS1619xs+. de PeterSuh-Q3"
+  ko_KR: "DS918+, DS1019+, DS1621xs+, RS1619xs+의 M2 디스크 지원 활성화. PeterSuh-Q3"
+  ru_RU: "Включить поддержку дисков M2 для DS918+, DS1019+, DS1621xs+, RS1619xs+. от PeterSuh-Q3"
+  uk_UA: "Увімкніть підтримку дисків M2 для DS918+, DS1019+, DS1621xs+, RS1619xs+. від PeterSuh-Q3"
+  vi_VN: "Bật hỗ trợ ổ đĩa M2 cho DS918+, DS1019+, DS1621xs+, RS1619xs+. từ PeterSuh-Q3"
+  zh_CN: "启用 DS918+, DS1019+, DS1621xs+, RS1619xs+的 M2 磁盘支持，参考自 PeterSuh-Q3"
+  zh_HK: "啟用 DS918+, DS1019+, DS1621xs+, RS1619xs+的 M2 磁盘支持，参考自 PeterSuh-Q3"
+  zh_TW: "啟用 DS918+, DS1019+, DS1621xs+, RS1619xs+的 M2 磁盘支持，参考自 PeterSuh-Q3"
 all:
   install-script: "install.sh"
   copy: "all"

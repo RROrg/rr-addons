@@ -1,17 +1,17 @@
 version: 1
 name: eudev
 description:
-  en_US: "eudev + kmod will assist with auto module loading."
-  es_ES: "eudev + kmod ayudará con la carga automática de módulos."
-  de_DE: "eudev + kmod wird beim automatischen Laden von Modulen helfen."
-  fr_FR: "eudev + kmod aidera au chargement automatique des modules."
-  ko_KR: "eudev + kmod는 자동 모듈 로딩을 지원합니다."
-  ru_RU: "eudev + kmod поможет с автоматической загрузкой модулей."
-  uk-UA: "eudev + kmod допоможе з автоматичним завантаженням модулів."
-  vi-VN: "eudev + kmod sẽ hỗ trợ tải mô-đun tự động."
-  zh_CN: "eudev + kmod 将帮助自动加载模块。"
-  zh_HK: "eudev + kmod 將幫助自動加載模塊。"
-  zh_TW: "eudev + kmod 將幫助自動加載模塊。"
+  en_US: "eudev + kmod automatically loaded modules."
+  es_ES: "eudev + kmod módulos cargados automáticamente."
+  de_DE: "eudev + kmod automatisch geladene Module."
+  fr_FR: "eudev + kmod modules chargés automatiquement."
+  ko_KR: "eudev + kmod 자동으로 로드된 모듈."
+  ru_RU: "eudev + kmod автоматически загружаемые модули."
+  uk_UA: "eudev + kmod автоматично завантажені модулі."
+  vi_VN: "eudev + kmod môdules tải tự động."
+  zh_CN: "eudev + kmod 自动加载模块。"
+  zh_HK: "eudev + kmod 自動加載模塊。"
+  zh_TW: "eudev + kmod 自動加載模塊。"
 system: true
 all:
   install-script: "install.sh"

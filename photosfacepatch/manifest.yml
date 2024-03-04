@@ -1,17 +1,17 @@
 version: 1
 name: photosfacepatch
 description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
-  en_US: "Photos Facial Recognition Patch, from jinlife."
-  es_ES: "Photos Parche de reconocimiento facial, de jinlife."
-  de_DE: "Photos Gesichtserkennung Patch, von jinlife."
-  fr_FR: "Patch de reconnaissance faciale Photos, de jinlife."
-  ko_KR: "사진 얼굴 인식 패치, jinlife."
-  ru_RU: "Фотографии Патч распознавания лиц, от jinlife."
-  uk-UA: "Фотографії Патч розпізнавання облич, від jinlife."
-  vi-VN: "Ảnh Patch nhận diện khuôn mặt, từ jinlife."
-  zh_CN: "照片面部识别补丁，来自 jinlife。"
-  zh_HK: "照片面部識別補丁，來自 jinlife。"
-  zh_TW: "照片面部識別補丁，來自 jinlife。"
+  en_US: "This patch will ignore the GPU to enable face recognition in Synology Photos. From jinlife."
+  es_ES: "Este parche ignorará la GPU para habilitar el reconocimiento facial en Synology Photos. De jinlife."
+  de_DE: "Dieser Patch ignoriert die GPU, um die Gesichtserkennung in Synology Photos zu aktivieren. Von jinlife."
+  fr_FR: "Ce correctif ignorera le GPU pour activer la reconnaissance faciale dans Synology Photos. De jinlife."
+  ko_KR: "이 패치는 Synology Photos에서 얼굴 인식을 활성화하기 위해 GPU를 무시합니다. jinlife에서."
+  ru_RU: "Этот патч будет игнорировать GPU, чтобы включить распознавание лиц в Synology Photos. От jinlife."
+  uk_UA: "Цей патч ігноруватиме GPU, щоб увімкнути розпізнавання обличчя в Synology Photos. Від jinlife."
+  vi_VN: "Bản vá này sẽ bỏ qua GPU để kích hoạt nhận diện khuôn mặt trong Synology Photos. Từ jinlife."
+  zh_CN: "此补丁将忽略 GPU，使 Synology Photos 中具有面部识别功能。来自 jinlife。"
+  zh_HK: "此補丁將忽略 GPU，使 Synology Photos 中具有面部識別功能。來自 jinlife。"
+  zh_TW: "此補丁將忽略 GPU，使 Synology Photos 中具有面部識別功能。來自 jinlife。"
 all:
   install-script: "install.sh"
   copy: "all"
