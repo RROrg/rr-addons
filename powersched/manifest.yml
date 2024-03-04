@@ -1,17 +1,17 @@
 version: 1
 name: powersched
 description: 
-  en_US: "Utility to configure RTC according to DSM power schedule."
-  es_ES: "Utilidad para configurar RTC según el calendario de energía DSM."
-  de_DE: "Hilfsprogramm zum Konfigurieren der RTC gemäß DSM-Energieschema."
-  fr_FR: "Utilitaire pour configurer RTC selon le calendrier d'alimentation DSM."
-  ko_KR: "DSM 전원 일정에 따라 RTC를 구성하는 유틸리티입니다."
-  ru_RU: "Утилита для настройки RTC в соответствии с графиком питания DSM."
-  uk-UA: "Утиліта для налаштування RTC відповідно до графіка живлення DSM."
-  vi-VN: "Tiện ích để cấu hình RTC theo lịch trình nguồn DSM."
-  zh_CN: "根据 DSM 电源计划配置 RTC 的实用程序。"
-  zh_HK: "根據 DSM 電源計劃配置 RTC 的實用程序。"
-  zh_TW: "根據 DSM 電源計劃配置 RTC 的實用程序。"
+  en_US: "A program to configure the RTC according to the DSM power plan, so that the RTC (scheduled power on/off) can work properly."
+  es_ES: "Un programa para configurar el RTC de acuerdo con el plan de energía de DSM, de modo que el RTC (programado encendido/apagado) pueda funcionar correctamente."
+  de_DE: "Ein Programm zum Konfigurieren des RTC gemäß dem DSM-Energieplan, damit der RTC (geplantes Ein-/Ausschalten) ordnungsgemäß funktionieren kann."
+  fr_FR: "Un programme pour configurer le RTC selon le plan d'alimentation DSM, de sorte que le RTC (mise sous tension/arrêt programmée) puisse fonctionner correctement."
+  ko_KR: "DSM 전원 계획에 따라 RTC를 구성하여 RTC(예약 전원/전원 끄기)이 정상적으로 작동하도록합니다."
+  ru_RU: "Программа для настройки RTC в соответствии с планом питания DSM, чтобы RTC (запланированное включение/выключение) могло работать правильно."
+  uk_UA: "Програма для налаштування RTC відповідно до плану живлення DSM, щоб RTC (заплановане ввімкнення/вимкнення) працювало належним чином."
+  vi_VN: "Chương trình để cấu hình RTC theo kế hoạch nguồn DSM, để RTC (bật/tắt theo lịch trình) có thể hoạt động đúng cách."
+  zh_CN: "根据 DSM 电源计划配置 RTC 的程序, 使 RTC(定时开关机) 可以正常工作。"
+  zh_HK: "根據 DSM 電源計劃配置 RTC 的程式, 使 RTC(定時開關機) 可以正常工作。"
+  zh_TW: "根據 DSM 電源計劃配置 RTC 的程式, 使 RTC(定時開關機) 可以正常工作。"
 compile-script: compile.sh
 all:
   install-script: "install.sh"

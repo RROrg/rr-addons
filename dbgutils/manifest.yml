@@ -1,17 +1,17 @@
 version: 1
 name: dbgutils
 description:
-  en_US: "Binaries to facilitate debug in the junior mode."
-  es_ES: "Binarios para facilitar la depuración en el modo junior."
-  de_DE: "Binärdateien zur Erleichterung der Fehlersuche im Junior-Modus."
-  fr_FR: "Binaires pour faciliter le débogage en mode junior."
-  ko_KR: "junior 모드에서 디버그를 용이하게하는 바이너리입니다."
-  ru_RU: "Бинарные файлы для облегчения отладки в режиме junior."
-  uk-UA: "Бінарні файли для полегшення налагодження в режимі junior."
-  vi-VN: "Các tệp nhị phân để tạo điều kiện cho gỡ lỗi trong chế độ junior."
-  zh_CN: "用于在 junior 模式下进行调试的二进制文件。"
-  zh_HK: "用於在 junior 模式下進行調試的二進制文件。"
-  zh_TW: "用於在 junior 模式下進行調試的二進制文件。"
+  en_US: "Debug utilities, automatically enable ttyd and dufs in junior mode, and automatically capture all stage boot logs to <loader disk>/p1/logs/."
+  es_ES: "Herramientas de depuración, habilitan automáticamente ttyd y dufs en modo junior, y capturan automáticamente todos los registros de arranque de las fases en <loader disk>/p1/logs/."
+  de_DE: "Debug-Tools, aktivieren automatisch ttyd und dufs im Junior-Modus und erfassen automatisch alle Startprotokolle der Stufen in <loader disk>/p1/logs/."
+  fr_FR: "Outils de débogage, activent automatiquement ttyd et dufs en mode junior, et capturent automatiquement tous les journaux de démarrage de la phase dans <loader disk>/p1/logs/."
+  ko_KR: "디버그 유틸리티, 주니어 모드에서 자동으로 ttyd와 dufs를 활성화하고 모든 단계 부팅 로그를 <loader disk>/p1/logs/에 자동으로 캡처합니다."
+  ru_RU: "Утилиты отладки, автоматически включают ttyd и dufs в режиме junior и автоматически захватывают все журналы загрузки этапа в <loader disk>/p1/logs/."
+  uk_UA: "Утиліти налагодження, автоматично увімкнути ttyd та dufs у режимі junior, та автоматично захопити всі журнали завантаження етапу в <loader disk>/p1/logs/."
+  vi_VN: "Công cụ debug, tự động bật ttyd và dufs trong chế độ junior và tự động ghi lại tất cả các bản ghi khởi động của các giai đoạn vào <loader disk>/p1/logs/."
+  zh_CN: "Debug 程序集合，在 junior 模式下自动开启 ttyd 和 dufs，并会自动抓取所有阶段的启动日志放于 <loader disk>/p1/logs/ 下。"
+  zh_HK: "Debug 程序集合，在 junior 模式下自動開啟 ttyd 和 dufs，並會自動抓取所有階段的啟動日誌放於 <loader disk>/p1/logs/ 下。"
+  zh_TW: "Debug 程序集合，在 junior 模式下自動開啟 ttyd 和 dufs，並會自動抓取所有階段的啟動日誌放於 <loader disk>/p1/logs/ 下。"
 all:
   install-script: "install.sh"
   copy: "all"

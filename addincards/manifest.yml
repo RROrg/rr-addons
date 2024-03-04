@@ -1,17 +1,17 @@
 version: 1
 name: addincards
 description: 
-  en_US: "Remove the model restrictions of official Addin cards."
-  es_ES: "Elimine las restricciones de modelo de las tarjetas Addin oficiales."
-  de_DE: "Entfernen Sie die Modellbeschränkungen offizieller Addin-Karten."
-  fr_FR: "Supprimez les restrictions de modèle des cartes Addin officielles."
-  ko_KR: "공식 Addin 카드의 모델 제한을 제거하십시오."
-  ru_RU: "Удалите ограничения модели официальных карт Addin."
-  uk-UA: "Видаліть обмеження моделі офіційних карток Addin."
-  vi-VN: "Xóa các hạn chế mô hình của các thẻ Addin chính thức."
-  zh_CN: "移除官方 Addin 卡的型号限制。"
-  zh_HK: "移除官方 Addin 卡的型號限制。"
-  zh_TW: "移除官方 Addin 卡的型號限制。"
+  en_US: "Remove model restrictions from official Addin cards(M2D20, E10G30-T2, ...)."
+  es_ES: "Elimine las restricciones de modelo de las tarjetas Addin oficiales (M2D20, E10G30-T2, ...)."
+  de_DE: "Entfernen Sie Modellbeschränkungen von offiziellen Addin-Karten (M2D20, E10G30-T2, ...)."
+  fr_FR: "Supprimez les restrictions de modèle des cartes Addin officielles (M2D20, E10G30-T2, ...)."
+  ko_KR: "공식 Addin 카드(M2D20, E10G30-T2, ...)의 모델 제한을 제거합니다."
+  ru_RU: "Удалите ограничения модели официальных карт Addin (M2D20, E10G30-T2, ...)."
+  uk_UA: "Видаліть обмеження моделі офіційних карток Addin (M2D20, E10G30-T2, ...)."
+  vi_VN: "Xóa các hạn chế mô hình từ các thẻ Addin chính thức (M2D20, E10G30-T2, ...)."
+  zh_CN: "移除官方 Addin 卡(M2D20, E10G30-T2, ...)对 DSM 型号限制。"
+  zh_HK: "移除官方 Addin 卡(M2D20, E10G30-T2, ...)对 DSM 型號限制。"
+  zh_TW: "移除官方 Addin 卡(M2D20, E10G30-T2, ...)对 DSM 型號限制。"
 all:
   install-script: "install.sh"
 available-for:

@@ -1,17 +1,17 @@
 version: 1
 name: acpid
 description:
-  en_US: "ACPI Daemon that handles power button events."
-  es_ES: "Demonio ACPI que maneja los eventos del botón de encendido."
-  de_DE: "ACPI Daemon, der die Power-Button-Ereignisse behandelt."
-  fr_FR: "Démon ACPI qui gère les événements du bouton d'alimentation."
-  ko_KR: "전원 버튼 이벤트를 처리하는 ACPI 데몬."
-  ru_RU: "Демон ACPI, обрабатывающий события кнопки питания."
-  uk-UA: "Демон ACPI, який обробляє події кнопки живлення."
-  vi-VN: "ACPI Daemon xử lý các sự kiện nút nguồn."
-  zh_CN: "处理电源按钮事件的ACPI守护程序."
-  zh_HK: "處理電源按鈕事件的ACPI守护程序."
-  zh_TW: "處理電源按鈕事件的ACPI守护程序."
+  en_US: "ACPI Daemon that handles power button events, fixing power button not shutting down in some environments."
+  es_ES: "Demonio ACPI que maneja los eventos del botón de encendido, solucionando el problema de que el botón de encendido no apague en algunos entornos."
+  de_DE: "ACPI Daemon, der die Power-Button-Ereignisse behandelt, um das Problem zu beheben, dass der Power-Button in einigen Umgebungen nicht herunterfährt."
+  fr_FR: "Démon ACPI qui gère les événements du bouton d'alimentation, corrigeant le problème du bouton d'alimentation qui ne s'éteint pas dans certains environnements."
+  ko_KR: "전원 버튼 이벤트를 처리하는 ACPI 데몬, 일부 환경에서 전원 버튼이 종료되지 않는 문제를 해결합니다."
+  ru_RU: "Демон ACPI, обрабатывающий события кнопки питания, исправляющий проблему, когда кнопка питания не выключает в некоторых средах."
+  uk_UA: "Демон ACPI, який обробляє події кнопки живлення, виправляючи проблему, коли кнопка живлення не вимикає в деяких середовищах."
+  vi_VN: "ACPI Daemon xử lý các sự kiện nút nguồn, sửa lỗi nút nguồn không tắt máy trong một số môi trường."
+  zh_CN: "处理电源按钮事件的ACPI守护程序, 解决部分环境下电源按钮无法正常关机的问题."
+  zh_HK: "處理電源按鈕事件的ACPI守护程序, 解决部分環境下電源按鈕無法正常關機的問題."
+  zh_TW: "處理電源按鈕事件的ACPI守护程序, 解决部分環境下電源按鈕無法正常關機的問題."
 all:
   install-script: "install.sh"
   copy: "all"

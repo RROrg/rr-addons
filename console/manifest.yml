@@ -1,17 +1,17 @@
 version: 1
 name: console
 description:
-  en_US: "Give a screen console via framebuffer."
-  es_ES: "Proporciona una consola de pantalla a través de framebuffer."
-  de_DE: "Gibt eine Bildschirmkonsole über Framebuffer aus."
-  fr_FR: "Donne une console d'écran via framebuffer."
-  ko_KR: "프레임 버퍼를 통해 화면 콘솔을 제공합니다."
-  ru_RU: "Предоставляет консоль экрана через буфер кадров."
-  uk-UA: "Надає консоль екрана через буфер кадрів."
-  vi-VN: "Cung cấp một bảng điều khiển màn hình thông qua framebuffer."
-  zh_CN: "通过帧缓冲区提供屏幕控制台。"
-  zh_HK: "透過幀緩衝區提供螢幕控制台。"
-  zh_TW: "透過幀緩衝區提供螢幕控制台。"
+  en_US: "Provides screen console (bash) functionality via framebuffer (fb) to allow debugging on the screen, only supported on models with a graphics driver."
+  es_ES: "Proporciona la funcionalidad de la consola (bash) de pantalla a través del framebuffer (fb) para permitir la depuración en la pantalla, solo se admite en los modelos con un controlador gráfico."
+  de_DE: "Bietet Bildschirmkonsolen (bash)-Funktionalität über Framebuffer (fb), um das Debuggen auf dem Bildschirm zu ermöglichen, wird nur auf Modellen mit einem Grafiktreiber unterstützt."
+  fr_FR: "Fournit une fonctionnalité de console d'écran (bash) via framebuffer (fb) pour permettre le débogage sur l'écran, pris en charge uniquement sur les modèles avec un pilote graphique."
+  ko_KR: "프레임버퍼(fb)를 통해 화면 콘솔(bash) 기능을 제공하여 화면에서 디버깅을 허용하며, 그래픽 드라이버가 있는 모델에서만 지원됩니다."
+  ru_RU: "Предоставляет функциональность консоли экрана (bash) через framebuffer (fb) для разрешения отладки на экране, поддерживается только на моделях с графическим драйвером."
+  uk_UA: "Надає функціональність консолі екрану (bash) через буфер кадру (fb) для дозволу налагодження на екрані, підтримується лише на моделях з графічним драйвером."
+  vi_VN: "Cung cấp chức năng màn hình (bash) qua framebuffer (fb) để cho phép kiểm tra trên màn hình, chỉ được hỗ trợ trên các mô hình có trình điều khiển hình ảnh."
+  zh_CN: "通过帧缓冲区 (fb) 提供屏幕控制台 (bash) 功能，以允许在屏幕上进行调试，仅支持具有显卡驱动程序的型号。"
+  zh_HK: "透過幀緩衝區 (fb) 提供屏幕控制台 (bash) 功能，以允許在屏幕上進行調試，僅支持具有顯卡驅動程序的型號。"
+  zh_TW: "透過幀緩衝區 (fb) 提供屏幕控制台 (bash) 功能，以允許在屏幕上進行調試，僅支持具有顯卡驅動程序的型號。"
 all:
   install-script: "install.sh"
   copy: "all"
