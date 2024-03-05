@@ -278,9 +278,13 @@ function dtModel() {
       done
     fi
     NUMPORTS=$((${I} - 1))
-    if [ $NUMPORTS -le 2 ]; then
+    if _check_post_k "rd" "maxdisks"; then
+      MAXDISKS=$(($(_get_conf_kv maxdisks)))
+      echo "get maxdisks=${MAXDISKS}"
+    else
       # fix isSingleBay issue: if maxdisks is 1, there is no create button in the storage panel
-      NUMPORTS=4
+      # [ ${MAXDISKS} -le 2 ] && MAXDISKS=4
+      [ ${MAXDISKS} -lt 26 ] && MAXDISKS=26
     fi
     _set_conf_kv rd "maxdisks" "${NUMPORTS}"
     echo "maxdisks=${NUMPORTS}"
@@ -338,10 +342,10 @@ function nondtModel() {
 
   if _check_post_k "rd" "maxdisks"; then
     MAXDISKS=$(($(_get_conf_kv maxdisks)))
-    # fix isSingleBay issue: if maxdisks is 1, there is no create button in the storage panel
-    [ ${MAXDISKS} -le 2 ] && MAXDISKS=4
     echo "get maxdisks=${MAXDISKS}"
   else
+    # fix isSingleBay issue: if maxdisks is 1, there is no create button in the storage panel
+    # [ ${MAXDISKS} -le 2 ] && MAXDISKS=4
     [ ${MAXDISKS} -lt 26 ] && MAXDISKS=26
   fi
 
