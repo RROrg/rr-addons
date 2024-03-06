@@ -9,7 +9,7 @@
 # Get values in synoinfo.conf K=V file
 # 1 - key
 function _get_conf_kv() {
-  grep "${1}=" /etc/synoinfo.conf | sed "s|^${1}=\"\(.*\)\"$|\1|g"
+  grep "${1}=" /etc/synoinfo.conf 2>/dev/null | sed "s|^${1}=\"\(.*\)\"$|\1|g"
 }
 
 # Replace/add values in synoinfo.conf K=V file
@@ -232,8 +232,8 @@ function dtModel() {
         J=1
         while true; do
           [ ! -d /sys/block/sata${J} ] && break
-          if cat /sys/block/sata${J}/uevent | grep 'PHYSDEVPATH' | grep -q "${P}"; then
-            if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat /sys/block/sata${J}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+          if cat /sys/block/sata${J}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | grep -q "${P}"; then
+            if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat /sys/block/sata${J}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
               echo "bootloader: /sys/block/sata${J}"
             else
               PCIEPATH=$(grep 'pciepath' /sys/block/sata${J}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)
@@ -258,7 +258,7 @@ function dtModel() {
       J=1
       while true; do
         [ ! -d /sys/block/sata${J} ] && break
-        if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat /sys/block/sata${J}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+        if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat /sys/block/sata${J}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
           echo "bootloader: /sys/block/sata${J}"
         else
           PCIEPATH=$(grep 'pciepath' /sys/block/sata${J}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)
@@ -292,7 +292,7 @@ function dtModel() {
     # NVME ports
     COUNT=1
     for P in $(ls -d /sys/block/nvme* 2>/dev/null); do
-      if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat ${P}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+      if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
         echo "bootloader: ${P}"
         continue
       fi
@@ -389,7 +389,7 @@ function nondtModel() {
   COUNT=1
   echo "[pci]" >/etc/extensionPorts
   for P in $(ls -d /sys/block/nvme* 2>/dev/null); do
-    if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat ${P}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+    if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
       echo "bootloader: ${P}"
       continue
     fi
@@ -414,9 +414,9 @@ function nondtModel() {
 if [ "${1}" = "patches" ]; then
   echo "Installing addon disks - ${1}"
   BOOTDISK=""
-  BOOTDISK_PART3=$(blkid -L RR3 | sed 's/\/dev\///')
+  BOOTDISK_PART3=$(blkid -L RR3 2>/dev/null | sed 's/\/dev\///')
   [ -n "${BOOTDISK_PART3}" ] && BOOTDISK=$(ls -d /sys/block/*/${BOOTDISK_PART3} 2>/dev/null | cut -d'/' -f4)
-  [ -n "${BOOTDISK}" ] && BOOTDISK_PHYSDEVPATH="$(cat /sys/block/${BOOTDISK}/uevent | grep 'PHYSDEVPATH' | cut -d'=' -f2)" || BOOTDISK_PHYSDEVPATH=""
+  [ -n "${BOOTDISK}" ] && BOOTDISK_PHYSDEVPATH="$(cat /sys/block/${BOOTDISK}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" || BOOTDISK_PHYSDEVPATH=""
   echo "BOOTDISK=${BOOTDISK}"
   echo "BOOTDISK_PHYSDEVPATH=${BOOTDISK_PHYSDEVPATH}"
   checkSynoboot

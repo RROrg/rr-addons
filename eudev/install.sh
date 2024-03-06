@@ -42,10 +42,10 @@ if [ "${1}" = "modules" ]; then
   # Remove from memory to not conflict with RAID mount scripts
   /usr/bin/killall udevd
   # Remove kvm module
-  /usr/sbin/lsmod | grep -q ^kvm_intel && /usr/sbin/rmmod kvm_intel || true  # kvm-intel.ko
-  /usr/sbin/lsmod | grep -q ^kvm_amd && /usr/sbin/rmmod kvm_amd || true  # kvm-amd.ko
-  /usr/sbin/lsmod | grep -q ^kvm && /usr/sbin/rmmod kvm || true
-  /usr/sbin/lsmod | grep -q ^irqbypass && /usr/sbin/rmmod irqbypass || true
+  /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm_intel && /usr/sbin/rmmod kvm_intel || true # kvm-intel.ko
+  /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm_amd && /usr/sbin/rmmod kvm_amd || true     # kvm-amd.ko
+  /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm && /usr/sbin/rmmod kvm || true
+  /usr/sbin/lsmod 2>/dev/null | grep -q ^irqbypass && /usr/sbin/rmmod irqbypass || true
 
 elif [ "${1}" = "late" ]; then
   echo "Installing addon eudev - ${1}"
@@ -54,7 +54,7 @@ elif [ "${1}" = "late" ]; then
   isChange="false"
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   /tmpRoot/bin/cp -rnf /usr/lib/firmware/* /tmpRoot/usr/lib/firmware/
-  if cat /proc/version | grep -q 'RR@RR'; then
+  if cat /proc/version 2>/dev/null | grep -q 'RR@RR'; then
     if [ -d /tmpRoot/usr/lib/modules.bak ]; then
       /tmpRoot/bin/rm -rf /tmpRoot/usr/lib/modules
       /tmpRoot/bin/cp -rf /tmpRoot/usr/lib/modules.bak /tmpRoot/usr/lib/modules
@@ -88,12 +88,12 @@ elif [ "${1}" = "late" ]; then
   isChange="$(cat /tmp/modulesChange 2>/dev/null || echo "false")"
   echo "isChange: ${isChange}"
   [ "${isChange}" = "true" ] && /usr/sbin/depmod -a -b /tmpRoot
-  
+
   # Restore kvm module
   /usr/sbin/insmod /usr/lib/modules/irqbypass.ko || true
   /usr/sbin/insmod /usr/lib/modules/kvm.ko || true
-  /usr/sbin/insmod /usr/lib/modules/kvm-intel.ko || true  # kvm-intel.ko
-  /usr/sbin/insmod /usr/lib/modules/kvm-amd.ko || true  # kvm-amd.ko
+  /usr/sbin/insmod /usr/lib/modules/kvm-intel.ko || true # kvm-intel.ko
+  /usr/sbin/insmod /usr/lib/modules/kvm-amd.ko || true   # kvm-amd.ko
 
   echo "Copy rules"
   cp -vf /usr/lib/udev/rules.d/* /tmpRoot/usr/lib/udev/rules.d/

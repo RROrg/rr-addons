@@ -6,16 +6,16 @@ wget -O - http://bin.entware.net/x64-k3.2/installer/generic.sh | /bin/sh
 
 curl -kL https://raw.githubusercontent.com/wjz304/rr-addons/main/yq -o ~/yq
 mv -f ~/yq /usr/bin/yq
-chmod a+x /usr/bin/yq 
+chmod a+x /usr/bin/yq
 
 export PATH=$PATH:/opt/bin
 
-echo 1 > /proc/sys/kernel/syno_install_flag
+echo 1 >/proc/sys/kernel/syno_install_flag
 
 LOADER_DISK_PART3="$(blkid -L RR3)"
 LOADER_DISK_PART2="${LOADER_DISK_PART3/3/2}"
 LOADER_DISK_PART1="${LOADER_DISK_PART3/3/1}"
-LOADER_DISK="/dev/$(realpath /sys/block/*/${LOADER_DISK_PART3/\/dev\//} | awk -F'/' '{print $(NF-1)}')"
+LOADER_DISK="/dev/$(realpath /sys/block/*/${LOADER_DISK_PART3/\/dev\//} 2>/dev/null | awk -F'/' '{print $(NF-1)}')"
 
 # Make folders to mount partitions
 mkdir -p /mnt/p1
@@ -45,4 +45,4 @@ mkdir -p "${RR_PATH}"
 ) >/dev/null 2>&1 || true
 
 cd ${RR_PATH}/opt/rr
-/opt/bin/ttyd -t enableZmodem=true -t enableSixel=true -t enableTrzsz=true login -f root 
+/opt/bin/ttyd -t enableZmodem=true -t enableSixel=true -t enableTrzsz=true login -f root

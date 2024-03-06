@@ -35,7 +35,6 @@ MODULES_PATH="${PART3_PATH}/modules"
 USER_UP_PATH="${PART3_PATH}/users"
 SCRIPTS_PATH="${PART3_PATH}/scripts"
 
-
 # SYNC configFile.sh
 
 # Read key value from yaml config file
@@ -43,7 +42,7 @@ SCRIPTS_PATH="${PART3_PATH}/scripts"
 # 2 - Path of yaml config file
 # Return Value
 function readConfigKey() {
-  RESULT=$(yq eval '.'${1}' | explode(.)' "${2}")
+  RESULT=$(yq eval '.'${1}' | explode(.)' "${2}" 2>/dev/null)
   [ "${RESULT}" == "null" ] && echo "" || echo ${RESULT}
 }
 
@@ -52,7 +51,7 @@ function readConfigKey() {
 # 2 - Path of yaml config file
 # Returns map of values
 function readConfigMap() {
-  yq eval '.'${1}' | explode(.) | to_entries | map([.key, .value] | join(": ")) | .[]' "${2}"
+  yq eval '.'${1}' | explode(.) | to_entries | map([.key, .value] | join(": ")) | .[]' "${2}" 2>/dev/null
 }
 
 # Read an array from yaml config file
@@ -60,7 +59,7 @@ function readConfigMap() {
 # 2 - Path of yaml config file
 # Returns array/map of values
 function readConfigArray() {
-  yq eval '.'${1}'[]' "${2}"
+  yq eval '.'${1}'[]' "${2}" 2>/dev/null
 }
 
 # Write to yaml config file
@@ -68,7 +67,7 @@ function readConfigArray() {
 # 2 - Value
 # 3 - Path of yaml config file
 function writeConfigKey() {
-  [ "${2}" = "{}" ] && yq eval '.'${1}' = {}' --inplace "${3}" || yq eval '.'${1}' = "'"${2}"'"' --inplace "${3}"
+  [ "${2}" = "{}" ] && yq eval '.'${1}' = {}' --inplace "${3}" 2>/dev/null || yq eval '.'${1}' = "'"${2}"'"' --inplace "${3}" 2>/dev/null
 }
 
 # Read key value from model config file
@@ -224,7 +223,7 @@ function updateAddons() {
 function updateModules() {
   local UPDATE_FILE="${1:-"/tmp/modules.zip"}"
   local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
-  
+
   echo '{"progress": "0", "progressmsg": "Update Modules ..."}' >"${PROGRESS_FILE}"
   if [ ! -f "${UPDATE_FILE}" ]; then
     echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
@@ -268,7 +267,7 @@ function updateModules() {
 function updateLKMs() {
   local UPDATE_FILE="${1:-"/tmp/rp-lkms.zip"}"
   local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
-  
+
   echo '{"progress": "0", "progressmsg": "Update LKMs ..."}' >"${PROGRESS_FILE}"
   if [ ! -f "${UPDATE_FILE}" ]; then
     echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
@@ -296,7 +295,7 @@ function updateLKMs() {
 function updateCKs() {
   local UPDATE_FILE="${1:-"/tmp/rr-cks.zip"}"
   local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
-  
+
   echo '{"progress": "0", "progressmsg": "Update CKs ..."}' >"${PROGRESS_FILE}"
   if [ ! -f "${UPDATE_FILE}" ]; then
     echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
@@ -318,7 +317,6 @@ function updateCKs() {
   echo '{"progress": "100", "progressmsg": "CKs updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
-
 
 WORK_PATH="/tmp/initrd/opt/rr"
 MODEL="$(readConfigKey "model" "${USER_CONFIG_FILE}")"
