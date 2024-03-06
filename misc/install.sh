@@ -29,7 +29,7 @@ fi
 EOF
   chmod +x /usr/syno/web/webman/clean_system_disk.cgi
 
-  if [ -n "$(grep force_junior /proc/cmdline)" ] && [ -n "$(grep recovery /proc/cmdline)" ]; then
+  if [ -n "$(grep force_junior /proc/cmdline 2>/dev/null)" ] && [ -n "$(grep recovery /proc/cmdline 2>/dev/null)" ]; then
     echo "Starting ttyd ..."
     if /usr/bin/lsof -Pi :7681 -sTCP:LISTEN -t >/dev/null; then
       echo "Port 7681 is already in use. Terminating the existing process..."
@@ -53,7 +53,7 @@ EOF
 
 elif [ "${1}" = "late" ]; then
   echo "Installing addon misc - ${1}"
-  
+
   mount -t sysfs sysfs /sys
   modprobe acpi-cpufreq
   # CPU performance scaling
@@ -73,7 +73,7 @@ elif [ "${1}" = "late" ]; then
   # crypto-kernel
   if [ -f /tmpRoot/usr/lib/modules-load.d/70-crypto-kernel.conf ]; then
     # crc32c-intel
-    CPUFLAGS=$(cat /proc/cpuinfo | grep flags | grep sse4_2 | wc -l)
+    CPUFLAGS=$(cat /proc/cpuinfo 2>/dev/null | grep flags | grep sse4_2 | wc -l)
     if [ ${CPUFLAGS} -gt 0 ]; then
       echo "CPU Supports SSE4.2, crc32c-intel should load"
     else
@@ -82,7 +82,7 @@ elif [ "${1}" = "late" ]; then
     fi
 
     # aesni-intel
-    CPUFLAGS=$(cat /proc/cpuinfo | grep flags | grep aes | wc -l)
+    CPUFLAGS=$(cat /proc/cpuinfo 2>/dev/null | grep flags | grep aes | wc -l)
     if [ ${CPUFLAGS} -gt 0 ]; then
       echo "CPU Supports AES, aesni-intel should load"
     else
@@ -94,7 +94,7 @@ elif [ "${1}" = "late" ]; then
 
   # Nvidia GPU
   if [ -f /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf ]; then
-    NVIDIADEV=$(cat /proc/bus/pci/devices | grep -i 10de | wc -l)
+    NVIDIADEV=$(cat /proc/bus/pci/devices 2>/dev/null | grep -i 10de | wc -l)
     if [ ${NVIDIADEV} -eq 0 ]; then
       echo "NVIDIA GPU is not detected, disabling "
       sed -i 's/^nvidia/# nvidia/g' /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf
