@@ -42,6 +42,13 @@ if [ "${1}" = "late" ]; then
     rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/revert.service"
   fi
 
+  # backup current loader configs
+  rm -rf "/tmpRoot/usr/rr/backup"
+  if [ -d "/usr/rr/backup" ]; then
+    mkdir -p "/tmpRoot/usr/rr/backup"
+    cp -rf /usr/rr/backup/* "/tmpRoot/usr/rr/backup/"
+  fi
+
   # Version
   echo "LOADERLABEL=${LOADERLABEL}"      >"/tmpRoot/usr/rr/VERSION"
   echo "LOADERVERSION=${LOADERVERSION}" >>"/tmpRoot/usr/rr/VERSION"
