@@ -277,7 +277,7 @@ function dtModel() {
         J=$((${J} + 1))
       done
     fi
-    NUMPORTS=$((${I} - 1))
+    MAXDISKS=$((${I} - 1))
     if _check_post_k "rd" "maxdisks"; then
       MAXDISKS=$(($(_get_conf_kv maxdisks)))
       echo "get maxdisks=${MAXDISKS}"
@@ -286,8 +286,8 @@ function dtModel() {
       # [ ${MAXDISKS} -le 2 ] && MAXDISKS=4
       [ ${MAXDISKS} -lt 26 ] && MAXDISKS=26
     fi
-    _set_conf_kv rd "maxdisks" "${NUMPORTS}"
-    echo "maxdisks=${NUMPORTS}"
+    _set_conf_kv rd "maxdisks" "${MAXDISKS}"
+    echo "maxdisks=${MAXDISKS}"
 
     # NVME ports
     COUNT=1
