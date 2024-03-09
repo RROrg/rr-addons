@@ -433,17 +433,14 @@ elif [ "${1}" = "late" ]; then
   else
     echo "Adjust maxdisks and internalportcfg automatically"
     # sysfs is unpopulated here, get the values from junior synoinfo.conf
-    MAXDISKS=$(_get_conf_kv maxdisks)
     USBPORTCFG=$(_get_conf_kv usbportcfg)
     ESATAPORTCFG=$(_get_conf_kv esataportcfg)
     INTERNALPORTCFG=$(_get_conf_kv internalportcfg)
     # log
-    echo "maxdisks=${MAXDISKS}"
     echo "usbportcfg=${USBPORTCFG}"
     echo "esataportcfg=${ESATAPORTCFG}"
     echo "internalportcfg=${INTERNALPORTCFG}"
     # set
-    _set_conf_kv hd "maxdisks" "${MAXDISKS}"
     _set_conf_kv hd "usbportcfg" "${USBPORTCFG}"
     _set_conf_kv hd "esataportcfg" "${ESATAPORTCFG}"
     _set_conf_kv hd "internalportcfg" "${INTERNALPORTCFG}"
@@ -451,6 +448,10 @@ elif [ "${1}" = "late" ]; then
     cp -vf /etc/extensionPorts /tmpRoot/etc/extensionPorts
     cp -vf /etc/extensionPorts /tmpRoot/etc.defaults/extensionPorts
   fi
+
+  MAXDISKS=$(_get_conf_kv maxdisks)
+  echo "maxdisks=${MAXDISKS}"
+  _set_conf_kv hd "maxdisks" "${MAXDISKS}"
 
   SUPPORTNVME=$(_get_conf_kv supportnvme)
   SUPPORT_M2_POOL=$(_get_conf_kv support_m2_pool)
