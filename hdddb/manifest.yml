@@ -1,17 +1,17 @@
 version: 1
 name: hdddb
 description: # https://github.com/007revad/Synology_HDD_db
-  en_US: "Add HDD/SSD drives to the DSM database to solve the problem of firmware version not recognized by the disk, from 007revad."
-  es_ES: "Añade unidades de disco duro y SSD a la base de datos de DSM para solucionar el problema de que la versión del firmware no se reconoce por el disco, de 007revad."
-  de_DE: "Fügen Sie HDD / SSD-Laufwerke zur DSM-Datenbank hinzu, um das Problem zu lösen, dass die Firmware-Version von der Festplatte nicht erkannt wird, von 007revad."
-  fr_FR: "Ajoutez des disques durs / SSD à la base de données DSM pour résoudre le problème de version du micrologiciel non reconnue par le disque, de 007revad."
-  ko_KR: "007revad의 문제를 해결하기 위해 HDD / SSD 드라이브를 DSM 데이터베이스에 추가하십시오."
-  ru_RU: "Добавьте жесткие диски / твердотельные накопители в базу данных DSM, чтобы решить проблему, что версия прошивки не распознается диском, от 007revad."
-  uk_UA: "Додайте жорсткі диски / твердотільні накопичувачі до бази даних DSM, щоб вирішити проблему, що версія прошивки не розпізнається диском, від 007revad."
-  vi_VN: "Thêm ổ cứng / ổ đĩa SSD vào cơ sở dữ liệu DSM để giải quyết vấn đề phiên bản firmware không được nhận diện bởi ổ đĩa, từ 007revad."
-  zh_CN: "将 HDD / SSD 驱动器添加到 DSM 的数据库中，解决 磁盘显示无法识别的固件版本 的问题，来自 007revad。"
-  zh_HK: "將 HDD / SSD 驅動器添加到 DSM 的數據庫中，解決 硬碟顯示無法識別的固件版本 的問題，來自 007revad。"
-  zh_TW: "將 HDD / SSD 驅動器添加到 DSM 的數據庫中，解決 硬碟顯示無法識別的固件版本 的問題，來自 007revad。"
+  en_US: "Author: 007revad. Add HDD/SSD drives to the DSM database to solve the problem of firmware version not recognized by the disk."
+  es_ES: "Autor: 007revad. Agrega discos duros y SSD a la base de datos de DSM para solucionar el problema de que la versión del firmware no sea reconocida por el disco."
+  de_DE: "Autor: 007revad. Fügen Sie HDD/SSD-Laufwerke zur DSM-Datenbank hinzu, um das Problem zu lösen, dass die Firmware-Version von der Festplatte nicht erkannt wird."
+  fr_FR: "Auteur : 007revad. Ajoutez des disques durs et SSD à la base de données DSM pour résoudre le problème de reconnaissance de la version du firmware par le disque."
+  ko_KR: "저자: 007revad. 디스크의 펌웨어 버전이 인식되지 않는 문제를 해결하기 위해 HDD/SSD 드라이브를 DSM 데이터베이스에 추가합니다."
+  ru_RU: "Автор: 007revad. Добавьте жесткие диски и SSD-накопители в базу данных DSM, чтобы решить проблему нераспознавания версии прошивки диском."
+  uk_UA: "Автор: 007revad. Додайте жорсткі диски та SSD-накопичувачі до бази даних DSM, щоб вирішити проблему нерозпізнавання версії прошивки диском."
+  vi_VN: "Tác giả: 007revad. Thêm ổ cứng và ổ SSD vào cơ sở dữ liệu DSM để giải quyết vấn đề không nhận diện được phiên bản firmware của ổ cứng."
+  zh_CN: "作者：007revad。将HDD/SSD驱动器数据添加到DSM数据库中，以解决硬盘固件版本无法识别的问题。"
+  zh_HK: "作者：007revad。將HDD/SSD驱动器數據添加到DSM數據庫中，以解決硬碟固件版本無法識別的問題。"
+  zh_TW: "作者：007revad。將HDD/SSD驅動器數據添加到DSM數據庫中，以解決硬碟固件版本無法識別的問題。"
 all:
   install-script: "install.sh"
   copy: "all"

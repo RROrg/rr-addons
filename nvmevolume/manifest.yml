@@ -1,17 +1,17 @@
 version: 1
 name: nvmevolume
-description: # https://github.com/PeterSuh-Q3/tcrp-addons/blob/main/nvmevolume-onthefly
-  en_US: "Enable creating M.2 storage pools and volumes all from within Storage Manager. from PeterSuh-Q3"
-  es_ES: "Habilitar la creación de grupos de almacenamiento M.2 y volúmenes desde el administrador de almacenamiento. de PeterSuh-Q3"
-  de_DE: "Ermöglicht das Erstellen von M.2-Speicher-Pools und -Volumen direkt in Storage Manager. von PeterSuh-Q3"
-  fr_FR: "Permet de créer des pools de stockage M.2 et des volumes directement depuis le Gestionnaire de stockage. de PeterSuh-Q3"
-  ko_KR: "스토리지 매니저에서 M.2 저장소 풀 및 볼륨을 생성할 수 있습니다. PeterSuh-Q3"
-  ru_RU: "Позволяет создавать пулы хранения M.2 и тома прямо из Storage Manager. от PeterSuh-Q3"
-  uk_UA: "Дозволяє створювати пули зберігання M.2 та томи прямо з Storage Manager. від PeterSuh-Q3"
-  vi_VN: "Cho phép tạo các nhóm lưu trữ M.2 và các ổ đĩa trực tiếp từ Storage Manager. từ PeterSuh-Q3"
-  zh_CN: "允许直接从存储管理器创建M.2存储池和卷。来自 PeterSuh-Q3"
-  zh_HK: "允許直接從儲存管理員創建M.2存儲池和卷。從 PeterSuh-Q3"
-  zh_TW: "允許直接從儲存管理員創建M.2存儲池和卷。從 PeterSuh-Q3"
+description: # https://github.com/007revad/Synology_enable_M2_volume https://github.com/eterSuh-Q3/tcrp-addons/blob/main/nvmevolume-onthefly
+  en_US: "Author: 007revad & PeterSuh-Q3. Enable creating M.2 storage pools and volumes all from within Storage Manager."
+  es_ES: "Autor: 007revad & PeterSuh-Q3. Permite crear grupos de almacenamiento y volúmenes M.2 todo desde el Administrador de almacenamiento."
+  de_DE: "Autor: 007revad & PeterSuh-Q3. Ermöglicht das Erstellen von M.2-Speichergruppen und -Volumen alles aus dem Speicher-Manager heraus."
+  fr_FR: "Auteur: 007revad & PeterSuh-Q3. Permet de créer des groupes de stockage et des volumes M.2 tout depuis le Gestionnaire de stockage."
+  ko_KR: "저자: 007revad & PeterSuh-Q3. 스토리지 매니저에서 M.2 저장소 풀 및 볼륨을 생성할 수 있습니다."
+  ru_RU: "Автор: 007revad & PeterSuh-Q3. Позволяет создавать группы хранения и тома M.2 прямо из Менеджера хранилищ."
+  uk_UA: "Автор: 007revad & PeterSuh-Q3. Дозволяє створювати групи зберігання та томи M.2 прямо з Менеджера зберігання."
+  vi_VN: "Tác giả: 007revad & PeterSuh-Q3. Cho phép tạo các nhóm lưu trữ và ổ đĩa M.2 từ Trình quản lý lưu trữ."
+  zh_CN: "作者：007revad & PeterSuh-Q3。允许从存储管理器中创建M.2存储池和卷。"
+  zh_HK: "作者：007revad & PeterSuh-Q3。允許從儲存管理器中創建M.2儲存池和卷。"
+  zh_TW: "作者：007revad & PeterSuh-Q3。允許從儲存管理器中建立M.2儲存池和卷。"
 all:
   install-script: "install.sh"
   copy: "all"

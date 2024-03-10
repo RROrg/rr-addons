@@ -1,17 +1,17 @@
 version: 1
 name: codecpatch
 description: # https://github.com/wirgen/synocodectool-patch
-  en_US: "This patch enables transcoding on Synologys DiskStation Manager 6+ without a valid serial number, From wirgen."
-  es_ES: "Este parche permite la transcodificación en DiskStation Manager 6+ de Synology sin un número de serie válido, de wirgen."
-  de_DE: "Dieser Patch ermöglicht das Transcodieren auf Synologys DiskStation Manager 6+ ohne gültige Seriennummer, von wirgen."
-  fr_FR: "Ce patch permet le transcodage sur DiskStation Manager 6+ de Synology sans numéro de série valide, de wirgen."
-  ko_KR: "이 패치는 유효한 일련 번호없이 Synologys DiskStation Manager 6+에서 트랜스 코딩을 활성화합니다. wirgen"
-  ru_RU: "Этот патч позволяет транскодировать на Synologys DiskStation Manager 6+ без действительного серийного номера, от wirgen."
-  uk_UA: "Цей патч дозволяє транскодувати на Synologys DiskStation Manager 6+ без дійсного серійного номера, від wirgen."
-  vi_VN: "Bản vá này cho phép chuyển mã trên Synologys DiskStation Manager 6+ mà không cần số sê-ri hợp lệ, từ wirgen."
-  zh_CN: "此补丁可在没有有效序列号的情况下在 Synologys DiskStation Manager 6+ 上启用转码，来自 wirgen."
-  zh_HK: "此補丁可在沒有有效序列號的情況下在 Synologys DiskStation Manager 6+ 上啟用轉碼，來自 wirgen."
-  zh_TW: "此補丁可在沒有有效序列號的情況下在 Synologys DiskStation Manager 6+ 上啟用轉碼，來自 wirgen."
+  en_US: "Author: wirgen. This patch enables transcoding on Synologys DiskStation Manager 6+ without a valid serial number."
+  es_ES: "Autor: wirgen. Este parche permite la transcodificación en DiskStation Manager 6+ de Synology sin un número de serie válido."
+  de_DE: "Autor: wirgen. Dieser Patch ermöglicht die Transkodierung auf Synologys DiskStation Manager 6+ ohne eine gültige Seriennummer."
+  fr_FR: "Auteur: wirgen. Ce patch permet la transcodage sur DiskStation Manager 6+ de Synology sans numéro de série valide."
+  ko_KR: "저자: wirgen. 이 패치는 유효한 시리얼 번호 없이 Synology의 DiskStation Manager 6+에서 트랜스코딩을 활성화합니다."
+  ru_RU: "Автор: wirgen. Этот патч позволяет транскодирование на DiskStation Manager 6+ от Synology без действительного серийного номера."
+  uk_UA: "Автор: wirgen. Цей патч дозволяє транскодування на DiskStation Manager 6+ від Synology без дійсного серійного номера."
+  vi_VN: "Tác giả: wirgen. Bản vá này cho phép chuyển mã trên DiskStation Manager 6+ của Synology mà không cần số sê-ri hợp lệ."
+  zh_CN: "作者：wirgen。此补丁可在Synology的DiskStation Manager 6+上启用转码，无需有效的序列号。"
+  zh_HK: "作者：wirgen。此补丁可在Synology的DiskStation Manager 6+上启用转码，无需有效的序列号。"
+  zh_TW: "作者：wirgen。此補丁可在Synology的DiskStation Manager 6+上啟用轉碼，無需有效的序列號。"
 all:
   install-script: "install.sh"
   copy: "all"
