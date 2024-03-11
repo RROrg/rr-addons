@@ -22,7 +22,7 @@ if [ "${1}" = "late" ]; then
   echo "*       *       *       *       *       root    /usr/sbin/powersched #arpl powersched addon" >>/tmpRoot/etc/crontab
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon powersched - ${1}"
-  
+
   [ -f "/tmpRoot/usr/sbin/powersched.bak" ] && mv -f "/tmpRoot/usr/sbin/powersched.bak" "/tmpRoot/usr/sbin/powersched"
   [ -f "/tmpRoot/etc/crontab.bak" ] && mv -f "/tmpRoot/etc/crontab.bak" "/tmpRoot/etc/crontab"
 fi

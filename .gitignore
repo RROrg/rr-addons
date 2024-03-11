@@ -60,4 +60,5 @@ powersched/src/powersched
 
 # test
 hibernation
+nvmesystem
 runonce

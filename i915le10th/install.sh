@@ -36,9 +36,11 @@ if [ "${1}" = "patches" ]; then
     GPU_BIN="${GPU:2:2}${GPU:0:2}0000${GPU:6:2}${GPU:4:2}0000"
     echo "GPU:${GPU} GPU_BIN:${GPU_BIN}"
     cp -vf "${KO_FILE}" "${KO_FILE}.bak"
-    xxd -c $(xxd -p "${KO_FILE}.bak" 2>/dev/null | wc -c) -p "${KO_FILE}.bak" 2>/dev/null |
+    cp -f "${KO_FILE}" "${KO_FILE}.tmp"
+    xxd -c $(xxd -p "${KO_FILE}.tmp" 2>/dev/null | wc -c) -p "${KO_FILE}.tmp" 2>/dev/null |
       sed "s/${GPU_DEF}/${GPU_BIN}/; s/308201f706092a86.*70656e6465647e0a//" |
       xxd -r -p >"${KO_FILE}" 2>/dev/null
+    rm -f "${KO_FILE}.tmp"
     [ "${isLoad}" = "1" ] && /usr/sbin/modprobe "/usr/lib/modules/i915.ko"
   fi
 elif [ "${1}" = "late" ]; then

@@ -15,11 +15,14 @@ if [ "${1}" = "late" ]; then
   FILE="/tmpRoot/usr/syno/etc.defaults/adapter_cards.conf"
 
   [ ! -f "${FILE}.bak" ] && cp -f "${FILE}" "${FILE}.bak"
+
+  cp -f "${FILE}" "${FILE}.tmp"
   echo -n "" >"${FILE}"
-  for N in $(cat "${FILE}.bak" 2>/dev/null | grep '\['); do
+  for N in $(cat "${FILE}.tmp" 2>/dev/null | grep '\['); do
     echo "${N}" >>"${FILE}"
     echo "${MODEL}=yes" >>"${FILE}"
   done
+  rm -f "${FILE}.tmp"
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon addincards - ${1}"
 

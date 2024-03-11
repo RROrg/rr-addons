@@ -28,7 +28,6 @@ if [ "${1}" = "late" ]; then
 
   mkdir -vp /tmpRoot/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/expands.service /tmpRoot/lib/systemd/system/multi-user.target.wants/expands.service
-
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon expands - ${1}"
 

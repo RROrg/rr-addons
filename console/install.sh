@@ -41,7 +41,7 @@ elif [ "${1}" = "late" ]; then
   echo "Installing addon console - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
-  
+
   SED_PATH='/tmpRoot/usr/bin/sed'
   # run when boot installed DSM
   cp -fv /tmpRoot/lib/systemd/system/serial-getty\@.service /tmpRoot/lib/systemd/system/getty\@.service
