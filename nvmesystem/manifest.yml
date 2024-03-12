@@ -1,17 +1,17 @@
 version: 1
 name: nvmesystem
 description: 
-  en_US: "Author: jim3ma. Install the system on only m2 disk."
-  es_ES: "Autor: jim3ma. Instala el sistema solo en el disco m2."
-  de_DE: "Autor: jim3ma. Installieren Sie das System nur auf der m2-Festplatte."
-  fr_FR: "Auteur: jim3ma. Installez le système uniquement sur le disque m2."
-  ko_KR: "저자: jim3ma. 시스템을 m2 디스크에만 설치하십시오."
-  ru_RU: "Автор: jim3ma. Установите систему только на диск m2."
-  uk_UA: "Автор: jim3ma. Встановіть систему лише на диск m2."
-  vi_VN: "Tác giả: jim3ma. Cài đặt hệ thống chỉ trên ổ đĩa m2."
-  zh_CN: "作者：jim3ma。仅在m2磁盘上安装系统。"
-  zh_HK: "作者：jim3ma。僅在m2磁碟上安裝系統。"
-  zh_TW: "作者：jim3ma。僅在m2磁碟上安裝系統。"
+  en_US: "Author: jim3ma. Install the system on only m2 disk (current only support SA6400)."
+  es_ES: "Autor: jim3ma. Instala el sistema solo en el disco m2 (actualmente solo admite SA6400)."
+  de_DE: "Autor: jim3ma. Installiert das System nur auf den m2-Disk (aktuell nur SA6400 unterstützt)."
+  fr_FR: "Auteur: jim3ma. Installe le système uniquement sur le disque m2 (actuellement, seul SA6400 est pris en charge)."
+  ko_KR: "저자: jim3ma. SA6400만을 지원하는 m2 디스크에 시스템을 설치합니다."
+  ru_RU: "Автор: jim3ma. Установка системы только на m2-дисков (текущий только поддерживает SA6400)."
+  uk_UA: "Автор: jim3ma. Встановлення системи лише на диск m2 (наразі підтримується лише SA6400)."
+  vi_VN: "Tác giả: jim3ma. Cài đặt hệ thống chỉ trên ổ đĩa m2 (hiện chỉ hỗ trợ SA6400)."
+  zh_CN: "作者：jim3ma。仅在m2磁盘上安装系统（当前仅支持 SA6400）。"
+  zh_HK: "作者：jim3ma。僅在m2磁碟上安裝系統（目前僅支援 SA6400）。"
+  zh_TW: "作者：jim3ma。僅在m2磁碟上安裝系統（目前僅支援 SA6400）。"
 all:
   install-script: "install.sh"
   copy: "all"

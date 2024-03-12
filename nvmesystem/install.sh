@@ -8,6 +8,14 @@
 # From：jim3ma, https://jim.plus/blog/post/jim/synology-installation-with-nvme-disks-only
 #
 
+MODELS="SA6400"
+MODEL="$(cat /proc/sys/kernel/syno_hw_version)"
+
+if ! echo "${MODELS}" | grep -q "${MODEL}"; then
+  echo "${MODEL} is not supported"
+  exit 0
+fi
+
 if [ "${1}" = "early" ]; then
   echo "Installing addon nvmesystem - ${1}"
 
@@ -45,10 +53,12 @@ elif [ "${1}" = "late" ]; then
   echo "[Unit]"                                          >${DEST}
   echo "Description=Modify storage panel"               >>${DEST}
   echo "After=multi-user.target"                        >>${DEST}
+  echo "Wants=storagepanel.service"                     >>${DEST}  # storagepanel
+  echo "After=storagepanel.service"                     >>${DEST}  # storagepanel
   echo                                                  >>${DEST}
   echo "[Service]"                                      >>${DEST}
   echo "Type=oneshot"                                   >>${DEST}
-  echo "RemainAfterExit=true"                           >>${DEST}
+  echo "RemainAfterExit=yes"                            >>${DEST}
   echo "ExecStart=/usr/bin/nvmesystem.sh"               >>${DEST}
   echo                                                  >>${DEST}
   echo "[Install]"                                      >>${DEST}

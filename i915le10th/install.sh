@@ -7,8 +7,8 @@
 #
 
 # PLATFORMS="apollolake geminilake"
-# PLATFORM=$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)
-# if ! echo ${PLATFORM} | grep -q ${PLATFORM}; then
+# PLATFORM="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)"
+# if ! echo "${PLATFORM}" | grep -q "${PLATFORM}"; then
 #   echo "${PLATFORM} is not supported"
 #   exit 0
 # fi
