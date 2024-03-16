@@ -1,10 +1,11 @@
 version: 1
 name: addincards
-description: 
+description:
   en_US: "Remove model restrictions from official Addin cards(M2D20, E10G30-T2, ...)."
   es_ES: "Elimine las restricciones de modelo de las tarjetas Addin oficiales (M2D20, E10G30-T2, ...)."
   de_DE: "Entfernen Sie Modellbeschränkungen von offiziellen Addin-Karten (M2D20, E10G30-T2, ...)."
   fr_FR: "Supprimez les restrictions de modèle des cartes Addin officielles (M2D20, E10G30-T2, ...)."
+  ja_JP: "公式の Addin カード(M2D20、E10G30-T2、...)のモデル制限を解除します。"
   ko_KR: "공식 Addin 카드(M2D20, E10G30-T2, ...)의 모델 제한을 제거합니다."
   ru_RU: "Удалите ограничения модели официальных карт Addin (M2D20, E10G30-T2, ...)."
   uk_UA: "Видаліть обмеження моделі офіційних карток Addin (M2D20, E10G30-T2, ...)."

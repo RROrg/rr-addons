@@ -1,10 +1,11 @@
 version: 1
 name: reboottoloader
-description: 
+description:
   en_US: "Add a script to restart to RR in the DSM scheduled task, making it easy to access RR with not have a screen and keyboard."
   es_ES: "Agregue un script para reiniciar a RR en la tarea programada de DSM, lo que facilita el acceso a RR sin tener una pantalla y un teclado."
   de_DE: "Fügt einen Skript zum Neustart zu RR in der DSM geplanten Aufgabe, so dass es einfach, RR mit nicht haben einen Bildschirm und Tastatur zugreifen."
   fr_FR: "Ajoutez un script pour redémarrer à RR dans la tâche planifiée DSM, ce qui rend facile d'accéder à RR avec ne pas avoir un écran et un clavier."
+  ja_JP: "DSM のスケジュールされたタスクで RR に再起動するスクリプトを追加し、画面とキーボードがない RR に簡単にアクセスできるようにします。"
   ko_KR: "DSM 예약 된 작업에서 RR로 재시작하는 스크립트를 추가하여 화면과 키보드가없는 RR에 쉽게 액세스 할 수 있습니다."
   ru_RU: "Добавьте сценарий для перезапуска в RR в запланированной задаче DSM, что облегчает доступ к RR без наличия экрана и клавиатуры."
   uk_UA: "Додайте сценарій для перезапуску в RR в запланованому завданні DSM, що полегшує доступ до RR без наявності екрана та клавіатури."

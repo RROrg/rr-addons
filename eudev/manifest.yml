@@ -5,6 +5,7 @@ description:
   es_ES: "eudev + kmod módulos cargados automáticamente."
   de_DE: "eudev + kmod automatisch geladene Module."
   fr_FR: "eudev + kmod modules chargés automatiquement."
+  ja_JP: "eudev + kmod 自動的にロードされるモジュール。"
   ko_KR: "eudev + kmod 자동으로 로드된 모듈."
   ru_RU: "eudev + kmod автоматически загружаемые модули."
   uk_UA: "eudev + kmod автоматично завантажені модулі."

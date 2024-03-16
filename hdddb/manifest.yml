@@ -1,10 +1,11 @@
 version: 1
 name: hdddb
-description: # https://github.com/007revad/Synology_HDD_db
+description:# https://github.com/007revad/Synology_HDD_db
   en_US: "Author: 007revad. Add HDD/SSD drives to the DSM database to solve the problem of firmware version not recognized by the disk."
   es_ES: "Autor: 007revad. Agrega discos duros y SSD a la base de datos de DSM para solucionar el problema de que la versión del firmware no sea reconocida por el disco."
   de_DE: "Autor: 007revad. Fügen Sie HDD/SSD-Laufwerke zur DSM-Datenbank hinzu, um das Problem zu lösen, dass die Firmware-Version von der Festplatte nicht erkannt wird."
   fr_FR: "Auteur : 007revad. Ajoutez des disques durs et SSD à la base de données DSM pour résoudre le problème de reconnaissance de la version du firmware par le disque."
+  ja_JP: "作者：007revad。ディスクのファームウェアバージョンが認識されない問題を解決するために、HDD/SSDドライブをDSMデータベースに追加します。"
   ko_KR: "저자: 007revad. 디스크의 펌웨어 버전이 인식되지 않는 문제를 해결하기 위해 HDD/SSD 드라이브를 DSM 데이터베이스에 추가합니다."
   ru_RU: "Автор: 007revad. Добавьте жесткие диски и SSD-накопители в базу данных DSM, чтобы решить проблему нераспознавания версии прошивки диском."
   uk_UA: "Автор: 007revad. Додайте жорсткі диски та SSD-накопичувачі до бази даних DSM, щоб вирішити проблему нерозпізнавання версії прошивки диском."

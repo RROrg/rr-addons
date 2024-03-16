@@ -1,10 +1,11 @@
 version: 1
 name: setrootpw
-description: 
+description:
   en_US: "Set root password and enable ssh/sftp. Please modify PW=\"\" to the desired password in DSM Task Scheduler and run the task."
   es_ES: "Establece la contraseña de root y habilita ssh/sftp. Por favor, modifique PW=\"\" a la contraseña deseada en el Programador de Tareas de DSM y ejecute la tarea."
   de_DE: "Legen Sie das Root-Passwort fest und aktivieren Sie ssh/sftp. Bitte ändern Sie PW=\"\" in der DSM-Aufgabenplanung in das gewünschte Passwort und führen Sie die Aufgabe aus."
   fr_FR: "Définissez le mot de passe root et activez ssh/sftp. Veuillez modifier PW=\"\" en le mot de passe souhaité dans le planificateur de tâches DSM et exécutez la tâche."
+  ja_JP: "ルートパスワードを設定し、ssh/sftpを有効にします。DSM タスクスケジューラで PW=\"\" を希望のパスワードに変更してタスクを実行してください。"
   ko_KR: "루트 암호를 설정하고 ssh/sftp를 활성화합니다. DSM 작업 스케줄러에서 PW=\"\"를 원하는 암호로 수정하고 작업을 실행하십시오."
   ru_RU: "Установите пароль root и включите ssh/sftp. Пожалуйста, измените PW=\"\" на желаемый пароль в планировщике задач DSM и запустите задачу."
   uk_UA: "Встановіть пароль root та увімкніть ssh/sftp. Будь ласка, змініть PW=\"\" на бажаний пароль в планувальнику завдань DSM та запустіть завдання."

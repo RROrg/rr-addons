@@ -1,10 +1,11 @@
 version: 1
 name: nvmecache
-description: # https://github.com/PeterSuh-Q3/tcrp-addons/tree/main/nvme-cache
+description:# https://github.com/PeterSuh-Q3/tcrp-addons/tree/main/nvme-cache
   en_US: "Author: PeterSuh-Q3. Enable M2 disk support for DS918+, DS1019+, DS1621xs+, RS1619xs+."
   es_ES: "Autor: PeterSuh-Q3. Habilita el soporte de discos M2 para DS918+, DS1019+, DS1621xs+, RS1619xs+."
   de_DE: "Autor: PeterSuh-Q3. Aktivieren Sie die Unterstützung für M2-Laufwerke für DS918+, DS1019+, DS1621xs+, RS1619xs+."
   fr_FR: "Auteur: PeterSuh-Q3. Activer la prise en charge des disques M2 pour DS918+, DS1019+, DS1621xs+, RS1619xs+."
+  ja_JP: "作成者: PeterSuh-Q3。DS918+、DS1019+、DS1621xs+、RS1619xs+ で M2 ディスクのサポートを有効にします。"
   ko_KR: "작성자: PeterSuh-Q3. DS918+, DS1019+, DS1621xs+, RS1619xs+에서 M2 디스크 지원 활성화."
   ru_RU: "Автор: PeterSuh-Q3. Включите поддержку дисков M2 для DS918+, DS1019+, DS1621xs+, RS1619xs+."
   uk_UA: "Автор: PeterSuh-Q3. Увімкніть підтримку дисків M2 для DS918+, DS1019+, DS1621xs+, RS1619xs+."

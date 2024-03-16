@@ -1,10 +1,11 @@
 version: 1
 name: wireless
-description: 
+description:
   en_US: "Connect WiFi. Please modify 'IFNAME' 'SSID' 'PASSWD' to the required password in the DSM scheduled task and execute it."
   es_ES: "Conecte WiFi. Modifique 'IFNAME' 'SSID' 'PASSWD' a la contraseña requerida en la tarea programada DSM y ejecútela."
   de_DE: "Verbinden Sie WiFi. Bitte ändern Sie 'IFNAME' 'SSID' 'PASSWD' auf das erforderliche Passwort in der DSM geplanten Aufgabe und führen Sie es aus."
   fr_FR: "Connectez-vous au WiFi. Veuillez modifier 'IFNAME' 'SSID' 'PASSWD' au mot de passe requis dans la tâche planifiée DSM et exécutez-la."
+  ja_JP: "WiFiに接続してください。DSMの予約タスクで必要なパスワードに 'IFNAME' 'SSID' 'PASSWD' を変更して実行してください。"
   ko_KR: "WiFi에 연결하십시오. DSM 예약 작업에서 필요한 암호로 'IFNAME' 'SSID' 'PASSWD'를 수정하고 실행하십시오."
   ru_RU: "Подключитесь к WiFi. Пожалуйста, измените 'IFNAME' 'SSID' 'PASSWD' на требуемый пароль в запланированной задаче DSM и выполните ее."
   uk_UA: "Підключіться до WiFi. Будь ласка, змініть 'IFNAME' 'SSID' 'PASSWD' на потрібний пароль у запланованому завданні DSM та виконайте його."

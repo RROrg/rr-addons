@@ -5,6 +5,7 @@ description:
   es_ES: "Herramientas de depuración, habilitan automáticamente ttyd y dufs en modo junior, y capturan automáticamente todos los registros de arranque de las fases en <loader disk>/p1/logs/."
   de_DE: "Debug-Tools, aktivieren automatisch ttyd und dufs im Junior-Modus und erfassen automatisch alle Startprotokolle der Stufen in <loader disk>/p1/logs/."
   fr_FR: "Outils de débogage, activent automatiquement ttyd et dufs en mode junior, et capturent automatiquement tous les journaux de démarrage de la phase dans <loader disk>/p1/logs/."
+  ja_JP: "デバッグユーティリティは、ジュニアモードで自動的にttydとdufsを有効にし、すべてのステージブートログを<loader disk>/p1/logs/に自動的にキャプチャします。"
   ko_KR: "디버그 유틸리티, 주니어 모드에서 자동으로 ttyd와 dufs를 활성화하고 모든 단계 부팅 로그를 <loader disk>/p1/logs/에 자동으로 캡처합니다."
   ru_RU: "Утилиты отладки, автоматически включают ttyd и dufs в режиме junior и автоматически захватывают все журналы загрузки этапа в <loader disk>/p1/logs/."
   uk_UA: "Утиліти налагодження, автоматично увімкнути ttyd та dufs у режимі junior, та автоматично захопити всі журнали завантаження етапу в <loader disk>/p1/logs/."

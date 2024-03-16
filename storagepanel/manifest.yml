@@ -1,10 +1,11 @@
 version: 1
 name: storagepanel
-description: 
+description:
   en_US: "Change the storage panel disk display (default: RACK_24_Bay 1X8)."
   es_ES: "Cambie el panel de almacenamiento de disco de visualización (predeterminado: RACK_24_Bay 1X8)."
   de_DE: "Ändern Sie die Speicherpanel-Disk-Anzeige (Standard: RACK_24_Bay 1X8)."
   fr_FR: "Changer l'affichage du disque du panneau de stockage (par défaut : RACK_24_Bay 1X8)."
+  ja_JP: "ストレージパネルディスク表示を変更します（デフォルト：RACK_24_Bay 1X8）。"
   ko_KR: "스토리지 패널 디스크 표시 변경(기본값: RACK_24_Bay 1X8)."
   ru_RU: "Изменить отображение диска панели хранения (по умолчанию: RACK_24_Bay 1X8)."
   uk_UA: "Змінити відображення диска панелі зберігання (за замовчуванням: RACK_24_Bay 1X8)."

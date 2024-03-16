@@ -1,10 +1,11 @@
 version: 1
 name: i915le10th
-description: 
+description:
   en_US: "Automatically replace the device ID of i915.ko(apollolake, geminilake), only supporting less 10th. (Parameter VID:PID)"
   es_ES: "Reemplace automáticamente el ID de dispositivo de i915.ko (apollolake, geminilake), que solo admite menos de 10. (Parámetro VID: PID)"
   de_DE: "Ersetzen Sie automatisch die Geräte-ID von i915.ko (apollolake, geminilake), die nur weniger als 10. unterstützt. (Parameter VID:PID)"
   fr_FR: "Remplacez automatiquement l'ID de périphérique de i915.ko (apollolake, geminilake), ne prenant en charge que moins de 10. (Paramètre VID:PID)"
+  ja_JP: "i915.ko（apollolake、geminilake）のデバイスIDを自動的に置き換え、10未満のみをサポートします。 （パラメータVID：PID）"
   ko_KR: "i915.ko(apollolake, geminilake)의 장치 ID를 자동으로 교체하며, 10세 미만만 지원합니다. (파라미터 VID:PID)"
   ru_RU: "Автоматическая замена идентификатора устройства i915.ko (apollolake, geminilake), поддерживающего только менее 10. (Параметр VID:PID)"
   uk_UA: "Автоматично замінює ідентифікатор пристрою i915.ko (apollolake, geminilake), підтримує лише менше 10. (Параметр VID:PID)"
