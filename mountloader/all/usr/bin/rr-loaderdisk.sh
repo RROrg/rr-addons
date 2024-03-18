@@ -78,6 +78,9 @@ function mountLoaderDisk() {
 function unmountLoaderDisk() {
   if [ -f "/usr/rr/.mountloader" ]; then
     rm -f "/usr/rr/.mountloader"
+
+    sync
+
     export LOADER_DISK=
     export LOADER_DISK_PART1=
     export LOADER_DISK_PART2=

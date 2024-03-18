@@ -147,19 +147,48 @@ function updateRR() {
       return 1
     fi
   fi
+
+  echo '{"progress": "40", "progressmsg": "Check disk space ..."}' >"${PROGRESS_FILE}"
+  SIZENEW=0
+  SIZEOLD=0
+  while IFS=': ' read KEY VALUE; do
+    if [ "${KEY: -1}" = "/" ]; then
+      rm -Rf "${TMP_PATH}/update/${VALUE}"
+      mkdir -p "${TMP_PATH}/update/${VALUE}"
+      tar -zxf "${TMP_PATH}/update/$(basename "${KEY}").tgz" -C "${TMP_PATH}/update/${VALUE}"
+      if [ $? -ne 0 ]; then
+        echo '{"progress": "-5", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
+        return 1
+      fi
+      rm "${TMP_PATH}/update/$(basename "${KEY}").tgz"
+    else
+      mkdir -p "${TMP_PATH}/update/$(dirname "${VALUE}")"
+      mv -f "${TMP_PATH}/update/$(basename "${KEY}")" "${TMP_PATH}/update/${VALUE}"
+    fi
+    SIZENEW=$((${SIZENEW} + $(du -sm "${TMP_PATH}/update/${VALUE}" 2>/dev/null | awk '{print $1}')))
+    SIZEOLD=$((${SIZEOLD} + $(du -sm "${VALUE}" 2>/dev/null | awk '{print $1}')))
+  done <<<$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")
+
+  SIZESPL=$(df -m ${PART3_PATH} 2>/dev/null | awk 'NR==2 {print $4}')
+  if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
+    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "${PART3_PATH}" "$((${SIZENEW} - ${SIZEOLD} - ${SIZESPL}))")"
+    echo '{"progress": "-6", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
+    return 1
+  fi
+
   # Process update-list.yml
-  echo '{"progress": "40", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
+  echo '{"progress": "50", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   while read F; do
     [ -f "${F}" ] && rm -f "${F}"
     [ -d "${F}" ] && rm -Rf "${F}"
-  done < <(readConfigArray "remove" "${TMP_PATH}/update/update-list.yml")
+  done <<<$(readConfigArray "remove" "${TMP_PATH}/update/update-list.yml")
 
-  echo '{"progress": "50", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
+  echo '{"progress": "60", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   while IFS=': ' read KEY VALUE; do
     if [ "${KEY: -1}" = "/" ]; then
       rm -Rf "${VALUE}"
       mkdir -p "${VALUE}"
-      tar -zxf "${TMP_PATH}/update/$(basename "${KEY}").tgz" -C "${VALUE}"
+      cp -Rf "${TMP_PATH}/update/${VALUE}"/* "${VALUE}"
       if [ "$(realpath "${VALUE}")" = "$(realpath "${MODULES_PATH}")" ]; then
         if [ -n "${MODEL}" -a -n "${PRODUCTVER}" ]; then
           PLATFORM="$(readModelKey "${MODEL}" "platform")"
@@ -169,17 +198,19 @@ function updateRR() {
             writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
             while read ID DESC; do
               writeConfigKey "modules.\"${ID}\"" "" "${USER_CONFIG_FILE}"
-            done < <(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}")
+            done <<<$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}")
           fi
         fi
       fi
     else
       mkdir -p "$(dirname "${VALUE}")"
-      mv -f "${TMP_PATH}/update/$(basename "${KEY}")" "${VALUE}"
+      cp -f "${TMP_PATH}/update/${VALUE}" "${VALUE}"
     fi
-  done < <(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")
+  done <<<$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")
+  rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   touch ${PART1_PATH}/.build
+  sync
   echo '{"progress": "100", "progressmsg": "RR updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
@@ -203,17 +234,33 @@ function updateAddons() {
     echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
     return 1
   fi
+
+  for PKG in $(ls ${TMP_PATH}/update/*.addon 2>/dev/null); do
+    ADDON=$(basename ${PKG} .addon)
+    rm -rf "${TMP_PATH}/update/${ADDON}"
+    mkdir -p "${TMP_PATH}/update/${ADDON}"
+    tar -xaf "${PKG}" -C "${TMP_PATH}/update/${ADDON}"
+    if [ $? -ne 0 ]; then
+      echo '{"progress": "-3", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
+      return 1
+    fi
+    rm -f "${PKG}"
+  done
+  SIZENEW="$(du -sm "${TMP_PATH}/update" 2>/dev/null | awk '{print $1}')"
+  SIZEOLD="$(du -sm "${ADDONS_PATH}" 2>/dev/null | awk '{print $1}')"
+  SIZESPL=$(df -m "${ADDONS_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
+  if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
+    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${ADDONS_PATH}")" "$((${SIZENEW} - ${SIZEOLD} - ${SIZESPL}))")"
+    echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
+    return 1
+  fi
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   rm -Rf "${ADDONS_PATH}/"*
-  [ -f "${TMP_PATH}/update/VERSION" ] && cp -f "${TMP_PATH}/update/VERSION" "${ADDONS_PATH}/"
-  for PKG in $(ls ${TMP_PATH}/update/*.addon 2>/dev/null); do
-    ADDON=$(basename ${PKG} | sed 's|.addon||')
-    rm -rf "${ADDONS_PATH}/${ADDON}"
-    mkdir -p "${ADDONS_PATH}/${ADDON}"
-    tar -xaf "${PKG}" -C "${ADDONS_PATH}/${ADDON}" >/dev/null 2>&1
-  done
+  cp -Rf "${TMP_PATH}/update/"* "${ADDONS_PATH}/"
+  rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   touch ${PART1_PATH}/.build
+  sync
   echo '{"progress": "100", "progressmsg": "Addons updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
@@ -237,9 +284,19 @@ function updateModules() {
     echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
     return 1
   fi
+
+  SIZENEW="$(du -sm "${TMP_PATH}/update" 2>/dev/null | awk '{print $1}')"
+  SIZEOLD="$(du -sm "${MODULES_PATH}" 2>/dev/null | awk '{print $1}')"
+  SIZESPL=$(df -m "${MODULES_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
+  if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
+    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${MODULES_PATH}")" "$((${SIZENEW} - ${SIZEOLD} - ${SIZESPL}))")"
+    echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
+    return 1
+  fi
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   rm -rf "${MODULES_PATH}/"*
   cp -rf "${TMP_PATH}/update/"* "${MODULES_PATH}/"
+  rm -rf "${TMP_PATH}/update"
   if [ $? -ne 0 ]; then
     echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
     return 1
@@ -253,11 +310,12 @@ function updateModules() {
       writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
       while read ID DESC; do
         writeConfigKey "modules.\"${ID}\"" "" "${USER_CONFIG_FILE}"
-      done < <(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}")
+      done <<<$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}")
     fi
   fi
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   touch ${PART1_PATH}/.build
+  sync
   echo '{"progress": "100", "progressmsg": "Modules updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
@@ -281,11 +339,22 @@ function updateLKMs() {
     echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
     return 1
   fi
+
+  SIZENEW="$(du -sm "${TMP_PATH}/update" 2>/dev/null | awk '{print $1}')"
+  SIZEOLD="$(du -sm "${LKMS_PATH}" 2>/dev/null | awk '{print $1}')"
+  SIZESPL=$(df -m "${LKMS_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
+  if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
+    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${LKMS_PATH}")" "$((${SIZENEW} - ${SIZEOLD} - ${SIZESPL}))")"
+    echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
+    return 1
+  fi
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   rm -rf "${LKMS_PATH}/"*
   cp -rf "${TMP_PATH}/update/"* "${LKMS_PATH}/"
+  rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   touch ${PART1_PATH}/.build
+  sync
   echo '{"progress": "100", "progressmsg": "LKMs updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
@@ -309,11 +378,22 @@ function updateCKs() {
     echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
     return 1
   fi
+
+  SIZENEW="$(du -sm "${TMP_PATH}/update" 2>/dev/null | awk '{print $1}')"
+  SIZEOLD="$(du -sm "${CKS_PATH}" 2>/dev/null | awk '{print $1}')"
+  SIZESPL=$(df -m "${CKS_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
+  if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
+    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${CKS_PATH}")" "$((${SIZENEW} - ${SIZEOLD} - ${SIZESPL}))")"
+    echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
+    return 1
+  fi
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   rm -rf "${CKS_PATH}/"*
   cp -rf "${TMP_PATH}/update/"* "${CKS_PATH}/"
+  rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   touch ${PART1_PATH}/.build
+  sync
   echo '{"progress": "100", "progressmsg": "CKs updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
