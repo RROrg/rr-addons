@@ -1,6 +1,6 @@
 version: 1
 name: hdddb
-description:# https://github.com/007revad/Synology_HDD_db
+description:  # https://github.com/007revad/Synology_HDD_db
   en_US: "Author: 007revad. Add HDD/SSD drives to the DSM database to solve the problem of firmware version not recognized by the disk."
   es_ES: "Autor: 007revad. Agrega discos duros y SSD a la base de datos de DSM para solucionar el problema de que la versión del firmware no sea reconocida por el disco."
   de_DE: "Autor: 007revad. Fügen Sie HDD/SSD-Laufwerke zur DSM-Datenbank hinzu, um das Problem zu lösen, dass die Firmware-Version von der Festplatte nicht erkannt wird."

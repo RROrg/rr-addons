@@ -1,6 +1,6 @@
 version: 1
 name: codecpatch
-description:# https://github.com/wirgen/synocodectool-patch
+description:  # https://github.com/wirgen/synocodectool-patch
   en_US: "Author: wirgen. This patch enables transcoding on Synologys DiskStation Manager 6+ without a valid serial number."
   es_ES: "Autor: wirgen. Este parche permite la transcodificación en DiskStation Manager 6+ de Synology sin un número de serie válido."
   de_DE: "Autor: wirgen. Dieser Patch ermöglicht die Transkodierung auf Synologys DiskStation Manager 6+ ohne eine gültige Seriennummer."
