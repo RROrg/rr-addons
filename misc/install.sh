@@ -54,6 +54,13 @@ EOF
 elif [ "${1}" = "late" ]; then
   echo "Installing addon misc - ${1}"
 
+  if [ -n "$(grep force_junior /proc/cmdline 2>/dev/null)" ] && [ -n "$(grep recovery /proc/cmdline 2>/dev/null)" ]; then
+    echo "Killing ttyd ..."
+    /usr/bin/killall ttyd
+    echo "Killing dufs ..."
+    /usr/bin/killall dufs
+  fi
+
   mount -t sysfs sysfs /sys
   modprobe acpi-cpufreq
   # CPU performance scaling
