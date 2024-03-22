@@ -173,7 +173,7 @@ function getUsbPorts() {
 
 #
 function dtModel() {
-  DEST="/etc/model.dts"
+  DEST="/addons/model.dts"
   UNIQUE=$(_get_conf_kv unique)
   if [ ! -f "${DEST}" ]; then # Users can put their own dts.
     echo "/dts-v1/;" >${DEST}
