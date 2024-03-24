@@ -8,8 +8,9 @@
 
 if [ "${1}" = "rcExit" ]; then
   echo "Installing addon misc - ${1}"
-  # clear system disk space
+
   mkdir -p /usr/syno/web/webman
+  # clear system disk space
   cat >/usr/syno/web/webman/clean_system_disk.cgi <<EOF
 #!/bin/sh
 
@@ -29,34 +30,83 @@ fi
 EOF
   chmod +x /usr/syno/web/webman/clean_system_disk.cgi
 
-  if [ -n "$(grep force_junior /proc/cmdline 2>/dev/null)" ] && [ -n "$(grep recovery /proc/cmdline 2>/dev/null)" ]; then
-    echo "Starting ttyd ..."
-    if /usr/bin/lsof -Pi :7681 -sTCP:LISTEN -t >/dev/null; then
-      echo "Port 7681 is already in use. Terminating the existing process..."
-      /usr/bin/lsof -i :7681
-    fi
-    MSG=""
-    MSG="${MSG}RR Recovery Mode\n"
-    MSG="${MSG}To 'Force re-install DSM': please visit http://<ip>:5000/web_install.html\n"
-    MSG="${MSG}To 'Modify system files' : please mount /dev/md0\n"
-    /usr/sbin/ttyd /usr/bin/ash -c "echo -e \"${MSG}\"; ash" -l &
-    echo "Starting dufs ..."
-    if /usr/bin/lsof -Pi :7304 -sTCP:LISTEN -t >/dev/null; then
-      echo "Port 7304 is already in use. Terminating the existing process..."
-      /usr/bin/lsof -i :7304
-    fi
-    /usr/sbin/dufs -A -p 7304 / &
+  # reboot to loader
+  cat >/usr/syno/web/webman/reboot_to_loader.cgi <<EOF
+#!/bin/sh
 
-    cp -f /usr/syno/web/web_index.html /usr/syno/web/web_install.html
-    cp -f /addons/web_index.html /usr/syno/web/web_index.html
+echo -ne "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
+if [ -f /usr/bin/loader-reboot.sh ]; then
+  /usr/bin/loader-reboot.sh config
+  echo '{"success": true}'
+else
+  echo '{"success": false}'
+fi
+EOF
+  chmod +x /usr/syno/web/webman/reboot_to_loader.cgi
+
+  # get logs
+  cat >/usr/syno/web/webman/get_logs.cgi <<EOF
+#!/bin/sh
+
+echo -ne "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
+echo "==== proc cmdline ===="
+cat /proc/cmdline 
+echo "==== SynoBoot log ===="
+cat /var/log/linuxrc.syno.log
+echo "==== Installerlog ===="
+cat /tmp/installer_sh.log
+echo "==== Messages log ===="
+cat /var/log/messages
+EOF
+  chmod +x /usr/syno/web/webman/get_logs.cgi
+
+  # error message
+  if [ ! -b /dev/synoboot ] || [ ! -b /dev/synoboot1 ] || [ ! -b /dev/synoboot2 ] || [ ! -b /dev/synoboot3 ]; then
+    sed -i 's/c("welcome","desc_install")/"Error: The bootloader disk is not successfully mounted, the installation will fail."/' /usr/syno/web/main.js
+  fi
+
+  # recovery.cgi
+  cat >/usr/syno/web/webman/recovery.cgi <<EOF
+#!/bin/sh
+
+echo -ne "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
+if /usr/bin/lsof -Pi :7681 -sTCP:LISTEN -t >/dev/null; then
+  echo "Port 7681 is already in use. Terminating the existing process..."
+  /usr/bin/lsof -i :7681
+else
+  echo "Starting ttyd ..."
+  MSG=""
+  MSG="\${MSG}RR Recovery Mode\n"
+  MSG="\${MSG}To 'Force re-install DSM': please visit http://<ip>:5000/web_install.html\n"
+  MSG="\${MSG}To 'Modify system files' : please mount /dev/md0\n"
+  /usr/sbin/ttyd /usr/bin/ash -c "echo -e \"\${MSG}\"; ash" -l >/dev/null 2>&1 &
+fi
+if /usr/bin/lsof -Pi :7304 -sTCP:LISTEN -t >/dev/null; then
+  echo "Port 7304 is already in use. Terminating the existing process..."
+  /usr/bin/lsof -i :7304
+else
+  echo "Starting dufs ..."
+  /usr/sbin/dufs -A -p 7304 / >/dev/null 2>&1 &
+fi
+cp -f /usr/syno/web/web_index.html /usr/syno/web/web_install.html
+cp -f /addons/web_index.html /usr/syno/web/web_index.html
+echo "Recovery mode is ready"
+EOF
+  chmod +x /usr/syno/web/webman/recovery.cgi
+
+  # recovery
+  if [ -n "$(grep force_junior /proc/cmdline 2>/dev/null)" ] && [ -n "$(grep recovery /proc/cmdline 2>/dev/null)" ]; then
+    /usr/syno/web/webman/recovery.cgi
   fi
 
 elif [ "${1}" = "late" ]; then
   echo "Installing addon misc - ${1}"
 
-  if [ -n "$(grep force_junior /proc/cmdline 2>/dev/null)" ] && [ -n "$(grep recovery /proc/cmdline 2>/dev/null)" ]; then
+  if /usr/bin/lsof -Pi :7681 -sTCP:LISTEN -t >/dev/null; then
     echo "Killing ttyd ..."
     /usr/bin/killall ttyd
+  fi
+  if /usr/bin/lsof -Pi :7304 -sTCP:LISTEN -t >/dev/null; then
     echo "Killing dufs ..."
     /usr/bin/killall dufs
   fi
