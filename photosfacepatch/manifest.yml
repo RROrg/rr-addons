@@ -1,6 +1,6 @@
 version: 1
 name: photosfacepatch
-description: # https://github.com/jinlife/Synology_Photos_Face_Patch
+description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
   en_US: "Author: jinlife. This patch will ignore the GPU to enable face recognition in Synology Photos."
   es_ES: "Autor: jinlife. Este parche ignora la GPU para habilitar el reconocimiento facial en Synology Photos."
   de_DE: "Autor: jinlife. Dieser Patch ignoriert die GPU, um die Gesichtserkennung in Synology Photos zu aktivieren."
