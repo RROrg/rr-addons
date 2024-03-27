@@ -6,13 +6,15 @@
 # See /LICENSE for more information.
 #
 
-case "${1}" in
-"early" | "jrExit")
+if [ "${1}" = "early" ]; then
   echo "Installing addon dbgutils - ${1}"
   [ ! -L "/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
   loader-logs.sh "${1}"
-  ;;
-"rcExit")
+elif [ "${1}" = "jrExit" ]; then
+  echo "Installing addon dbgutils - ${1}"
+  [ ! -L "/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
+  loader-logs.sh "${1}"
+elif [ "${1}" = "rcExit" ]; then
   echo "Installing addon dbgutils - ${1}"
   [ ! -L "/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
   loader-logs.sh "${1}"
@@ -28,8 +30,7 @@ case "${1}" in
     /usr/bin/lsof -i :7304
   fi
   /usr/sbin/dufs -A -p 7304 / &
-  ;;
-"late")
+elif [ "${1}" = "late" ]; then
   echo "Installing addon dbgutils - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
@@ -55,7 +56,8 @@ case "${1}" in
   cp -vf /usr/sbin/ttyd /tmpRoot/usr/sbin/
   cp -vf /usr/sbin/dufs /tmpRoot/usr/sbin/
 
-  DEST="/tmpRoot/lib/systemd/system/savelogs.service"
+  mkdir -p "/tmpRoot/usr/lib/systemd/system"
+  DEST="/tmpRoot/usr/lib/systemd/system/savelogs.service"
   echo "[Unit]"                                      >${DEST}
   echo "Description=RR save logs for debug"         >>${DEST}
   echo                                              >>${DEST}
@@ -67,14 +69,13 @@ case "${1}" in
   echo "[Install]"                                  >>${DEST}
   echo "WantedBy=multi-user.target"                 >>${DEST}
 
-  mkdir -p /tmpRoot/lib/systemd/system/multi-user.target.wants
-  ln -vsf /lib/systemd/system/savelogs.service /tmpRoot/lib/systemd/system/multi-user.target.wants/savelogs.service
-  ;;
-"uninstall")
+  mkdir -p /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
+  ln -vsf /usr/lib/systemd/system/savelogs.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/savelogs.service
+elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon dbgutils - ${1}"
 
-  rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/savelogs.service"
-  rm -f "/tmpRoot/lib/systemd/system/savelogs.service"
+  rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/savelogs.service"
+  rm -f "/tmpRoot/usr/lib/systemd/system/savelogs.service"
 
   #rm -f /tmpRoot/usr/bin/bc
   #rm -f /tmpRoot/usr/bin/dtc
@@ -85,9 +86,4 @@ case "${1}" in
   rm -f /tmpRoot/bin/loader-logs.sh
   #rm -f /tmpRoot/usr/sbin/ttyd
   #rm -f /tmpRoot/usr/sbin/dufs
-  ;;
-*)
-  echo "Installing addon dbgutils - ${1} - nothing to do!"
-  exit 0
-  ;;
-esac
+fi

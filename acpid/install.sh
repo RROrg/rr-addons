@@ -43,6 +43,7 @@ if [ "${1}" = "late" ]; then
     echo 'end script'                                   >>${DEST}
     echo 'exec /usr/sbin/acpid'                         >>${DEST}
   else
+    mkdir -p "/tmpRoot/usr/lib/systemd/system"
     DEST="/tmpRoot/usr/lib/systemd/system/acpid.service"
     echo "[Unit]"                                        >${DEST}
     echo "Description=addon acpid"                      >>${DEST}
@@ -60,8 +61,8 @@ if [ "${1}" = "late" ]; then
     echo "[X-Synology]"                                 >>${DEST}
     echo "Author=Virtualization Team"                   >>${DEST}
 
-    mkdir -vp /tmpRoot/lib/systemd/system/multi-user.target.wants
-    ln -vsf /usr/lib/systemd/system/acpid.service /tmpRoot/lib/systemd/system/multi-user.target.wants/acpid.service
+    mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
+    ln -vsf /usr/lib/systemd/system/acpid.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/acpid.service
   fi
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon acpid - ${1}"
@@ -69,7 +70,7 @@ elif [ "${1}" = "uninstall" ]; then
   if [ ${MajorVersion:-0} -lt 7 ]; then # < 7
     rm -f "/tmpRoot/etc/init/acpid.conf"
   else
-    rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/acpid.service"
+    rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/acpid.service"
     rm -f "/tmpRoot/usr/lib/systemd/system/acpid.service"
   fi
 

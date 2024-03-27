@@ -111,7 +111,8 @@ elif [ "${1}" = "late" ]; then
     echo 'exec /usr/bin/udevadm hwdb --update'                                    >>${DEST}
     echo 'exec /usr/bin/udevadm control --reload-rules'                           >>${DEST}
   else
-    DEST="/tmpRoot/lib/systemd/system/udevrules.service"
+    mkdir -p "/tmpRoot/usr/lib/systemd/system"
+    DEST="/tmpRoot/usr/lib/systemd/system/udevrules.service"
     echo "[Unit]"                                                                  >${DEST}
     echo "Description=Reload udev rules"                                          >>${DEST}
     echo                                                                          >>${DEST}
@@ -124,7 +125,7 @@ elif [ "${1}" = "late" ]; then
     echo "[Install]"                                                              >>${DEST}
     echo "WantedBy=multi-user.target"                                             >>${DEST}
 
-    mkdir -vp /tmpRoot/lib/systemd/system/multi-user.target.wants
-    ln -vsf /lib/systemd/system/udevrules.service /tmpRoot/lib/systemd/system/multi-user.target.wants/udevrules.service
+    mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
+    ln -vsf /usr/lib/systemd/system/udevrules.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/udevrules.service
   fi
 fi

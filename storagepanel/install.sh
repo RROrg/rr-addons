@@ -12,7 +12,9 @@ if [ "${1}" = "late" ]; then
   cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
   
   cp -vf /usr/bin/storagepanel.sh /tmpRoot/usr/bin/storagepanel.sh
+  
   shift
+  mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/storagepanel.service"
   echo "[Unit]"                                          >${DEST}
   echo "Description=Modify storage panel"               >>${DEST}
@@ -26,12 +28,12 @@ if [ "${1}" = "late" ]; then
   echo "[Install]"                                      >>${DEST}
   echo "WantedBy=multi-user.target"                     >>${DEST}
 
-  mkdir -vp /tmpRoot/lib/systemd/system/multi-user.target.wants
-  ln -vsf /usr/lib/systemd/system/storagepanel.service /tmpRoot/lib/systemd/system/multi-user.target.wants/storagepanel.service
+  mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
+  ln -vsf /usr/lib/systemd/system/storagepanel.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/storagepanel.service
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon storagepanel - ${1}"
 
-  rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/storagepanel.service"
+  rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/storagepanel.service"
   rm -f "/tmpRoot/usr/lib/systemd/system/storagepanel.service"
 
   [ ! -f "/tmpRoot/usr/rr/revert.sh" ] && echo '#!/usr/bin/env bash' >/tmpRoot/usr/rr/revert.sh && chmod +x /tmpRoot/usr/rr/revert.sh

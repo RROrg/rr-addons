@@ -22,6 +22,7 @@ if [ "${1}" = "late" ]; then
   done
 
   if [ ! "$(cat "/tmpRoot/usr/rr/revert.sh")" = '#!/usr/bin/env bash' ]; then
+    mkdir -p "/tmpRoot/usr/lib/systemd/system"
     DEST="/tmpRoot/usr/lib/systemd/system/revert.service"
     echo "[Unit]"                                    >${DEST}
     echo "Description=revert"                       >>${DEST}
@@ -35,11 +36,11 @@ if [ "${1}" = "late" ]; then
     echo "[Install]"                                >>${DEST}
     echo "WantedBy=multi-user.target"               >>${DEST}
 
-    mkdir -vp /tmpRoot/lib/systemd/system/multi-user.target.wants
-    ln -vsf /usr/lib/systemd/system/revert.service /tmpRoot/lib/systemd/system/multi-user.target.wants/revert.service
+    mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
+    ln -vsf /usr/lib/systemd/system/revert.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/revert.service
   else
     rm -f "/tmpRoot/usr/lib/systemd/system/revert.service"
-    rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/revert.service"
+    rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/revert.service"
   fi
 
   # backup current loader configs

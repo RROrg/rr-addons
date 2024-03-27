@@ -49,6 +49,7 @@ elif [ "${1}" = "late" ]; then
   # Create storage pool page without RAID type.
   cp -vf /usr/bin/nvmesystem.sh /tmpRoot/usr/bin/nvmesystem.sh
 
+  mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/nvmesystem.service"
   echo "[Unit]"                                          >${DEST}
   echo "Description=Modify storage panel"               >>${DEST}
@@ -64,8 +65,8 @@ elif [ "${1}" = "late" ]; then
   echo "[Install]"                                      >>${DEST}
   echo "WantedBy=multi-user.target"                     >>${DEST}
 
-  mkdir -vp /tmpRoot/lib/systemd/system/multi-user.target.wants
-  ln -vsf /usr/lib/systemd/system/nvmesystem.service /tmpRoot/lib/systemd/system/multi-user.target.wants/nvmesystem.service
+  mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
+  ln -vsf /usr/lib/systemd/system/nvmesystem.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/nvmesystem.service
 
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon nvmesystem - ${1}"
@@ -73,7 +74,7 @@ elif [ "${1}" = "uninstall" ]; then
   SO_FILE="/tmpRoot/usr/lib/libhwcontrol.so.1"
   [ -f "${SO_FILE}.bak" ] && mv -f "${SO_FILE}.bak" "${SO_FILE}"
 
-  rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/nvmesystem.service"
+  rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/nvmesystem.service"
   rm -f "/tmpRoot/usr/lib/systemd/system/nvmesystem.service"
 
   [ ! -f "/tmpRoot/usr/rr/revert.sh" ] && echo '#!/usr/bin/env bash' >/tmpRoot/usr/rr/revert.sh && chmod +x /tmpRoot/usr/rr/revert.sh

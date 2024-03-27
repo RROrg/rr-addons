@@ -13,6 +13,7 @@ if [ "${1}" = "late" ]; then
   
   cp -vf /usr/bin/hdddb.sh /tmpRoot/usr/bin/hdddb.sh
 
+  mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/hdddb.service"
   echo "[Unit]"                                    >${DEST}
   echo "Description=HDDs/SSDs drives databases"   >>${DEST}
@@ -26,12 +27,12 @@ if [ "${1}" = "late" ]; then
   echo "[Install]"                                >>${DEST}
   echo "WantedBy=multi-user.target"               >>${DEST}
 
-  mkdir -vp /tmpRoot/lib/systemd/system/multi-user.target.wants
-  ln -vsf /usr/lib/systemd/system/hdddb.service /tmpRoot/lib/systemd/system/multi-user.target.wants/hdddb.service
+  mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
+  ln -vsf /usr/lib/systemd/system/hdddb.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/hdddb.service
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon hdddb - ${1}"
 
-  rm -f "/tmpRoot/lib/systemd/system/multi-user.target.wants/hdddb.service"
+  rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/hdddb.service"
   rm -f "/tmpRoot/usr/lib/systemd/system/hdddb.service"
 
   [ ! -f "/tmpRoot/usr/rr/revert.sh" ] && echo '#!/usr/bin/env bash' >/tmpRoot/usr/rr/revert.sh && chmod +x /tmpRoot/usr/rr/revert.sh
