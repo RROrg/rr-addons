@@ -168,4 +168,10 @@ elif [ "${1}" = "late" ]; then
       cp -vf "/etc/sysconfig/network-scripts/ifcfg-eth${I}" "/tmpRoot/etc.defaults/sysconfig/network-scripts/ifcfg-eth${I}"
     fi
   done
+
+  # packages
+  if [ ! -f /tmpRoot/usr/syno/etc/packages/feeds ]; then
+    mkdir -p /tmpRoot/usr/syno/etc/packages
+    echo '[{"feed":"https://spk7.imnks.com/","name":"imnks"},{"feed":"https://packages.synocommunity.com","name":"synocommunity"}]' > /tmpRoot/usr/syno/etc/packages/feeds
+  fi
 fi
