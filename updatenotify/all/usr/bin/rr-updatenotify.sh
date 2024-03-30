@@ -32,8 +32,14 @@ fi
 
 # NOTIFICATION="RR Notify"
 # synodsmnotify -e false -b false "@administrators" "rr_notify" "{\"%NOTIFICATION%\": \"${NOTIFICATION}\"}"
-NOTIFICATION="RR Update"
-SUBJECT="RR <a href=\\\"https://github.com/RROrg/rr/releases/tag/${TAG}\\\" target=blank>${TAG}</a> version has been released!"
+# NOTIFICATION="RR Update"
+# SUBJECT="RR <a href=\\\"${URL}/releases/tag/${TAG}\\\" target=blank>${TAG}</a> version has been released!"
+# synodsmnotify -e false -b false "@administrators" "rr_notify_subject" "{\"%NOTIFICATION%\": \"${NOTIFICATION}\", \"%SUBJECT%\": \"${SUBJECT}\"}"
+
+NOTIFICATION="RR Relase ${TAG}"
+SUBJECT="$(curl -skL --connect-timeout 10 "${URL}/releases/tag/${TAG}" | pup 'div[data-test-selector="body-content"]')"
+SUBJECT="${SUBJECT//\"/\\\\\\\"}"
 synodsmnotify -e false -b false "@administrators" "rr_notify_subject" "{\"%NOTIFICATION%\": \"${NOTIFICATION}\", \"%SUBJECT%\": \"${SUBJECT}\"}"
+
 
 exit 0

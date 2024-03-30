@@ -11,6 +11,7 @@ if [ "${1}" = "late" ]; then
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
 
+  cp -vf /usr/bin/pup /tmpRoot/usr/bin/pup
   cp -vf /usr/bin/rr-updatenotify.sh /tmpRoot/usr/bin/rr-updatenotify.sh
 
   FILE_PATH="/tmpRoot/usr/syno/etc/synoschedule.d/root"
