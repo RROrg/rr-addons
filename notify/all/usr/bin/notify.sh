@@ -31,7 +31,7 @@ else
 
   # NOTIFICATION="RR Notify"
   # synodsmnotify -e false -b false "@administrators" "rr_notify" "{\"%NOTIFICATION%\": \"${NOTIFICATION}\"}"
-  NOTIFICATION="RR Notify"
-  SUBJECT="Welcome to <a href=\\\"https://github.com/RROrg\\\" target=blank>RROrg</a>!"
-  synodsmnotify -e false -b false "@administrators" "rr_notify_subject" "{\"%NOTIFICATION%\": \"${NOTIFICATION}\", \"%SUBJECT%\": \"${SUBJECT}\"}"
+  # NOTIFICATION="RR Notify"
+  # SUBJECT="Welcome to <a href=\\\"https://github.com/RROrg\\\" target=blank>RROrg</a>!"
+  # synodsmnotify -e false -b false "@administrators" "rr_notify_subject" "{\"%NOTIFICATION%\": \"${NOTIFICATION}\", \"%SUBJECT%\": \"${SUBJECT}\"}"
 fi
