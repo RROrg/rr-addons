@@ -1,0 +1,52 @@
+version: 1
+name: synoconfbkp
+description:
+  en_US: "Automatically backup system config settings to the bootloader disk(<loader disk>/p1/scbk/) at bootup and shutdown. Parameters: $1 - number of saves; $2 - file name prefix."
+  es_ES: "Realiza automáticamente una copia de seguridad de la configuración del sistema en el disco de arranque (<disco de arranque>/p1/scbk/) al arrancar y apagar. Parámetros: $1 - número de copias; $2 - prefijo del nombre del archivo."
+  de_DE: "Sichert automatisch die Systemkonfigurationseinstellungen auf der Bootloader-Festplatte (<Bootloader-Festplatte>/p1/scbk/) beim Booten und Herunterfahren. Parameter: $1 - Anzahl der Sicherungen; $2 - Dateiname-Präfix."
+  fr_FR: "Sauvegarde automatiquement les paramètres de configuration du système sur le disque de démarrage (<disque de démarrage>/p1/scbk/) au démarrage et à l'arrêt. Paramètres : $1 - nombre de sauvegardes ; $2 - préfixe du nom du fichier."
+  ja_JP: "システム構成設定をブートローダーディスク（<ブートローダーディスク>/p1/scbk/）に起動時とシャットダウン時に自動的にバックアップします。パラメータ: $1 - 保存回数; $2 - ファイル名のプレフィックス。"
+  ko_KR: "시스템 구성 설정을 부팅 및 종료시 부트로더 디스크(<부트로더 디스크>/p1/scbk/)에 자동으로 백업합니다. 매개변수: $1 - 저장 횟수; $2 - 파일 이름 접두사."
+  ru_RU: "Автоматически создает резервную копию настроек конфигурации системы на диске загрузчика (<диск загрузчика>/p1/scbk/) при загрузке и выключении. Параметры: $1 - количество сохранений; $2 - префикс имени файла."
+  uk_UA: "Автоматично створює резервну копію налаштувань конфігурації системи на диску завантажувача (<диск завантажувача>/p1/scbk/) під час завантаження та вимкнення. Параметри: $1 - кількість збережень; $2 - префікс імені файлу."
+  vi_VN: "Tự động sao lưu cấu hình hệ thống lên ổ đĩa bootloader (<ổ đĩa bootloader>/p1/scbk/) khi khởi động và tắt máy. Tham số: $1 - số lần lưu; $2 - tiền tố tên tệp."
+  zh_CN: "在启动和关机时自动备份系统配置设置到引导盘(<引导盘>/p1/scbk/)。参数：$1 - 保存次数；$2 - 文件名前缀。"
+  zh_HK: "在開機和關機時自動備份系統配置設定到引導盤(<引導盤>/p1/scbk/)。參數：$1 - 保存次數；$2 - 檔案名稱前綴。"
+  zh_TW: "在開機和關機時自動備份系統配置設定到引導盤(<引導盤>/p1/scbk/)。參數：$1 - 保存次數；$2 - 檔案名稱前綴。"
+# system: true
+all:
+  install-script: "install.sh"
+  copy: "all"
+available-for:
+  apollolake-4.4.59:
+  apollolake-4.4.180:
+  apollolake-4.4.302:
+  bromolow-3.10.105:
+  bromolow-3.10.108:
+  broadwell-4.4.105:
+  broadwell-4.4.180:
+  broadwell-4.4.302:
+  broadwellnk-4.4.59:
+  broadwellnk-4.4.180:
+  broadwellnk-4.4.302:
+  broadwellnkv2-4.4.180:
+  broadwellnkv2-4.4.302:
+  broadwellntbap-4.4.59:
+  broadwellntbap-4.4.180:
+  broadwellntbap-4.4.302:
+  epyc7002-7.1-5.10.55:
+  epyc7002-7.2-5.10.55:
+  denverton-4.4.59:
+  denverton-4.4.180:
+  denverton-4.4.302:
+  geminilake-4.4.59:
+  geminilake-4.4.180:
+  geminilake-4.4.302:
+  purley-4.4.59:
+  purley-4.4.180:
+  purley-4.4.302:
+  r1000-4.4.180:
+  r1000-4.4.302:
+  v1000-4.4.59:
+  v1000-4.4.180:
+  v1000-4.4.302:
