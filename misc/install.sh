@@ -5,8 +5,18 @@
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
+if [ "${1}" = "early" ]; then
+  echo "Installing addon misc - ${1}"
+  # [CREATE][failed] Raidtool initsys
+  SO_FILE="/usr/syno/bin/scemd"
+  [ ! -f "${SO_FILE}.bak" ] && cp -vf "${SO_FILE}" "${SO_FILE}.bak"
+  cp -f "${SO_FILE}" "${SO_FILE}.tmp"
+  xxd -c $(xxd -p "${SO_FILE}.tmp" 2>/dev/null | wc -c) -p "${SO_FILE}.tmp" 2>/dev/null |
+    sed "s/2d6520302e39/2d6520312e32/" |
+    xxd -r -p >"${SO_FILE}" 2>/dev/null
+  rm -f "${SO_FILE}.tmp"
 
-if [ "${1}" = "rcExit" ]; then
+elif [ "${1}" = "rcExit" ]; then
   echo "Installing addon misc - ${1}"
 
   mkdir -p /usr/syno/web/webman
@@ -172,6 +182,6 @@ elif [ "${1}" = "late" ]; then
   # packages
   if [ ! -f /tmpRoot/usr/syno/etc/packages/feeds ]; then
     mkdir -p /tmpRoot/usr/syno/etc/packages
-    echo '[{"feed":"https://spk7.imnks.com/","name":"imnks"},{"feed":"https://packages.synocommunity.com","name":"synocommunity"}]' > /tmpRoot/usr/syno/etc/packages/feeds
+    echo '[{"feed":"https://spk7.imnks.com/","name":"imnks"},{"feed":"https://packages.synocommunity.com","name":"synocommunity"}]' >/tmpRoot/usr/syno/etc/packages/feeds
   fi
 fi
