@@ -3,7 +3,11 @@
 set -e
 
 TMP_PATH="/tmp"
-YQ_BIN="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)/yq"
+YQ_BIN="$(command -v yq)"
+if [ -z "${YQ_BIN}" ] || ! ${YQ_BIN} --version 2>/dev/null | grep -q "v4."; then
+  YQ_BIN="${YQ_BIN:-"/usr/bin/yq"}"
+  wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O "${YQ_BIN}" && chmod +x "${YQ_BIN}"
+fi
 
 ###############################################################################
 #
