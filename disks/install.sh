@@ -286,6 +286,11 @@ function dtModel() {
       # [ ${MAXDISKS} -le 2 ] && MAXDISKS=4
       [ ${MAXDISKS} -lt 26 ] && MAXDISKS=26
     fi
+    # # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
+    # if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
+    #   MAXDISKS=26
+    #   echo "set maxdisks=26 [${MAXDISKS}]"
+    # fi
     _set_conf_kv rd "maxdisks" "${MAXDISKS}"
     echo "maxdisks=${MAXDISKS}"
 
@@ -349,11 +354,11 @@ function nondtModel() {
     [ ${MAXDISKS} -lt 26 ] && MAXDISKS=26
   fi
 
-  # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
-  if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
-    MAXDISKS=26
-    echo "set maxdisks=26 [${MAXDISKS}]"
-  fi
+  # # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
+  # if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
+  #   MAXDISKS=26
+  #   echo "set maxdisks=26 [${MAXDISKS}]"
+  # fi
 
   if _check_post_k "rd" "usbportcfg"; then
     USBPORTCFG=$(($(_get_conf_kv usbportcfg)))
@@ -423,7 +428,7 @@ if [ "${1}" = "patches" ]; then
 
   echo "BOOTDISK=${BOOTDISK}"
   echo "BOOTDISK_PHYSDEVPATH=${BOOTDISK_PHYSDEVPATH}"
-  
+
   checkSynoboot
 
   [ "$(_get_conf_kv supportportmappingv2)" = "yes" ] && dtModel "${2}" || nondtModel "${2}"
