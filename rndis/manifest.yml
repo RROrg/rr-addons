@@ -1,11 +1,11 @@
 version: 1
-name: wol
+name: rndis
 description:
   en_US: "Android USB Network Adapter."
   es_ES: "Adaptador de red USB de Android."
   de_DE: "Android USB-Netzwerkadapter."
   fr_FR: "Adaptateur réseau USB Android."
-  jp_JP: "Android USB ネットワークアダプター"
+  ja_JP: "Android USB ネットワークアダプター"
   ko_KR: "안드로이드 USB 네트워크 어댑터."
   ru_RU: "Адаптер сети USB для Android."
   uk_UA: "Адаптер мережі USB для Android."
