@@ -13,40 +13,30 @@ description:
   zh_CN: "在启动和关机时自动备份系统配置设置到引导加载器磁盘（<引导加载器磁盘>/p1/scbk/）。参数：$1 - 保存次数，默认 7；$2 - 文件名前缀，默认 \"bkp\"。"
   zh_HK: "在啟動和關機時自動備份系統設定到引導載入器磁碟（<引導載入器磁碟>/p1/scbk/）。參數：$1 - 保存次數，預設 7；$2 - 檔案名稱前綴，預設 \"bkp\"。"
   zh_TW: "在開機和關機時自動備份系統設定到引導載入器磁碟（<引導載入器磁碟>/p1/scbk/）。參數：$1 - 保存次數，預設 7；$2 - 檔案名稱前綴，預設 \"bkp\"。"
-# system: true
+system: false
 all:
   install-script: "install.sh"
   copy: "all"
 available-for:
-  apollolake-4.4.59:
   apollolake-4.4.180:
   apollolake-4.4.302:
-  bromolow-3.10.105:
-  bromolow-3.10.108:
-  broadwell-4.4.105:
   broadwell-4.4.180:
   broadwell-4.4.302:
-  broadwellnk-4.4.59:
   broadwellnk-4.4.180:
   broadwellnk-4.4.302:
   broadwellnkv2-4.4.180:
   broadwellnkv2-4.4.302:
-  broadwellntbap-4.4.59:
   broadwellntbap-4.4.180:
   broadwellntbap-4.4.302:
   epyc7002-7.1-5.10.55:
   epyc7002-7.2-5.10.55:
-  denverton-4.4.59:
   denverton-4.4.180:
   denverton-4.4.302:
-  geminilake-4.4.59:
   geminilake-4.4.180:
   geminilake-4.4.302:
-  purley-4.4.59:
   purley-4.4.180:
   purley-4.4.302:
   r1000-4.4.180:
   r1000-4.4.302:
-  v1000-4.4.59:
   v1000-4.4.180:
   v1000-4.4.302:

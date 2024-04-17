@@ -13,13 +13,13 @@ description:
   zh_CN: "仅使控制面板显示正确的 CPU 信息。(默认自动获取硬件信息，可通过的参数进行自定义， 参数: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
   zh_HK: "僅使控制面板顯示正確的 CPU 資訊。(默認自動獲取硬件信息，可通過的參數進行自定義， 參數: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
   zh_TW: "僅使控制面板顯示正確的 CPU 資訊。(默認自動獲取硬件信息，可通過的參數進行自定義， 參數: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
+system: false
 all:
   install-script: "install.sh"
   copy: "all"
 available-for:
   apollolake-4.4.180:
   apollolake-4.4.302:
-  bromolow-3.10.108:
   broadwell-4.4.180:
   broadwell-4.4.302:
   broadwellnk-4.4.180:

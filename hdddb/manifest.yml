@@ -13,20 +13,19 @@ description:  # https://github.com/007revad/Synology_HDD_db
   zh_CN: "作者：007revad。将HDD/SSD驱动器数据添加到DSM数据库中，以解决硬盘固件版本无法识别的问题。"
   zh_HK: "作者：007revad。將HDD/SSD驱动器數據添加到DSM數據庫中，以解決硬碟固件版本無法識別的問題。"
   zh_TW: "作者：007revad。將HDD/SSD驅動器數據添加到DSM數據庫中，以解決硬碟固件版本無法識別的問題。"
+system: false
 all:
   install-script: "install.sh"
   copy: "all"
 available-for:
   apollolake-4.4.180:
   apollolake-4.4.302:
-  bromolow-3.10.108:
   broadwell-4.4.180:
   broadwell-4.4.302:
   broadwellnk-4.4.180:
   broadwellnk-4.4.302:
   broadwellnkv2-4.4.180:
   broadwellnkv2-4.4.302:
-  broadwellntbap-4.4.59:
   broadwellntbap-4.4.180:
   broadwellntbap-4.4.302:
   epyc7002-7.1-5.10.55:

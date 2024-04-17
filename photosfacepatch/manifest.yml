@@ -13,13 +13,13 @@ description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
   zh_CN: "作者：jinlife。此补丁将在没有 GPU 存在的情况下启用 Synology Photos 中的人脸识别。"
   zh_HK: "作者：jinlife。此補丁將在沒有 GPU 存在的情況下啟用 Synology Photos 中的人臉識別。"
   zh_TW: "作者：jinlife。此補丁將在沒有 GPU 存在的情況下啟用 Synology Photos 中的人臉識別。"
+system: false
 all:
   install-script: "install.sh"
   copy: "all"
 available-for:
   apollolake-4.4.180:
   apollolake-4.4.302:
-  bromolow-3.10.108:
   broadwell-4.4.180:
   broadwell-4.4.302:
   broadwellnk-4.4.180:

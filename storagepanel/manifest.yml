@@ -13,13 +13,13 @@ description:
   zh_CN: "修改存储面板磁盘显示（默认：RACK_24_Bay 1X8）。"
   zh_HK: "修改存儲面板磁盤顯示（默認：RACK_24_Bay 1X8）。"
   zh_TW: "修改存儲面板磁盤顯示（默認：RACK_24_Bay 1X8）。"
+system: false
 all:
   install-script: "install.sh"
   copy: "all"
 available-for:
   apollolake-4.4.180:
   apollolake-4.4.302:
-  bromolow-3.10.108:
   broadwell-4.4.180:
   broadwell-4.4.302:
   broadwellnk-4.4.180:

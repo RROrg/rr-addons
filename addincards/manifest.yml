@@ -13,12 +13,13 @@ description:
   zh_CN: "移除官方 Addin 卡(M2D20, E10G30-T2, ...)对 DSM 型号限制。"
   zh_HK: "移除官方 Addin 卡(M2D20, E10G30-T2, ...)对 DSM 型號限制。"
   zh_TW: "移除官方 Addin 卡(M2D20, E10G30-T2, ...)对 DSM 型號限制。"
+system: false
 all:
   install-script: "install.sh"
+  copy: ""
 available-for:
   apollolake-4.4.180:
   apollolake-4.4.302:
-  bromolow-3.10.108:
   broadwell-4.4.180:
   broadwell-4.4.302:
   broadwellnk-4.4.180:

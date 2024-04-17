@@ -13,15 +13,13 @@ description:
   zh_CN: "连接 WiFi。请在 DSM 计划任务中将 'IFNAME' 'SSID' 'PASSWD' 修改为所需密码并执行它。"
   zh_HK: "連接 WiFi。請在 DSM 計劃任務中將 'IFNAME' 'SSID' 'PASSWD' 修改為所需密碼並執行它。"
   zh_TW: "連接 WiFi。請在 DSM 計劃任務中將 'IFNAME' 'SSID' 'PASSWD' 修改為所需密碼並執行它。"
-# system: true
+system: false
 all:
   install-script: "install.sh"
   copy: "all"
 available-for:
   apollolake-4.4.180:
   apollolake-4.4.302:
-  bromolow-3.10.108:
-  broadwell-4.4.105:
   broadwell-4.4.180:
   broadwell-4.4.302:
   broadwellnk-4.4.180:

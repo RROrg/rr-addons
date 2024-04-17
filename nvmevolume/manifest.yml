@@ -13,13 +13,13 @@ description:  # https://github.com/007revad/Synology_enable_M2_volume https://gi
   zh_CN: "作者：007revad & PeterSuh-Q3。允许从存储管理器中创建M.2存储池和卷。"
   zh_HK: "作者：007revad & PeterSuh-Q3。允許從儲存管理器中創建M.2儲存池和卷。"
   zh_TW: "作者：007revad & PeterSuh-Q3。允許從儲存管理器中建立M.2儲存池和卷。"
+system: false
 all:
   install-script: "install.sh"
   copy: "all"
 available-for:
   apollolake-4.4.180:
   apollolake-4.4.302:
-  bromolow-3.10.108:
   broadwell-4.4.180:
   broadwell-4.4.302:
   broadwellnk-4.4.180:

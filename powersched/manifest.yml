@@ -1,5 +1,6 @@
 version: 1
 name: powersched
+compile-script: compile.sh
 description:
   en_US: "A program to configure the RTC according to the DSM power plan, so that the RTC (scheduled power on/off) can work properly."
   es_ES: "Un programa para configurar el RTC de acuerdo con el plan de energía de DSM, de modo que el RTC (programado encendido/apagado) pueda funcionar correctamente."
@@ -13,40 +14,30 @@ description:
   zh_CN: "根据 DSM 电源计划配置 RTC 的程序, 使 RTC(定时开关机) 可以正常工作。"
   zh_HK: "根據 DSM 電源計劃配置 RTC 的程式, 使 RTC(定時開關機) 可以正常工作。"
   zh_TW: "根據 DSM 電源計劃配置 RTC 的程式, 使 RTC(定時開關機) 可以正常工作。"
-compile-script: compile.sh
+system: false
 all:
   install-script: "install.sh"
   copy: "all"
 available-for:
-  apollolake-4.4.59:
   apollolake-4.4.180:
   apollolake-4.4.302:
-  bromolow-3.10.105:
-  bromolow-3.10.108:
-  broadwell-4.4.105:
   broadwell-4.4.180:
   broadwell-4.4.302:
-  broadwellnk-4.4.59:
   broadwellnk-4.4.180:
   broadwellnk-4.4.302:
   broadwellnkv2-4.4.180:
   broadwellnkv2-4.4.302:
-  broadwellntbap-4.4.59:
   broadwellntbap-4.4.180:
   broadwellntbap-4.4.302:
   epyc7002-7.1-5.10.55:
   epyc7002-7.2-5.10.55:
-  denverton-4.4.59:
   denverton-4.4.180:
   denverton-4.4.302:
-  geminilake-4.4.59:
   geminilake-4.4.180:
   geminilake-4.4.302:
-  purley-4.4.59:
   purley-4.4.180:
   purley-4.4.302:
   r1000-4.4.180:
   r1000-4.4.302:
-  v1000-4.4.59:
   v1000-4.4.180:
   v1000-4.4.302:

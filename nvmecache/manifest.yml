@@ -13,14 +13,13 @@ description:  # https://github.com/PeterSuh-Q3/tcrp-addons/tree/main/nvme-cache
   zh_CN: "作者：PeterSuh-Q3。启用 DS918+、DS1019+、DS1621xs+、RS1619xs+ 的 M2 硬盘支持。"
   zh_HK: "作者：PeterSuh-Q3。啟用 DS918+、DS1019+、DS1621xs+、RS1619xs+ 的 M2 硬碟支援。"
   zh_TW: "作者：PeterSuh-Q3。啟用 DS918+、DS1019+、DS1621xs+、RS1619xs+ 的 M2 硬碟支援。"
+system: false
 all:
   install-script: "install.sh"
   copy: "all"
 available-for:
-  apollolake-4.4.59:
   apollolake-4.4.180:
   apollolake-4.4.302:
-  broadwellnk-4.4.59:
   broadwellnk-4.4.180:
   broadwellnk-4.4.302:
   
