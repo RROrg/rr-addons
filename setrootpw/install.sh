@@ -30,17 +30,18 @@ if [ "${1}" = "late" ]; then
   fi
   echo "insert setrootpw task to esynoscheduler.db"
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
-  /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
+  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db | grep -q "SetRootPw||bootup||1|0|0|0||0|"; then
+    echo "SetRootPw task already exists and it is enabled"
+  else
+    /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
 DELETE FROM task WHERE task_name LIKE 'SetRootPw';
 INSERT INTO task VALUES('SetRootPw', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
 PW=""    # Please change to the password you need.
-if [ -n "\${PW}" ]; then
-  /usr/syno/sbin/synouser --setpw root \${PW}
-  systemctl restart sshd
-  synowebapi --exec api=SYNO.Core.Terminal method=set version=3 enable_ssh=true ssh_port=22
-fi
+[ -n "\${PW}" ] && /usr/syno/sbin/synouser --setpw root \${PW} && systemctl restart sshd
+synowebapi --exec api=SYNO.Core.Terminal method=set version=3 enable_ssh=true ssh_port=22
 ', 'script', '{}', '', '', '{}', '{}');
 EOF
+  fi
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon setrootpw - ${1}"
 
