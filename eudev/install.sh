@@ -6,23 +6,13 @@
 # See /LICENSE for more information.
 #
 
-# DSM version
-MajorVersion=$(/bin/get_key_value /etc.defaults/VERSION majorversion)
-MinorVersion=$(/bin/get_key_value /etc.defaults/VERSION minorversion)
-
-echo "MajorVersion:${MajorVersion} MinorVersion:${MinorVersion}"
-
-if [ "${1}" = "modules" ]; then
+if [ "${1}" = "early" ]; then
   echo "Installing addon eudev - ${1}"
-  if [ "${MajorVersion}" -lt "7" ]; then # < 7
-    tar zxf /addons/eudev-6.2.tgz -C /
-  else
-    if [ "${MinorVersion}" -lt "2" ]; then # < 2
-      tar zxf /addons/eudev-7.1.tgz -C /
-    else
-      tar zxf /addons/eudev-7.2.tgz -C /
-    fi
-  fi
+  tar zxf /addons/eudev-7.1.tgz -C /
+
+elif [ "${1}" = "modules" ]; then
+  echo "Installing addon eudev - ${1}"
+
   # mv -f /usr/lib/udev/rules.d/60-persistent-storage.rules /usr/lib/udev/rules.d/60-persistent-storage.rules.bak
   # mv -f /usr/lib/udev/rules.d/60-persistent-storage-tape.rules /usr/lib/udev/rules.d/60-persistent-storage-tape.rules.bak
   # mv -f /usr/lib/udev/rules.d/80-net-name-slot.rules /usr/lib/udev/rules.d/80-net-name-slot.rules.bak
@@ -97,35 +87,21 @@ elif [ "${1}" = "late" ]; then
 
   echo "Copy rules"
   cp -vf /usr/lib/udev/rules.d/* /tmpRoot/usr/lib/udev/rules.d/
-  if [ ${MajorVersion:-0} -lt 7 ]; then # < 7
-    mkdir -p /tmpRoot/etc/init
-    DEST=/tmpRoot/etc/init/eudev.conf
-    echo 'description "EUDEV daemon"'                                              >${DEST}
-    echo 'System Intergration Team'                                               >>${DEST}
-    echo 'start on runlevel 1'                                                    >>${DEST}
-    echo 'stop on runlevel [06]'                                                  >>${DEST}
-    echo 'expect fork'                                                            >>${DEST}
-    echo 'respawn'                                                                >>${DEST}
-    echo 'respawn limit 5 10'                                                     >>${DEST}
-    echo 'console log'                                                            >>${DEST}
-    echo 'exec /usr/bin/udevadm hwdb --update'                                    >>${DEST}
-    echo 'exec /usr/bin/udevadm control --reload-rules'                           >>${DEST}
-  else
-    mkdir -p "/tmpRoot/usr/lib/systemd/system"
-    DEST="/tmpRoot/usr/lib/systemd/system/udevrules.service"
-    echo "[Unit]"                                                                  >${DEST}
-    echo "Description=Reload udev rules"                                          >>${DEST}
-    echo                                                                          >>${DEST}
-    echo "[Service]"                                                              >>${DEST}
-    echo "Type=oneshot"                                                           >>${DEST}
-    echo "RemainAfterExit=yes"                                                    >>${DEST}
-    echo "ExecStart=/usr/bin/udevadm hwdb --update"                               >>${DEST}
-    echo "ExecStart=/usr/bin/udevadm control --reload-rules"                      >>${DEST}
-    echo                                                                          >>${DEST}
-    echo "[Install]"                                                              >>${DEST}
-    echo "WantedBy=multi-user.target"                                             >>${DEST}
 
-    mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
-    ln -vsf /usr/lib/systemd/system/udevrules.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/udevrules.service
-  fi
+  mkdir -p "/tmpRoot/usr/lib/systemd/system"
+  DEST="/tmpRoot/usr/lib/systemd/system/udevrules.service"
+  echo "[Unit]"                                                                  >${DEST}
+  echo "Description=Reload udev rules"                                          >>${DEST}
+  echo                                                                          >>${DEST}
+  echo "[Service]"                                                              >>${DEST}
+  echo "Type=oneshot"                                                           >>${DEST}
+  echo "RemainAfterExit=yes"                                                    >>${DEST}
+  echo "ExecStart=/usr/bin/udevadm hwdb --update"                               >>${DEST}
+  echo "ExecStart=/usr/bin/udevadm control --reload-rules"                      >>${DEST}
+  echo                                                                          >>${DEST}
+  echo "[Install]"                                                              >>${DEST}
+  echo "WantedBy=multi-user.target"                                             >>${DEST}
+
+  mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
+  ln -vsf /usr/lib/systemd/system/udevrules.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/udevrules.service
 fi

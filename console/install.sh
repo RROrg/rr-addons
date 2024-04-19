@@ -16,6 +16,7 @@ if [ "${1}" = "modules" ]; then
       /usr/sbin/modprobe ${M}
     done
   fi
+  /usr/sbin/modprobe fb
   /usr/sbin/modprobe fbcon
   echo "RR console - wait..." >/dev/tty1
   # Workaround for DVA1622

@@ -7,6 +7,9 @@
 #
 if [ "${1}" = "early" ]; then
   echo "Installing addon misc - ${1}"
+
+  [ ! -L "/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
+
   # [CREATE][failed] Raidtool initsys
   SO_FILE="/usr/syno/bin/scemd"
   [ ! -f "${SO_FILE}.bak" ] && cp -vf "${SO_FILE}" "${SO_FILE}.bak"
@@ -80,24 +83,19 @@ EOF
 #!/bin/sh
 
 echo -ne "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
-if /usr/bin/lsof -Pi :7681 -sTCP:LISTEN -t >/dev/null; then
-  echo "Port 7681 is already in use. Terminating the existing process..."
-  /usr/bin/lsof -i :7681
-else
-  echo "Starting ttyd ..."
-  MSG=""
-  MSG="\${MSG}RR Recovery Mode\n"
-  MSG="\${MSG}To 'Force re-install DSM': please visit http://<ip>:5000/web_install.html\n"
-  MSG="\${MSG}To 'Modify system files' : please mount /dev/md0\n"
-  /usr/sbin/ttyd /usr/bin/ash -c "echo -e \"\${MSG}\"; ash" -l >/dev/null 2>&1 &
-fi
-if /usr/bin/lsof -Pi :7304 -sTCP:LISTEN -t >/dev/null; then
-  echo "Port 7304 is already in use. Terminating the existing process..."
-  /usr/bin/lsof -i :7304
-else
-  echo "Starting dufs ..."
-  /usr/sbin/dufs -A -p 7304 / >/dev/null 2>&1 &
-fi
+
+echo "Starting ttyd ..."
+MSG=""
+MSG="\${MSG}RR Recovery Mode\n"
+MSG="\${MSG}To 'Force re-install DSM': please visit http://<ip>:5000/web_install.html\n"
+MSG="\${MSG}To 'Modify system files' : please mount /dev/md0\n"
+/usr/bin/killall ttyd 2>/dev/null || true
+/usr/sbin/ttyd /usr/bin/ash -c "echo -e \"\${MSG}\"; ash" -l >/dev/null 2>&1 &
+
+echo "Starting dufs ..."
+/usr/bin/killall dufs 2>/dev/null || true
+/usr/sbin/dufs -A -p 7304 / >/dev/null 2>&1 &
+
 cp -f /usr/syno/web/web_index.html /usr/syno/web/web_install.html
 cp -f /addons/web_index.html /usr/syno/web/web_index.html
 echo "Recovery mode is ready"
@@ -112,14 +110,11 @@ EOF
 elif [ "${1}" = "late" ]; then
   echo "Installing addon misc - ${1}"
 
-  if /usr/bin/lsof -Pi :7681 -sTCP:LISTEN -t >/dev/null; then
-    echo "Killing ttyd ..."
-    /usr/bin/killall ttyd
-  fi
-  if /usr/bin/lsof -Pi :7304 -sTCP:LISTEN -t >/dev/null; then
-    echo "Killing dufs ..."
-    /usr/bin/killall dufs
-  fi
+  echo "Killing ttyd ..."
+  /usr/bin/killall ttyd 2>/dev/null || true
+
+  echo "Killing dufs ..."
+  /usr/bin/killall dufs 2>/dev/null || true
 
   mount -t sysfs sysfs /sys
   modprobe acpi-cpufreq

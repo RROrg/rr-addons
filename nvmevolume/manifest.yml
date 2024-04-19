@@ -16,7 +16,7 @@ description:  # https://github.com/007revad/Synology_enable_M2_volume https://gi
 system: false
 all:
   install-script: "install.sh"
-  copy: "all"
+  copy: ""
 available-for:
   apollolake-4.4.180:
   apollolake-4.4.302:

@@ -16,7 +16,7 @@ description:
 system: true
 all:
   install-script: "install.sh"
-  copy: "all"
+  copy: ""
 available-for:
   apollolake-4.4.180:
   apollolake-4.4.302:

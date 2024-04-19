@@ -101,19 +101,30 @@ source ~/.bashrc
 sed -i 's/^CFLAGS=/#CFLAGS=/g; s/^CXXFLAGS=/#CXXFLAGS=/g' /env${BUILD_ARCH}.mak
 while read line; do if [ ${line:0:1} != "#" ]; then export ${line%%=*}="${line#*=}"; fi; done < /env${BUILD_ARCH}.mak
 # build kmod
-git clone -c http.sslVerify=false -b v30 https://github.com/kmod-project/kmod.git
+git clone -c http.sslVerify=false -b v30 --depth=1 https://github.com/kmod-project/kmod.git
 pushd kmod
 patch -p1 < /source/input/kmod.patch
 ./autogen.sh
 ./configure CC=${CC} CFLAGS='-O2' --host=${HOST} --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib --enable-tools --disable-manpages --disable-python --without-zstd --without-xz --without-zlib --without-openssl
-[ -z "`grep 'env.mak' Makefile`" ] && sed -i '1 i include /env.mak' Makefile
+[ -z "$(grep 'env.mak' Makefile)" ] && sed -i '1 i include /env.mak' Makefile
 make all
 make install
 make DESTDIR=/source/output install
 popd
+# # build 
+# cp -f ${ToolChainSysRoot}/usr/lib/libblkid.so.1 /source/output/usr/lib/libblkid.so.1
+# git clone -c http.sslVerify=false -b v2.39.3 --depth=1 https://github.com/karelzak/util-linux.git
+# pushd util-linux
+# ./autogen.sh
+# ./configure CC=${CC} CFLAGS='-O2' --host=${HOST} --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib --disable-static --without-ncurses --without-python --disable-asciidoc --disable-all-programs --enable-libblkid
+# [ -z "$(grep 'env.mak' Makefile)" ] && sed -i '1 i include /env.mak' Makefile
+# sed -i 's/explicit_bzero/\/\/explicit_bzero/g' lib/sha1.c
+# make all
+# make DESTDIR=/source/output install
+# popd
 # build eudev
-git clone -c http.sslVerify=false https://github.com/systemd/systemd.git
-git clone -c http.sslVerify=false -b v3.2.14 https://github.com/eudev-project/eudev.git
+git clone -c http.sslVerify=false --depth=1 https://github.com/systemd/systemd.git
+git clone -c http.sslVerify=false -b v3.2.14 --depth=1 https://github.com/eudev-project/eudev.git
 cp -vf ./systemd/hwdb.d/*.ids ./systemd/hwdb.d/*.hwdb ./eudev/hwdb/
 pushd eudev
 # error: 'for' loop initial declarations are only allowed in C99 or C11 mode
@@ -123,15 +134,14 @@ if [ "${1}" = "6.2" ]; then
   sed -i 's/for (size_t pos/size_t pos = 0; for (pos/g; s/for (size_t i/size_t i = 0; for(i/g' ./src/fido_id/fido_id_desc.c
 fi
 ./autogen.sh
-./configure CC=${CC} --host=${HOST} --prefix=/usr --sysconfdir=/etc --disable-manpages --disable-selinux --disable-mtd_probe --enable-kmod
-[ -z "`grep 'env.mak' Makefile`" ] && sed -i '1 i include /env.mak' Makefile
+./configure CC=${CC} CFLAGS='-O2' --host=${HOST} --prefix=/usr --sysconfdir=/etc --disable-manpages --disable-selinux --disable-mtd_probe --enable-kmod
+[ -z "$(grep 'env.mak' Makefile)" ] && sed -i '1 i include /env.mak' Makefile
 make -i CFLAGS="-DSG_FLAG_LUN_INHIBIT=2" all
 make -i CFLAGS="-DSG_FLAG_LUN_INHIBIT=2" DESTDIR=/source/output install
 popd
 # ldd /source/output/usr/bin/kmod | awk  '{if (match($3,"/")){ printf("%s "),$3 } }'
 # ldd /source/output/usr/bin/udevadm | awk  '{if (match($3,"/")){ printf("%s "),$3 } }'
 rm -Rf /source/output/usr/share /source/output/usr/include /source/output/usr/lib/pkgconfig /source/output/usr/lib/libudev.* /source/output/usr/lib/*.a /source/output/usr/lib/*.la
-cp -f ${ToolChainSysRoot}/usr/lib/libblkid.so.1 /source/output/usr/lib/libblkid.so.1
 ln -sf /usr/bin/kmod /source/output/usr/sbin/depmod
 cp -f /source/input/50-usb-realtek-net.rules /source/output/usr/lib/udev/rules.d/50-usb-realtek-net.rules
 mv -f /source/output/usr/lib/udev/rules.d/60-persistent-storage.rules /source/output/usr/lib/udev/rules.d/60-persistent-storage.rules.bak

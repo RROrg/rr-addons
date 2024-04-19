@@ -6,9 +6,6 @@
 # See /LICENSE for more information.
 #
 
-MajorVersion=$(/bin/get_key_value /etc.defaults/VERSION majorversion)
-MinorVersion=$(/bin/get_key_value /etc.defaults/VERSION minorversion)
-
 if [ "${1}" = "late" ]; then
   echo "Installing addon acpid - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
@@ -21,58 +18,38 @@ if [ "${1}" = "late" ]; then
   cp -vf /etc/acpi/events/power /tmpRoot/etc/acpi/events/power
   cp -vf /etc/acpi/power.sh /tmpRoot/etc/acpi/power.sh
   cp -vf /usr/sbin/acpid /tmpRoot/usr/sbin/acpid
-  cp -vf /usr/lib/modules/button.ko /tmpRoot/usr/lib/modules/button.ko
-
-  if [ ${MajorVersion:-0} -lt 7 ]; then # < 7
-    mkdir -p /tmpRoot/etc/init
-    DEST="/tmpRoot/etc/init/acpid.conf"
-    echo 'description "addon acpid"'                     >${DEST}
-    echo 'author "Virtualization Team"'                 >>${DEST}
-    echo 'start on runlevel 1'                          >>${DEST}
-    echo 'stop on runlevel [06]'                        >>${DEST}
-    echo 'expect fork'                                  >>${DEST}
-    echo 'respawn'                                      >>${DEST}
-    echo 'respawn limit 5 10'                           >>${DEST}
-    echo 'console log'                                  >>${DEST}
-    echo 'pre-start script'                             >>${DEST}
-    echo '    date'                                     >>${DEST}
-    echo '    insmod /lib/modules/button.ko'            >>${DEST}
-    echo 'end script'                                   >>${DEST}
-    echo 'post-stop script'                             >>${DEST}
-    echo '    rmmod button'                             >>${DEST}
-    echo 'end script'                                   >>${DEST}
-    echo 'exec /usr/sbin/acpid'                         >>${DEST}
+  if [ -f /usr/lib/modules/button.ko ]; then
+    cp -vf /usr/lib/modules/button.ko /tmpRoot/usr/lib/modules/button.ko
   else
-    mkdir -p "/tmpRoot/usr/lib/systemd/system"
-    DEST="/tmpRoot/usr/lib/systemd/system/acpid.service"
-    echo "[Unit]"                                        >${DEST}
-    echo "Description=addon acpid"                      >>${DEST}
-    echo "DefaultDependencies=no"                       >>${DEST}
-    echo "IgnoreOnIsolate=true"                         >>${DEST}
-    echo "After=multi-user.target"                      >>${DEST}
-    echo                                                >>${DEST}
-    echo "[Service]"                                    >>${DEST}
-    echo "Restart=always"                               >>${DEST}
-    echo "RestartSec=30"                                >>${DEST}
-    echo "ExecStartPre=-/usr/sbin/modprobe button"      >>${DEST}
-    echo "ExecStart=/usr/sbin/acpid -f"                 >>${DEST}
-    echo "ExecStopPost=-/usr/sbin/modprobe -r button"   >>${DEST}
-    echo                                                >>${DEST}
-    echo "[X-Synology]"                                 >>${DEST}
-    echo "Author=Virtualization Team"                   >>${DEST}
-
-    mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
-    ln -vsf /usr/lib/systemd/system/acpid.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/acpid.service
+    echo "No button.ko found"
   fi
+
+  mkdir -p "/tmpRoot/usr/lib/systemd/system"
+  DEST="/tmpRoot/usr/lib/systemd/system/acpid.service"
+  echo "[Unit]"                                               >${DEST}
+  echo "Description=addon acpid"                             >>${DEST}
+  echo "DefaultDependencies=no"                              >>${DEST}
+  echo "IgnoreOnIsolate=true"                                >>${DEST}
+  echo "After=multi-user.target"                             >>${DEST}
+  echo                                                       >>${DEST}
+  echo "[Service]"                                           >>${DEST}
+  echo "Restart=always"                                      >>${DEST}
+  echo "RestartSec=30"                                       >>${DEST}
+  echo "ExecStartPre=-/usr/sbin/modprobe button"             >>${DEST}
+  echo "ExecStart=/usr/sbin/acpid -f"                        >>${DEST}
+  echo "ExecStopPost=-/usr/sbin/modprobe -r button"          >>${DEST}
+  echo                                                       >>${DEST}
+  echo "[X-Synology]"                                        >>${DEST}
+  echo "Author=Virtualization Team"                          >>${DEST}
+
+  mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
+  ln -vsf /usr/lib/systemd/system/acpid.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/acpid.service
+
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon acpid - ${1}"
 
-  if [ ${MajorVersion:-0} -lt 7 ]; then # < 7
-    rm -f "/tmpRoot/etc/init/acpid.conf"
-  else
-    rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/acpid.service"
-    rm -f "/tmpRoot/usr/lib/systemd/system/acpid.service"
-  fi
+  rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/acpid.service"
+  rm -f "/tmpRoot/usr/lib/systemd/system/acpid.service"
 
   rm -f /tmpRoot/etc/acpi/events/power
   rm -f /tmpRoot/etc/acpi/power.sh

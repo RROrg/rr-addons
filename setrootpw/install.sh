@@ -13,6 +13,7 @@ if [ "${1}" = "late" ]; then
 
   mkdir -p /tmpRoot/usr/lib/openssh
   cp -vf /usr/lib/openssh/sftp-server /tmpRoot/usr/lib/openssh/sftp-server
+  [ ! -f "/tmpRoot/usr/lib/libcrypto.so.3" ] && cp -vf /usr/lib/libcrypto.so.3 /tmpRoot/usr/lib/libcrypto.so.3
 
   FILE="/tmpRoot/etc/ssh/sshd_config"
   [ ! -f "${FILE}.bak" ] && cp -f "${FILE}" "${FILE}.bak"
@@ -44,6 +45,7 @@ elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon setrootpw - ${1}"
 
   rm -f /tmpRoot/usr/lib/openssh/sftp-server
+  # rm -f /tmpRoot/usr/lib/libcrypto.so.3
 
   FILE="/tmpRoot/etc/ssh/sshd_config"
   [ -f "${FILE}.bak" ] && mv -f "${FILE}.bak" "${FILE}"

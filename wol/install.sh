@@ -16,7 +16,7 @@ elif [ "${1}" = "late" ]; then
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
   
-  # cp -vf /usr/bin/ethtool /tmpRoot/usr/bin/ethtool
+  [ ! -f "/tmpRoot/usr/bin/ethtool" ] && cp -vf /usr/bin/ethtool /tmpRoot/usr/bin/ethtool
   cp -vf /usr/bin/wol.sh /tmpRoot/usr/bin/wol.sh
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"

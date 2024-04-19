@@ -164,3 +164,5 @@ else
   done < <(find -maxdepth 1 -type d)
 fi
 wait
+
+# zip -9 addons-$(cat VERSION 2>/dev/null).zip -j *.addon VERSION

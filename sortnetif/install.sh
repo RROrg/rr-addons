@@ -13,7 +13,7 @@ if [ "${1}" = "patches" ]; then
   ETHX=$(ls /sys/class/net/ 2>/dev/null | grep eth) # real network cards list
   for ETH in ${ETHX}; do
     MAC="$(cat /sys/class/net/${ETH}/address 2>/dev/null | sed 's/://g' | tr '[:upper:]' '[:lower:]')"
-    BUS=$(ethtool -i ${ETH} 2>/dev/null | grep bus-info | awk '{print $2}')
+    BUS=$(ethtool -i ${ETH} 2>/dev/null | grep bus-info | cut -d' ' -f2)
     ETHLIST="${ETHLIST}${BUS} ${MAC} ${ETH}\n"
   done
 
@@ -47,7 +47,7 @@ EOF
   while true; do
     cat /tmp/ethlist
     [ ${IDX} -ge $(wc -l </tmp/ethlist) ] && break
-    ETH=$(cat /tmp/ethlist | sed -n "$((${IDX} + 1))p" | awk '{print $3}')
+    ETH=$(cat /tmp/ethlist | sed -n "$((${IDX} + 1))p" | cut -d' ' -f3)
     echo "ETH: ${ETH}"
     if [ -n "${ETH}" ] && [ ! "${ETH}" = "eth${IDX}" ]; then
       echo "change ${ETH} <=> eth${IDX}"

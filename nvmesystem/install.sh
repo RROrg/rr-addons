@@ -49,6 +49,8 @@ elif [ "${1}" = "late" ]; then
   # Create storage pool page without RAID type.
   cp -vf /usr/bin/nvmesystem.sh /tmpRoot/usr/bin/nvmesystem.sh
 
+  [ ! -f "/tmpRoot/usr/bin/gzip" ] && cp -vf /usr/bin/gzip /tmpRoot/usr/bin/gzip
+
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/nvmesystem.service"
   echo "[Unit]"                                          >${DEST}
@@ -76,7 +78,8 @@ elif [ "${1}" = "uninstall" ]; then
 
   rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/nvmesystem.service"
   rm -f "/tmpRoot/usr/lib/systemd/system/nvmesystem.service"
-
+  
+  # rm -f /tmpRoot/usr/bin/gzip 
   [ ! -f "/tmpRoot/usr/rr/revert.sh" ] && echo '#!/usr/bin/env bash' >/tmpRoot/usr/rr/revert.sh && chmod +x /tmpRoot/usr/rr/revert.sh
   echo "/usr/bin/nvmesystem.sh -r" >>/tmpRoot/usr/rr/revert.sh
   echo "rm -f /usr/bin/nvmesystem.sh" >>/tmpRoot/usr/rr/revert.sh

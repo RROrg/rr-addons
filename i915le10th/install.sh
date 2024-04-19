@@ -26,7 +26,7 @@ if [ "${1}" = "patches" ]; then
   KO_FILE="/usr/lib/modules/i915.ko"
   [ ! -f "${KO_FILE}" ] && echo "i915.ko does not exist" && exit 0
 
-  if [ -n "${2}" ] || grep -iq ${GPU} /usr/bin/i915ids 2>/dev/null; then
+  if [ -n "${2}" ] || grep -iq ${GPU} "/addons/i915ids" 2>/dev/null; then
     isLoad=0
     if lsmod 2>/dev/null | grep -q ^i915; then
       isLoad=1
