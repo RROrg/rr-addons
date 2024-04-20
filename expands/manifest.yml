@@ -2,8 +2,9 @@ version: 1
 name: expands
 description:
   en_US: "Expanded miscellaneous, updated usb.map, ca-certificates.crt, etc."
-  es_ES: "Misceláneos ampliados, usb.map actualizado, ca-certificates.crt, etc."
+  ar_SA: "متنوعات موسعة، usb.map محدث، ca-certificates.crt، إلخ."
   de_DE: "Erweiterte Diverses, aktualisierte usb.map, ca-certificates.crt, etc."
+  es_ES: "Misceláneos ampliados, usb.map actualizado, ca-certificates.crt, etc."
   fr_FR: "Diverses étendues, usb.map mise à jour, ca-certificates.crt, etc."
   ja_JP: "拡張その他、更新された usb.map、ca-certificates.crt など"
   ko_KR: "기타 확장, 업데이트 된 usb.map, ca-certificates.crt 등"

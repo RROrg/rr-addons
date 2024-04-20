@@ -2,8 +2,9 @@ version: 1
 name: sortnetif
 description:
   en_US: "Sort network interface name.(parameters: empty: sorted by busid; mac1,mac2,...: sorted by macs sequence)."
-  es_ES: "Ordenar nombre de interfaz de red.(parámetros: vacío: ordenado por busid; mac1,mac2,...: ordenado por secuencia de macs)."
+  ar_SA: "فرز اسم واجهة الشبكة.(المعلمات: فارغ: مرتبة حسب busid؛ mac1،mac2،...: مرتبة حسب تسلسل macs)."
   de_DE: "Sortiere Netzwerk-Schnittstellen-Namen.(Parameter: leer: sortiert nach Bus-ID; mac1,mac2,...: sortiert nach MACs-Sequenz)."
+  es_ES: "Ordenar nombre de interfaz de red.(parámetros: vacío: ordenado por busid; mac1,mac2,...: ordenado por secuencia de macs)."
   fr_FR: "Trier le nom de l'interface réseau.(paramètres: vide: trié par busid; mac1,mac2,...: trié par séquence de macs)."
   ja_JP: "ネットワークインターフェイス名をソートします。(パラメータ: 空: busid でソート; mac1,mac2,...: macs シーケンスでソート)."
   ko_KR: "네트워크 인터페이스 이름을 정렬합니다.(매개 변수: 비어 있음: 버스 ID로 정렬; mac1,mac2,...: macs 시퀀스로 정렬)."

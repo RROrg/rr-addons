@@ -2,8 +2,9 @@ version: 1
 name: synoconfbkp
 description:
   en_US: "Automatically backup system config settings to the bootloader disk(<loader disk>/p1/scbk/) at bootup and shutdown. Parameters: $1 - number of saves, default 7; $2 - file name prefix, default \"bkp\"."
-  es_ES: "Realiza automáticamente una copia de seguridad de la configuración del sistema en el disco de arranque (<disco de arranque>/p1/scbk/) al arrancar y apagar. Parámetros: $1 - número de copias, por defecto 7; $2 - prefijo del nombre del archivo, por defecto \"bkp\"."
+  ar_SA: "قم بنسخ احتياطي تلقائيًا لإعدادات تكوين النظام إلى قرص البدء (<قرص البدء>/p1/scbk/) عند التشغيل والإيقاف. المعلمات: $1 - عدد الحفظ، الافتراضي 7؛ $2 - بادئة اسم الملف، الافتراضي \"bkp\"."
   de_DE: "Sichert automatisch die Systemkonfigurationseinstellungen auf der Bootloader-Festplatte (<Bootloader-Festplatte>/p1/scbk/) beim Booten und Herunterfahren. Parameter: $1 - Anzahl der Sicherungen, Standard 7; $2 - Dateiname-Präfix, Standard \"bkp\"."
+  es_ES: "Realiza automáticamente una copia de seguridad de la configuración del sistema en el disco de arranque (<disco de arranque>/p1/scbk/) al arrancar y apagar. Parámetros: $1 - número de copias, por defecto 7; $2 - prefijo del nombre del archivo, por defecto \"bkp\"."
   fr_FR: "Sauvegarde automatiquement les paramètres de configuration du système sur le disque de démarrage (<disque de démarrage>/p1/scbk/) au démarrage et à l'arrêt. Paramètres : $1 - nombre de sauvegardes, par défaut 7 ; $2 - préfixe du nom de fichier, par défaut \"bkp\"."
   ja_JP: "システム構成設定をブートローダーディスク（<ブートローダーディスク>/p1/scbk/）に自動的にバックアップします。起動時とシャットダウン時に実行されます。パラメータ: $1 - 保存回数、デフォルト 7; $2 - ファイル名のプレフィックス、デフォルト \"bkp\"。"
   ko_KR: "시스템 구성 설정을 부트로더 디스크(<부트로더 디스크>/p1/scbk/)에 부팅 및 종료시 자동으로 백업합니다. 매개변수: $1 - 저장 횟수, 기본값 7; $2 - 파일 이름 접두사, 기본값 \"bkp\"."

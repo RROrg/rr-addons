@@ -2,8 +2,9 @@ version: 1
 name: bootwait
 description:
   en_US: "This script ensures that the startup process waits until the loader disk (/dev/synoboot) is available before starting other processes."
-  es_ES: "Este script asegura que el proceso de arranque espere hasta que el disco de carga (/dev/synoboot) esté disponible antes de iniciar otros procesos."
+  ar_SA: "يضمن هذا البرنامج النصي أن عملية البدء تنتظر حتى يكون القرص المحمل (/dev/synoboot) متاحًا قبل بدء عمليات أخرى."
   de_DE: "Dieses Skript stellt sicher, dass der Startvorgang wartet, bis die Loader-Festplatte (/dev/synoboot) verfügbar ist, bevor andere Prozesse gestartet werden."
+  es_ES: "Este script asegura que el proceso de arranque espere hasta que el disco de carga (/dev/synoboot) esté disponible antes de iniciar otros procesos."
   fr_FR: "Ce script garantit que le processus de démarrage attend que le disque de chargement (/dev/synoboot) soit disponible avant de démarrer d'autres processus."
   ja_JP: "このスクリプトは、他のプロセスを開始する前に、起動プロセスがローダーディスク (/dev/synoboot) が利用可能になるまで待機するようにします。"
   ko_KR: "이 스크립트는 다른 프로세스를 시작하기 전에 부팅 프로세스가 로더 디스크 (/dev/synoboot)가 사용 가능할 때까지 기다리도록합니다."

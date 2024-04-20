@@ -2,8 +2,9 @@ version: 1
 name: wol
 description:
   en_US: "Force enable Wake-on-lan for network devices."
-  es_ES: "Forzar el Wake-on-lan para dispositivos de red."
+  ar_SA: "قم بتمكين Wake-on-lan بقوة لأجهزة الشبكة."
   de_DE: "Erzwingen Sie Wake-on-lan für Netzwerkgeräte."
+  es_ES: "Forzar el Wake-on-lan para dispositivos de red."
   fr_FR: "Forcer l'activation de Wake-on-lan pour les périphériques réseau."
   ja_JP: "ネットワークデバイスの Wake-on-lan を強制的に有効にします。"
   ko_KR: "네트워크 장치의 Wake-on-lan을 강제로 활성화합니다."

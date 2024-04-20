@@ -2,8 +2,9 @@ version: 1
 name: revert
 description:
   en_US: "Revert addons modifications."
-  es_ES: "Deshacer las modificaciones de los addons."
+  ar_SA: "تراجع عن تعديلات الإضافات."
   de_DE: "Addons-Modifikationen rückgängig machen."
+  es_ES: "Deshacer las modificaciones de los addons."
   fr_FR: "Annuler les modifications des addons."
   ja_JP: "アドオンの変更を元に戻します。"
   ko_KR: "애드온 수정 사항을 되돌립니다."

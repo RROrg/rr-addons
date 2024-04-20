@@ -2,8 +2,9 @@ version: 1
 name: mountloader
 description:
   en_US: "Add a script to mount/unmount loader disk in the DSM scheduled task, For use by the rr-manager applications."
-  es_ES: "Agregue un script para montar/desmontar el disco de carga en la tarea programada DSM, para uso por las aplicaciones rr-manager."
+  ar_SA: "أضف سكريبت لتثبيت/إلغاء تثبيت قرص الشحن في المهمة المجدولة DSM، للاستخدام من قبل تطبيقات rr-manager."
   de_DE: "Fügen Sie ein Skript hinzu, um die Loader-Disk in der DSM-geplanten Aufgabe zu mounten/zu entladen, für die Verwendung durch die rr-manager-Anwendungen."
+  es_ES: "Agregue un script para montar/desmontar el disco de carga en la tarea programada DSM, para uso por las aplicaciones rr-manager."
   fr_FR: "Ajoutez un script pour monter/démonter le disque de chargement dans la tâche planifiée DSM, pour une utilisation par les applications rr-manager."
   ja_JP: "DSM のスケジュールされたタスクでローダーディスクをマウント/アンマウントするスクリプトを追加します。rr-manager アプリケーションで使用します。"
   ko_KR: "DSM 예약 작업에서 로더 디스크를 마운트/언마운트하는 스크립트를 추가하십시오. rr-manager 응용 프로그램에서 사용합니다."

@@ -2,8 +2,9 @@ version: 1
 name: updatenotify
 description:
   en_US: "RR update notification."
-  es_ES: "Notificación de actualización de RR."
+  ar_SA: "إشعار تحديث RR."
   de_DE: "RR-Update-Benachrichtigung."
+  es_ES: "Notificación de actualización de RR."
   fr_FR: "Notification de mise à jour de RR."
   ja_JP: "RRアップデート通知。"
   ko_KR: "RR 업데이트 알림."

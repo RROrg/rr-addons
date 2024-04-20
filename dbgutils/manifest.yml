@@ -2,8 +2,9 @@ version: 1
 name: dbgutils
 description:
   en_US: "Debug utilities, automatically capture all stage boot logs to <loader disk>/p1/logs/."
-  es_ES: "Utilidades de depuración, captura automáticamente todos los registros de arranque de etapa a <disco de carga>/p1/logs/."
+  ar_SA: "أدوات التصحيح، التقاط جميع سجلات تمهيد المرحلة تلقائيًا إلى <قرص التحميل>/p1/logs/."
   de_DE: "Debug-Dienstprogramme, erfassen Sie automatisch alle Stufenstartprotokolle auf <Loader-Disk>/p1/logs/."
+  es_ES: "Utilidades de depuración, captura automáticamente todos los registros de arranque de etapa a <disco de carga>/p1/logs/."
   fr_FR: "Utilitaires de débogage, capture automatiquement tous les journaux de démarrage de la scène à <disque de chargement>/p1/logs/."
   ja_JP: "デバッグユーティリティ、すべてのステージブートログを <ローダーディスク>/p1/logs/ に自動的にキャプチャします。"
   ko_KR: "디버그 유틸리티, 모든 스테이지 부팅 로그를 <로더 디스크>/p1/logs/에 자동으로 캡처합니다."

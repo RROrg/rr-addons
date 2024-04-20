@@ -2,8 +2,9 @@ version: 1
 name: disks
 description:
   en_US: "Config disks related setting."
-  es_ES: "Configurar la configuración relacionada con los discos."
+  ar_SA: "قم بتكوين إعدادات القرص."
   de_DE: "Konfiguriere Einstellungen für Festplatten."
+  es_ES: "Configurar la configuración relacionada con los discos."
   fr_FR: "Configurer les paramètres relatifs aux disques."
   ja_JP: "ディスク関連の設定を構成します。"
   ko_KR: "디스크 관련 설정 구성."

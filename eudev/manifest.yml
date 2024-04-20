@@ -2,8 +2,9 @@ version: 1
 name: eudev
 description:
   en_US: "eudev + kmod automatically loaded modules."
-  es_ES: "eudev + kmod módulos cargados automáticamente."
+  ar_SA: "eudev + kmod الوحدات المحملة تلقائيًا."
   de_DE: "eudev + kmod automatisch geladene Module."
+  es_ES: "eudev + kmod módulos cargados automáticamente."
   fr_FR: "eudev + kmod modules chargés automatiquement."
   ja_JP: "eudev + kmod 自動的にロードされるモジュール。"
   ko_KR: "eudev + kmod 자동으로 로드된 모듈."

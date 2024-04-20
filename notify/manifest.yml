@@ -2,8 +2,9 @@ version: 1
 name: notify
 description:
   en_US: "Add rr notify."
-  es_ES: "Añadir rr notify."
+  ar_SA: "إضافة rr notify."
   de_DE: "Füge rr notify hinzu."
+  es_ES: "Añadir rr notify."
   fr_FR: "Ajouter rr notify."
   ja_JP: "rr notify を追加します。"
   ko_KR: "rr notify 를 추가합니다."

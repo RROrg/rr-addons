@@ -2,8 +2,9 @@ version: 1
 name: nvmesystem
 description:
   en_US: "Author: jim3ma. Install the system on only m2 disk (current only support SA6400)."
-  es_ES: "Autor: jim3ma. Instala el sistema solo en el disco m2 (actualmente solo admite SA6400)."
+  ar_SA: "المؤلف: jim3ma. قم بتثبيت النظام على القرص m2 فقط (الدعم الحالي لـ SA6400 فقط)."
   de_DE: "Autor: jim3ma. Installiert das System nur auf den m2-Disk (aktuell nur SA6400 unterstützt)."
+  es_ES: "Autor: jim3ma. Instala el sistema solo en el disco m2 (actualmente solo admite SA6400)."
   fr_FR: "Auteur: jim3ma. Installe le système uniquement sur le disque m2 (actuellement, seul SA6400 est pris en charge)."
   ja_JP: "作者: jim3ma。システムをm2ディスクにのみインストールします（現在、SA6400のみサポート）。"
   ko_KR: "저자: jim3ma. SA6400만을 지원하는 m2 디스크에 시스템을 설치합니다."

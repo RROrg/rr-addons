@@ -2,8 +2,9 @@ version: 1
 name: localrss
 description:
   en_US: "Implant RSS into the bootloader so that it can be installed online."
-  es_ES: "Implantar RSS en el cargador de arranque para que se pueda instalar en línea."
+  ar_SA: "زرع RSS في البرنامج الثابت ليمكن تثبيته عبر الإنترنت."
   de_DE: "RSS in den Bootloader einpflanzen, damit er online installiert werden kann."
+  es_ES: "Implantar RSS en el cargador de arranque para que se pueda instalar en línea."
   fr_FR: "Implanter RSS dans le chargeur de démarrage pour qu'il puisse être installé en ligne."
   ja_JP: "RSS をブートローダーに埋め込んでオンラインでインストールできるようにします。"
   ko_KR: "부트로더에 RSS를 심어 온라인으로 설치할 수 있습니다."
