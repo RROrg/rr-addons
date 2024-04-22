@@ -1,19 +1,19 @@
 version: 1
 name: cpuinfo
 description:
-  en_US: "Only make the control panel display the correct CPU information. (By default, hardware information is automatically obtained, and parameters can be customized through parameters, parameters: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  ar_SA: "فقط جعل لوحة التحكم تعرض معلومات وحدة المعالجة المركزية الصحيحة. (بشكل افتراضي ، يتم الحصول تلقائيًا على معلومات الأجهزة ، ويمكن تخصيص المعلمات من خلال المعلمات ، المعلمات: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  de_DE: "Nur das Bedienfeld die richtigen CPU-Informationen anzeigen lassen. (Standardmäßig wird die Hardwareinformation automatisch abgerufen, und die Parameter können durch Parameter angepasst werden, Parameter: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  es_ES: "Solo haga que el panel de control muestre la información correcta de la CPU. (De forma predeterminada, la información del hardware se obtiene automáticamente, y los parámetros se pueden personalizar a través de parámetros, parámetros: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  fr_FR: "Faites en sorte que le panneau de contrôle affiche les informations correctes sur le processeur. (Par défaut, les informations matérielles sont automatiquement obtenues, et les paramètres peuvent être personnalisés via des paramètres, paramètres: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  ja_JP: "コントロールパネルに正しい CPU 情報のみを表示します。 (デフォルトではハードウェア情報が自動的に取得され、パラメータはパラメータを介してカスタマイズできます。パラメータ: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  ko_KR: "컨트롤 패널에서 올바른 CPU 정보만 표시하도록합니다. (기본적으로 하드웨어 정보가 자동으로 가져 오며 매개 변수를 통해 사용자 정의 할 수 있습니다. 매개 변수 : --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  ru_RU: "Только заставьте панель управления отображать правильную информацию о процессоре. (По умолчанию информация об аппаратном обеспечении автоматически получается, и параметры могут быть настроены через параметры, параметры: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  uk_UA: "Тільки зробіть панель управління відображати правильну інформацію про процесор. (За замовчуванням інформація про апаратне забезпечення автоматично отримується, і параметри можуть бути налаштовані через параметри, параметри: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  vi_VN: "Chỉ khiến cho bảng điều khiển hiển thị thông tin CPU chính xác. (Mặc định, thông tin phần cứng được tự động lấy, và các tham số có thể được tùy chỉnh thông qua các tham số, tham số: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  zh_CN: "仅使控制面板显示正确的 CPU 信息。(默认自动获取硬件信息，可通过的参数进行自定义， 参数: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  zh_HK: "僅使控制面板顯示正確的 CPU 資訊。(默認自動獲取硬件信息，可通過的參數進行自定義， 參數: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
-  zh_TW: "僅使控制面板顯示正確的 CPU 資訊。(默認自動獲取硬件信息，可通過的參數進行自定義， 參數: --vendor=, --family=, --series=, --cores=, --speed=, -r(restore))."
+  en_US: "Only make the control panel display the correct CPU information. (By default is automatically obtained, Or customized through parameters, e.g.: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  ar_SA: "فقط جعل لوحة التحكم تعرض معلومات الـ CPU الصحيحة. (بشكل افتراضي يتم الحصول عليها تلقائيًا, أو تخصيصها من خلال المعلمات, على سبيل المثال: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  de_DE: "Nur die CPU-Informationen anzeigen, die richtig sind. (Standardmäßig werden diese automatisch ermittelt, oder sie können über die Parameter angepasst werden, z. B.: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  es_ES: "Hacer que el panel de control muestre la información correcta de la CPU. (Por defecto se obtiene automáticamente, o se personaliza a través de parámetros, por ejemplo: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  fr_FR: "Faites en sorte que le panneau de contrôle affiche les informations correctes du processeur. (Par défaut, elles sont obtenues automatiquement, ou personnalisées via des paramètres, par exemple: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  ja_JP: "コントロールパネルに正しいCPU情報のみを表示します。(デフォルトでは自動的に取得されます。またはパラメータを使用してカスタマイズできます。例: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  ko_KR: "컨트롤 패널이 올바른 CPU 정보만 표시되도록합니다. (기본적으로 자동으로 가져오거나 매개 변수를 통해 사용자 정의 할 수 있습니다. 예: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  ru_RU: "Только панель управления отображает правильную информацию о процессоре. (По умолчанию она автоматически получается, или настраивается через параметры, например: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  uk_UA: "Тільки зробіть панель керування відображення правильної інформації про процесор. (За замовчуванням вона автоматично отримується, або налаштовується через параметри, наприклад: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  vi_VN: "Chỉ khiến bảng điều khiển hiển thị thông tin CPU chính xác. (Mặc định được tự động lấy, hoặc tùy chỉnh thông qua các tham số, ví dụ: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  zh_CN: "只让控制面板显示正确的CPU信息。(默认是自动获取的, 或通过参数自定义, 例如: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  zh_HK: "只讓控制面板顯示正確的CPU信息。(默認是自動獲取的, 或通過參數自定義, 例如: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
+  zh_TW: "只讓控制面板顯示正確的CPU信息。(默認是自動獲取的, 或通過參數自定義, 例如: --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
 system: false
 all:
   install-script: "install.sh"
