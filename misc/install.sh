@@ -166,6 +166,10 @@ elif [ "${1}" = "late" ]; then
     fi
   fi
 
+  # service
+  SERVICE_PATH="/tmpRoot/usr/lib/systemd/system"
+  sed -i  's|ExecStart=/|ExecStart=-/|g' ${SERVICE_PATH}/syno-oob-check-status.service ${SERVICE_PATH}/SynoInitEth.service
+
   # network
   rm -vf /tmpRoot/usr/lib/modules-load.d/70-network*.conf
   for I in $(seq 0 7); do
