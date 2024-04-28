@@ -6,6 +6,13 @@
 # See /LICENSE for more information.
 #
 
+PLATFORMS="apollolake geminilake epyc7002"
+PLATFORM="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)"
+if ! echo "${PLATFORM}" | grep -qw "${PLATFORM}"; then
+  echo "${PLATFORM} is not supported console addon!"
+  exit 0
+fi
+
 if [ "${1}" = "early" ]; then
   echo "Installing addon console - ${1}"
   tar zxf /addons/console-7.1.tgz -C /usr/

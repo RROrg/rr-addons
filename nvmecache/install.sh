@@ -9,8 +9,8 @@
 MODELS="DS918+ RS1619xs+ DS419+ DS1019+ DS719+ DS1621xs+"
 MODEL="$(cat /proc/sys/kernel/syno_hw_version)"
 
-if ! echo "${MODELS}" | grep -q "${MODEL}"; then
-  echo "${MODEL} is not supported"
+if ! echo "${MODELS}" | grep -qw "${MODEL}"; then
+  echo "${MODEL} is not supported nvmecache addon!"
   exit 0
 fi
 

@@ -6,12 +6,12 @@
 # See /LICENSE for more information.
 #
 
-# PLATFORMS="apollolake geminilake"
-# PLATFORM="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)"
-# if ! echo "${PLATFORM}" | grep -q "${PLATFORM}"; then
-#   echo "${PLATFORM} is not supported"
-#   exit 0
-# fi
+PLATFORMS="apollolake geminilake"
+PLATFORM="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)"
+if ! echo "${PLATFORM}" | grep -qw "${PLATFORM}"; then
+  echo "${PLATFORM} is not supported i915le10th addon!"
+  exit 0
+fi
 
 if [ "${1}" = "patches" ]; then
   echo "Installing addon i915le10th - ${1}"

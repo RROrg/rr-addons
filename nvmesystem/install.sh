@@ -11,8 +11,8 @@
 MODELS="SA6400"
 MODEL="$(cat /proc/sys/kernel/syno_hw_version)"
 
-if ! echo "${MODELS}" | grep -q "${MODEL}"; then
-  echo "${MODEL} is not supported"
+if ! echo "${MODELS}" | grep -qw "${MODEL}"; then
+  echo "${MODEL} is not supported nvmesystem addon!"
   exit 0
 fi
 
