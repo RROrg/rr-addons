@@ -7,7 +7,7 @@
 #
 
 for I in $(ls -d /sys/class/net/usb* 2>/dev/null); do
-  NAME=${I##*/}
+  NAME="${I##*/}"
   /sbin/ifconfig ${NAME} up || true
   if [ -x /usr/syno/sbin/synonet ]; then # DSM
     /usr/syno/sbin/synonet --dhcp ${NAME} || true

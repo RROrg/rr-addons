@@ -47,7 +47,7 @@ function _check_rootraidstatus() {
   if [ ! "$(_get_conf_kv supportraid)" = "yes" ]; then
     return 0
   fi
-  STATE=$(cat /sys/block/md0/md/array_state 2>/dev/null)
+  STATE="$(cat /sys/block/md0/md/array_state 2>/dev/null)"
   if [ $? -ne 0 ]; then
     return 1
   fi
@@ -66,7 +66,7 @@ function _atoi() {
   while [ ${IDX} -lt ${#DISKNAME} ]; do
     N=$(($(printf '%d' "'${DISKNAME:${IDX}:1}") - $(printf '%d' "'a") + 1))
     BIT=$((${#DISKNAME} - 1 - ${IDX}))
-    [ ${BIT} -eq 0 ] && NUM=$((${NUM} + ${N})) || NUM=$((${NUM} + 26 ** ${BIT} * ${N}))
+    [ ${BIT} -eq 0 ] && NUM=$((${NUM} + ${N:-0})) || NUM=$((${NUM} + 26 ** ${BIT} * ${N:-0}))
     IDX=$((${IDX} + 1))
   done
   echo $((${NUM} - 1))
@@ -400,11 +400,11 @@ function nondtModel() {
 if [ "${1}" = "patches" ]; then
   echo "Installing addon disks - ${1}"
 
-  BOOTDISK_PART3_PATH=$(blkid -L RR3 2>/dev/null)
+  BOOTDISK_PART3_PATH="$(blkid -L RR3 2>/dev/null)"
   [ -n "${BOOTDISK_PART3_PATH}" ] && BOOTDISK_PART3_MAJORMINOR="$((0x$(stat -c '%t' "${BOOTDISK_PART3_PATH}"))):$((0x$(stat -c '%T' "${BOOTDISK_PART3_PATH}")))" || BOOTDISK_PART3_MAJORMINOR=""
   [ -n "${BOOTDISK_PART3_MAJORMINOR}" ] && BOOTDISK_PART3="$(cat /sys/dev/block/${BOOTDISK_PART3_MAJORMINOR}/uevent 2>/dev/null | grep 'DEVNAME' | cut -d'=' -f2)" || BOOTDISK_PART3=""
 
-  [ -n "${BOOTDISK_PART3}" ] && BOOTDISK=$(ls -d /sys/block/*/${BOOTDISK_PART3} 2>/dev/null | cut -d'/' -f4) || BOOTDISK=""
+  [ -n "${BOOTDISK_PART3}" ] && BOOTDISK="$(ls -d /sys/block/*/${BOOTDISK_PART3} 2>/dev/null | cut -d'/' -f4)" || BOOTDISK=""
   [ -n "${BOOTDISK}" ] && BOOTDISK_PHYSDEVPATH="$(cat /sys/block/${BOOTDISK}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" || BOOTDISK_PHYSDEVPATH=""
 
   echo "BOOTDISK=${BOOTDISK}"

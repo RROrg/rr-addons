@@ -10,15 +10,15 @@ if [ "${1}" = "patches" ]; then
   echo "Installing addon sortnetif - ${1}"
 
   ETHLIST=""
-  ETHX=$(ls /sys/class/net/ 2>/dev/null | grep eth) # real network cards list
+  ETHX="$(ls /sys/class/net/ 2>/dev/null | grep eth)" # real network cards list
   for ETH in ${ETHX}; do
     MAC="$(cat /sys/class/net/${ETH}/address 2>/dev/null | sed 's/://g' | tr '[:upper:]' '[:lower:]')"
-    BUS=$(ethtool -i ${ETH} 2>/dev/null | grep bus-info | cut -d' ' -f2)
+    BUS="$(ethtool -i ${ETH} 2>/dev/null | grep bus-info | cut -d' ' -f2)"
     ETHLIST="${ETHLIST}${BUS} ${MAC} ${ETH}\n"
   done
 
   if [ -n "${2}" ]; then
-    MACS=$(echo "${2}" | sed 's/://g' | tr '[:upper:]' '[:lower:]' | tr ',' ' ')
+    MACS="$(echo "${2}" | sed 's/://g' | tr '[:upper:]' '[:lower:]' | tr ',' ' ')"
     ETHLISTTMPC=""
     ETHLISTTMPF=""
 
@@ -47,7 +47,7 @@ EOF
   while true; do
     cat /tmp/ethlist
     [ ${IDX} -ge $(wc -l </tmp/ethlist) ] && break
-    ETH=$(cat /tmp/ethlist | sed -n "$((${IDX} + 1))p" | cut -d' ' -f3)
+    ETH="$(cat /tmp/ethlist | sed -n "$((${IDX} + 1))p" | cut -d' ' -f3)"
     echo "ETH: ${ETH}"
     if [ -n "${ETH}" ] && [ ! "${ETH}" = "eth${IDX}" ]; then
       echo "change ${ETH} <=> eth${IDX}"
