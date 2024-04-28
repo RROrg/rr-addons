@@ -9,6 +9,7 @@ description:
   ja_JP: "eudev + kmod 自動的にロードされるモジュール。"
   ko_KR: "eudev + kmod 자동으로 로드된 모듈."
   ru_RU: "eudev + kmod автоматически загружаемые модули."
+  th_TH: "eudev + kmod โมดูลที่โหลดโดยอัตโนมัติ"
   tr_TR: "eudev + kmod otomatik olarak yüklenen modüller."
   uk_UA: "eudev + kmod автоматично завантажені модулі."
   vi_VN: "eudev + kmod môdules tải tự động."

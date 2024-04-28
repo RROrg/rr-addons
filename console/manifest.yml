@@ -9,6 +9,7 @@ description:
   ja_JP: "グラフィックスドライバを搭載したモデルでのみサポートされる、フレームバッファ (fb) を介した画面コンソール (bash) 機能を提供し、画面上でのデバッグを可能にします。"
   ko_KR: "프레임버퍼(fb)를 통해 화면 콘솔(bash) 기능을 제공하여 화면에서 디버깅을 허용하며, 그래픽 드라이버가 있는 모델에서만 지원됩니다."
   ru_RU: "Предоставляет функциональность консоли экрана (bash) через framebuffer (fb) для разрешения отладки на экране, поддерживается только на моделях с графическим драйвером."
+  th_TH: "ให้ความสามารถของหน้าจอคอนโซล (bash) ผ่าน framebuffer (fb) เพื่ออนุญาตให้ทำการแก้บั๊กบนหน้าจอ รองรับเฉพาะบนโมเดลที่มีไดรเวอร์กราฟิก"
   tr_TR: "Ekran üzerinde hata ayıklamaya izin vermek için framebuffer (fb) aracılığıyla ekran konsolu (bash) işlevselliği sağlar, yalnızca grafik sürücüsü olan modellerde desteklenir."
   uk_UA: "Надає функціональність консолі екрану (bash) через буфер кадру (fb) для дозволу налагодження на екрані, підтримується лише на моделях з графічним драйвером."
   vi_VN: "Cung cấp chức năng màn hình (bash) qua framebuffer (fb) để cho phép kiểm tra trên màn hình, chỉ được hỗ trợ trên các mô hình có trình điều khiển hình ảnh."

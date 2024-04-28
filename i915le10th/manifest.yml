@@ -9,6 +9,7 @@ description:
   ja_JP: "i915.ko（apollolake、geminilake）のデバイスIDを自動的に置き換え、10未満のみをサポートします。 （パラメータVID：PID）"
   ko_KR: "i915.ko(apollolake, geminilake)의 장치 ID를 자동으로 교체하며, 10세 미만만 지원합니다. (파라미터 VID:PID)"
   ru_RU: "Автоматическая замена идентификатора устройства i915.ko (apollolake, geminilake), поддерживающего только менее 10. (Параметр VID:PID)"
+  th_TH: "แทนที่ ID อุปกรณ์ของ i915.ko (apollolake, geminilake) โดยอัตโนมัติ รองรับเฉพาะต่ำกว่า 10 (พารามิเตอร์ VID:PID)"
   tr_TR: "i915.ko (apollolake, geminilake) cihaz kimliğini otomatik olarak değiştirir, yalnızca 10. sürümü destekler. (Parametre VID:PID)"
   uk_UA: "Автоматично замінює ідентифікатор пристрою i915.ko (apollolake, geminilake), підтримує лише менше 10. (Параметр VID:PID)"
   vi_VN: "Tự động thay thế ID thiết bị của i915.ko (apollolake, geminilake), chỉ hỗ trợ ít hơn 10. (Tham số VID:PID)"

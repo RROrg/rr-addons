@@ -9,6 +9,7 @@ description:
   ja_JP: "DSM のスケジュールされたタスクでローダーディスクをマウント/アンマウントするスクリプトを追加します。rr-manager アプリケーションで使用します。"
   ko_KR: "DSM 예약 작업에서 로더 디스크를 마운트/언마운트하는 스크립트를 추가하십시오. rr-manager 응용 프로그램에서 사용합니다."
   ru_RU: "Добавьте скрипт для монтирования/размонтирования диска загрузчика в запланированной задаче DSM, для использования приложениями rr-manager."
+  th_TH: "เพิ่มสคริปต์เพื่อติดตั้ง/ถอดติดตั้งดิสก์โหลดในงานที่ตั้งเวลา DSM สำหรับใช้โดยแอปพลิเคชัน rr-manager"
   tr_TR: "DSM zamanlanmış görevinde yükleyici diski bağlamak/çıkarmak için bir betik ekleyin, rr-manager uygulamaları tarafından kullanılmak üzere."
   uk_UA: "Додайте сценарій для монтування/розмонтовування диска завантажувача в запланованому завданні DSM, для використання програмами rr-manager."
   vi_VN: "Thêm một tập lệnh để gắn / tháo gắn đĩa loader trong nhiệm vụ được lên lịch DSM, để sử dụng bởi các ứng dụng rr-manager."

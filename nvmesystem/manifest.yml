@@ -9,6 +9,7 @@ description:
   ja_JP: "作者: jim3ma。システムをm2ディスクにのみインストールします（現在、SA6400のみサポート）。"
   ko_KR: "저자: jim3ma. SA6400만을 지원하는 m2 디스크에 시스템을 설치합니다."
   ru_RU: "Автор: jim3ma. Установка системы только на m2-дисков (текущий только поддерживает SA6400)."
+  th_TH: "ผู้เขียน: jim3ma. ติดตั้งระบบบนดิสก์ m2 เท่านั้น (ในปัจจุบันรองรับเฉพาะ SA6400 เท่านั้น)"
   tr_TR: "Yazar: jim3ma. Sistemi yalnızca m2 diske yükler (şu anda yalnızca SA6400 desteklenir)."
   uk_UA: "Автор: jim3ma. Встановлення системи лише на диск m2 (наразі підтримується лише SA6400)."
   vi_VN: "Tác giả: jim3ma. Cài đặt hệ thống chỉ trên ổ đĩa m2 (hiện chỉ hỗ trợ SA6400)."

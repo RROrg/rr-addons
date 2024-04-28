@@ -9,6 +9,7 @@ description:
   ja_JP: "DSM のスケジュールされたタスクで RR に再起動するスクリプトを追加し、画面とキーボードがない RR に簡単にアクセスできるようにします。"
   ko_KR: "DSM 예약 된 작업에서 RR로 재시작하는 스크립트를 추가하여 화면과 키보드가없는 RR에 쉽게 액세스 할 수 있습니다."
   ru_RU: "Добавьте сценарий для перезапуска в RR в запланированной задаче DSM, что облегчает доступ к RR без наличия экрана и клавиатуры."
+  th_TH: "เพิ่มสคริปต์เพื่อรีสตาร์ทไปยัง RR ในงานที่ตั้งเวลา DSM ทำให้สามารถเข้าถึง RR ได้อย่างง่ายโดยไม่มีหน้าจอและคีย์บอร์ด"
   tr_TR: "DSM planlanmış görevinde RR'ye yeniden başlatmak için bir betik ekleyerek, ekrana ve klavyeye sahip olmadan RR'ye erişmeyi kolaylaştırır."
   uk_UA: "Додайте сценарій для перезапуску в RR в запланованому завданні DSM, що полегшує доступ до RR без наявності екрана та клавіатури."
   vi_VN: "Thêm một tập lệnh để khởi động lại RR trong nhiệm vụ được lên lịch DSM, làm cho nó dễ dàng truy cập RR với không có màn hình và bàn phím."

@@ -9,6 +9,7 @@ description:  # https://github.com/007revad/Synology_HDD_db
   ja_JP: "作者：007revad。ディスクのファームウェアバージョンが認識されない問題を解決するために、HDD/SSDドライブをDSMデータベースに追加します。"
   ko_KR: "저자: 007revad. 디스크의 펌웨어 버전이 인식되지 않는 문제를 해결하기 위해 HDD/SSD 드라이브를 DSM 데이터베이스에 추가합니다."
   ru_RU: "Автор: 007revad. Добавьте жесткие диски и SSD-накопители в базу данных DSM, чтобы решить проблему нераспознавания версии прошивки диском."
+  th_TH: "ผู้เขียน: 007revad. เพิ่มฮาร์ดดิสก์และ SSD ลงในฐานข้อมูล DSM เพื่อแก้ปัญหาเวอร์ชันฟิวเวอร์ไม่ได้รับการรับรู้โดยดิสก์"
   tr_TR: "Yazar: 007revad. Disk tarafından tanınmayan firmware sürümü sorununu çözmek için HDD/SSD sürücüleri DSM veritabanına ekleyin."
   uk_UA: "Автор: 007revad. Додайте жорсткі диски та SSD-накопичувачі до бази даних DSM, щоб вирішити проблему нерозпізнавання версії прошивки диском."
   vi_VN: "Tác giả: 007revad. Thêm ổ cứng và ổ SSD vào cơ sở dữ liệu DSM để giải quyết vấn đề không nhận diện được phiên bản firmware của ổ cứng."
