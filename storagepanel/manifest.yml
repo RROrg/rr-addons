@@ -1,19 +1,19 @@
 version: 1
 name: storagepanel
 description:
-  en_US: "Change the storage panel disk display (default: RACK_24_Bay 1X8)."
-  ar_SA: "تغيير عرض القرص للوحة التخزين (الافتراضي: RACK_24_Bay 1X8)."
-  de_DE: "Ändern Sie die Speicherpanel-Disk-Anzeige (Standard: RACK_24_Bay 1X8)."
-  es_ES: "Cambie el panel de almacenamiento de disco de visualización (predeterminado: RACK_24_Bay 1X8)."
-  fr_FR: "Changer l'affichage du disque du panneau de stockage (par défaut : RACK_24_Bay 1X8)."
-  ja_JP: "ストレージパネルディスク表示を変更します（デフォルト：RACK_24_Bay 1X8）。"
-  ko_KR: "스토리지 패널 디스크 표시 변경(기본값: RACK_24_Bay 1X8)."
-  ru_RU: "Изменить отображение диска панели хранения (по умолчанию: RACK_24_Bay 1X8)."
-  uk_UA: "Змінити відображення диска панелі зберігання (за замовчуванням: RACK_24_Bay 1X8)."
-  vi_VN: "Thay đổi hiển thị ổ đĩa của bảng lưu trữ (mặc định: RACK_24_Bay 1X8)."
-  zh_CN: "修改存储面板磁盘显示（默认：RACK_24_Bay 1X8）。"
-  zh_HK: "修改存儲面板磁盤顯示（默認：RACK_24_Bay 1X8）。"
-  zh_TW: "修改存儲面板磁盤顯示（默認：RACK_24_Bay 1X8）。"
+  en_US: "Change the storage panel disk display (The default is automatic, please see the documentation or '/usr/bin/storagepanel.sh -h' for parameters)."
+  ar_SA: "تغيير عرض القرص للوحة التخزين (الافتراضي هو التلقائي، يرجى الرجوع إلى الوثائق أو '/usr/bin/storagepanel.sh -h' للحصول على المعلمات)."
+  de_DE: "Ändern Sie die Speicherplattenanzeige (Standardmäßig ist dies automatisch, bitte lesen Sie die Dokumentation oder '/usr/bin/storagepanel.sh -h' für Parameter)."
+  es_ES: "Cambie la visualización del disco del panel de almacenamiento (El valor predeterminado es automático, consulte la documentación o '/usr/bin/storagepanel.sh -h' para ver los parámetros)."
+  fr_FR: "Modifiez l'affichage du disque du panneau de stockage (La valeur par défaut est automatique, veuillez consulter la documentation ou '/usr/bin/storagepanel.sh -h' pour les paramètres)."
+  ja_JP: "ストレージパネルのディスク表示を変更します（デフォルトは自動です。パラメータについては、ドキュメントまたは '/usr/bin/storagepanel.sh -h' を参照してください）。"
+  ko_KR: "스토리지 패널 디스크 표시를 변경합니다 (기본값은 자동입니다. 매개 변수에 대해서는 문서 또는 '/usr/bin/storagepanel.sh -h'를 참조하십시오)."
+  ru_RU: "Измените отображение диска панели хранения (По умолчанию это автоматический режим, пожалуйста, ознакомьтесь с документацией или '/usr/bin/storagepanel.sh -h' для параметров)."
+  uk_UA: "Змініть відображення диска панелі зберігання (За замовчуванням це автоматичний режим, будь ласка, ознайомтеся з документацією або '/usr/bin/storagepanel.sh -h' для параметрів)."
+  vi_VN: "Thay đổi hiển thị ổ đĩa của bảng lưu trữ (Mặc định là tự động, vui lòng xem tài liệu hoặc '/usr/bin/storagepanel.sh -h' để biết thông số)."
+  zh_CN: "更改存储面板磁盘显示（默认为自动，请参阅文档或 '/usr/bin/storagepanel.sh -h' 了解参数）。"
+  zh_HK: "更改存儲面板磁盤顯示（默認為自動，請參閱文檔或 '/usr/bin/storagepanel.sh -h' 了解參數）。"
+  zh_TW: "更改存儲面板磁盤顯示（默認為自動，請參閱文檔或 '/usr/bin/storagepanel.sh -h' 了解參數）。"
 system: false
 all:
   install-script: "install.sh"
