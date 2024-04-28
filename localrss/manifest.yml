@@ -9,6 +9,7 @@ description:
   ja_JP: "RSS をブートローダーに埋め込んでオンラインでインストールできるようにします。"
   ko_KR: "부트로더에 RSS를 심어 온라인으로 설치할 수 있습니다."
   ru_RU: "Внедрить RSS в загрузчик, чтобы его можно было установить онлайн."
+  tr_TR: "RSS'i önyükleyiciye yerleştirerek çevrimiçi olarak yükleyebilirsiniz."
   uk_UA: "Внести RSS в завантажувач, щоб його можна було встановити онлайн."
   vi_VN: "Cấy RSS vào trình khởi động để có thể cài đặt trực tuyến."
   zh_CN: "将 RSS 植入到引导加载程序中，以便可以在线安装。"

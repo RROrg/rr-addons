@@ -9,6 +9,7 @@ description:
   ja_JP: "WiFiに接続してください。DSMの予約タスクで必要なパスワードに 'IFNAME' 'SSID' 'PASSWD' を変更して実行してください。"
   ko_KR: "WiFi에 연결하십시오. DSM 예약 작업에서 필요한 암호로 'IFNAME' 'SSID' 'PASSWD'를 수정하고 실행하십시오."
   ru_RU: "Подключитесь к WiFi. Пожалуйста, измените 'IFNAME' 'SSID' 'PASSWD' на требуемый пароль в запланированной задаче DSM и выполните ее."
+  tr_TR: "WiFi'ye bağlanın. Lütfen DSM planlanmış görevinde 'IFNAME' 'SSID' 'PASSWD' 'yi gerekli parola için değiştirin ve çalıştırın."
   uk_UA: "Підключіться до WiFi. Будь ласка, змініть 'IFNAME' 'SSID' 'PASSWD' на потрібний пароль у запланованому завданні DSM та виконайте його."
   vi_VN: "Kết nối WiFi. Vui lòng sửa đổi 'IFNAME' 'SSID' 'PASSWD' thành mật khẩu yêu cầu trong tác vụ được lên lịch DSM và thực hiện nó."
   zh_CN: "连接 WiFi。请在 DSM 计划任务中将 'IFNAME' 'SSID' 'PASSWD' 修改为所需密码并执行它。"

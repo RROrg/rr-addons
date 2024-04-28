@@ -9,6 +9,7 @@ description:
   ja_JP: "電源ボタンのイベントを処理するACPIデーモンで、一部の環境で電源ボタンがシャットダウンしない問題を修正します。"
   ko_KR: "전원 버튼 이벤트를 처리하는 ACPI 데몬, 일부 환경에서 전원 버튼이 종료되지 않는 문제를 해결합니다."
   ru_RU: "Демон ACPI, обрабатывающий события кнопки питания, исправляющий проблему, когда кнопка питания не выключает в некоторых средах."
+  tr_TR: "Güç düğmesi olaylarını ele alan ACPI Daemon, bazı ortamlarda güç düğmesinin kapanmamasını düzeltir."
   uk_UA: "Демон ACPI, який обробляє події кнопки живлення, виправляючи проблему, коли кнопка живлення не вимикає в деяких середовищах."
   vi_VN: "ACPI Daemon xử lý các sự kiện nút nguồn, sửa lỗi nút nguồn không tắt máy trong một số môi trường."
   zh_CN: "处理电源按钮事件的ACPI守护程序, 解决部分环境下电源按钮无法正常关机的问题."

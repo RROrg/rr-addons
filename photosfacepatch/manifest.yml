@@ -9,6 +9,7 @@ description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
   ja_JP: "作者: jinlife。このパッチは、Synology Photos で顔認識を有効にするために GPU を無視します。"
   ko_KR: "저자: jinlife. 이 패치는 Synology Photos에서 얼굴 인식을 활성화하기 위해 GPU를 무시합니다."
   ru_RU: "Автор: jinlife. Этот патч игнорирует GPU, чтобы включить распознавание лиц в Synology Photos."
+  tr_TR: "Yazar: jinlife. Bu yama, Synology Photos'ta yüz tanımayı etkinleştirmek için GPU'yu yoksayar."
   uk_UA: "Автор: jinlife. Цей патч ігнорує GPU, щоб увімкнути розпізнавання облич в Synology Photos."
   vi_VN: "Tác giả: jinlife. Bản vá này sẽ bỏ qua GPU để kích hoạt nhận diện khuôn mặt trong Synology Photos."
   zh_CN: "作者：jinlife。此补丁将在没有 GPU 存在的情况下启用 Synology Photos 中的人脸识别。"

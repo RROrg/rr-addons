@@ -9,6 +9,7 @@ description:
   ja_JP: "このスクリプトは、他のプロセスを開始する前に、起動プロセスがローダーディスク (/dev/synoboot) が利用可能になるまで待機するようにします。"
   ko_KR: "이 스크립트는 다른 프로세스를 시작하기 전에 부팅 프로세스가 로더 디스크 (/dev/synoboot)가 사용 가능할 때까지 기다리도록합니다."
   ru_RU: "Этот скрипт гарантирует, что процесс запуска ожидает, пока дисковая подсистема загрузки (/dev/synoboot) доступна, прежде чем запускать другие процессы."
+  tr_TR: "Bu komut dosyası, diğer işlemleri başlatmadan önce başlatma işleminin yükleyici diski (/dev/synoboot) kullanılabilir hale gelene kadar beklemesini sağlar."
   uk_UA: "Цей скрипт забезпечує, що процес завантаження чекає, поки диск завантаження (/dev/synoboot) стане доступним, перш ніж запускати інші процеси."
   vi_VN: "Tập lệnh này đảm bảo quá trình khởi động đợi cho đến khi ổ đĩa khởi động (/dev/synoboot) có sẵn trước khi bắt đầu các quá trình khác."
   zh_CN: "此脚本确保启动过程在启动加载器磁盘 (/dev/synoboot) 可用之前等待，然后再启动其他进程。"

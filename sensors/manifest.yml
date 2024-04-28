@@ -9,6 +9,7 @@ description:
   ja_JP: "このスクリプトは、CPUおよび他のコンポーネントの温度を監視するために使用されるsensorsパッケージをインストールします。"
   ko_KR: "이 스크립트는 CPU 및 다른 구성 요소의 온도를 모니터링하는 데 사용되는 sensors 패키지를 설치합니다."
   ru_RU: "Этот скрипт устанавливает пакет sensors, который используется для мониторинга температуры процессора и других компонентов."
+  tr_TR: "Bu komut dosyası, CPU ve diğer bileşenlerin sıcaklığını izlemek için kullanılan sensors paketini yükler."
   uk_UA: "Цей скрипт встановлює пакет sensors, який використовується для моніторингу температури процесора та інших компонентів."
   vi_VN: "Tập lệnh này cài đặt gói sensors, được sử dụng để giám sát nhiệt độ của CPU và các thành phần khác."
   zh_CN: "此脚本安装 sensors 包，用于监视 CPU 和其他组件的温度。"

@@ -9,6 +9,7 @@ description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
   ja_JP: "作成者: jinlife。このパッチにより、リモート NFS/CIFS 共有フォルダを VideoStation、AudioStation、Photos などで使用できます。"
   ko_KR: "작성자: jinlife. 이 패치를 사용하면 VideoStation, AudioStation 및 사진 등에서 원격 NFS/CIFS 공유 폴더를 사용할 수 있습니다."
   ru_RU: "Автор: jinlife. Этот патч позволит использовать удаленную общую папку NFS/CIFS в VideoStation, AudioStation и Photos и т. д."
+  tr_TR: "Yazar: jinlife. Bu yama, VideoStation, AudioStation ve Fotoğraflar vb. gibi yerlerde uzak NFS/CIFS paylaşılan klasörün kullanılmasına izin verecektir."
   uk_UA: "Автор: jinlife. Цей патч дозволить використовувати віддалену спільну папку NFS/CIFS в VideoStation, AudioStation та Photos тощо."
   vi_VN: "Tác giả: jinlife. Bản vá này sẽ cho phép thư mục chia sẻ NFS/CIFS từ xa được sử dụng trong VideoStation, AudioStation và Photos v.v.."
   zh_CN: "作者：jinlife。此补丁将允许在 VideoStation、AudioStation 和 Photos 等中使用远程 NFS/CIFS 共享文件夹。"

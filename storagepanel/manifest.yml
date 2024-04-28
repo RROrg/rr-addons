@@ -9,6 +9,7 @@ description:
   ja_JP: "ストレージパネルのディスク表示を変更します（デフォルトは自動です。パラメータについては、ドキュメントまたは '/usr/bin/storagepanel.sh -h' を参照してください）。"
   ko_KR: "스토리지 패널 디스크 표시를 변경합니다 (기본값은 자동입니다. 매개 변수에 대해서는 문서 또는 '/usr/bin/storagepanel.sh -h'를 참조하십시오)."
   ru_RU: "Измените отображение диска панели хранения (По умолчанию это автоматический режим, пожалуйста, ознакомьтесь с документацией или '/usr/bin/storagepanel.sh -h' для параметров)."
+  tr_TR: "Depolama paneli diski görüntüsünü değiştirin (Varsayılan olarak otomatik, lütfen parametreler için belgeleri veya '/usr/bin/storagepanel.sh -h' bakın)."
   uk_UA: "Змініть відображення диска панелі зберігання (За замовчуванням це автоматичний режим, будь ласка, ознайомтеся з документацією або '/usr/bin/storagepanel.sh -h' для параметрів)."
   vi_VN: "Thay đổi hiển thị ổ đĩa của bảng lưu trữ (Mặc định là tự động, vui lòng xem tài liệu hoặc '/usr/bin/storagepanel.sh -h' để biết thông số)."
   zh_CN: "更改存储面板磁盘显示（默认为自动，请参阅文档或 '/usr/bin/storagepanel.sh -h' 了解参数）。"

@@ -9,6 +9,7 @@ description:
   ja_JP: "ルートパスワードを設定し、ssh/sftpを有効にします。DSM タスクスケジューラで PW=\"\" を希望のパスワードに変更してタスクを実行してください。"
   ko_KR: "루트 암호를 설정하고 ssh/sftp를 활성화합니다. DSM 작업 스케줄러에서 PW=\"\"를 원하는 암호로 수정하고 작업을 실행하십시오."
   ru_RU: "Установите пароль root и включите ssh/sftp. Пожалуйста, измените PW=\"\" на желаемый пароль в планировщике задач DSM и запустите задачу."
+  tr_TR: "Kök parolasını ayarlayın ve ssh/sftp'yi etkinleştirin. Lütfen DSM Görev Zamanlayıcısında PW=\"\"'yi istenen parola olarak değiştirin ve görevi çalıştırın."
   uk_UA: "Встановіть пароль root та увімкніть ssh/sftp. Будь ласка, змініть PW=\"\" на бажаний пароль в планувальнику завдань DSM та запустіть завдання."
   vi_VN: "Đặt mật khẩu root và kích hoạt ssh/sftp. Vui lòng sửa đổi PW=\"\" thành mật khẩu mong muốn trong Lịch trình nhiệm vụ DSM và chạy nhiệm vụ."
   zh_CN: "设置 root 密码并启用 ssh/sftp。请在 DSM 计划任务中将 PW=\"\" 修改为所需的密码并运行该任务。"

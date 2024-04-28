@@ -9,6 +9,7 @@ description:  # https://github.com/007revad/Synology_enable_M2_volume https://gi
   ja_JP: "作者：007revad & PeterSuh-Q3。ストレージマネージャーからM.2ストレージプールとボリュームを作成できます。"
   ko_KR: "저자: 007revad & PeterSuh-Q3. 스토리지 매니저에서 M.2 저장소 풀 및 볼륨을 생성할 수 있습니다."
   ru_RU: "Автор: 007revad & PeterSuh-Q3. Позволяет создавать группы хранения и тома M.2 прямо из Менеджера хранилищ."
+  tr_TR: "Yazar: 007revad & PeterSuh-Q3. Depolama Yöneticisi'nden M.2 depolama havuzları ve hacimler oluşturmayı etkinleştirir."
   uk_UA: "Автор: 007revad & PeterSuh-Q3. Дозволяє створювати групи зберігання та томи M.2 прямо з Менеджера зберігання."
   vi_VN: "Tác giả: 007revad & PeterSuh-Q3. Cho phép tạo các nhóm lưu trữ và ổ đĩa M.2 từ Trình quản lý lưu trữ."
   zh_CN: "作者：007revad & PeterSuh-Q3。允许从存储管理器中创建M.2存储池和卷。"
