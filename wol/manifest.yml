@@ -9,6 +9,7 @@ description:
   ja_JP: "ネットワークデバイスの Wake-on-lan を強制的に有効にします。"
   ko_KR: "네트워크 장치의 Wake-on-lan을 강제로 활성화합니다."
   ru_RU: "Принудительное включение Wake-on-lan для сетевых устройств."
+  th_TH: "บังคับให้ Wake-on-lan ใช้งานสำหรับอุปกรณ์เครือข่าย"
   tr_TR: "Ağ cihazları için Wake-on-lan'ı zorla etkinleştirin."
   uk_UA: "Примусове включення Wake-on-lan для мережевих пристроїв."
   vi_VN: "Có;puxáy awake-on-lan cho thiết bị mạng."
