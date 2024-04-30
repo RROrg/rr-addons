@@ -317,55 +317,66 @@ function nondtModel() {
   USBPORTCFG=0
   ESATAPORTCFG=0
   INTERNALPORTCFG=0
-  HBA_NUMBER=$(($(lspci -d ::107 2>/dev/null | wc -l) + $(lspci -d ::104 2>/dev/null | wc -l) + $(lspci -d ::100 2>/dev/null | wc -l)))
 
+  hasUSB=false
+  USBMINIDX=20
+  USBMAXIDX=20
   for I in $(ls -d /sys/block/sd* 2>/dev/null); do
     IDX=$(_atoi ${I/\/sys\/block\/sd/})
-    ISUSB="$(cat ${I}/uevent 2>/dev/null | grep PHYSDEVPATH | grep usb)"
-    [ -n "${ISUSB}" ] && USBPORTCFG=$((${USBPORTCFG} | $((1 << ${IDX}))))
     [ $((${IDX} + 1)) -ge ${MAXDISKS} ] && MAXDISKS=$((${IDX} + 1))
+    ISUSB="$(cat ${I}/uevent 2>/dev/null | grep PHYSDEVPATH | grep usb)"
+    if [ -n "${ISUSB}" ]; then
+      ([ ${IDX} -lt ${USBMINIDX} ] || [ "${hasUSB}" = "false" ]) && USBMINIDX=${IDX}
+      ([ ${IDX} -gt ${USBMAXIDX} ] || [ "${hasUSB}" = "false" ]) && USBMAXIDX=${IDX}
+      hasUSB=true
+    fi
   done
+
+  USBDISKNUM=$((${USBMAXIDX} - ${USBMINIDX}))
+  [ ${USBDISKNUM} -lt 6 ] && USBDISKNUM=6      # Define 6 is the minimum number of USB disks
+  [ $((${USBMINIDX} + ${USBDISKNUM})) -gt ${MAXDISKS} ] && MAXDISKS=$((${USBMINIDX} + ${USBDISKNUM}))
 
   if _check_post_k "rd" "maxdisks"; then
     MAXDISKS=$(($(_get_conf_kv maxdisks)))
-    echo "get maxdisks=${MAXDISKS}"
+    printf "get maxdisks=%d\n" "${MAXDISKS}"
   else
     # fix isSingleBay issue: if maxdisks is 1, there is no create button in the storage panel
     # [ ${MAXDISKS} -le 2 ] && MAXDISKS=4
-    [ ${MAXDISKS} -lt 26 ] && MAXDISKS=26
+    printf "cal maxdisks=%d\n" "${MAXDISKS}"
   fi
 
   # # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
   # if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
   #   MAXDISKS=26
-  #   echo "set maxdisks=26 [${MAXDISKS}]"
+  #   printf "set maxdisks=26 [%d]\n" "${MAXDISKS}"
   # fi
 
   if _check_post_k "rd" "usbportcfg"; then
     USBPORTCFG=$(($(_get_conf_kv usbportcfg)))
-    echo "get usbportcfg=${USBPORTCFG}"
+    printf 'get usbportcfg=0x%.2x\n' "${USBPORTCFG}"
   else
+    USBPORTCFG=$(($((2 ** ${MAXDISKS} - 1)) ^ $((2 ** ${USBMINIDX} - 1))))
     _set_conf_kv rd "usbportcfg" "$(printf '0x%.2x' ${USBPORTCFG})"
-    echo "set usbportcfg=${USBPORTCFG}"
+    printf 'set usbportcfg=0x%.2x\n' "${USBPORTCFG}"
   fi
   if _check_post_k "rd" "esataportcfg"; then
     ESATAPORTCFG=$(($(_get_conf_kv esataportcfg)))
-    echo "get esataportcfg=${ESATAPORTCFG}"
+    printf 'get esataportcfg=0x%.2x\n' "${ESATAPORTCFG}"
   else
     _set_conf_kv rd "esataportcfg" "$(printf "0x%.2x" ${ESATAPORTCFG})"
-    echo "set esataportcfg=${ESATAPORTCFG}"
+    printf 'set esataportcfg=0x%.2x\n' "${ESATAPORTCFG}"
   fi
   if _check_post_k "rd" "internalportcfg"; then
     INTERNALPORTCFG=$(($(_get_conf_kv internalportcfg)))
-    echo "get internalportcfg=${INTERNALPORTCFG}"
+    printf 'get internalportcfg=0x%.2x\n' "${INTERNALPORTCFG}"
   else
     INTERNALPORTCFG=$(($((2 ** ${MAXDISKS} - 1)) ^ ${USBPORTCFG} ^ ${ESATAPORTCFG}))
     _set_conf_kv rd "internalportcfg" "$(printf "0x%.2x" ${INTERNALPORTCFG})"
-    echo "set internalportcfg=${INTERNALPORTCFG}"
+    printf 'set internalportcfg=0x%.2x\n' "${INTERNALPORTCFG}"
   fi
 
   _set_conf_kv rd "maxdisks" "${MAXDISKS}"
-  echo "set maxdisks=${MAXDISKS}"
+  printf "set maxdisks=%d\n" "${MAXDISKS}"
 
   if [ "${1}" = "true" ]; then
     echo "TODO: no-DT's sort!!!"
