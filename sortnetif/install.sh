@@ -54,16 +54,16 @@ EOF
       ip link set dev eth${IDX} down
       ip link set dev ${ETH} down
       sleep 1
-      ip link set dev eth${IDX} name tmp
+      ip link set dev eth${IDX} name ethN
       ip link set dev ${ETH} name eth${IDX}
-      ip link set dev tmp name ${ETH}
+      ip link set dev ethN name ${ETH}
       sleep 1
       ip link set dev eth${IDX} up
       ip link set dev ${ETH} up
       sleep 1
-      sed -i "s/eth${IDX}/tmp/" /tmp/ethlist
+      sed -i "s/eth${IDX}/ethN/" /tmp/ethlist
       sed -i "s/${ETH}/eth${IDX}/" /tmp/ethlist
-      sed -i "s/tmp/${ETH}/" /tmp/ethlist
+      sed -i "s/ethN/${ETH}/" /tmp/ethlist
       sleep 1
     fi
     IDX=$((${IDX} + 1))
