@@ -52,6 +52,7 @@ if [ "${1}" = "late" ]; then
 
   # Version
   echo "LOADERLABEL=\"${LOADERLABEL}\""      >"/tmpRoot/usr/rr/VERSION"
+  echo "LOADERRELEASE=\"${LOADERRELEASE}\"" >>"/tmpRoot/usr/rr/VERSION"
   echo "LOADERVERSION=\"${LOADERVERSION}\"" >>"/tmpRoot/usr/rr/VERSION"
 
 fi
