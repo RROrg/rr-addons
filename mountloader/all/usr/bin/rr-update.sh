@@ -133,9 +133,9 @@ function updateRR() {
   echo '{"progress": "30", "progressmsg": "Check conditions ..."}' >"${PROGRESS_FILE}"
   if [ -f "${TMP_PATH}/update/update-check.sh" ]; then
     chmod +x "${TMP_PATH}/update/update-check.sh"
-    #${TMP_PATH}/update/update-check.sh
+    ${TMP_PATH}/update/update-check.sh
     if [ $? -ne 0 ]; then
-      echo '{"progress": "-4", "progressmsg": "Update check failed!"}' >"${PROGRESS_FILE}"
+      echo '{"progress": "-4", "progressmsg": "Update check failed, The current version does not support upgrading to the latest version!"}' >"${PROGRESS_FILE}"
       return 1
     fi
   fi
