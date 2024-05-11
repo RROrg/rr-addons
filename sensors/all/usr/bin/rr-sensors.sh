@@ -16,13 +16,13 @@ if [[ ! -x $(which perl) ]]; then
   exit 1
 fi
 
-modprobe -q coretemp
-modprobe -q k10temp
 modprobe -q it87
 modprobe -q adt7470
 modprobe -q adt7475
 modprobe -q nct6683
 modprobe -q nct6775
+modprobe -q coretemp
+modprobe -q k10temp
 
 echo 'Y' | sensors-detect --auto >/tmp/sensors.log
 cat /tmp/sensors.log | grep Driver | awk '{print $2}'
