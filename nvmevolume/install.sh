@@ -9,6 +9,11 @@
 # From: https://github.com/PeterSuh-Q3/tcrp-addons/blob/main/nvmevolume-onthefly/src/install.sh
 #
 
+if grep -qw "/addons/nvmesystem.sh" "/addons/addons.sh"; then
+  echo "nvmevolume is not required if nvmesystem exists!"
+  exit 0
+fi
+
 if [ "${1}" = "late" ]; then
   echo "Installing addon nvmevolume - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
