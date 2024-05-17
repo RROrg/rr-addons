@@ -170,6 +170,10 @@ elif [ "${1}" = "late" ]; then
   SERVICE_PATH="/tmpRoot/usr/lib/systemd/system"
   sed -i  's|ExecStart=/|ExecStart=-/|g' ${SERVICE_PATH}/syno-oob-check-status.service ${SERVICE_PATH}/SynoInitEth.service
 
+  # sdcard
+  cp -f /tmpRoot/usr/lib/udev/script/sdcard.sh /tmpRoot/usr/lib/udev/script/sdcard.sh.bak
+  echo -en '#!/bin/sh\nexit 0\n' > /tmpRoot/usr/lib/udev/script/sdcard.sh
+
   # network
   rm -vf /tmpRoot/usr/lib/modules-load.d/70-network*.conf
   for I in $(seq 0 7); do
