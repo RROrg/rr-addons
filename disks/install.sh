@@ -255,11 +255,11 @@ function dtModel() {
       # [ ${MAXDISKS} -le 2 ] && MAXDISKS=4
       [ ${MAXDISKS} -lt 26 ] && MAXDISKS=26
     fi
-    # # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
-    # if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
-    #   MAXDISKS=26
-    #   echo "set maxdisks=26 [${MAXDISKS}]"
-    # fi
+    # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
+    if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
+      MAXDISKS=26
+      echo "set maxdisks=26 [${MAXDISKS}]"
+    fi
     _set_conf_kv rd "maxdisks" "${MAXDISKS}"
     echo "maxdisks=${MAXDISKS}"
 
@@ -344,11 +344,6 @@ function nondtModel() {
     printf "cal maxdisks=%d\n" "${MAXDISKS}"
   fi
 
-  # # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
-  # if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
-  #   MAXDISKS=26
-  #   printf "set maxdisks=26 [%d]\n" "${MAXDISKS}"
-  # fi
 
   if _check_post_k "rd" "usbportcfg"; then
     USBPORTCFG=$(($(_get_conf_kv usbportcfg)))
@@ -373,7 +368,12 @@ function nondtModel() {
     _set_conf_kv rd "internalportcfg" "$(printf "0x%.2x" ${INTERNALPORTCFG})"
     printf 'set internalportcfg=0x%.2x\n' "${INTERNALPORTCFG}"
   fi
-
+  
+  # Raidtool will read maxdisks, but when maxdisks is greater than 27, formatting error will occur 8%.
+  if ! _check_rootraidstatus && [ ${MAXDISKS} -gt 26 ]; then
+    MAXDISKS=26
+    printf "set maxdisks=26 [%d]\n" "${MAXDISKS}"
+  fi
   _set_conf_kv rd "maxdisks" "${MAXDISKS}"
   printf "set maxdisks=%d\n" "${MAXDISKS}"
 
