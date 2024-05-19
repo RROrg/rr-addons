@@ -326,10 +326,14 @@ function nondtModel() {
       hasUSB=true
     fi
   done
-
-  USBDISKNUM=$((${USBMAXIDX} - ${USBMINIDX}))
-  [ ${USBDISKNUM} -lt 6 ] && USBDISKNUM=6 # Define 6 is the minimum number of USB disks
-  [ $((${USBMINIDX} + ${USBDISKNUM})) -gt ${MAXDISKS} ] && MAXDISKS=$((${USBMINIDX} + ${USBDISKNUM}))
+  # Define 6 is the minimum number of USB disks
+  if [ "${hasUSB}" = "false" ]; then
+    USBMINIDX=$((${MAXDISKS} - 1))
+    USBMAXIDX=$((${USBMINIDX} + 6))
+  else
+    [ $((${USBMAXIDX} - ${USBMINIDX})) -lt 6 ] && USBMAXIDX=$((${USBMINIDX} + 6))
+  fi
+  [ $((${USBMAXIDX} + 1)) -gt ${MAXDISKS} ] && MAXDISKS=$((${USBMAXIDX} + 1))
 
   if _check_post_k "rd" "maxdisks"; then
     MAXDISKS=$(($(_get_conf_kv maxdisks)))
@@ -350,7 +354,7 @@ function nondtModel() {
     USBPORTCFG=$(($(_get_conf_kv usbportcfg)))
     printf 'get usbportcfg=0x%.2x\n' "${USBPORTCFG}"
   else
-    USBPORTCFG=$(($((2 ** ${MAXDISKS} - 1)) ^ $((2 ** ${USBMINIDX} - 1))))
+    USBPORTCFG=$(($((2 ** $((${USBMAXIDX} + 1)) - 1)) ^ $((2 ** $((${USBMINIDX} + 1)) - 1))))
     _set_conf_kv rd "usbportcfg" "$(printf '0x%.2x' ${USBPORTCFG})"
     printf 'set usbportcfg=0x%.2x\n' "${USBPORTCFG}"
   fi
