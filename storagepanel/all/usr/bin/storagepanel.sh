@@ -85,7 +85,7 @@ fi
 if [ -z "${HDD_BAY}" ]; then
   IDX="$(echo $(synodisk --enum -t internal 2>/dev/null | grep "Disk id:" | tail -n 1 | cut -d: -f2))"
   IDX=${IDX:-0}
-  while [ "${IDX}" -le 60 ]; do
+  while [ ${IDX} -le 60 ]; do
     for i in "${HDD_BAY_LIST[@]}"; do
       echo "${i}" | grep -q "_${IDX}_" && HDD_BAY="${i}" && break 2
     done
