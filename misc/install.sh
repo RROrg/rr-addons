@@ -168,7 +168,7 @@ elif [ "${1}" = "late" ]; then
 
   # service
   SERVICE_PATH="/tmpRoot/usr/lib/systemd/system"
-  sed -i  's|ExecStart=/|ExecStart=-/|g' ${SERVICE_PATH}/syno-oob-check-status.service ${SERVICE_PATH}/SynoInitEth.service
+  sed -i 's|ExecStart=/|ExecStart=-/|g' ${SERVICE_PATH}/syno-oob-check-status.service ${SERVICE_PATH}/SynoInitEth.service ${SERVICE_PATH}/syno_update_disk_logs.service
 
   # sdcard
   cp -f /tmpRoot/usr/lib/udev/script/sdcard.sh /tmpRoot/usr/lib/udev/script/sdcard.sh.bak
@@ -185,6 +185,6 @@ elif [ "${1}" = "late" ]; then
   # packages
   if [ ! -f /tmpRoot/usr/syno/etc/packages/feeds ]; then
     mkdir -p /tmpRoot/usr/syno/etc/packages
-    echo '[{"feed":"https://spk7.imnks.com/","name":"imnks"},{"feed":"https://packages.synocommunity.com","name":"synocommunity"}]' >/tmpRoot/usr/syno/etc/packages/feeds
+    echo '[{"feed":"https://spk7.imnks.com","name":"imnks"},{"feed":"https://packages.synocommunity.com","name":"synocommunity"}]' >/tmpRoot/usr/syno/etc/packages/feeds
   fi
 fi
