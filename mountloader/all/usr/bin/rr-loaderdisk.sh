@@ -48,20 +48,23 @@ function mountLoaderDisk() {
         break
       )
 
-      RR_RAMDISK_FILE="/mnt/p3/initrd-rr"
-      RR_PATH="/tmp/initrd"
-      extractInitrd "${RR_RAMDISK_FILE}" "${RR_PATH}"
-      if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
-        echo "RR initrd work path not found!"
-        break
+      if echo "$@" | grep -qw "\-all"; then
+        RR_RAMDISK_FILE="/mnt/p3/initrd-rr"
+        RR_PATH="/tmp/initrd"
+        extractInitrd "${RR_RAMDISK_FILE}" "${RR_PATH}"
+        if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
+          echo "RR initrd work path not found!"
+          break
+        fi
       fi
-
       mkdir -p /usr/rr
       echo "export LOADER_DISK=\"/dev/synoboot\"" >"/usr/rr/.mountloader"
       echo "export LOADER_DISK_PART1=\"/dev/synoboot1\"" >>"/usr/rr/.mountloader"
       echo "export LOADER_DISK_PART2=\"/dev/synoboot2\"" >>"/usr/rr/.mountloader"
       echo "export LOADER_DISK_PART3=\"/dev/synoboot3\"" >>"/usr/rr/.mountloader"
-      echo "export WORK_PATH=\"${RR_PATH}/opt/rr\"" >>"/usr/rr/.mountloader"
+      if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
+        echo "export WORK_PATH=\"${RR_PATH}/opt/rr\"" >>"/usr/rr/.mountloader"
+      fi
       break
     done
   fi
@@ -86,9 +89,11 @@ function unmountLoaderDisk() {
     export LOADER_DISK_PART2=
     export LOADER_DISK_PART3=
 
-    RR_PATH="/tmp/initrd"
-    rm -rf "${RR_PATH}"
-
+    if echo "$@" | grep -qw "\-all"; then
+      RR_PATH="/tmp/initrd"
+      rm -rf "${RR_PATH}"
+    fi
+    
     umount /mnt/p1 2>/dev/null
     umount /mnt/p2 2>/dev/null
     umount /mnt/p3 2>/dev/null
