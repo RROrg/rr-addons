@@ -47,4 +47,4 @@ fi
 sync
 umount /mnt/p1 2>/dev/null
 
-[ -x /usr/syno/sbin/synopoweroff ] && /usr/syno/sbin/synopoweroff -r || reboot
+[ -x /usr/syno/sbin/synopoweroff ] && /usr/syno/sbin/synopoweroff -r || /sbin/reboot

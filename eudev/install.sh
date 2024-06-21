@@ -36,7 +36,14 @@ elif [ "${1}" = "modules" ]; then
   /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm_amd && /usr/sbin/rmmod kvm_amd || true     # kvm-amd.ko
   /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm && /usr/sbin/rmmod kvm || true
   /usr/sbin/lsmod 2>/dev/null | grep -q ^irqbypass && /usr/sbin/rmmod irqbypass || true
-
+  # Load fs module
+  /usr/sbin/insmod /usr/lib/modules/fat.ko || true
+  /usr/sbin/insmod /usr/lib/modules/vfat.ko || true
+  /usr/sbin/insmod /usr/lib/modules/msdos.ko || true
+  /usr/sbin/insmod /usr/lib/modules/exfat.ko || true
+  /usr/sbin/insmod /usr/lib/modules/ntfs.ko || true
+  /usr/sbin/insmod /usr/lib/modules/efivarfs.ko || true
+  
 elif [ "${1}" = "late" ]; then
   echo "Installing addon eudev - ${1}"
   
