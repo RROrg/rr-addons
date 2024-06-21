@@ -40,7 +40,7 @@ elif [ "${1}" = "modules" ]; then
   /usr/sbin/insmod /usr/lib/modules/fat.ko || true
   /usr/sbin/insmod /usr/lib/modules/vfat.ko || true
   /usr/sbin/insmod /usr/lib/modules/msdos.ko || true
-  /usr/sbin/insmod /usr/lib/modules/exfat.ko || true
+  /usr/sbin/insmod /usr/lib/modules/exfat.ko || true  # synopkg install_from_server exFAT-Free
   /usr/sbin/insmod /usr/lib/modules/ntfs.ko || true
   /usr/sbin/insmod /usr/lib/modules/efivarfs.ko || true
   
