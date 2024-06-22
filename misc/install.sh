@@ -172,15 +172,27 @@ elif [ "${1}" = "late" ]; then
 
   # sdcard
   cp -f /tmpRoot/usr/lib/udev/script/sdcard.sh /tmpRoot/usr/lib/udev/script/sdcard.sh.bak
-  echo -en '#!/bin/sh\nexit 0\n' > /tmpRoot/usr/lib/udev/script/sdcard.sh
+  echo -en '#!/bin/sh\nexit 0\n' >/tmpRoot/usr/lib/udev/script/sdcard.sh
 
   # network
   rm -vf /tmpRoot/usr/lib/modules-load.d/70-network*.conf
-  for I in $(seq 0 7); do
-    if [ -f "/etc/sysconfig/network-scripts/ifcfg-eth${I}" ] && [ ! -f "/tmpRoot/etc.defaults/sysconfig/network-scripts/ifcfg-eth${I}" ]; then
-      cp -vf "/etc/sysconfig/network-scripts/ifcfg-eth${I}" "/tmpRoot/etc.defaults/sysconfig/network-scripts/ifcfg-eth${I}"
-    fi
+  mkdir -p /tmpRoot/etc.defaults/sysconfig/network-scripts
+  for I in $(ls /etc/sysconfig/network-scripts/ifcfg-eth*); do
+    [ ! -f "${I/\/etc/\/tmpRoot\/etc.defaults}" ] && cp -vf "${I}" "${I/\/etc/\/tmpRoot\/etc.defaults}"
   done
+  if grep -qw 'ifcfg=' /proc/cmdline; then
+    ifcfg_value_hex=$(grep -o 'ifcfg=[^ ]*' /proc/cmdline | cut -d= -f2)
+    ifcfg_value_bin=$(printf "%08d" $(echo "obase=2; ibase=16; ${ifcfg_value_hex^^}" | bc 2>/dev/null))
+    ifcfg_value_len=$((${#ifcfg_value_bin} - 1))
+    echo "ifcfg_value_bin: ${ifcfg_value_bin}"
+    for i in $(seq 0 ${ifcfg_value_len}); do
+      if [ "${ifcfg_value_bin:$((${ifcfg_value_len} - ${i})):1}" = "1" ]; then
+        if [ -f "/etc/sysconfig/network-scripts/ifcfg-eth${i}" ]; then
+          cp -vf /etc/sysconfig/network-scripts/ifcfg-eth${i} /tmpRoot/etc.defaults/sysconfig/network-scripts/
+        fi
+      fi
+    done
+  fi
 
   # packages
   if [ ! -f /tmpRoot/usr/syno/etc/packages/feeds ]; then
