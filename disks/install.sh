@@ -169,14 +169,17 @@ function dtModel() {
       I=1
       for P in $(lspci -d ::106 2>/dev/null | cut -d' ' -f1); do
         HOSTNUM=$(ls -l /sys/class/scsi_host 2>/dev/null | grep ${P} | wc -l)
+        PCIHEAD="$(ls -l /sys/class/scsi_host 2>/dev/null | grep ${P} | head -1)"
         PCIPATH=""
-        for Q in $(ls -l /sys/class/scsi_host 2>/dev/null | grep ${P} | head -1 | grep -oE ":..\.."); do PCIPATH="${PCIPATH},${Q//:/}"; done
-        [ -z "${PCIPATH}" ] && continue
         if [ "$(_kernelVersionCode "$(_kernelVersion)")" -ge "$(_kernelVersionCode "5.10")" ]; then
-          PCIPATH="0000:00:${PCIPATH:1}" # 5.10+ kernel  TODO: check 0000
+          PCIPATH="$(echo "${PCIHEAD}" | grep -oP 'pci\K[0-9]{4}:[0-9]{2}')" # 5.10+ kernel
         else
-          PCIPATH="00:${PCIPATH:1}" # 5.10- kernel
+          PCIPATH="$(echo "${PCIHEAD}" | grep -oP 'pci\K[0-9]{4}:[0-9]{2}' | cut -d':' -f2)" # 5.10- kernel
         fi
+        PCISUBS=""
+        for Q in $(echo "${PCIHEAD}" | grep -oE ":..\.."); do PCISUBS="${PCISUBS},${Q//:/}"; done
+        [ -z "${PCISUBS}" ] && continue
+        PCIPATH="${PCIPATH}:${PCISUBS:1}"
 
         IDX=""
         if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && echo "${BOOTDISK_PHYSDEVPATH}" | grep -q "${P}"; then
