@@ -11,7 +11,7 @@ if [ "${1}" = "late" ]; then
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
 
-  tar zxf /addons/sensors-7.1.tgz -C /tmpRoot/usr/
+  tar -zxf /addons/sensors-7.1.tgz -C /tmpRoot/usr/
   mv -f /tmpRoot/usr/etc/sensors* /tmpRoot/etc
   cp -vf /usr/bin/rr-sensors.sh /tmpRoot/usr/bin/rr-sensors.sh
 

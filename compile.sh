@@ -95,7 +95,7 @@ function compile-addon() {
     fi
     if [ ${HAS_FILES} -eq 1 ]; then
       # Create tar gziped
-      tar caf "${OUT_PATH}/all.tgz" -C "${OUT_PATH}/all" .
+      tar -caf "${OUT_PATH}/all.tgz" -C "${OUT_PATH}/all" .
       echo -e "\033[1;36m  Created file '${OUT_PATH}/all.tgz' \033[0m"
     fi
     # Clean
@@ -140,14 +140,14 @@ function compile-addon() {
     fi
     if [ ${HAS_FILES} -eq 1 ]; then
       # Create tar gziped
-      tar caf "${OUT_PATH}/${P}.tgz" -C "${OUT_PATH}/${P}" .
+      tar -caf "${OUT_PATH}/${P}.tgz" -C "${OUT_PATH}/${P}" .
       echo -e "\033[1;36m  Created file '${P}.tgz' \033[0m"
     fi
     # Clean
     rm -rf "${OUT_PATH}/${P}"
   done
   # Create addon package
-  tar caf "${1}.addon" -C "${OUT_PATH}" .
+  tar -caf "${1}.addon" -C "${OUT_PATH}" .
   rm -rf "${OUT_PATH}"
 }
 

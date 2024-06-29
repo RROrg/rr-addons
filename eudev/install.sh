@@ -8,7 +8,7 @@
 
 if [ "${1}" = "early" ]; then
   echo "Installing addon eudev - ${1}"
-  tar zxf /addons/eudev-7.1.tgz -C /
+  tar -zxf /addons/eudev-7.1.tgz -C /
 
 elif [ "${1}" = "modules" ]; then
   echo "Installing addon eudev - ${1}"
