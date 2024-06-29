@@ -87,10 +87,21 @@ echo -ne "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
 echo "Starting ttyd ..."
 MSG=""
 MSG="\${MSG}RR Recovery Mode\n"
+MSG="\${MSG}\n"
+MSG="\${MSG}Using terminal commands to modify system configs, execute external binary\n"
+MSG="\${MSG}files, add files, or install unauthorized third-party apps may lead to system\n"
+MSG="\${MSG}damages or unexpected behavior, or cause data loss. Make sure you are aware of\n"
+MSG="\${MSG}the consequences of each command and proceed at your own risk.\n"
+MSG="\${MSG}\n"
+MSG="\${MSG}Warning: Data should only be stored in shared folders. Data stored elsewhere\n"
+MSG="\${MSG}may be deleted when the system is updated/restarted.\n"
+MSG="\${MSG}\n"
 MSG="\${MSG}To 'Force re-install DSM': please visit http://<ip>:5000/web_install.html\n"
 MSG="\${MSG}To 'Modify system files' : please mount /dev/md0\n"
+echo -e "\${MSG}" > /etc/motd
+
 /usr/bin/killall ttyd 2>/dev/null || true
-/usr/sbin/ttyd /usr/bin/ash -c "echo -e \"\${MSG}\"; ash" -l >/dev/null 2>&1 &
+/usr/sbin/ttyd -W -t titleFixed="RR Recovery" login -f root >/dev/null 2>&1 &
 
 echo "Starting dufs ..."
 /usr/bin/killall dufs 2>/dev/null || true

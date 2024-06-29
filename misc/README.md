@@ -9,7 +9,7 @@ all\usr\bin\kmod  # will be overwritten by eudev.
     ldd: 
 
 all\usr\bin\yq:
-    ver: 4.43.1
+    ver: 4.44.2
     url: https://github.com/mikefarah/yq
     ldd: not a dynamic executable
 
@@ -19,11 +19,11 @@ all\usr\bin\pup:
     ldd: not a dynamic executable
 
 all\usr\sbin\dufs:
-    ver: 0.39.0
+    ver: 0.41.0
     url: https://github.com/sigoden/dufs
     ldd: not a dynamic executable
 
 all\usr\sbin\ttyd:
-    ver: 1.7.0-3ba994a
+    ver: 1.7.7
     url: https://github.com/tsl0922/ttyd
     ldd: not a dynamic executable
