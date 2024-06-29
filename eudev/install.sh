@@ -41,6 +41,7 @@ elif [ "${1}" = "late" ]; then
   echo "Installing addon eudev - ${1}"
   
   [ ! -L "/tmpRoot/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /tmpRoot/usr/sbin/modinfo
+  [ ! -L "/tmpRoot/usr/sbin/depmod" ] && ln -vsf /usr/bin/kmod /tmpRoot/usr/sbin/depmod
 
   echo "copy modules"
   isChange="false"
