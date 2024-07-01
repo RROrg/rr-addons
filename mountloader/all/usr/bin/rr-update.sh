@@ -183,13 +183,13 @@ function updateRR() {
   echo '{"progress": "60", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   while IFS=': ' read KEY VALUE; do
     if [ "${KEY: -1}" = "/" ]; then
-      rm -Rf "${VALUE}"
+      rm -Rf "${VALUE}"/*
       mkdir -p "${VALUE}"
       cp -Rf "${TMP_PATH}/update/${VALUE}"/* "${VALUE}"
       if [ "$(realpath "${VALUE}")" = "$(realpath "${MODULES_PATH}")" ]; then
         if [ -n "${MODEL}" -a -n "${PRODUCTVER}" ]; then
-          KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.[${PRODUCTVER}].kver" "${WORK_PATH}/platforms.yml")"
-          KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.[${PRODUCTVER}].kpre" "${WORK_PATH}/platforms.yml")"
+          KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
+          KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
           if [ -n "${PLATFORM}" -a -n "${KVER}" ]; then
             writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
             while read ID DESC; do
@@ -307,8 +307,8 @@ function updateModules() {
   fi
   echo '{"progress": "30", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   if [ -n "${MODEL}" -a -n "${PRODUCTVER}" ]; then
-    KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.[${PRODUCTVER}].kver" "${WORK_PATH}/platforms.yml")"
-    KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.[${PRODUCTVER}].kpre" "${WORK_PATH}/platforms.yml")"
+    KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
+    KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
     if [ -n "${PLATFORM}" -a -n "${KVER}" ]; then
       writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
       while read ID DESC; do
@@ -402,8 +402,8 @@ function updateCKs() {
   rm -rf "${CKS_PATH}/"*
   cp -rf "${TMP_PATH}/update/"* "${CKS_PATH}/"
   if [ -n "${MODEL}" -a -n "${PRODUCTVER}" -a "${KERNEL}" = "custom" ]; then
-    KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.[${PRODUCTVER}].kver" "${WORK_PATH}/platforms.yml")"
-    KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.[${PRODUCTVER}].kpre" "${WORK_PATH}/platforms.yml")"
+    KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
+    KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
     if [ -n "${PLATFORM}" -a -n "${KVER}" ]; then
       writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
       while read ID DESC; do
