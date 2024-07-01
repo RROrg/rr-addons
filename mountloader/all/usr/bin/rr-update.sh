@@ -110,6 +110,10 @@ function updateRR() {
   local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
 
   echo '{"progress": "0", "progressmsg": "Update RR ..."}' >"${PROGRESS_FILE}"
+  if [ ! -d "${PART1_PATH}" ] || [ ! -d "${PART3_PATH}" ]; then
+    echo '{"progress": "-1", "progressmsg": "RR path not found!"}' >"${PROGRESS_FILE}"
+    return 1
+  fi
   if [ ! -f "${UPDATE_FILE}" ]; then
     echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
     return 1
@@ -162,9 +166,9 @@ function updateRR() {
     SIZEOLD=$((${SIZEOLD} + ${FSOLD:-0}))
   done <<<$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")
 
-  SIZESPL=$(df -m ${PART3_PATH} 2>/dev/null | awk 'NR==2 {print $4}')
+  SIZESPL=$(df -m "${PART3_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
   if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
-    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "${PART3_PATH}" "$((${SIZENEW} - ${SIZEOLD} - ${SIZESPL}))")"
+    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "${PART3_PATH}" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
     echo '{"progress": "-6", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
     return 1
   fi
@@ -214,6 +218,10 @@ function updateAddons() {
   local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
 
   echo '{"progress": "0", "progressmsg": "Update Addons ..."}' >"${PROGRESS_FILE}"
+  if [ ! -d "${PART1_PATH}" ] || [ ! -d "${PART3_PATH}" ]; then
+    echo '{"progress": "-1", "progressmsg": "RR path not found!"}' >"${PROGRESS_FILE}"
+    return 1
+  fi
   if [ ! -f "${UPDATE_FILE}" ]; then
     echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
     return 1
@@ -242,7 +250,7 @@ function updateAddons() {
   SIZEOLD="$(du -sm "${ADDONS_PATH}" 2>/dev/null | awk '{print $1}')"
   SIZESPL=$(df -m "${ADDONS_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
   if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
-    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${ADDONS_PATH}")" "$((${SIZENEW} - ${SIZEOLD} - ${SIZESPL}))")"
+    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${ADDONS_PATH}")" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
     echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
     return 1
   fi
@@ -264,6 +272,10 @@ function updateModules() {
   local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
 
   echo '{"progress": "0", "progressmsg": "Update Modules ..."}' >"${PROGRESS_FILE}"
+  if [ ! -d "${PART1_PATH}" ] || [ ! -d "${PART3_PATH}" ]; then
+    echo '{"progress": "-1", "progressmsg": "RR path not found!"}' >"${PROGRESS_FILE}"
+    return 1
+  fi
   if [ ! -f "${UPDATE_FILE}" ]; then
     echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
     return 1
@@ -281,7 +293,7 @@ function updateModules() {
   SIZEOLD="$(du -sm "${MODULES_PATH}" 2>/dev/null | awk '{print $1}')"
   SIZESPL=$(df -m "${MODULES_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
   if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
-    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${MODULES_PATH}")" "$((${SIZENEW} - ${SIZEOLD} - ${SIZESPL}))")"
+    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${MODULES_PATH}")" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
     echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
     return 1
   fi
@@ -318,6 +330,10 @@ function updateLKMs() {
   local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
 
   echo '{"progress": "0", "progressmsg": "Update LKMs ..."}' >"${PROGRESS_FILE}"
+  if [ ! -d "${PART1_PATH}" ] || [ ! -d "${PART3_PATH}" ]; then
+    echo '{"progress": "-1", "progressmsg": "RR path not found!"}' >"${PROGRESS_FILE}"
+    return 1
+  fi
   if [ ! -f "${UPDATE_FILE}" ]; then
     echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
     return 1
@@ -335,7 +351,7 @@ function updateLKMs() {
   SIZEOLD="$(du -sm "${LKMS_PATH}" 2>/dev/null | awk '{print $1}')"
   SIZESPL=$(df -m "${LKMS_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
   if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
-    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${LKMS_PATH}")" "$((${SIZENEW} - ${SIZEOLD} - ${SIZESPL}))")"
+    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${LKMS_PATH}")" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
     echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
     return 1
   fi
@@ -357,6 +373,10 @@ function updateCKs() {
   local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
 
   echo '{"progress": "0", "progressmsg": "Update CKs ..."}' >"${PROGRESS_FILE}"
+  if [ ! -d "${PART1_PATH}" ] || [ ! -d "${PART3_PATH}" ]; then
+    echo '{"progress": "-1", "progressmsg": "RR path not found!"}' >"${PROGRESS_FILE}"
+    return 1
+  fi
   if [ ! -f "${UPDATE_FILE}" ]; then
     echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
     return 1
@@ -374,7 +394,7 @@ function updateCKs() {
   SIZEOLD="$(du -sm "${CKS_PATH}" 2>/dev/null | awk '{print $1}')"
   SIZESPL=$(df -m "${CKS_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
   if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
-    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${CKS_PATH}")" "$((${SIZENEW} - ${SIZEOLD} - ${SIZESPL}))")"
+    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${CKS_PATH}")" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
     echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
     return 1
   fi
