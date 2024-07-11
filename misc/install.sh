@@ -8,8 +8,6 @@
 if [ "${1}" = "early" ]; then
   echo "Installing addon misc - ${1}"
 
-  [ ! -L "/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
-
   # [CREATE][failed] Raidtool initsys
   SO_FILE="/usr/syno/bin/scemd"
   [ ! -f "${SO_FILE}.bak" ] && cp -vf "${SO_FILE}" "${SO_FILE}.bak"

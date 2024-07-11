@@ -9,6 +9,7 @@
 if [ "${1}" = "early" ]; then
   echo "Installing addon eudev - ${1}"
   tar -zxf /addons/eudev-7.1.tgz -C /
+  [ ! -L "/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
 
 elif [ "${1}" = "modules" ]; then
   echo "Installing addon eudev - ${1}"
