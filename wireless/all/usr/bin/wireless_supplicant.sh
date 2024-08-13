@@ -16,19 +16,9 @@ PSK="${3}"
 
 if [ -n "${NAME}" -a -n "${SSID}" -a -n "${PSK}" ]; then
   # fix iwlwifi module
-  if [ -z "$(ls /sys/class/net/wlan* 2>/dev/null)" ] && lsmod | grep -q ^iwlwifi; then
-    rmmod iwlmvm 2>/dev/null
-    rmmod iwlwifi 2>/dev/null
-    rmmod mac80211 2>/dev/null
-    rmmod cfg80211 2>/dev/null
-    rmmod libarc4 2>/dev/null
-
-    insmod /lib/modules/libarc4.ko
-    insmod /lib/modules/cfg80211.ko
-    insmod /lib/modules/mac80211.ko
-    insmod /lib/modules/iwlwifi.ko
-    insmod /lib/modules/iwlmvm.ko
-
+  if [ -z "$(ls /sys/class/net/wlan* 2>/dev/null)" ]; then
+    lsmod | grep -Eq "^iwl[m|d]vm" && modprobe -r iwlmvm iwldvm
+    modprobe iwlmvm iwldvm
     sleep 1
   fi
 

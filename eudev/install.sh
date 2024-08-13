@@ -9,7 +9,9 @@
 if [ "${1}" = "early" ]; then
   echo "Installing addon eudev - ${1}"
   tar -zxf /addons/eudev-7.1.tgz -C /
+  [ ! -L "/usr/sbin/modprobe" ] && ln -vsf /usr/bin/kmod /usr/sbin/modprobe
   [ ! -L "/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /usr/sbin/modinfo
+  [ ! -L "/usr/sbin/depmod" ] && ln -vsf /usr/bin/kmod /usr/sbin/depmod
 
 elif [ "${1}" = "modules" ]; then
   echo "Installing addon eudev - ${1}"
@@ -33,10 +35,8 @@ elif [ "${1}" = "modules" ]; then
   # Remove from memory to not conflict with RAID mount scripts
   /usr/bin/killall udevd
   # Remove kvm module
-  /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm_intel && /usr/sbin/rmmod kvm_intel || true # kvm-intel.ko
-  /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm_amd && /usr/sbin/rmmod kvm_amd || true     # kvm-amd.ko
-  /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm && /usr/sbin/rmmod kvm || true
-  /usr/sbin/lsmod 2>/dev/null | grep -q ^irqbypass && /usr/sbin/rmmod irqbypass || true
+  /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm_intel && /usr/sbin/modprobe -r kvm_intel || true # kvm-intel.ko
+  /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm_amd && /usr/sbin/modprobe -r kvm_amd || true     # kvm-amd.ko
 
   # getty
   # Find the getty setting in cmdline
@@ -56,7 +56,7 @@ elif [ "${1}" = "modules" ]; then
 
 elif [ "${1}" = "late" ]; then
   echo "Installing addon eudev - ${1}"
-
+  # [ ! -L "/tmpRoot/usr/sbin/modprobe" ] && ln -vsf /usr/bin/kmod /tmpRoot/usr/sbin/modprobe
   [ ! -L "/tmpRoot/usr/sbin/modinfo" ] && ln -vsf /usr/bin/kmod /tmpRoot/usr/sbin/modinfo
   [ ! -L "/tmpRoot/usr/sbin/depmod" ] && ln -vsf /usr/bin/kmod /tmpRoot/usr/sbin/depmod
 
@@ -100,10 +100,8 @@ elif [ "${1}" = "late" ]; then
   [ "${isChange}" = "true" ] && /usr/sbin/depmod -a -b /tmpRoot
 
   # Restore kvm module
-  /usr/sbin/insmod /usr/lib/modules/irqbypass.ko || true
-  /usr/sbin/insmod /usr/lib/modules/kvm.ko || true
-  /usr/sbin/insmod /usr/lib/modules/kvm-intel.ko || true # kvm-intel.ko
-  /usr/sbin/insmod /usr/lib/modules/kvm-amd.ko || true   # kvm-amd.ko
+  /usr/sbin/modprobe kvm_intel || true # kvm-intel.ko
+  /usr/sbin/modprobe kvm_amd || true   # kvm-amd.ko
 
   echo "Copy rules"
   cp -vf /usr/lib/udev/rules.d/* /tmpRoot/usr/lib/udev/rules.d/
