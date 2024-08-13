@@ -70,14 +70,13 @@ if [ "${1}" = "-r" ]; then
   exit
 fi
 
-HDD_BAY="${1}"
-if [ -n "${1}" ] && ! echo "${HDD_BAY_LIST[@]}" | grep -wq "${1}"; then
+[ -n "${1}" ] && HDD_BAY="$(echo "${HDD_BAY_LIST[@]}" | grep -iwo "${1}")" || HDD_BAY=""
+if [ -n "${1}" ] && [ -z "${HDD_BAY}" ]; then
   echo "parameter 1 error"
-  HDD_BAY=""
 fi
 
-SSD_BAY="${2}"
-if [ -n "${2}" ] && [ -z "$(echo "${2}" | sed -n '/^[0-9]\{1,2\}X[0-9]\{1,2\}$/p')" ]; then
+SSD_BAY="$(echo "${2^^}" | sed 's/*/X/')"
+if [ -n "${SSD_BAY}" ] && [ -z "$(echo "${SSD_BAY}" | sed -n '/^[0-9]\{1,2\}X[0-9]\{1,2\}$/p')" ]; then
   echo "parameter 2 error"
   SSD_BAY=""
 fi
