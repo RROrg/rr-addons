@@ -38,22 +38,6 @@ elif [ "${1}" = "modules" ]; then
   /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm_intel && /usr/sbin/modprobe -r kvm_intel || true # kvm-intel.ko
   /usr/sbin/lsmod 2>/dev/null | grep -q ^kvm_amd && /usr/sbin/modprobe -r kvm_amd || true     # kvm-amd.ko
 
-  # getty
-  # Find the getty setting in cmdline
-  for I in $(cat /proc/cmdline 2>/dev/null | grep -oE 'getty=[^ ]+' | sed 's/getty=//'); do
-    TTYN="$(echo "${I}" | cut -d',' -f1)"
-    BAUD="$(echo "${I}" | cut -d',' -f2 | cut -d'n' -f1)"
-    echo "ttyS0 ttyS1 ttyS2" | grep -qw "${TTYN}" && continue
-    if [ -n "${TTYN}" ] && [ -e "/dev/${TTYN}" ]; then
-      echo "Starting getty on ${TTYN}"
-      if [ -n "${BAUD}" ]; then
-        /usr/sbin/getty -L "${TTYN}" "${BAUD}" linux &
-      else
-        /usr/sbin/getty -L "${TTYN}" linux & 
-      fi
-    fi
-  done
-
 elif [ "${1}" = "late" ]; then
   echo "Installing addon eudev - ${1}"
   # [ ! -L "/tmpRoot/usr/sbin/modprobe" ] && ln -vsf /usr/bin/kmod /tmpRoot/usr/sbin/modprobe

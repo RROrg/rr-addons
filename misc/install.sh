@@ -117,6 +117,21 @@ EOF
   fi
 
 elif [ "${1}" = "patches" ]; then
+  # getty
+  for I in $(cat /proc/cmdline 2>/dev/null | grep -oE 'getty=[^ ]+' | sed 's/getty=//'); do
+    TTYN="$(echo "${I}" | cut -d',' -f1)"
+    BAUD="$(echo "${I}" | cut -d',' -f2 | cut -d'n' -f1)"
+    echo "ttyS0 ttyS1 ttyS2" | grep -qw "${TTYN}" && continue
+    if [ -n "${TTYN}" ] && [ -e "/dev/${TTYN}" ]; then
+      echo "Starting getty on ${TTYN}"
+      if [ -n "${BAUD}" ]; then
+        /usr/sbin/getty -L "${TTYN}" "${BAUD}" linux &
+      else
+        /usr/sbin/getty -L "${TTYN}" linux &
+      fi
+    fi
+  done
+  # network
   if grep -q 'network.' /proc/cmdline; then
     for I in $(grep -oE 'network.[0-9a-fA-F:]{12,17}=[^ ]*' /proc/cmdline); do
       MACR="$(echo "${I}" | cut -d. -f2 | cut -d= -f1 | sed 's/://g' | tr '[:upper:]' '[:lower:]')"
