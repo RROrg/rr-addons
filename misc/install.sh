@@ -234,6 +234,7 @@ elif [ "${1}" = "late" ]; then
     for ETH in $(cat /etc/ifcfgs); do
       echo "Copy ifcfg-${ETH}"
       if [ -f "/etc/sysconfig/network-scripts/ifcfg-${ETH}" ]; then
+        rm -vf /tmpRoot/etc/sysconfig/network-scripts/ifcfg-*${ETH} /tmpRoot/etc.defaults/sysconfig/network-scripts/ifcfg-*${ETH}
         cp -vf /etc/sysconfig/network-scripts/ifcfg-${ETH} /tmpRoot/etc/sysconfig/network-scripts/
         cp -vf /etc/sysconfig/network-scripts/ifcfg-${ETH} /tmpRoot/etc.defaults/sysconfig/network-scripts/
       fi
