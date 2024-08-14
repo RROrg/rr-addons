@@ -17,9 +17,9 @@ if [ "${1}" = "patches" ]; then
   echo "Installing addon i915le10th - ${1}"
 
   if [ -n "${2}" ]; then
-    GPU="$(echo "${2}" | sed 's/://g' | tr '[:upper:]' '[:lower:]')"
+    GPU="$(echo "${2}" | sed 's/://g; s/.*/\L&/')"
   else
-    GPU="$(lspci -n 2>/dev/null | grep 0300 | grep 8086 | cut -d " " -f 3 | sed 's/://g')"
+    GPU="$(lspci -n 2>/dev/null | grep 0300 | grep 8086 | cut -d' ' -f3 | sed 's/://g')"
   fi
   [ -z "${GPU}" -o $(echo -n "${GPU}" | wc -c) -ne 8 ] && echo "GPU is not detected" && exit 0
 
