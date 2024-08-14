@@ -9,7 +9,7 @@
 # Get values in synoinfo.conf K=V file
 # 1 - key
 function _get_conf_kv() {
-  grep "${1}=" /etc/synoinfo.conf 2>/dev/null | sed "s|^${1}=\"\(.*\)\"$|\1|g"
+  grep "${1}=" /etc.defaults/synoinfo.conf 2>/dev/null | sed "s|^${1}=\"\(.*\)\"$|\1|g"
 }
 
 # Replace/add values in synoinfo.conf K=V file

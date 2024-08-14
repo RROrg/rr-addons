@@ -196,7 +196,7 @@ elif [ "${1}" = "late" ]; then
       echo "CPU Supports AES, aesni-intel should load"
     else
       echo "CPU does NOT support AES, aesni-intel will not load, disabling"
-      sed -i 's/support_aesni_intel="yes"/support_aesni_intel="no"/' /tmpRoot/etc.defaults/synoinfo.conf
+      sed -i 's/support_aesni_intel="yes"/support_aesni_intel="no"/' /tmpRoot/etc/synoinfo.conf /tmpRoot/etc.defaults/synoinfo.conf
       sed -i 's/^aesni-intel/# aesni-intel/g' /tmpRoot/usr/lib/modules-load.d/70-crypto-kernel.conf
     fi
   fi
