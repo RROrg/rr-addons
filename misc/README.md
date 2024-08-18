@@ -9,7 +9,7 @@ all\usr\bin\kmod  # will be overwritten by eudev.
     ldd: 
 
 all\usr\bin\yq:
-    ver: 4.44.2
+    ver: 4.44.3
     url: https://github.com/mikefarah/yq
     ldd: not a dynamic executable
 
