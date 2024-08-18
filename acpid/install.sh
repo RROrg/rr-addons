@@ -34,7 +34,7 @@ if [ "${1}" = "late" ]; then
   # echo "RestartSec=30"                                       >>${DEST}
   # echo "PIDFile=/var/run/acpid.pid"                          >>${DEST}
   # echo "ExecStartPre=-/usr/sbin/modprobe button"             >>${DEST}
-  # echo "ExecStart=/usr/sbin/acpid"                           >>${DEST}
+  # echo "ExecStart=-/usr/sbin/acpid"                          >>${DEST}
   # echo "ExecStopPost=-/usr/sbin/modprobe -r button"          >>${DEST}
   # echo                                                       >>${DEST}
   # echo "[X-Synology]"                                        >>${DEST}
