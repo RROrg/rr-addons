@@ -1,0 +1,45 @@
+version: 1
+name: ups
+description:
+  en_US: "Author: GXNAS. Force UPS to shut down in standby mode."
+  ar_SA: "المؤلف: GXNAS. إجبار UPS على إيقاف التشغيل في وضع الاستعداد."
+  de_DE: "Autor: GXNAS. Zwingen Sie UPS, im Standby-Modus herunterzufahren."
+  es_ES: "Autor: GXNAS. Forzar el apagado de UPS en modo de espera."
+  fr_FR: "Auteur: GXNAS. Forcer l'arrêt de l'UPS en mode veille."
+  ja_JP: "作成者: GXNAS。UPS をスタンバイモードでシャットダウンさせる。"
+  ko_KR: "작성자: GXNAS. UPS를 대기 모드에서 종료하도록 강제합니다."
+  ru_RU: "Автор: GXNAS. Принудительное выключение UPS в режиме ожидания."
+  th_TH: "ผู้เขียน: GXNAS. บังคับ UPS ให้ปิดเมื่ออยู่ในโหมดสแตนด์บาย."
+  tr_TR: "Yazar: GXNAS. UPS'i bekleme modunda kapatmaya zorlayın."
+  uk_UA: "Автор: GXNAS. Примусове вимкнення UPS у режимі очікування."
+  vi_VN: "Tác giả: GXNAS. Bắt UPS tắt trong chế độ chờ."
+  zh_CN: "作者：GXNAS。强制 UPS 在待机模式下关机。"
+  zh_HK: "作者：GXNAS。強制 UPS 在待機模式下關機。"
+  zh_TW: "作者：GXNAS。強制 UPS 在待機模式下關機。"
+system: false
+all:
+  install-script: "install.sh"
+  copy: ""
+available-for:
+  apollolake-4.4.180:
+  apollolake-4.4.302:
+  broadwell-4.4.180:
+  broadwell-4.4.302:
+  broadwellnk-4.4.180:
+  broadwellnk-4.4.302:
+  broadwellnkv2-4.4.180:
+  broadwellnkv2-4.4.302:
+  broadwellntbap-4.4.180:
+  broadwellntbap-4.4.302:
+  epyc7002-7.1-5.10.55:
+  epyc7002-7.2-5.10.55:
+  denverton-4.4.180:
+  denverton-4.4.302:
+  geminilake-4.4.180:
+  geminilake-4.4.302:
+  purley-4.4.180:
+  purley-4.4.302:
+  r1000-4.4.180:
+  r1000-4.4.302:
+  v1000-4.4.180:
+  v1000-4.4.302:
