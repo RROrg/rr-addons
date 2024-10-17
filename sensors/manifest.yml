@@ -13,7 +13,7 @@ description:
   tr_TR: "Bu komut dosyası, CPU ve diğer bileşenlerin sıcaklığını izlemek için kullanılan sensors paketini yükler."
   uk_UA: "Цей скрипт встановлює пакет sensors, який використовується для моніторингу температури процесора та інших компонентів."
   vi_VN: "Tập lệnh này cài đặt gói sensors, được sử dụng để giám sát nhiệt độ của CPU và các thành phần khác."
-  zh_CN: "此脚本安装 sensors 包，用于监视 CPU 和其他组件的温度。"
+  zh_CN: "此脚本安装 sensors 工具，用于监视 CPU 和其他组件的温度。"
   zh_HK: "此腳本安裝 sensors 套件，用於監視 CPU 和其他組件的溫度。"
   zh_TW: "此腳本安裝 sensors 套件，用於監視 CPU 和其他組件的溫度。"
 system: false
