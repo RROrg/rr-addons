@@ -31,10 +31,15 @@ if [ -n "${NAME}" -a -n "${SSID}" -a -n "${PSK}" ]; then
     kill -9 $(cat /var/run/wpa_supplicant.pid.${NAME})
     rm -f /var/run/wpa_supplicant.pid.${NAME}
   fi
-  rm -f /etc/sysconfig/network-scripts/ifcfg-wlan* /etc.defaults/sysconfig/network-scripts/ifcfg-wlan*
+  #rm -f /etc/sysconfig/network-scripts/ifcfg-wlan* /etc.defaults/sysconfig/network-scripts/ifcfg-wlan*
   #echo -e "DEVICE=${NAME}\nONBOOT=yes\nBOOTPROTO=dhcp\nIPV6INIT=dhcp\nIPV6_ACCEPT_RA=1" >"/etc/sysconfig/network-scripts/ifcfg-${NAME}"
   #cp -f "/etc/sysconfig/network-scripts/ifcfg-${NAME}" "/etc.defaults/sysconfig/network-scripts/ifcfg-${NAME}"
   echo -e "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >/usr/syno/etc/wpa_supplicant.conf.${NAME}
   /usr/sbin/wpa_supplicant -i ${NAME} -c /usr/syno/etc/wpa_supplicant.conf.${NAME} -B -P /var/run/wpa_supplicant.pid.${NAME}
   /usr/syno/sbin/synonet --dhcp ${NAME}
+
+  # echo "enable=yes" >/usr/syno/etc/8021X/cfg-${NAME}
+  # /usr/sbin/wpa_supplicant -Dwired -c /usr/syno/etc/wpa_supplicant.conf.${NAME} -i ${NAME} -qq -B -P /var/run/wpa_supplicant.pid.${NAME}
+  # TEST=false /usr/syno/lib/systemd/scripts/8021x-client.sh ${NAME}
+  
 fi
