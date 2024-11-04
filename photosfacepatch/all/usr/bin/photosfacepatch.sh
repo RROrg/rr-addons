@@ -6,25 +6,21 @@
 # See /LICENSE for more information.
 #
 
-SO_FILE="/var/packages/SynologyPhotos/target/usr/lib/libsynophoto-plugin-platform.so.1.0"
+#SO_FILE="/var/packages/SynologyPhotos/target/usr/lib/libsynophoto-plugin-platform.so.1.0"
+SO_FILE=$(find / -name "libsynophoto-plugin-platform.so.1.0" 2>/dev/null | head -1)
 
-if [ "${1}" = "-r" ]; then
-  if [ -f "${SO_FILE}.bak" ]; then
-    mv -f "${SO_FILE}.bak" "${SO_FILE}"
-  fi
-  exit
-fi
-
-if [ ! -f "${SO_FILE}" ]; then
+if [ -z "${SO_FILE}" ] || [ ! -f "${SO_FILE}" ]; then
   echo "SynologyPhotos not install"
   exit
 fi
 
-if [ ! -f "${SO_FILE}.bak" ]; then
-  echo "Backup ${SO_FILE}"
-  cp -vfp "${SO_FILE}" "${SO_FILE}.bak"
+if [ "${1}" = "-r" ]; then
+  [ -f "${SO_FILE}.bak" ] && mv -f "${SO_FILE}.bak" "${SO_FILE}"
+  exit
 fi
+
 echo "Patching ${SO_FILE}"
+[ ! -f "${SO_FILE}.bak" ] && cp -f "${SO_FILE}" "${SO_FILE}.bak"
 # support face and concept
 PatchELFSharp "${SO_FILE}" "_ZN9synophoto6plugin8platform20IsSupportedIENetworkEv" "B8 00 00 00 00 C3"
 # force to support concept
