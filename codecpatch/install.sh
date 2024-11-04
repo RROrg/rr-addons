@@ -19,8 +19,7 @@ if [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/codecpatch.service"
   echo "[Unit]"                                                               >${DEST}
   echo "Description=addon codecpatch"                                        >>${DEST}
-  echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"    >>${DEST}
-  echo "After=smpkg-custom-install.service"                                  >>${DEST}
+  echo "After=syno-volume.target syno-space.target"                          >>${DEST}
   echo                                                                       >>${DEST}
   echo "[Service]"                                                           >>${DEST}
   echo "Type=oneshot"                                                        >>${DEST}
