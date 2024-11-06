@@ -23,6 +23,11 @@ if [ "${1}" = "late" ]; then
     if ! grep -q "${EVENT_POWEROFF}" "${FILE}"; then
       sed -i "/\/usr\/syno\/sbin\/synopoweroff/i\ \ \ \ ${EVENT_POWEROFF}" "${FILE}"
     fi
+    if [ ! -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
+      echo "copy esynoscheduler.db"
+      mkdir -p /tmpRoot/usr/syno/etc/esynoscheduler
+      cp -vf /addons/esynoscheduler.db /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db
+    fi
     echo "insert start/stop ScsiTarget task to esynoscheduler.db"
     export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
     /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF

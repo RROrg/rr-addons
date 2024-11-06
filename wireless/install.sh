@@ -19,7 +19,6 @@ if [ "${1}" = "late" ]; then
     mkdir -p /tmpRoot/usr/syno/etc/esynoscheduler
     cp -vf /addons/esynoscheduler.db /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db
   fi
-
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db | grep -q "Wireless"; then
     echo "wireless task already exists"

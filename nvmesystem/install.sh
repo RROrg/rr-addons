@@ -79,6 +79,11 @@ elif [ "${1}" = "late" ]; then
     ONBOOTUP=""
     ONBOOTUP="${ONBOOTUP}systemctl restart systemd-udev-trigger.service\n"
     ONBOOTUP="${ONBOOTUP}echo \"DELETE FROM task WHERE task_name LIKE ''RRONBOOTUPRR_UDEV'';\" | sqlite3 /usr/syno/etc/esynoscheduler/esynoscheduler.db\n"
+    if [ ! -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
+      echo "copy esynoscheduler.db"
+      mkdir -p /tmpRoot/usr/syno/etc/esynoscheduler
+      cp -vf /addons/esynoscheduler.db /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db
+    fi
     echo "insert RRONBOOTUPRR_UDEV task to esynoscheduler.db"
     export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
     /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
