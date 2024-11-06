@@ -23,14 +23,16 @@ if [ "${1}" = "late" ]; then
     if ! grep -q "${EVENT_POWEROFF}" "${FILE}"; then
       sed -i "/\/usr\/syno\/sbin\/synopoweroff/i\ \ \ \ ${EVENT_POWEROFF}" "${FILE}"
     fi
-    if [ ! -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
+
+    export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
+    ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
+    if [ ! -f "${ESYNOSCHEDULER_DB}" ] || ! /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" ".tables" | grep -qw "task"; then
       echo "copy esynoscheduler.db"
-      mkdir -p /tmpRoot/usr/syno/etc/esynoscheduler
-      cp -vf /addons/esynoscheduler.db /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db
+      mkdir -p "$(dirname "${ESYNOSCHEDULER_DB}")"
+      cp -vf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
     fi
     echo "insert start/stop ScsiTarget task to esynoscheduler.db"
-    export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
-    /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
+    /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
 DELETE FROM task WHERE task_name LIKE 'StartScsiTarget';
 INSERT INTO task VALUES('StartScsiTarget', '', 'bootup', '', 1, 0, 0, 0, '', 0, "synopkg start ScsiTarget", 'script', '{}', '', '', '{}', '{}');
 DELETE FROM task WHERE task_name LIKE 'StopScsiTarget';
@@ -43,10 +45,11 @@ elif [ "${1}" = "uninstall" ]; then
   FILE="/tmpRoot/usr/syno/bin/synoups"
   [ -f "${FILE}.bak" ] && mv -f "${FILE}.bak" "${FILE}"
 
-  if [ -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
-    echo "delete synoconfbkp task from esynoscheduler.db"
-    export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
-    /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
+  export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
+  ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
+  if [ -f "${ESYNOSCHEDULER_DB}" ]; then
+    echo "delete start/stop ScsiTarget task from esynoscheduler.db"
+    /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
 DELETE FROM task WHERE task_name LIKE 'StartScsiTarget';
 DELETE FROM task WHERE task_name LIKE 'StopScsiTarget';
 EOF

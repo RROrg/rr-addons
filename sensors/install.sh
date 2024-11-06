@@ -14,17 +14,18 @@ if [ "${1}" = "late" ]; then
   tar -zxf /addons/sensors-7.1.tgz -C /tmpRoot/usr/
   cp -vf /usr/bin/rr-sensors.sh /tmpRoot/usr/bin/rr-sensors.sh
 
-  if [ ! -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
-    echo "copy esynoscheduler.db"
-    mkdir -p /tmpRoot/usr/syno/etc/esynoscheduler
-    cp -vf /addons/esynoscheduler.db /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db
-  fi
-  echo "insert sensors task to esynoscheduler.db"
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
-  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db | grep -q "Fancontrol||bootup||1|0|0|0||0|"; then
-    echo "Fancontrol task already exists and it is enabled"
+  ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
+  if [ ! -f "${ESYNOSCHEDULER_DB}" ] || ! /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" ".tables" | grep -qw "task"; then
+    echo "copy esynoscheduler.db"
+    mkdir -p "$(dirname "${ESYNOSCHEDULER_DB}")"
+    cp -vf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
+  fi
+  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "Fancontrol||bootup||1|0|0|0||0|"; then
+    echo "sensors task already exists and it is enabled"
   else
-    /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
+      echo "insert sensors task to esynoscheduler.db"
+    /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
 DELETE FROM task WHERE task_name LIKE 'Fancontrol';
 INSERT INTO task VALUES('Fancontrol', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
 # Please manually adjust the value in /etc/fancontrol.
@@ -39,10 +40,11 @@ elif [ "${1}" = "uninstall" ]; then
   rm -rf /tmpRoot/etc/fancontrol
   rm -f /tmpRoot/usr/bin/rr-sensors.sh
 
-  if [ -f /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db ]; then
+  export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
+  ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
+  if [ -f "${ESYNOSCHEDULER_DB}" ]; then
     echo "delete sensors task from esynoscheduler.db"
-    export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
-    /tmpRoot/bin/sqlite3 /tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db <<EOF
+    /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
 DELETE FROM task WHERE task_name LIKE 'Fancontrol';
 EOF
   fi
