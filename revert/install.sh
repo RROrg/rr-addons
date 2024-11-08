@@ -47,7 +47,7 @@ if [ "${1}" = "late" ]; then
   rm -rf "/tmpRoot/usr/rr/backup"
   if [ -d "/usr/rr/backup" ]; then
     mkdir -p "/tmpRoot/usr/rr/backup"
-    cp -rf /usr/rr/backup/* "/tmpRoot/usr/rr/backup/"
+    cp -rpf /usr/rr/backup/* "/tmpRoot/usr/rr/backup/"
   fi
 
   # Version

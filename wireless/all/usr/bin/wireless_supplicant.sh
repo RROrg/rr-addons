@@ -33,7 +33,7 @@ if [ -n "${NAME}" -a -n "${SSID}" -a -n "${PSK}" ]; then
   fi
   #rm -f /etc/sysconfig/network-scripts/ifcfg-wlan* /etc.defaults/sysconfig/network-scripts/ifcfg-wlan*
   #echo -e "DEVICE=${NAME}\nONBOOT=yes\nBOOTPROTO=dhcp\nIPV6INIT=dhcp\nIPV6_ACCEPT_RA=1" >"/etc/sysconfig/network-scripts/ifcfg-${NAME}"
-  #cp -f "/etc/sysconfig/network-scripts/ifcfg-${NAME}" "/etc.defaults/sysconfig/network-scripts/ifcfg-${NAME}"
+  #cp -pf "/etc/sysconfig/network-scripts/ifcfg-${NAME}" "/etc.defaults/sysconfig/network-scripts/ifcfg-${NAME}"
   echo -e "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >/usr/syno/etc/wpa_supplicant.conf.${NAME}
   /usr/sbin/wpa_supplicant -i ${NAME} -c /usr/syno/etc/wpa_supplicant.conf.${NAME} -B -P /var/run/wpa_supplicant.pid.${NAME}
   /usr/syno/sbin/synonet --dhcp ${NAME}

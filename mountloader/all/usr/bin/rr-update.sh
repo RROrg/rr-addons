@@ -185,7 +185,7 @@ function updateRR() {
     if [ "${KEY: -1}" = "/" ]; then
       rm -Rf "${VALUE}"/*
       mkdir -p "${VALUE}"
-      cp -Rf "${TMP_PATH}/update/${VALUE}"/* "${VALUE}"
+      cp -rf "${TMP_PATH}/update/${VALUE}"/* "${VALUE}"
       if [ "$(realpath "${VALUE}")" = "$(realpath "${MODULES_PATH}")" ]; then
         if [ -n "${MODEL}" -a -n "${PRODUCTVER}" ]; then
           KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
@@ -256,7 +256,7 @@ function updateAddons() {
   fi
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   rm -Rf "${ADDONS_PATH}/"*
-  cp -Rf "${TMP_PATH}/update/"* "${ADDONS_PATH}/"
+  cp -rf "${TMP_PATH}/update/"* "${ADDONS_PATH}/"
   rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   touch ${PART1_PATH}/.build

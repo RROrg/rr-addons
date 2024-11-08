@@ -9,9 +9,9 @@
 if [ "${1}" = "late" ]; then
   echo "Installing addon cpuinfo - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
   
-  cp -vf /usr/bin/cpuinfo.sh /tmpRoot/usr/bin/cpuinfo.sh
+  cp -vpf /usr/bin/cpuinfo.sh /tmpRoot/usr/bin/cpuinfo.sh
 
   shift
   mkdir -p "/tmpRoot/usr/lib/systemd/system"

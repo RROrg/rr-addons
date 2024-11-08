@@ -9,9 +9,9 @@
 if [ "${1}" = "late" ]; then
   echo "Installing addon expands - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
   
-  cp -vf /usr/bin/expands.sh /tmpRoot/usr/bin/expands.sh
+  cp -vpf /usr/bin/expands.sh /tmpRoot/usr/bin/expands.sh
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/expands.service"

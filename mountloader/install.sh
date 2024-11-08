@@ -9,13 +9,13 @@
 if [ "${1}" = "late" ]; then
   echo "Installing addon mountloader - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
-  cp -vf /usr/bin/yq /tmpRoot/usr/bin/yq
-  cp -vf /usr/bin/cpio /tmpRoot/usr/bin/cpio
-  cp -vf /usr/bin/unzip /tmpRoot/usr/bin/unzip
-  cp -vf /usr/bin/rr-update.sh /tmpRoot/usr/bin/rr-update.sh
-  cp -vf /usr/bin/rr-loaderdisk.sh /tmpRoot/usr/bin/rr-loaderdisk.sh
+  cp -vpf /usr/bin/yq /tmpRoot/usr/bin/yq
+  cp -vpf /usr/bin/cpio /tmpRoot/usr/bin/cpio
+  cp -vpf /usr/bin/unzip /tmpRoot/usr/bin/unzip
+  cp -vpf /usr/bin/rr-update.sh /tmpRoot/usr/bin/rr-update.sh
+  cp -vpf /usr/bin/rr-loaderdisk.sh /tmpRoot/usr/bin/rr-loaderdisk.sh
 
   rm -f /tmpRoot/usr/rr/.mountloader
 
@@ -24,7 +24,7 @@ if [ "${1}" = "late" ]; then
   if [ ! -f "${ESYNOSCHEDULER_DB}" ] || ! /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" ".tables" | grep -qw "task"; then
     echo "copy esynoscheduler.db"
     mkdir -p "$(dirname "${ESYNOSCHEDULER_DB}")"
-    cp -vf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
+    cp -vpf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
   fi
   echo "insert mountloader task to esynoscheduler.db"
   /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF

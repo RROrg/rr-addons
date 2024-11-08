@@ -17,21 +17,21 @@ fi
 if [ "${1}" = "late" ]; then
   echo "Installing addon nvmevolume - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
   SO_FILE="/tmpRoot/usr/lib/libhwcontrol.so.1"
-  [ ! -f "${SO_FILE}.bak" ] && cp -vf "${SO_FILE}" "${SO_FILE}.bak"
+  [ ! -f "${SO_FILE}.bak" ] && cp -pf "${SO_FILE}" "${SO_FILE}.bak"
 
-  cp -f "${SO_FILE}" "${SO_FILE}.tmp"
+  cp -pf "${SO_FILE}" "${SO_FILE}.tmp"
   xxd -c $(xxd -p "${SO_FILE}.tmp" 2>/dev/null | wc -c) -p "${SO_FILE}.tmp" 2>/dev/null |
     sed "s/803e00b801000000752.488b/803e00b8010000009090488b/"
     | xxd -r -p > "${SO_FILE}" 2>/dev/null
   rm -f "${SO_FILE}.tmp"
 
   # Create storage pool page without RAID type.
-  cp -vf /usr/bin/nvmevolume.sh /tmpRoot/usr/bin/nvmevolume.sh
+  cp -vpf /usr/bin/nvmevolume.sh /tmpRoot/usr/bin/nvmevolume.sh
 
-  [ ! -f "/tmpRoot/usr/bin/gzip" ] && cp -vf /usr/bin/gzip /tmpRoot/usr/bin/gzip
+  [ ! -f "/tmpRoot/usr/bin/gzip" ] && cp -vpf /usr/bin/gzip /tmpRoot/usr/bin/gzip
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/nvmevolume.service"

@@ -9,17 +9,17 @@
 if [ "${1}" = "late" ]; then
   echo "Installing addon wireless - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
-  cp -vf /usr/bin/wireless_supplicant.sh /tmpRoot/usr/bin
-  cp -vf /usr/sbin/iw /tmpRoot/usr/sbin
+  cp -vpf /usr/bin/wireless_supplicant.sh /tmpRoot/usr/bin/wireless_supplicant.sh
+  cp -vpf /usr/sbin/iw /tmpRoot/usr/sbin/iw
 
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
   if [ ! -f "${ESYNOSCHEDULER_DB}" ] || ! /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" ".tables" | grep -qw "task"; then
     echo "copy esynoscheduler.db"
     mkdir -p "$(dirname "${ESYNOSCHEDULER_DB}")"
-    cp -vf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
+    cp -vpf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
   fi
   if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "Wireless"; then
     echo "wireless task already exists"

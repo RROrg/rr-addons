@@ -14,10 +14,10 @@ if [ "${1}" = "jrExit" ]; then
 elif [ "${1}" = "late" ]; then
   echo "Installing addon wol - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
   
-  [ ! -f "/tmpRoot/usr/bin/ethtool" ] && cp -vf /usr/bin/ethtool /tmpRoot/usr/bin/ethtool
-  cp -vf /usr/bin/wol.sh /tmpRoot/usr/bin/wol.sh
+  [ ! -f "/tmpRoot/usr/bin/ethtool" ] && cp -vpf /usr/bin/ethtool /tmpRoot/usr/bin/ethtool
+  cp -vpf /usr/bin/wol.sh /tmpRoot/usr/bin/wol.sh
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/wol.service"

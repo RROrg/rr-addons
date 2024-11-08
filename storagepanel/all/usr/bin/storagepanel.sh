@@ -98,7 +98,7 @@ if [ -z "${SSD_BAY}" ]; then
   SSD_BAY="$((${IDX:-0} / 8 + 1))X8"
 fi
 
-[ ! -f "${FILE_GZ}.bak" ] && cp -f "${FILE_GZ}" "${FILE_GZ}.bak"
+[ ! -f "${FILE_GZ}.bak" ] && cp -pf "${FILE_GZ}" "${FILE_GZ}.bak"
 
 gzip -dc "${FILE_GZ}" >"${FILE_JS}"
 echo "storagepanel set to ${HDD_BAY} ${SSD_BAY}"

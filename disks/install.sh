@@ -308,7 +308,7 @@ function dtModel() {
     echo "};" >>${DEST}
   fi
   dtc -I dts -O dtb ${DEST} >/etc/model.dtb
-  cp -vf /etc/model.dtb /run/model.dtb
+  cp -vpf /etc/model.dtb /run/model.dtb
   /usr/syno/bin/syno_slot_mapping
 }
 
@@ -434,9 +434,9 @@ elif [ "${1}" = "late" ]; then
   if [ "$(_get_conf_kv supportportmappingv2)" = "yes" ]; then
     echo "Copying /etc.defaults/model.dtb"
     # copy file
-    cp -vf /usr/bin/dtc /tmpRoot/usr/bin/dtc
-    cp -vf /etc/model.dtb /tmpRoot/etc/model.dtb
-    cp -vf /etc/model.dtb /tmpRoot/etc.defaults/model.dtb
+    cp -vpf /usr/bin/dtc /tmpRoot/usr/bin/dtc
+    cp -vpf /etc/model.dtb /tmpRoot/etc/model.dtb
+    cp -vpf /etc/model.dtb /tmpRoot/etc.defaults/model.dtb
   else
     echo "Adjust maxdisks and internalportcfg automatically"
     # sysfs is unpopulated here, get the values from junior synoinfo.conf
@@ -452,8 +452,8 @@ elif [ "${1}" = "late" ]; then
     _set_conf_kv hd "esataportcfg" "${ESATAPORTCFG}"
     _set_conf_kv hd "internalportcfg" "${INTERNALPORTCFG}"
     # nvme
-    cp -vf /etc/extensionPorts /tmpRoot/etc/extensionPorts
-    cp -vf /etc/extensionPorts /tmpRoot/etc.defaults/extensionPorts
+    cp -vpf /etc/extensionPorts /tmpRoot/etc/extensionPorts
+    cp -vpf /etc/extensionPorts /tmpRoot/etc.defaults/extensionPorts
   fi
 
   MAXDISKS=$(_get_conf_kv maxdisks)

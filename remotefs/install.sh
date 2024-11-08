@@ -9,12 +9,12 @@
 if [ "${1}" = "late" ]; then
   echo "Installing addon remotefs - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
   SO_FILE="/tmpRoot/usr/lib/libsynosdk.so.7"
   if [ -f "${SO_FILE}" ]; then
     echo "Patching libsynosdk.so.7"
-    [ ! -f "${SO_FILE}.bak" ] && cp -f "${SO_FILE}" "${SO_FILE}.bak"
+    [ ! -f "${SO_FILE}.bak" ] && cp -pf "${SO_FILE}" "${SO_FILE}.bak"
     # force to support remote fs
     PatchELFSharp "${SO_FILE}" "SYNOFSIsRemoteFS" "B8 00 00 00 00 C3"
   else

@@ -52,13 +52,13 @@ elif [ "${1}" = "rcExit" ]; then
 elif [ "${1}" = "late" ]; then
   echo "Installing addon console - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
   tar -zxf /addons/console-7.1.tgz -C /tmpRoot/usr/
   # run when boot installed DSM
   echo -e "DSM mode\n" >/tmpRoot/etc/issue
 
-  cp -vf /tmpRoot/usr/lib/systemd/system/serial-getty\@.service /tmpRoot/usr/lib/systemd/system/getty\@tty1.service
+  cp -vpf /tmpRoot/usr/lib/systemd/system/serial-getty\@.service /tmpRoot/usr/lib/systemd/system/getty\@tty1.service
   sed -i 's|^ExecStart=.*|ExecStart=-/sbin/agetty %I 115200 linux|' /tmpRoot/usr/lib/systemd/system/getty\@tty1.service
   mkdir -vp /tmpRoot/usr/lib/systemd/system/getty.target.wants
   ln -vsf /usr/lib/systemd/system/getty\@tty1.service /tmpRoot/usr/lib/systemd/system/getty.target.wants/getty\@tty1.service

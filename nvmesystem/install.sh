@@ -28,7 +28,7 @@ if [ "${1}" = "early" ]; then
 
   # [CREATE][failed] Raidtool initsys
   SO_FILE="/usr/syno/bin/scemd"
-  [ ! -f "${SO_FILE}.bak" ] && cp -vf "${SO_FILE}" "${SO_FILE}.bak"
+  [ ! -f "${SO_FILE}.bak" ] && cp -pf "${SO_FILE}" "${SO_FILE}.bak"
   cp -f "${SO_FILE}" "${SO_FILE}.tmp"
   xxd -c $(xxd -p "${SO_FILE}.tmp" 2>/dev/null | wc -c) -p "${SO_FILE}.tmp" 2>/dev/null |
     sed "s/4584ed74b7488b4c24083b01/4584ed75b7488b4c24083b01/" |
@@ -38,22 +38,22 @@ if [ "${1}" = "early" ]; then
 elif [ "${1}" = "late" ]; then
   echo "Installing addon nvmesystem - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
   # disk/shared_disk_info_enum.c::84 Failed to allocate list in SharedDiskInfoEnum, errno=0x900.
   SO_FILE="/tmpRoot/usr/lib/libhwcontrol.so.1"
-  [ ! -f "${SO_FILE}.bak" ] && cp -vf "${SO_FILE}" "${SO_FILE}.bak"
+  [ ! -f "${SO_FILE}.bak" ] && cp -pf "${SO_FILE}" "${SO_FILE}.bak"
 
-  cp -vf "${SO_FILE}" "${SO_FILE}.tmp"
+  cp -pf "${SO_FILE}" "${SO_FILE}.tmp"
   xxd -c $(xxd -p "${SO_FILE}.tmp" 2>/dev/null | wc -c) -p "${SO_FILE}.tmp" 2>/dev/null |
     sed "s/0f95c00fb6c0488b94240810/0f94c00fb6c0488b94240810/; s/8944240c8b44240809e84409/8944240c8b44240890904409/" |
     xxd -r -p >"${SO_FILE}" 2>/dev/null
   rm -f "${SO_FILE}.tmp"
 
   # Create storage pool page without RAID type.
-  cp -vf /usr/bin/nvmesystem.sh /tmpRoot/usr/bin/nvmesystem.sh
+  cp -vpf /usr/bin/nvmesystem.sh /tmpRoot/usr/bin/nvmesystem.sh
 
-  [ ! -f "/tmpRoot/usr/bin/gzip" ] && cp -vf /usr/bin/gzip /tmpRoot/usr/bin/gzip
+  [ ! -f "/tmpRoot/usr/bin/gzip" ] && cp -vpf /usr/bin/gzip /tmpRoot/usr/bin/gzip
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/nvmesystem.service"
@@ -85,7 +85,7 @@ elif [ "${1}" = "late" ]; then
     if [ ! -f "${ESYNOSCHEDULER_DB}" ] || ! /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" ".tables" | grep -qw "task"; then
       echo "copy esynoscheduler.db"
       mkdir -p "$(dirname "${ESYNOSCHEDULER_DB}")"
-      cp -vf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
+      cp -vpf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
     fi
     echo "insert RRONBOOTUPRR_UDEV task to esynoscheduler.db"
     /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF

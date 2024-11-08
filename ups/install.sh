@@ -9,12 +9,12 @@
 if [ "${1}" = "late" ]; then
   echo "Installing addon updatenotify - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
   FILE="/tmpRoot/usr/syno/bin/synoups"
-  [ ! -f "${FILE}.bak" ] && cp -f "${FILE}" "${FILE}.bak"
+  [ ! -f "${FILE}.bak" ] && cp -pf "${FILE}" "${FILE}.bak"
 
-  cp -f "${FILE}.bak" "${FILE}"
+  cp -pf "${FILE}.bak" "${FILE}"
   if [ -z "${2}" ] || [ "${2}" = "-f" ]; then
     sed -i "s|/usr/syno/sbin/synopoweroff.*$|/usr/syno/sbin/synopoweroff|g" "${FILE}"
   fi
@@ -29,7 +29,7 @@ if [ "${1}" = "late" ]; then
     if [ ! -f "${ESYNOSCHEDULER_DB}" ] || ! /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" ".tables" | grep -qw "task"; then
       echo "copy esynoscheduler.db"
       mkdir -p "$(dirname "${ESYNOSCHEDULER_DB}")"
-      cp -vf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
+      cp -vpf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
     fi
     echo "insert start/stop ScsiTarget task to esynoscheduler.db"
     /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF

@@ -26,7 +26,7 @@ if [ "${1}" = "-r" ]; then
   exit
 fi
 
-[ ! -f "${FILE_GZ}.bak" ] && cp -f "${FILE_GZ}" "${FILE_GZ}.bak"
+[ ! -f "${FILE_GZ}.bak" ] && cp -pf "${FILE_GZ}" "${FILE_GZ}.bak"
 
 gzip -dc "${FILE_GZ}" >"${FILE_JS}"
 sed -i "s/e.portType||e.isCacheTray()/e.portType||false/" "${FILE_JS}"

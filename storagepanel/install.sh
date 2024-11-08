@@ -9,10 +9,10 @@
 if [ "${1}" = "late" ]; then
   echo "Installing addon storagepanel - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
   
-  cp -vf /usr/bin/storagepanel.sh /tmpRoot/usr/bin/storagepanel.sh
-  [ ! -f "/tmpRoot/usr/bin/gzip" ] && cp -vf /usr/bin/gzip /tmpRoot/usr/bin/gzip
+  cp -vpf /usr/bin/storagepanel.sh /tmpRoot/usr/bin/storagepanel.sh
+  [ ! -f "/tmpRoot/usr/bin/gzip" ] && cp -vpf /usr/bin/gzip /tmpRoot/usr/bin/gzip
 
   shift
   mkdir -p "/tmpRoot/usr/lib/systemd/system"

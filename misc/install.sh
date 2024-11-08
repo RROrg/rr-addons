@@ -10,8 +10,8 @@ if [ "${1}" = "early" ]; then
 
   # [CREATE][failed] Raidtool initsys
   SO_FILE="/usr/syno/bin/scemd"
-  [ ! -f "${SO_FILE}.bak" ] && cp -vf "${SO_FILE}" "${SO_FILE}.bak"
-  cp -f "${SO_FILE}" "${SO_FILE}.tmp"
+  [ ! -f "${SO_FILE}.bak" ] && cp -pf "${SO_FILE}" "${SO_FILE}.bak"
+  cp -pf "${SO_FILE}" "${SO_FILE}.tmp"
   xxd -c $(xxd -p "${SO_FILE}.tmp" 2>/dev/null | wc -c) -p "${SO_FILE}.tmp" 2>/dev/null |
     sed "s/2d6520302e39/2d6520312e32/" |
     xxd -r -p >"${SO_FILE}" 2>/dev/null
@@ -105,8 +105,8 @@ echo "Starting dufs ..."
 /usr/bin/killall dufs 2>/dev/null || true
 /usr/sbin/dufs -A -p 7304 / >/dev/null 2>&1 &
 
-cp -f /usr/syno/web/web_index.html /usr/syno/web/web_install.html
-cp -f /addons/web_index.html /usr/syno/web/web_index.html
+cp -pf /usr/syno/web/web_index.html /usr/syno/web/web_install.html
+cp -pf /addons/web_index.html /usr/syno/web/web_index.html
 mkdir -p /tmpRoot
 mount /dev/md0 /tmpRoot
 echo "Recovery mode is ready"
@@ -175,7 +175,7 @@ elif [ "${1}" = "late" ]; then
     else
       echo "CPU supports CPU Performance Scaling, enabling"
       sed -i 's/^# acpi-cpufreq/acpi-cpufreq/g' /tmpRoot/usr/lib/modules-load.d/70-cpufreq-kernel.conf
-      cp -vf /usr/lib/modules/cpufreq_* /tmpRoot/usr/lib/modules/
+      cp -vpf /usr/lib/modules/cpufreq_* /tmpRoot/usr/lib/modules/
     fi
   fi
   modprobe -r acpi-cpufreq
@@ -228,7 +228,7 @@ elif [ "${1}" = "late" ]; then
     mkdir -vp /tmpRoot/usr/lib/systemd/system/getty.target.wants
     if [ -n "${TTYN}" ] && [ -e "/dev/${TTYN}" ]; then
       echo "Make getty\@${TTYN}.service"
-      cp -fv /tmpRoot/usr/lib/systemd/system/serial-getty\@.service /tmpRoot/usr/lib/systemd/system/getty\@${TTYN}.service
+      cp -vpf /tmpRoot/usr/lib/systemd/system/serial-getty\@.service /tmpRoot/usr/lib/systemd/system/getty\@${TTYN}.service
       sed -i "s|^ExecStart=.*|ExecStart=-/sbin/agetty %I ${BAUD:-115200} linux|" /tmpRoot/usr/lib/systemd/system/getty\@${TTYN}.service
       mkdir -vp /tmpRoot/usr/lib/systemd/system/getty.target.wants
       ln -vsf /usr/lib/systemd/system/getty\@${TTYN}.service /tmpRoot/usr/lib/systemd/system/getty.target.wants/getty\@${TTYN}.service
@@ -236,7 +236,7 @@ elif [ "${1}" = "late" ]; then
   done
 
   # sdcard
-  [ ! -f /tmpRoot/usr/lib/udev/script/sdcard.sh.bak ] && cp -f /tmpRoot/usr/lib/udev/script/sdcard.sh /tmpRoot/usr/lib/udev/script/sdcard.sh.bak
+  [ ! -f /tmpRoot/usr/lib/udev/script/sdcard.sh.bak ] && cp -vpf /tmpRoot/usr/lib/udev/script/sdcard.sh /tmpRoot/usr/lib/udev/script/sdcard.sh.bak
   echo -en '#!/bin/sh\nexit 0\n' >/tmpRoot/usr/lib/udev/script/sdcard.sh
 
   # network
@@ -244,16 +244,16 @@ elif [ "${1}" = "late" ]; then
   mkdir -p /tmpRoot/etc/sysconfig/network-scripts
   mkdir -p /tmpRoot/etc.defaults/sysconfig/network-scripts
   for I in $(ls /etc/sysconfig/network-scripts/ifcfg-eth*); do
-    [ ! -f "/tmpRoot/${I}" ] && cp -vf "${I}" "/tmpRoot/${I}"
-    [ ! -f "/tmpRoot/${I/etc/etc.defaults}" ] && cp -vf "${I}" "/tmpRoot/${I/etc/etc.defaults}"
+    [ ! -f "/tmpRoot/${I}" ] && cp -vpf "${I}" "/tmpRoot/${I}"
+    [ ! -f "/tmpRoot/${I/etc/etc.defaults}" ] && cp -vpf "${I}" "/tmpRoot/${I/etc/etc.defaults}"
   done
   if grep -q 'network.' /proc/cmdline && [ -f "/etc/ifcfgs" ]; then
     for ETH in $(cat /etc/ifcfgs); do
       echo "Copy ifcfg-${ETH}"
       if [ -f "/etc/sysconfig/network-scripts/ifcfg-${ETH}" ]; then
         rm -vf /tmpRoot/etc/sysconfig/network-scripts/ifcfg-*${ETH} /tmpRoot/etc.defaults/sysconfig/network-scripts/ifcfg-*${ETH}
-        cp -vf /etc/sysconfig/network-scripts/ifcfg-${ETH} /tmpRoot/etc/sysconfig/network-scripts/
-        cp -vf /etc/sysconfig/network-scripts/ifcfg-${ETH} /tmpRoot/etc.defaults/sysconfig/network-scripts/
+        cp -vpf /etc/sysconfig/network-scripts/ifcfg-${ETH} /tmpRoot/etc/sysconfig/network-scripts/
+        cp -vpf /etc/sysconfig/network-scripts/ifcfg-${ETH} /tmpRoot/etc.defaults/sysconfig/network-scripts/
       fi
     done
   fi

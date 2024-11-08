@@ -9,26 +9,25 @@
 if [ "${1}" = "late" ]; then
   echo "Installing addon setrootpw - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
   mkdir -p /tmpRoot/usr/lib/openssh
-  cp -vf /usr/lib/openssh/sftp-server /tmpRoot/usr/lib/openssh/sftp-server
-  [ ! -f "/tmpRoot/usr/lib/libcrypto.so.3" ] && cp -vf /usr/lib/libcrypto.so.3 /tmpRoot/usr/lib/libcrypto.so.3
+  cp -vpf /usr/lib/openssh/sftp-server /tmpRoot/usr/lib/openssh/sftp-server
+  [ ! -f "/tmpRoot/usr/lib/libcrypto.so.3" ] && cp -vpf /usr/lib/libcrypto.so.3 /tmpRoot/usr/lib/libcrypto.so.3
 
   FILE="/tmpRoot/etc/ssh/sshd_config"
-  [ ! -f "${FILE}.bak" ] && cp -f "${FILE}" "${FILE}.bak"
+  [ ! -f "${FILE}.bak" ] && cp -pf "${FILE}" "${FILE}.bak"
 
-  SED_PATH='/tmpRoot/usr/bin/sed'
-  cp -f "${FILE}.bak" "${FILE}"
-  ${SED_PATH} -i 's|^.*PermitRootLogin.*$|PermitRootLogin yes|' ${FILE}
-  ${SED_PATH} -i 's|^Subsystem.*$|Subsystem	sftp	/usr/lib/openssh/sftp-server|' ${FILE}
+  cp -pf "${FILE}.bak" "${FILE}"
+  sed -i 's|^.*PermitRootLogin.*$|PermitRootLogin yes|' ${FILE}
+  sed -i 's|^Subsystem.*$|Subsystem	sftp	/usr/lib/openssh/sftp-server|' ${FILE}
 
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
   if [ ! -f "${ESYNOSCHEDULER_DB}" ] || ! /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" ".tables" | grep -qw "task"; then
     echo "copy esynoscheduler.db"
     mkdir -p "$(dirname "${ESYNOSCHEDULER_DB}")"
-    cp -vf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
+    cp -vpf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
   fi
   if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "SetRootPw||bootup||1|0|0|0||0|"; then
     echo "setrootpw task already exists and it is enabled"

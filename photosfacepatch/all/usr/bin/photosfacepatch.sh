@@ -20,7 +20,7 @@ if [ "${1}" = "-r" ]; then
 fi
 
 echo "Patching ${SO_FILE}"
-[ ! -f "${SO_FILE}.bak" ] && cp -f "${SO_FILE}" "${SO_FILE}.bak"
+[ ! -f "${SO_FILE}.bak" ] && cp -pf "${SO_FILE}" "${SO_FILE}.bak"
 # support face and concept
 PatchELFSharp "${SO_FILE}" "_ZN9synophoto6plugin8platform20IsSupportedIENetworkEv" "B8 00 00 00 00 C3"
 # force to support concept

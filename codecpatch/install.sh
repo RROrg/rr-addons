@@ -11,9 +11,9 @@
 if [ "${1}" = "late" ]; then
   echo "Installing addon codecpatch - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  cp -vf "${0}" "/tmpRoot/usr/rr/addons/"
+  cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
   
-  cp -vf /usr/bin/codecpatch.sh /tmpRoot/usr/bin/codecpatch.sh
+  cp -vpf /usr/bin/codecpatch.sh /tmpRoot/usr/bin/codecpatch.sh
   
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/codecpatch.service"
