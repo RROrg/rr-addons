@@ -10,7 +10,7 @@ CXXDEFS =
 LDFLAGS = 
 LIBS = 
 
-OBJS = main.o
+OBJS = powersched.o
 
 all: powersched
 
