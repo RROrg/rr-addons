@@ -1,0 +1,45 @@
+version: 1
+name: beep
+description:
+  en_US: "Beep at startup and shutdown (requires motherboard with buzzer)"
+  ar_SA: "صد الصوت عند بدء التشغيل والإغلاق (يتطلب لوحة أم تحتوي على جرس)"
+  de_DE: "Beim Starten und Herunterfahren piepen (erfordert Mainboard mit Summer)"
+  es_ES: "Pitido al inicio y apagado (requiere placa base con zumbador)"
+  fr_FR: "Bip au démarrage et à l'arrêt (nécessite une carte mère avec buzzer)"
+  ja_JP: "起動時にブザーを鳴らす(ブザーを備えたマザーボードが必要)"
+  ko_KR: "시작 및 종료시 소리 울리기(부저가 있는 메인보드 필요)"
+  ru_RU: "при запуске и выключении пищать (требуется материнская плата с зуммером)"
+  th_TH: "เสียงเบี๊ยวเมื่อเริ่มต้นและปิดเครื่อง (ต้องใช้เมนบอร์ดที่มีเสียงเบี๊ยว)"
+  tr_TR: "Başlangıç ve kapanışta bip sesi çal (ana kartta hoparlör gerektirir)"
+  uk_UA: "при запуску та вимкненні пищати (потрібна материнська плата з динаміком)"
+  vi_VN: "Phát ra tiếng bíp khi khởi động và tắt máy (yêu cầu bo mạch chủ có loa)"
+  zh_CN: "在启动和关机时发出哔声(需要主板有蜂鸣器)"
+  zh_HK: "在啟動和關機時發出哔聲(需要主機有蜂鳴器)"
+  zh_TW: "在啟動和關機時發出哔聲(需要主機有蜂鳴器)"
+system: false
+all:
+  install-script: "install.sh"
+  copy: "all"
+available-for:
+  apollolake-4.4.180:
+  apollolake-4.4.302:
+  broadwell-4.4.180:
+  broadwell-4.4.302:
+  broadwellnk-4.4.180:
+  broadwellnk-4.4.302:
+  broadwellnkv2-4.4.180:
+  broadwellnkv2-4.4.302:
+  broadwellntbap-4.4.180:
+  broadwellntbap-4.4.302:
+  epyc7002-7.1-5.10.55:
+  epyc7002-7.2-5.10.55:
+  denverton-4.4.180:
+  denverton-4.4.302:
+  geminilake-4.4.180:
+  geminilake-4.4.302:
+  purley-4.4.180:
+  purley-4.4.302:
+  r1000-4.4.180:
+  r1000-4.4.302:
+  v1000-4.4.180:
+  v1000-4.4.302:
