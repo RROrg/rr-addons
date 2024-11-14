@@ -1,0 +1,45 @@
+version: 1
+name: maiyunda
+description:
+  en_US: "RESET button functionality adapted, hold 3s (release after hearing beep) to reset admin password to maiyunda.com and reset network, hold 9s (release after hearing 3 beeps) to reset system (All data will be cleared). (Maiyunda machine)"
+  ar_SA: "تم تعديل وظيفة زر إعادة الضبط، اضغط باستمرار لمدة 3 ثوانٍ (حرر الزر بعد سماع صوت صفير) لإعادة تعيين كلمة مرور المسؤول لموقع maiyunda.com وإعادة تعيين الشبكة، اضغط باستمرار لمدة 9 ثوانٍ (حرر الزر بعد سماع 3 أصوات صفير) لإعادة تعيين النظام (سيتم مسح جميع البيانات).(جهاز Maiyunda)"
+  de_DE: "RESET-Taste Funktion angepasst, 3s lang drücken (nach dem Hören eines Pieps loslassen), um das Admin-Passwort auf maiyunda.com und das Netzwerk zurückzusetzen, 9s lang drücken (nach dem Hören von 3 Piepen loslassen), umdas System zurückzusetzen (Alle Daten werden gelö scht). (Maiyunda-Maschine)"
+  es_ES: "Mantener 3 segundos (suelta después de escuchar el bip) para restablecer la contraseña de administrador a maiyunda.com y restablecer la red, mantener 9 segundos (suelta después de escuchar 3 bips) para restablecer el sistema (se borrarán todos losdatos). (Máquina Maiyunda)"
+  fr_FR: "RESET le bouton fonctionnalité ajustée, appuyer 3 secondes (relâcher après avoir entendu un bip), pour réinitialiser le mot de passe d'administrateur à maiyunda.com et réinitialiser le réseau, appuyer 9 secondes (relâcher après avoir entendu 3 bips), pour réinitialiser le système (tous les données seront effacées). (Machine Maiyunda)"
+  ja_JP: "リセットボタンの機能を調整しました。3秒押し続ける（音を聞いた後離す）で、adminパスワードをmaiyunda.comにリセットし、9秒押し続ける（3音を聞いた後離す）でシステムをリセットします（すべてのデータが消えます）。(Maiyunda 機種)"
+  ko_KR: "리셋 버튼 기능을 적용했습니다. 3초 누르고 (소리를 들으면 버튼을 놓습니다), admin 비밀번호를 maiyunda.com으로 초기화하고, 9초 누르고 (소리를 3번 들으면 버튼을 놓습니다),시스템을 초기화합니다 (모든 데이터가 삭제됩니다). (Maiyunda 기계)"
+  ru_RU: "Функция сброса кнопки изменена, удерживать 3 секунды (после услышания пищалки отпустить) для сброса пароля администратора на maiyunda.com и сброса сети, удерживать 9 секунд (после услышания 3 пищалки отпустить), для сброса системы (все данные будут удалены). (Машина Maiyunda)"
+  th_TH: "ฟังก์ชันการทำงานของปุ่ม RESET ปรับปรุงแล้ว กดค้างไว้ 3 วินาที (ปล่อยหลังจากได้ยินเสียงบี๊บ) เพื่อรีเซ็ตรหัสผ่านผู้ดูแลระบบไปยัง maiyunda.com และรีเซ็ตเครือข่าย กดค้างไว้ 9 วินาที (ปล่อยหลังจากได้ยินเสียงบี๊บ 3 ครั้ง) เพื่อรีเซ็ตระบบ (ข้อมูลทั้งหมดจะถูกล้าง) (เครื่อง Maiyunda)"
+  tr_TR: "RESET düğmesi işlevselliği uyarlandı, 3 saniye basılı tutun (ses duyduktan sonra serbest bırakın), admin şifresini maiyunda.com'a sıfırlamak ve ağu sıfırlamak için 9 saniyebasılı  taste, to reset the system (all data will be deleted). (Maiyunda machine)"
+  uk_UA: "Функція зміни кнопки RESET змінена,три секунди утримувати (посля почуття прискорення слід відпустити) для скидання пароля адміністратора наmaiyunda.com та скидання мережі,три секунди утримувати(посля почуття прискорення слід відпустити) для скидання системи (всі дані будуть видалені). (Машина Maiyunda)"
+  vi_VN: "Nút RESET chức năng được sửa đổi, ấn giữ 3 giây (sau khi nghe được tiếng bip) để reset mật khẩu quản trịerao maiyunda.com và reset mạng, ấn giữ 9 giây (sau khi nghe được 3 tiếng bip) để reset hệ thống (tất cả dữ liệu sẽ bị xóa). (Máy Maiyunda)"
+  zh_CN: "RESET 按钮功能适配，按住 3s（听到哔哔哔后松手）重置 admin 密码为 maiyunda.com 并重置网络，按住 9s（听到 3次 哔哔哔后松手）重置系统（会清空全部数据）。(迈云达机器)"
+  zh_HK: "RESET 按鈕功能適配，按住 3s（聽到哔哔哔後鬆手）重置 admin 密碼為 maiyunda.com 并重置網路，按住 9s（聽到 3次 哔哔哔後鬆手）重置系統（會清空全部數據）。(迈雲達機器)"
+  zh_TW: "RESET 按鈕功能適配，按住 3s（聽到哔哔哔後鬆手）重置 admin 密碼為 maiyunda.com 并重置網路，按住 9s（聽到 3次 哔哔哔後鬆手）重置系統（會清空全部數據）。(迈雲達機器)"
+system: false
+all:
+  install-script: "install.sh"
+  copy: "all"
+available-for:
+  apollolake-4.4.180:
+  apollolake-4.4.302:
+  broadwell-4.4.180:
+  broadwell-4.4.302:
+  broadwellnk-4.4.180:
+  broadwellnk-4.4.302:
+  broadwellnkv2-4.4.180:
+  broadwellnkv2-4.4.302:
+  broadwellntbap-4.4.180:
+  broadwellntbap-4.4.302:
+  epyc7002-7.1-5.10.55:
+  epyc7002-7.2-5.10.55:
+  denverton-4.4.180:
+  denverton-4.4.302:
+  geminilake-4.4.180:
+  geminilake-4.4.302:
+  purley-4.4.180:
+  purley-4.4.302:
+  r1000-4.4.180:
+  r1000-4.4.302:
+  v1000-4.4.180:
+  v1000-4.4.302:
