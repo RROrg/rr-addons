@@ -2,7 +2,7 @@ version: 1
 name: nvmevolume
 description:  # https://github.com/007revad/Synology_enable_M2_volume https://github.com/eterSuh-Q3/tcrp-addons/blob/main/nvmevolume-onthefly
   en_US: "Author: 007revad & PeterSuh-Q3. Allow creation of storage pools and volumes from Storage Manager through m.2 disks."
-  ar_SA: "المؤلف: 007revad وPeterSuh-Q3. تمكين إنشاء مجموعات تخزين ومساحات تخزين من مネージャ التخزين من خلال قرص m.2."
+  ar_SA: "المؤلف: (007revad) وPeterSuh-Q3. تمكين إنشاء مجموعات تخزين ومساحات تخزين من مネージャ التخزين من خلال قرص m.2."
   de_DE: "Autor: 007revad & PeterSuh-Q3. Erlaubt die Erstellung von Speicherpools und Volumen über den Speicher-Manager über m.2-Disks."
   es_ES: "Autor: 007revad & PeterSuh-Q3. Permite la creación de grupos de almacenamiento y volúmenes a través del Administrador de almacenamiento a través de discos m.2."
   fr_FR: "Auteur: 007revad & PeterSuh-Q3. Permet la création de pools de stockage et de volumes à partir du gestionnaire de stockage à travers les disques m.2."
