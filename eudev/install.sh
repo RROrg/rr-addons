@@ -48,7 +48,6 @@ elif [ "${1}" = "late" ]; then
   [ ! -L "/tmpRoot/usr/sbin/depmod" ] && ln -vsf /usr/bin/kmod /tmpRoot/usr/sbin/depmod
 
   echo "copy modules"
-  isChange="false"
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   /tmpRoot/bin/cp -rnf /usr/lib/firmware/* /tmpRoot/usr/lib/firmware/
   if cat /proc/version 2>/dev/null | grep -q 'RR@RR'; then
@@ -69,7 +68,7 @@ elif [ "${1}" = "late" ]; then
     fi
     cat /addons/modulelist 2>/dev/null | /tmpRoot/bin/sed '/^\s*$/d' | while IFS=' ' read -r O M; do
       [ "${O:0:1}" = "#" ] && continue
-      [ -z "${M}" -o -z "$(ls /usr/lib/modules/${M} 2>/dev/null)" ] && continue
+      [ -z "${M}" ] || [ -z "$(ls /usr/lib/modules/${M} 2>/dev/null)" ] && continue
       if [ "$(echo "${O}" | /tmpRoot/bin/sed 's/.*/\U&/')" = "F" ]; then
         /tmpRoot/bin/cp -vrf /usr/lib/modules/${M} /tmpRoot/usr/lib/modules/
       else
@@ -95,17 +94,19 @@ elif [ "${1}" = "late" ]; then
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/udevrules.service"
-  echo "[Unit]"                                                                  >${DEST}
-  echo "Description=Reload udev rules"                                          >>${DEST}
-  echo                                                                          >>${DEST}
-  echo "[Service]"                                                              >>${DEST}
-  echo "Type=oneshot"                                                           >>${DEST}
-  echo "RemainAfterExit=yes"                                                    >>${DEST}
-  echo "ExecStart=/usr/bin/udevadm hwdb --update"                               >>${DEST}
-  echo "ExecStart=/usr/bin/udevadm control --reload-rules"                      >>${DEST}
-  echo                                                                          >>${DEST}
-  echo "[Install]"                                                              >>${DEST}
-  echo "WantedBy=multi-user.target"                                             >>${DEST}
+  {
+    echo "[Unit]"
+    echo "Description=Reload udev rules"
+    echo
+    echo "[Service]"
+    echo "Type=oneshot"
+    echo "RemainAfterExit=yes"
+    echo "ExecStart=/usr/bin/udevadm hwdb --update"
+    echo "ExecStart=/usr/bin/udevadm control --reload-rules"
+    echo
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  } >"${DEST}"
 
   mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/udevrules.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/udevrules.service

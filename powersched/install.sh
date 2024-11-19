@@ -11,7 +11,7 @@ if [ "${1}" = "late" ]; then
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
-  cp -vpf "/usr/sbin/powersched" "/tmpRoot/usr/sbin/powersched"
+  cp -vpf /usr/sbin/powersched /tmpRoot/usr/sbin/powersched
 
   [ ! -f "/tmpRoot/etc/crontab.bak" ] && [ -f "/tmpRoot/etc/crontab" ] && cp -pf "/tmpRoot/etc/crontab" "/tmpRoot/etc/crontab.bak"
   sed -i '/\/usr\/sbin\/powersched/d' /tmpRoot/etc/crontab 2>/dev/null
@@ -20,7 +20,7 @@ if [ "${1}" = "late" ]; then
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon powersched - ${1}"
 
-  rm -f "/tmpRoot/usr/sbin/powersched"
+  rm -f /tmpRoot/usr/sbin/powersched
   [ -f "/tmpRoot/etc/crontab.bak" ] && mv -f "/tmpRoot/etc/crontab.bak" "/tmpRoot/etc/crontab"
   sed -i '/\/usr\/sbin\/powersched/d' /tmpRoot/etc/crontab 2>/dev/null
 fi

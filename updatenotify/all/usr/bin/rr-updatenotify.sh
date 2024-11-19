@@ -29,7 +29,6 @@ function Delete() {
 }
 
 function Check() {
-
   LOCALTAG="$(cat /usr/rr/VERSION 2>/dev/null | grep LOADERVERSION | cut -d'=' -f2 | sed 's/\"//g')"
   if [ -z "${LOCALTAG}" ]; then
     echo "Unknown bootloader version!"
@@ -45,7 +44,7 @@ function Check() {
     TAG="${LATESTURL##*/}"
   fi
   [ "${TAG:0:1}" = "v" ] && TAG="${TAG:1}"
-  if [ -z "${TAG}" -o "${TAG}" = "latest" ]; then
+  if [ -z "${TAG}" ] || [ "${TAG}" = "latest" ]; then
     echo "Error checking new version. TAG is ${TAG}"
     exit 0
   fi

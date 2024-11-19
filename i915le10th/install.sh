@@ -8,6 +8,7 @@
 
 PLATFORMS="apollolake geminilake"
 PLATFORM="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)"
+
 if ! echo "${PLATFORMS}" | grep -qw "${PLATFORM}"; then
   echo "${PLATFORM} is not supported i915le10th addon!"
   exit 0
@@ -21,12 +22,18 @@ if [ "${1}" = "patches" ]; then
   else
     GPU="$(lspci -n 2>/dev/null | grep 0300 | grep 8086 | cut -d' ' -f3 | sed 's/://g')"
   fi
-  [ -z "${GPU}" -o $(echo -n "${GPU}" | wc -c) -ne 8 ] && echo "GPU is not detected" && exit 0
+  if [ -z "${GPU}" ] || [ $(echo -n "${GPU}" | wc -c) -ne 8 ]; then
+    echo "GPU is not detected"
+    exit 0
+  fi
 
   KO_FILE="/usr/lib/modules/i915.ko"
-  [ ! -f "${KO_FILE}" ] && echo "i915.ko does not exist" && exit 0
+  if [ ! -f "${KO_FILE}" ]; then
+    echo "i915.ko does not exist"
+    exit 0
+  fi
 
-  if [ -n "${2}" ] || grep -iq ${GPU} "/addons/i915ids" 2>/dev/null; then
+  if [ -n "${2}" ] || grep -iq "${GPU}" "/addons/i915ids" 2>/dev/null; then
     isLoad=0
     if lsmod 2>/dev/null | grep -q ^i915; then
       isLoad=1

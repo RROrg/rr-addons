@@ -10,23 +10,25 @@ if [ "${1}" = "late" ]; then
   echo "Installing addon cpuinfo - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
-  
+
   cp -vpf /usr/bin/cpuinfo.sh /tmpRoot/usr/bin/cpuinfo.sh
 
   shift
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/cpuinfo.service"
-  echo "[Unit]"                                    >${DEST}
-  echo "Description=Adds correct CPU Info"        >>${DEST}
-  echo "After=multi-user.target"                  >>${DEST}
-  echo                                            >>${DEST}
-  echo "[Service]"                                >>${DEST}
-  echo "Type=oneshot"                             >>${DEST}
-  echo "RemainAfterExit=yes"                      >>${DEST}
-  echo "ExecStart=-/usr/bin/cpuinfo.sh $@"        >>${DEST}
-  echo                                            >>${DEST}
-  echo "[Install]"                                >>${DEST}
-  echo "WantedBy=multi-user.target"               >>${DEST}
+  {
+    echo "[Unit]"
+    echo "Description=Adds correct CPU Info"
+    echo "After=multi-user.target"
+    echo
+    echo "[Service]"
+    echo "Type=oneshot"
+    echo "RemainAfterExit=yes"
+    echo "ExecStart=-/usr/bin/cpuinfo.sh $@"
+    echo
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  } >"${DEST}"
 
   mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/cpuinfo.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/cpuinfo.service

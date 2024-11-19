@@ -12,7 +12,7 @@ if [ "${1}" = "late" ]; then
   mkdir -p "/tmpRoot/usr/rr/"
   echo '#!/usr/bin/env bash' >"/tmpRoot/usr/rr/revert.sh"
   chmod +x "/tmpRoot/usr/rr/revert.sh"
-  
+
   mkdir -p "/tmpRoot/usr/rr/addons/"
   for F in $(ls /tmpRoot/usr/rr/addons/* 2>/dev/null); do
     if grep -q "/addons/${F##*/}" "/addons/addons.sh" 2>/dev/null; then continue; fi
@@ -24,17 +24,19 @@ if [ "${1}" = "late" ]; then
   if [ ! "$(cat "/tmpRoot/usr/rr/revert.sh")" = '#!/usr/bin/env bash' ]; then
     mkdir -p "/tmpRoot/usr/lib/systemd/system"
     DEST="/tmpRoot/usr/lib/systemd/system/revert.service"
-    echo "[Unit]"                                    >${DEST}
-    echo "Description=revert"                       >>${DEST}
-    echo "After=multi-user.target"                  >>${DEST}
-    echo                                            >>${DEST}
-    echo "[Service]"                                >>${DEST}
-    echo "Type=oneshot"                             >>${DEST}
-    echo "RemainAfterExit=yes"                      >>${DEST}
-    echo "ExecStart=-/usr/rr/revert.sh"             >>${DEST}
-    echo                                            >>${DEST}
-    echo "[Install]"                                >>${DEST}
-    echo "WantedBy=multi-user.target"               >>${DEST}
+    {
+      echo "[Unit]"
+      echo "Description=revert"
+      echo "After=multi-user.target"
+      echo
+      echo "[Service]"
+      echo "Type=oneshot"
+      echo "RemainAfterExit=yes"
+      echo "ExecStart=-/usr/rr/revert.sh"
+      echo
+      echo "[Install]"
+      echo "WantedBy=multi-user.target"
+    } >"${DEST}"
 
     mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
     ln -vsf /usr/lib/systemd/system/revert.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/revert.service
@@ -51,8 +53,9 @@ if [ "${1}" = "late" ]; then
   fi
 
   # Version
-  echo "LOADERLABEL=\"${LOADERLABEL}\""      >"/tmpRoot/usr/rr/VERSION"
-  echo "LOADERRELEASE=\"${LOADERRELEASE}\"" >>"/tmpRoot/usr/rr/VERSION"
-  echo "LOADERVERSION=\"${LOADERVERSION}\"" >>"/tmpRoot/usr/rr/VERSION"
-
+  {
+    echo "LOADERLABEL=\"${LOADERLABEL}\""
+    echo "LOADERRELEASE=\"${LOADERRELEASE}\""
+    echo "LOADERVERSION=\"${LOADERVERSION}\""
+  } >"/tmpRoot/usr/rr/VERSION"
 fi

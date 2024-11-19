@@ -8,13 +8,13 @@
 
 if [ "${1}" = "rcExit" ]; then
   echo "Installing addon rndis - ${1}"
-  
+
   /usr/bin/rndis.sh
 elif [ "${1}" = "late" ]; then
   echo "Installing addon rndis - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
-  
+
   cp -vpf /usr/bin/rndis.sh /tmpRoot/usr/bin/rndis.sh
 
   mkdir -p /tmpRoot/usr/lib/udev/rules.d
@@ -23,18 +23,20 @@ elif [ "${1}" = "late" ]; then
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/rndis.service"
-  echo "[Unit]"                                   > ${DEST}
-  echo "Description=Android USB Network Adapter"  >>${DEST}
-  echo "After=multi-user.target"                  >>${DEST}
-  echo "ConditionPathExists=/sys/class/net/usb0"  >>${DEST}
-  echo                                            >>${DEST}
-  echo "[Service]"                                >>${DEST}
-  echo "Type=simple"                              >>${DEST}
-  echo "Restart=always"                           >>${DEST}
-  echo "ExecStart=-/usr/bin/rndis.sh"             >>${DEST}
-  echo                                            >>${DEST}
-  echo "[Install]"                                >>${DEST}
-  echo "WantedBy=multi-user.target"               >>${DEST}
+  {
+    echo "[Unit]"
+    echo "Description=Android USB Network Adapter"
+    echo "After=multi-user.target"
+    echo "ConditionPathExists=/sys/class/net/usb0"
+    echo
+    echo "[Service]"
+    echo "Type=simple"
+    echo "Restart=always"
+    echo "ExecStart=-/usr/bin/rndis.sh"
+    echo
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  } >"${DEST}"
 
   mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/rndis.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/rndis.service

@@ -7,7 +7,9 @@
 #
 
 function extractInitrd() {
-  [ -z "${1}" -o -z "${2}" ] && return 1
+  if [ -z "${1}" ] || [ -z "${2}" ]; then
+    return 1
+  fi
 
   if [ -f "${1}" ]; then
     rm -rf "${2}"
@@ -31,22 +33,14 @@ function mountLoaderDisk() {
       echo 1 >/proc/sys/kernel/syno_install_flag
 
       # Make folders to mount partitions
-      mkdir -p /mnt/p1
-      mkdir -p /mnt/p2
-      mkdir -p /mnt/p3
-
-      mount /dev/synoboot1 /mnt/p1 2>/dev/null || (
-        echo "Can't mount /dev/synoboot1"
-        break
-      )
-      mount /dev/synoboot2 /mnt/p2 2>/dev/null || (
-        echo "Can't mount /dev/synoboot2"
-        break
-      )
-      mount /dev/synoboot3 /mnt/p3 2>/dev/null || (
-        echo "Can't mount /dev/synoboot3"
-        break
-      )
+      for i in {1..3}; do
+        rm -rf "/mnt/p${i}"
+        mkdir -p "/mnt/p${i}"
+        mount "/dev/synoboo${i}" "/mnt/p${i}" || {
+          echo "Can't mount /dev/synoboot${i}."
+          break 2
+        }
+      done
 
       if echo "$@" | grep -qw "\-all"; then
         RR_RAMDISK_FILE="/mnt/p3/initrd-rr"
@@ -58,13 +52,15 @@ function mountLoaderDisk() {
         fi
       fi
       mkdir -p /usr/rr
-      echo "export LOADER_DISK=\"/dev/synoboot\"" >"/usr/rr/.mountloader"
-      echo "export LOADER_DISK_PART1=\"/dev/synoboot1\"" >>"/usr/rr/.mountloader"
-      echo "export LOADER_DISK_PART2=\"/dev/synoboot2\"" >>"/usr/rr/.mountloader"
-      echo "export LOADER_DISK_PART3=\"/dev/synoboot3\"" >>"/usr/rr/.mountloader"
-      if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
-        echo "export WORK_PATH=\"${RR_PATH}/opt/rr\"" >>"/usr/rr/.mountloader"
-      fi
+      {
+        echo "export LOADER_DISK=\"/dev/synoboot\""
+        echo "export LOADER_DISK_PART1=\"/dev/synoboot1\""
+        echo "export LOADER_DISK_PART2=\"/dev/synoboot2\""
+        echo "export LOADER_DISK_PART3=\"/dev/synoboot3\""
+        if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
+          echo "export WORK_PATH=\"${RR_PATH}/opt/rr\""
+        fi
+      } >"/usr/rr/.mountloader"
       break
     done
   fi
@@ -73,7 +69,7 @@ function mountLoaderDisk() {
     return 1
   else
     echo "Loader disk mount success!"
-    . /usr/rr/.mountloader
+    . "/usr/rr/.mountloader"
     return 0
   fi
 }
@@ -93,11 +89,10 @@ function unmountLoaderDisk() {
       RR_PATH="/tmp/initrd"
       rm -rf "${RR_PATH}"
     fi
-    
-    umount /mnt/p1 2>/dev/null
-    umount /mnt/p2 2>/dev/null
-    umount /mnt/p3 2>/dev/null
-    rm -rf /mnt/p1 /mnt/p2 /mnt/p3
+    for i in {1..3}; do
+      umount "/mnt/p${i}"
+      rm -rf "/mnt/p${i}"
+    done
 
     echo 0 >/proc/sys/kernel/syno_install_flag
   fi

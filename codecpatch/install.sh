@@ -12,22 +12,24 @@ if [ "${1}" = "late" ]; then
   echo "Installing addon codecpatch - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
-  
+
   cp -vpf /usr/bin/codecpatch.sh /tmpRoot/usr/bin/codecpatch.sh
-  
+
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/codecpatch.service"
-  echo "[Unit]"                                                               >${DEST}
-  echo "Description=addon codecpatch"                                        >>${DEST}
-  echo "After=syno-volume.target syno-space.target"                          >>${DEST}
-  echo                                                                       >>${DEST}
-  echo "[Service]"                                                           >>${DEST}
-  echo "Type=oneshot"                                                        >>${DEST}
-  echo "RemainAfterExit=yes"                                                 >>${DEST}
-  echo "ExecStart=-/usr/bin/codecpatch.sh -p"                                >>${DEST}
-  echo                                                                       >>${DEST}
-  echo "[Install]"                                                           >>${DEST}
-  echo "WantedBy=multi-user.target"                                          >>${DEST}
+  {
+    echo "[Unit]"
+    echo "Description=addon codecpatch"
+    echo "After=syno-volume.target syno-space.target"
+    echo
+    echo "[Service]"
+    echo "Type=oneshot"
+    echo "RemainAfterExit=yes"
+    echo "ExecStart=-/usr/bin/codecpatch.sh -p"
+    echo
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  } >"${DEST}"
 
   mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/codecpatch.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/codecpatch.service

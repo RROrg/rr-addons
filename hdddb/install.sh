@@ -10,23 +10,25 @@ if [ "${1}" = "late" ]; then
   echo "Installing addon hdddb - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
-  
+
   cp -vpf /usr/bin/hdddb.sh /tmpRoot/usr/bin/hdddb.sh
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/hdddb.service"
-  echo "[Unit]"                                                               >${DEST}
-  echo "Description=HDDs/SSDs drives databases"                              >>${DEST}
-  echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"    >>${DEST}
-  echo "After=smpkg-custom-install.service"                                  >>${DEST}
-  echo                                                                       >>${DEST}
-  echo "[Service]"                                                           >>${DEST}
-  echo "Type=oneshot"                                                        >>${DEST}
-  echo "RemainAfterExit=yes"                                                 >>${DEST}
-  echo "ExecStart=-/usr/bin/hdddb.sh -nrwpeS"                                >>${DEST}
-  echo                                                                       >>${DEST}
-  echo "[Install]"                                                           >>${DEST}
-  echo "WantedBy=multi-user.target"                                          >>${DEST}
+  {
+    echo "[Unit]"
+    echo "Description=HDDs/SSDs drives databases"
+    echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"
+    echo "After=smpkg-custom-install.service"
+    echo
+    echo "[Service]"
+    echo "Type=oneshot"
+    echo "RemainAfterExit=yes"
+    echo "ExecStart=-/usr/bin/hdddb.sh -nrwpeS"
+    echo
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  } >"${DEST}"
 
   mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/hdddb.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/hdddb.service
@@ -37,6 +39,6 @@ elif [ "${1}" = "uninstall" ]; then
   rm -f "/tmpRoot/usr/lib/systemd/system/hdddb.service"
 
   [ ! -f "/tmpRoot/usr/rr/revert.sh" ] && echo '#!/usr/bin/env bash' >/tmpRoot/usr/rr/revert.sh && chmod +x /tmpRoot/usr/rr/revert.sh
-  echo "/usr/bin/hdddb.sh --restore" >> /tmpRoot/usr/rr/revert.sh
-  echo "rm -f /usr/bin/hdddb.sh" >> /tmpRoot/usr/rr/revert.sh
+  echo "/usr/bin/hdddb.sh --restore" >>/tmpRoot/usr/rr/revert.sh
+  echo "rm -f /usr/bin/hdddb.sh" >>/tmpRoot/usr/rr/revert.sh
 fi

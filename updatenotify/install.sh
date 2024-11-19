@@ -10,23 +10,25 @@ if [ "${1}" = "late" ]; then
   echo "Installing addon updatenotify - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
-  
+
   cp -vpf /usr/bin/pup /tmpRoot/usr/bin/pup
   cp -vpf /usr/bin/rr-updatenotify.sh /tmpRoot/usr/bin/rr-updatenotify.sh
-  
+
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/rr-updatenotify.service"
-  echo "[Unit]"                                         >${DEST}
-  echo "Description=addon rr-updatenotify"             >>${DEST}
-  echo "After=multi-user.target"                       >>${DEST}
-  echo                                                 >>${DEST}
-  echo "[Service]"                                     >>${DEST}
-  echo "Type=oneshot"                                  >>${DEST}
-  echo "RemainAfterExit=yes"                           >>${DEST}
-  echo "ExecStart=-/usr/bin/rr-updatenotify.sh create" >>${DEST}
-  echo                                                 >>${DEST}
-  echo "[Install]"                                     >>${DEST}
-  echo "WantedBy=multi-user.target"                    >>${DEST}
+  {
+    echo "[Unit]"
+    echo "Description=addon rr-updatenotify"
+    echo "After=multi-user.target"
+    echo
+    echo "[Service]"
+    echo "Type=oneshot"
+    echo "RemainAfterExit=yes"
+    echo "ExecStart=-/usr/bin/rr-updatenotify.sh create"
+    echo
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  } >"${DEST}"
 
   mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/rr-updatenotify.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/rr-updatenotify.service

@@ -7,26 +7,31 @@
 #
 
 # Get values in synoinfo.conf K=V file
-# 1 - key
+# Args: $1 rd|hd, $2 key
 function _get_conf_kv() {
-  grep "${1}=" /etc.defaults/synoinfo.conf 2>/dev/null | sed "s|^${1}=\"\(.*\)\"$|\1|g"
+  local ROOT FILE
+  [ "$1" = "rd" ] && ROOT="" || ROOT="/tmpRoot"
+  FILE="${ROOT}/etc.defaults/synoinfo.conf"
+  grep "^${2}=" "${FILE}" 2>/dev/null | cut -d'=' -f2- | sed 's/^"//;s/"$//' 2>/dev/null
 }
 
 # Replace/add values in synoinfo.conf K=V file
 # Args: $1 rd|hd, $2 key, $3 val
 function _set_conf_kv() {
-  local ROOT
-  local FILE
+  local ROOT FILE
   [ "$1" = "rd" ] && ROOT="" || ROOT="/tmpRoot"
   for SD in etc etc.defaults; do
     FILE="${ROOT}/${SD}/synoinfo.conf"
-    # Replace
-    if grep -q "^$2=" ${FILE}; then
-      sed -i ${FILE} -e "s\"^$2=.*\"$2=\\\"$3\\\"\""
-    else
-      # Add if doesn't exist
-      echo "$2=\"$3\"" >>${FILE}
+    if [ -z "${3}" ]; then
+      sed -i "/^${2}=/d" "${FILE}" 2>/dev/null
+      continue
     fi
+    if grep -q "^${2}=" "${FILE}"; then
+      sed -i "s#^${2}=.*#${2}=\"${3}\"#" "${FILE}" 2>/dev/null
+      continue
+    fi
+    echo "${2}=\"${3}\"" >>"${FILE}"
+    # continue
   done
 }
 
@@ -35,44 +40,35 @@ function _set_conf_kv() {
 function _check_post_k() {
   local ROOT
   [ "$1" = "rd" ] && ROOT="" || ROOT="/tmpRoot"
-  if grep -q -r "^_set_conf_kv.*${2}.*" "${ROOT}/sbin/init.post"; then
-    return 0 # true
-  else
-    return 1 # false
-  fi
+  grep -qr "^_set_conf_kv.*${2}.*" "${ROOT}/sbin/init.post"
 }
 
 # Check if the raid has been completed currently
 function _check_rootraidstatus() {
-  if [ ! "$(_get_conf_kv supportraid)" = "yes" ]; then
-    return 0
-  fi
-  STATE="$(cat /sys/block/md0/md/array_state 2>/dev/null)"
-  if [ $? -ne 0 ]; then
-    return 1
-  fi
+  [ "$(_get_conf_kv rd supportraid)" = "yes" ] || return 0
+  local STATE=$(cat /sys/block/md0/md/array_state 2>/dev/null)
+  [ $? -ne 0 ] && return 1
   case ${STATE} in
-  "clear" | "inactive" | "suspended " | "readonly" | "read-auto")
-    return 1
-    ;;
+  "clear" | "inactive" | "suspended" | "readonly" | "read-auto") return 1 ;;
   esac
   return 0
 }
 
+# Convert disk name to integer
+# Args: $1 disk name
 function _atoi() {
-  DISKNAME=${1}
-  NUM=0
-  IDX=0
+  local DISKNAME=${1} NUM=0 IDX=0 N BIT
   while [ ${IDX} -lt ${#DISKNAME} ]; do
     N=$(($(printf '%d' "'${DISKNAME:${IDX}:1}") - $(printf '%d' "'a") + 1))
     BIT=$((${#DISKNAME} - 1 - ${IDX}))
-    [ ${BIT} -eq 0 ] && NUM=$((${NUM} + ${N:-0})) || NUM=$((${NUM} + 26 ** ${BIT} * ${N:-0}))
-    IDX=$((${IDX} + 1))
+    NUM=$((NUM + (BIT == 0 ? N : 26 ** BIT * N)))
+    IDX=$((IDX + 1))
   done
-  echo $((${NUM} - 1))
+  echo $((NUM - 1))
 }
 
 # Generate linux kernel version code
+# Args: $1 version string
 # ex.
 #   KernelVersionCode "2.4.22"  => 132118
 #   KernelVersionCode "2.6"     => 132608
@@ -102,52 +98,46 @@ function _kernelVersion() {
 
 # synoboot
 function checkSynoboot() {
-  [ -b /dev/synoboot -a -b /dev/synoboot1 -a -b /dev/synoboot2 -a -b /dev/synoboot3 ] && return
-  [ -z "${BOOTDISK}" ] && return
-
-  if [ ! -b /dev/synoboot -a -d /sys/block/${BOOTDISK} ]; then
-    /bin/mknod /dev/synoboot b $(cat /sys/block/${BOOTDISK}/dev | sed 's/:/ /') >/dev/null 2>&1
-    rm -vf /dev/${BOOTDISK}
-  fi
-  # 1,2,3 for sdN,vdN; p1,p2,p3 for sataN,nvmeXnN,mmcblkN.
-  for i in 1 2 3 p1 p2 p3; do
-    if [ ! -b /dev/synoboot${i/p/} -a -d /sys/block/${BOOTDISK}/${BOOTDISK}${i} ]; then
-      /bin/mknod /dev/synoboot${i/p/} b $(cat /sys/block/${BOOTDISK}/${BOOTDISK}${i}/dev | sed 's/:/ /') >/dev/null 2>&1
-      rm -vf /dev/${BOOTDISK}${i}
+  if [ ! -b /dev/synoboot ] || [ ! -b /dev/synoboot1 ] || [ ! -b /dev/synoboot2 ] || [ ! -b /dev/synoboot3 ]; then
+    [ -z "${BOOTDISK}" ] && return
+    if [ ! -b /dev/synoboot ] && [ -d /sys/block/${BOOTDISK} ]; then
+      mknod /dev/synoboot b $(cat /sys/block/${BOOTDISK}/dev | sed 's/:/ /') >/dev/null 2>&1
+      rm -vf /dev/${BOOTDISK}
     fi
-  done
+    for i in 1 2 3 p1 p2 p3; do
+      if [ ! -b /dev/synoboot${i/p/} ] && [ -d /sys/block/${BOOTDISK}/${BOOTDISK}${i} ]; then
+        mknod /dev/synoboot${i/p/} b $(cat /sys/block/${BOOTDISK}/${BOOTDISK}${i}/dev | sed 's/:/ /') >/dev/null 2>&1
+        rm -vf /dev/${BOOTDISK}${i}
+      fi
+    done
+  fi
 }
 
 # USB ports
 function getUsbPorts() {
   for I in $(ls -d /sys/bus/usb/devices/usb* 2>/dev/null); do
-    # ROOT
+    local DCLASS SPEED RBUS RCHILDS HAVE_CHILD=0
     DCLASS=$(cat ${I}/bDeviceClass)
-    [ ! "${DCLASS}" = "09" ] && continue
+    [ "${DCLASS}" != "09" ] && continue
     SPEED=$(cat ${I}/speed)
     [ ${SPEED} -lt 480 ] && continue
     RBUS=$(cat ${I}/busnum)
     RCHILDS=$(cat ${I}/maxchild)
-    HAVE_CHILD=0
     for C in $(seq 1 ${RCHILDS}); do
-      SUB="${RBUS}-${C}"
+      local SUB="${RBUS}-${C}"
       if [ -d "${I}/${SUB}" ]; then
         DCLASS=$(cat ${I}/${SUB}/bDeviceClass)
         [ ! "${DCLASS}" = "09" ] && continue
         SPEED=$(cat ${I}/${SUB}/speed)
         [ ${SPEED} -lt 480 ] && continue
-        CHILDS=$(cat ${I}/${SUB}/maxchild)
+        local CHILDS=$(cat ${I}/${SUB}/maxchild)
         HAVE_CHILD=1
         for N in $(seq 1 ${CHILDS}); do
           echo -n "${RBUS}-${C}.${N} "
         done
       fi
     done
-    if [ ${HAVE_CHILD} -eq 0 ]; then
-      for N in $(seq 1 ${RCHILDS}); do
-        echo -n "${RBUS}-${N} "
-      done
-    fi
+    [ ${HAVE_CHILD} -eq 0 ] && for N in $(seq 1 ${RCHILDS}); do echo -n "${RBUS}-${N} "; done
   done
   echo
 }
@@ -155,15 +145,16 @@ function getUsbPorts() {
 #
 function dtModel() {
   DEST="/addons/model.dts"
-  UNIQUE=$(_get_conf_kv unique)
+  UNIQUE=$(_get_conf_kv rd unique)
   if [ ! -f "${DEST}" ]; then # Users can put their own dts.
-    echo "/dts-v1/;" >${DEST}
-    echo "/ {" >>${DEST}
-    echo "    compatible = \"Synology\";" >>${DEST}
-    echo "    model = \"${UNIQUE}\";" >>${DEST}
-    echo "    version = <0x01>;" >>${DEST}
-    echo "    power_limit = \"\";" >>${DEST}
-
+    {
+      echo "/dts-v1/;"
+      echo "/ {"
+      echo "    compatible = \"Synology\";"
+      echo "    model = \"${UNIQUE}\";"
+      echo "    version = <0x01>;"
+      echo "    power_limit = \"\";"
+    } >"${DEST}"
     # SATA ports
     if [ "${1}" = "true" ]; then
       I=1
@@ -190,13 +181,15 @@ function dtModel() {
 
         for J in $(seq 0 $((${HOSTNUM} - 1))); do
           [ "${J}" = "${IDX}" ] && continue
-          echo "    internal_slot@${I} {" >>${DEST}
-          echo "        protocol_type = \"sata\";" >>${DEST}
-          echo "        ahci {" >>${DEST}
-          echo "            pcie_root = \"${PCIPATH}\";" >>${DEST}
-          echo "            ata_port = <0x$(printf '%02X' ${J})>;" >>${DEST}
-          echo "        };" >>${DEST}
-          echo "    };" >>${DEST}
+          {
+            echo "    internal_slot@${I} {"
+            echo "        protocol_type = \"sata\";"
+            echo "        ahci {"
+            echo "            pcie_root = \"${PCIPATH}\";"
+            echo "            ata_port = <0x$(printf '%02X' ${J})>;"
+            echo "        };"
+            echo "    };"
+          } >>"${DEST}"
           I=$((${I} + 1))
         done
       done
@@ -205,19 +198,21 @@ function dtModel() {
         while true; do
           [ ! -d /sys/block/sata${J} ] && break
           if cat /sys/block/sata${J}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | grep -q "${P}"; then
-            if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat /sys/block/sata${J}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+            if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && [ "${BOOTDISK_PHYSDEVPATH}" = "$(cat /sys/block/sata${J}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
               echo "bootloader: /sys/block/sata${J}"
             else
               PCIEPATH="$(grep 'pciepath' /sys/block/sata${J}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)"
               ATAPORT="$(grep 'ata_port_no' /sys/block/sata${J}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)"
-              if [ -n "${PCIEPATH}" -a -n "${ATAPORT}" ]; then
-                echo "    internal_slot@${I} {" >>${DEST}
-                echo "        protocol_type = \"sata\";" >>${DEST}
-                echo "        ahci {" >>${DEST}
-                echo "            pcie_root = \"${PCIEPATH}\";" >>${DEST}
-                echo "            ata_port = <0x$(printf '%02X' ${ATAPORT})>;" >>${DEST}
-                echo "        };" >>${DEST}
-                echo "    };" >>${DEST}
+              if [ -n "${PCIEPATH}" ] && [ -n "${ATAPORT}" ]; then
+                {
+                  echo "    internal_slot@${I} {"
+                  echo "        protocol_type = \"sata\";"
+                  echo "        ahci {"
+                  echo "            pcie_root = \"${PCIEPATH}\";"
+                  echo "            ata_port = <0x$(printf '%02X' ${ATAPORT})>;"
+                  echo "        };"
+                  echo "    };"
+                } >>"${DEST}"
                 I=$((${I} + 1))
               fi
             fi
@@ -230,19 +225,21 @@ function dtModel() {
       J=1
       while true; do
         [ ! -d /sys/block/sata${J} ] && break
-        if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat /sys/block/sata${J}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+        if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && [ "${BOOTDISK_PHYSDEVPATH}" = "$(cat /sys/block/sata${J}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
           echo "bootloader: /sys/block/sata${J}"
         else
           PCIEPATH="$(grep 'pciepath' /sys/block/sata${J}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)"
           ATAPORT="$(grep 'ata_port_no' /sys/block/sata${J}/device/syno_block_info 2>/dev/null | cut -d'=' -f2)"
-          if [ -n "${PCIEPATH}" -a -n "${ATAPORT}" ]; then
-            echo "    internal_slot@${I} {" >>${DEST}
-            echo "        protocol_type = \"sata\";" >>${DEST}
-            echo "        ahci {" >>${DEST}
-            echo "            pcie_root = \"${PCIEPATH}\";" >>${DEST}
-            echo "            ata_port = <0x$(printf '%02X' ${ATAPORT})>;" >>${DEST}
-            echo "        };" >>${DEST}
-            echo "    };" >>${DEST}
+          if [ -n "${PCIEPATH}" ] && [ -n "${ATAPORT}" ]; then
+            {
+              echo "    internal_slot@${I} {"
+              echo "        protocol_type = \"sata\";"
+              echo "        ahci {"
+              echo "            pcie_root = \"${PCIEPATH}\";"
+              echo "            ata_port = <0x$(printf '%02X' ${ATAPORT})>;"
+              echo "        };"
+              echo "    };"
+            } >>"${DEST}"
             I=$((${I} + 1))
           fi
         fi
@@ -251,7 +248,7 @@ function dtModel() {
     fi
     MAXDISKS=$((${I} - 1))
     if _check_post_k "rd" "maxdisks"; then
-      MAXDISKS=$(($(_get_conf_kv maxdisks)))
+      MAXDISKS=$(($(_get_conf_kv rd maxdisks)))
       echo "get maxdisks=${MAXDISKS}"
     else
       # fix isSingleBay issue: if maxdisks is 1, there is no create button in the storage panel
@@ -270,7 +267,7 @@ function dtModel() {
     COUNT=0
     POWER_LIMIT=""
     for P in $(ls -d /sys/block/nvme* 2>/dev/null); do
-      if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+      if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && [ "${BOOTDISK_PHYSDEVPATH}" = "$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
         echo "bootloader: ${P}"
         continue
       fi
@@ -279,10 +276,12 @@ function dtModel() {
         grep -q "pcie_root = \"${PCIEPATH}\";" ${DEST} && continue # An nvme controller only recognizes one disk
         [ $((${#POWER_LIMIT} - 1 + 2)) -gt 30 ] && break           # POWER_LIMIT string length limit 30 characters
         COUNT=$((${COUNT} + 1))
-        echo "    nvme_slot@${COUNT} {" >>${DEST}
-        echo "        pcie_root = \"${PCIEPATH}\";" >>${DEST}
-        echo "        port_type = \"ssdcache\";" >>${DEST}
-        echo "    };" >>${DEST}
+        {
+          echo "    nvme_slot@${COUNT} {"
+          echo "        pcie_root = \"${PCIEPATH}\";"
+          echo "        port_type = \"ssdcache\";"
+          echo "    };"
+        } >>"${DEST}"
         POWER_LIMIT="${POWER_LIMIT},0"
       fi
     done
@@ -296,22 +295,25 @@ function dtModel() {
     COUNT=0
     for I in $(getUsbPorts); do
       COUNT=$((${COUNT} + 1))
-      echo "    usb_slot@${COUNT} {" >>${DEST}
-      echo "      usb2 {" >>${DEST}
-      echo "        usb_port =\"${I}\";" >>${DEST}
-      echo "      };" >>${DEST}
-      echo "      usb3 {" >>${DEST}
-      echo "        usb_port =\"${I}\";" >>${DEST}
-      echo "      };" >>${DEST}
-      echo "    };" >>${DEST}
+      {
+        echo "    usb_slot@${COUNT} {"
+        echo "      usb2 {"
+        echo "        usb_port =\"${I}\";"
+        echo "      };"
+        echo "      usb3 {"
+        echo "        usb_port =\"${I}\";"
+        echo "      };"
+        echo "    };"
+      } >>"${DEST}"
     done
-    echo "};" >>${DEST}
+    echo "};" >>"${DEST}"
   fi
-  dtc -I dts -O dtb ${DEST} >/etc/model.dtb
+  dtc -I dts -O dtb "${DEST}" >/etc/model.dtb
   cp -vpf /etc/model.dtb /run/model.dtb
   /usr/syno/bin/syno_slot_mapping
 }
 
+#
 function nondtModel() {
   MAXDISKS=0
   USBPORTCFG=0
@@ -326,8 +328,10 @@ function nondtModel() {
     [ $((${IDX} + 1)) -ge ${MAXDISKS} ] && MAXDISKS=$((${IDX} + 1))
     ISUSB="$(cat ${I}/uevent 2>/dev/null | grep PHYSDEVPATH | grep usb)"
     if [ -n "${ISUSB}" ]; then
-      ([ ${IDX} -lt ${USBMINIDX} ] || [ "${hasUSB}" = "false" ]) && USBMINIDX=${IDX}
-      ([ ${IDX} -gt ${USBMAXIDX} ] || [ "${hasUSB}" = "false" ]) && USBMAXIDX=${IDX}
+      if [ "${hasUSB}" = "false" ]; then
+        [ ${IDX} -lt ${USBMINIDX} ] && USBMINIDX=${IDX}
+        [ ${IDX} -gt ${USBMAXIDX} ] && USBMAXIDX=${IDX}
+      fi
       hasUSB=true
     fi
   done
@@ -341,7 +345,7 @@ function nondtModel() {
   [ $((${USBMAXIDX} + 1)) -gt ${MAXDISKS} ] && MAXDISKS=$((${USBMAXIDX} + 1))
 
   if _check_post_k "rd" "maxdisks"; then
-    MAXDISKS=$(($(_get_conf_kv maxdisks)))
+    MAXDISKS=$(($(_get_conf_kv rd maxdisks)))
     printf "get maxdisks=%d\n" "${MAXDISKS}"
   else
     # fix isSingleBay issue: if maxdisks is 1, there is no create button in the storage panel
@@ -350,7 +354,7 @@ function nondtModel() {
   fi
 
   if _check_post_k "rd" "usbportcfg"; then
-    USBPORTCFG=$(($(_get_conf_kv usbportcfg)))
+    USBPORTCFG=$(($(_get_conf_kv rd usbportcfg)))
     printf 'get usbportcfg=0x%.2x\n' "${USBPORTCFG}"
   else
     USBPORTCFG=$(($((2 ** $((${USBMAXIDX} + 1)) - 1)) ^ $((2 ** $((${USBMINIDX} + 1)) - 1))))
@@ -358,14 +362,14 @@ function nondtModel() {
     printf 'set usbportcfg=0x%.2x\n' "${USBPORTCFG}"
   fi
   if _check_post_k "rd" "esataportcfg"; then
-    ESATAPORTCFG=$(($(_get_conf_kv esataportcfg)))
+    ESATAPORTCFG=$(($(_get_conf_kv rd esataportcfg)))
     printf 'get esataportcfg=0x%.2x\n' "${ESATAPORTCFG}"
   else
     _set_conf_kv rd "esataportcfg" "$(printf "0x%.2x" ${ESATAPORTCFG})"
     printf 'set esataportcfg=0x%.2x\n' "${ESATAPORTCFG}"
   fi
   if _check_post_k "rd" "internalportcfg"; then
-    INTERNALPORTCFG=$(($(_get_conf_kv internalportcfg)))
+    INTERNALPORTCFG=$(($(_get_conf_kv rd internalportcfg)))
     printf 'get internalportcfg=0x%.2x\n' "${INTERNALPORTCFG}"
   else
     INTERNALPORTCFG=$(($((2 ** ${MAXDISKS} - 1)) ^ ${USBPORTCFG} ^ ${ESATAPORTCFG}))
@@ -389,7 +393,7 @@ function nondtModel() {
   COUNT=1
   echo "[pci]" >/etc/extensionPorts
   for P in $(ls -d /sys/block/nvme* 2>/dev/null); do
-    if [ -n "${BOOTDISK_PHYSDEVPATH}" -a "${BOOTDISK_PHYSDEVPATH}" = "$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+    if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && [ "${BOOTDISK_PHYSDEVPATH}" = "$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
       echo "bootloader: ${P}"
       continue
     fi
@@ -427,11 +431,11 @@ if [ "${1}" = "patches" ]; then
 
   checkSynoboot
 
-  [ "$(_get_conf_kv supportportmappingv2)" = "yes" ] && dtModel "${2}" || nondtModel "${2}"
+  [ "$(_get_conf_kv rd supportportmappingv2)" = "yes" ] && dtModel "${2}" || nondtModel "${2}"
 
 elif [ "${1}" = "late" ]; then
   echo "Installing addon disks - ${1}"
-  if [ "$(_get_conf_kv supportportmappingv2)" = "yes" ]; then
+  if [ "$(_get_conf_kv rd supportportmappingv2)" = "yes" ]; then
     echo "Copying /etc.defaults/model.dtb"
     # copy file
     cp -vpf /usr/bin/dtc /tmpRoot/usr/bin/dtc
@@ -440,9 +444,9 @@ elif [ "${1}" = "late" ]; then
   else
     echo "Adjust maxdisks and internalportcfg automatically"
     # sysfs is unpopulated here, get the values from junior synoinfo.conf
-    USBPORTCFG=$(_get_conf_kv usbportcfg)
-    ESATAPORTCFG=$(_get_conf_kv esataportcfg)
-    INTERNALPORTCFG=$(_get_conf_kv internalportcfg)
+    USBPORTCFG=$(_get_conf_kv rd usbportcfg)
+    ESATAPORTCFG=$(_get_conf_kv rd esataportcfg)
+    INTERNALPORTCFG=$(_get_conf_kv rd internalportcfg)
     # log
     echo "usbportcfg=${USBPORTCFG}"
     echo "esataportcfg=${ESATAPORTCFG}"
@@ -456,12 +460,12 @@ elif [ "${1}" = "late" ]; then
     cp -vpf /etc/extensionPorts /tmpRoot/etc.defaults/extensionPorts
   fi
 
-  MAXDISKS=$(_get_conf_kv maxdisks)
+  MAXDISKS=$(_get_conf_kv rd maxdisks)
   echo "maxdisks=${MAXDISKS}"
   _set_conf_kv hd "maxdisks" "${MAXDISKS}"
 
-  SUPPORTNVME=$(_get_conf_kv supportnvme)
-  SUPPORT_M2_POOL=$(_get_conf_kv support_m2_pool)
+  SUPPORTNVME=$(_get_conf_kv rd supportnvme)
+  SUPPORT_M2_POOL=$(_get_conf_kv rd support_m2_pool)
   _set_conf_kv hd "supportnvme" "${SUPPORTNVME}"
   _set_conf_kv hd "support_m2_pool" "${SUPPORT_M2_POOL}"
 fi

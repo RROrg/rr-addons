@@ -15,23 +15,25 @@ elif [ "${1}" = "late" ]; then
   echo "Installing addon wol - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
-  
+
   [ ! -f "/tmpRoot/usr/bin/ethtool" ] && cp -vpf /usr/bin/ethtool /tmpRoot/usr/bin/ethtool
   cp -vpf /usr/bin/wol.sh /tmpRoot/usr/bin/wol.sh
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/wol.service"
-  echo "[Unit]"                                   > ${DEST}
-  echo "Description=ARPL force WoL on ethN"       >>${DEST}
-  echo "After=multi-user.target"                  >>${DEST}
-  echo                                            >>${DEST}
-  echo "[Service]"                                >>${DEST}
-  echo "Type=oneshot"                             >>${DEST}
-  echo "RemainAfterExit=yes"                      >>${DEST}
-  echo "ExecStart=-/usr/bin/wol.sh"               >>${DEST}
-  echo                                            >>${DEST}
-  echo "[Install]"                                >>${DEST}
-  echo "WantedBy=multi-user.target"               >>${DEST}
+  {
+    echo "[Unit]"
+    echo "Description=ARPL force WoL on ethN"
+    echo "After=multi-user.target"
+    echo
+    echo "[Service]"
+    echo "Type=oneshot"
+    echo "RemainAfterExit=yes"
+    echo "ExecStart=-/usr/bin/wol.sh"
+    echo
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  } >"${DEST}"
 
   mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/wol.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/wol.service

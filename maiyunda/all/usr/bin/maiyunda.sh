@@ -95,4 +95,4 @@ function main() {
 PORT=${1:-"0xA03"}
 MODE=${2:-0} # 0: trigger when pressed, 1: trigger when release
 
-main ${PORT} ${MODE}
+main "${PORT}" "${MODE}"

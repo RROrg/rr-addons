@@ -14,9 +14,14 @@ else
   FILE_JS="/usr/syno/synoman/webman/modules/StorageManager/storage_panel.js"
 fi
 FILE_GZ="${FILE_JS}.gz"
-[ -f "${FILE_JS}" -a ! -f "${FILE_GZ}" ] && gzip -c "${FILE_JS}" >"${FILE_GZ}"
+if [ -f "${FILE_JS}" ] && [ ! -f "${FILE_GZ}" ]; then
+  gzip -c "${FILE_JS}" >"${FILE_GZ}"
+fi
 
-[ ! -f "${FILE_GZ}" ] && echo "${FILE_GZ} file does not exist" && exit 0
+if [ ! -f "${FILE_GZ}" ]; then
+  echo "${FILE_GZ} file does not exist"
+  exit 0
+fi
 
 if [ "${1}" = "-r" ]; then
   if [ -f "${FILE_GZ}.bak" ]; then

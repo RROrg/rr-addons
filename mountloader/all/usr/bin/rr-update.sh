@@ -18,15 +18,7 @@ TMP_PATH="/tmp"
 #LOG_FILE="${TMP_PATH}/log.txt"
 
 USER_CONFIG_FILE="${PART1_PATH}/user-config.yml"
-GRUB_PATH="${PART1_PATH}/boot/grub"
 
-ORI_ZIMAGE_FILE="${PART2_PATH}/zImage"
-ORI_RDGZ_FILE="${PART2_PATH}/rd.gz"
-
-RR_BZIMAGE_FILE="${PART3_PATH}/bzImage-rr"
-RR_RAMDISK_FILE="${PART3_PATH}/initrd-rr"
-MOD_ZIMAGE_FILE="${PART3_PATH}/zImage-dsm"
-MOD_RDGZ_FILE="${PART3_PATH}/initrd-dsm"
 
 CKS_PATH="${PART3_PATH}/cks"
 LKMS_PATH="${PART3_PATH}/lkms"
@@ -42,8 +34,8 @@ SCRIPTS_PATH="${PART3_PATH}/scripts"
 # 2 - Path of yaml config file
 # Return Value
 function readConfigKey() {
-  RESULT=$(yq eval '.'${1}' | explode(.)' "${2}" 2>/dev/null)
-  [ "${RESULT}" == "null" ] && echo "" || echo ${RESULT}
+  local result=$(yq eval ".${1} | explode(.)" "${2}" 2>/dev/null)
+  [ "${result}" = "null" ] && echo "" || echo "${result}"
 }
 
 # Read Entries as map(key=value) from yaml config file
@@ -51,7 +43,7 @@ function readConfigKey() {
 # 2 - Path of yaml config file
 # Returns map of values
 function readConfigMap() {
-  yq eval '.'${1}' | explode(.) | to_entries | map([.key, .value] | join(": ")) | .[]' "${2}" 2>/dev/null
+  yq eval ".${1} | explode(.) | to_entries | map([.key, .value] | join(\": \")) | .[]" "${2}" 2>/dev/null
 }
 
 # Read an array from yaml config file
@@ -59,15 +51,15 @@ function readConfigMap() {
 # 2 - Path of yaml config file
 # Returns array/map of values
 function readConfigArray() {
-  yq eval '.'${1}'[]' "${2}" 2>/dev/null
+  yq eval ".${1}[]" "${2}" 2>/dev/null
 }
-
 # Write to yaml config file
 # 1 - Path of Key
 # 2 - Value
 # 3 - Path of yaml config file
 function writeConfigKey() {
-  [ "${2}" = "{}" ] && yq eval '.'${1}' = {}' --inplace "${3}" 2>/dev/null || yq eval '.'${1}' = "'"${2}"'"' --inplace "${3}" 2>/dev/null
+  local value="${2}"
+  [ "${value}" = "{}" ] && yq eval ".${1} = {}" --inplace "${3}" 2>/dev/null || yq eval ".${1} = \"${value}\"" --inplace "${3}" 2>/dev/null
 }
 
 # Return list of all modules available
@@ -77,7 +69,7 @@ function getAllModules() {
   local PLATFORM=${1}
   local KVER=${2}
 
-  if [ -z "${PLATFORM}" -o -z "${KVER}" ]; then
+  if [ -z "${PLATFORM}" ] || [ -z "${KVER}" ]; then
     echo ""
     return 1
   fi
@@ -187,10 +179,10 @@ function updateRR() {
       mkdir -p "${VALUE}"
       cp -rf "${TMP_PATH}/update/${VALUE}"/* "${VALUE}"
       if [ "$(realpath "${VALUE}")" = "$(realpath "${MODULES_PATH}")" ]; then
-        if [ -n "${MODEL}" -a -n "${PRODUCTVER}" ]; then
+        if [ -n "${MODEL}" ] && [ -n "${PRODUCTVER}" ]; then
           KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
           KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
-          if [ -n "${PLATFORM}" -a -n "${KVER}" ]; then
+          if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
             writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
             while read ID DESC; do
               writeConfigKey "modules.\"${ID}\"" "" "${USER_CONFIG_FILE}"
@@ -306,10 +298,10 @@ function updateModules() {
     return 1
   fi
   echo '{"progress": "30", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  if [ -n "${MODEL}" -a -n "${PRODUCTVER}" ]; then
+  if [ -n "${MODEL}" ] && [ -n "${PRODUCTVER}" ]; then
     KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
     KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
-    if [ -n "${PLATFORM}" -a -n "${KVER}" ]; then
+    if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
       writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
       while read ID DESC; do
         writeConfigKey "modules.\"${ID}\"" "" "${USER_CONFIG_FILE}"
@@ -401,10 +393,10 @@ function updateCKs() {
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   rm -rf "${CKS_PATH}/"*
   cp -rf "${TMP_PATH}/update/"* "${CKS_PATH}/"
-  if [ -n "${MODEL}" -a -n "${PRODUCTVER}" -a "${KERNEL}" = "custom" ]; then
+  if [ -n "${MODEL}" ] && [ -n "${PRODUCTVER}" ] && [ "${KERNEL}" = "custom" ]; then
     KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
     KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
-    if [ -n "${PLATFORM}" -a -n "${KVER}" ]; then
+    if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
       writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
       while read ID DESC; do
         writeConfigKey "modules.\"${ID}\"" "" "${USER_CONFIG_FILE}"

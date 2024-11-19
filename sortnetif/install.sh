@@ -34,12 +34,12 @@ if [ "${1}" = "patches" ]; then
   if [ ! "${ETHSEQ}" = "$(seq 0 $((${ETHNUM:0} - 1)))" ]; then
     /etc/rc.network stop
     for i in $(seq 0 $((${ETHNUM:0} - 1))); do
-      ip link set dev eth${i} name tmp${i}
+      ip link set dev "eth${i}" name "tmp${i}"
     done
     I=0
     for i in ${ETHSEQ}; do
-      ip link set dev tmp${i} name eth${I}
-      I=$((${I} + 1))
+      ip link set dev "tmp${i}" name "eth${I}"
+      I=$((I + 1))
     done
     /etc/rc.network start
   fi

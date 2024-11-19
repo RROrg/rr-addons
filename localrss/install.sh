@@ -7,7 +7,7 @@
 #
 
 # External incoming required ${MLINK} and ${MCHECKSUM}
-if [ -z "${MLINK}" -o -z "${MCHECKSUM}" ]; then
+if [ -z "${MLINK}" ] || [ -z "${MCHECKSUM}" ]; then
   echo "MLINK or MCHECKSUM is null"
   return
 fi
@@ -17,9 +17,9 @@ if [ "${1}" = "modules" ]; then
 
   # MajorVersion=`/bin/get_key_value /etc.defaults/VERSION majorversion`
   # MinorVersion=`/bin/get_key_value /etc.defaults/VERSION minorversion`
-  . /etc.defaults/VERSION
+  . "/etc.defaults/VERSION"
 
-  cat >/usr/syno/web/localrss.json <<EOF
+  cat >"/usr/syno/web/localrss.json" <<EOF
 {
   "version": "2.0",
   "channel": {
@@ -55,7 +55,7 @@ if [ "${1}" = "modules" ]; then
 }
 EOF
 
-  cat >/usr/syno/web/localrss.xml <<EOF
+  cat >"/usr/syno/web/localrss.xml" <<EOF
 <?xml version="1.0"?>
 <rss version="2.0">
   <channel>
@@ -85,12 +85,12 @@ EOF
 </rss>
 EOF
 
-  if [ -f /usr/syno/web/localrss.xml ]; then
+  if [ -f "/usr/syno/web/localrss.xml" ]; then
     # cat /usr/syno/web/localrss.xml
     sed -i "s|rss_server=.*$|rss_server=\"http://localhost:5000/localrss.xml\"|g" "/etc/synoinfo.conf" "/etc.defaults/synoinfo.conf"
     sed -i "s|rss_server_ssl=.*$|rss_server_ssl=\"http://localhost:5000/localrss.xml\"|g" "/etc/synoinfo.conf" "/etc.defaults/synoinfo.conf"
   fi
-  if [ -f /usr/syno/web/localrss.json ]; then
+  if [ -f "/usr/syno/web/localrss.json" ]; then
     # cat /usr/syno/web/localrss.json
     sed -i "s|rss_server_v2=.*$|rss_server_v2=\"http://localhost:5000/localrss.json\"|g" "/etc/synoinfo.conf" "/etc.defaults/synoinfo.conf"
   fi

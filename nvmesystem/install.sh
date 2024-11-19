@@ -57,19 +57,21 @@ elif [ "${1}" = "late" ]; then
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/nvmesystem.service"
-  echo "[Unit]"                                                               >${DEST}
-  echo "Description=Modify storage panel(nvmesystem)"                        >>${DEST}
-  echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"    >>${DEST}
-  echo "After=smpkg-custom-install.service"                                  >>${DEST}
-  echo "After=storagepanel.service"                                          >>${DEST}  # storagepanel
-  echo                                                                       >>${DEST}
-  echo "[Service]"                                                           >>${DEST}
-  echo "Type=oneshot"                                                        >>${DEST}
-  echo "RemainAfterExit=yes"                                                 >>${DEST}
-  echo "ExecStart=-/usr/bin/nvmesystem.sh"                                   >>${DEST}
-  echo                                                                       >>${DEST}
-  echo "[Install]"                                                           >>${DEST}
-  echo "WantedBy=multi-user.target"                                          >>${DEST}
+  {
+    echo "[Unit]"
+    echo "Description=Modify storage panel(nvmesystem)"
+    echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"
+    echo "After=smpkg-custom-install.service"
+    echo "After=storagepanel.service" # storagepanel
+    echo
+    echo "[Service]"
+    echo "Type=oneshot"
+    echo "RemainAfterExit=yes"
+    echo "ExecStart=-/usr/bin/nvmesystem.sh"
+    echo
+    echo "[Install]"
+    echo "WantedBy=multi-user.target"
+  } >"${DEST}"
 
   mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/nvmesystem.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/nvmesystem.service
