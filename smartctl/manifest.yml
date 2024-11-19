@@ -1,0 +1,45 @@
+version: 1
+name: smartctl
+description:
+  en_US: "Author: Phachd. Fix SMART information on disks on HBA devices."
+  ar_SA: "المؤلف: Phachd. إصلاح معلومات SMART على الأقراص على أجهزة HBA."
+  de_DE: "Autor: Phachd. Beheben Sie SMART-Informationen auf Festplatten auf HBA-Geräten."
+  es_ES: "Autor: Phachd. Corregir la información SMART en discos en dispositivos HBA."
+  fr_FR: "Auteur: Phachd. Corriger les informations SMART sur les disques sur les périphériques HBA."
+  ja_JP: "作者：Phachd。HBA デバイス上のディスクの SMART 情報を修正します。"
+  ko_KR: "저자: Phachd. HBA 장치의 디스크에서 SMART 정보를 수정합니다."
+  ru_RU: "Автор: Phachd. Исправление информации SMART на дисках на устройствах HBA."
+  th_TH: "ผู้เขียน: Phachd. แก้ไขข้อมูล SMART บนดิสก์บนอุปกรณ์ HBA เท่านั้น"
+  tr_TR: "Yazar: Phachd. HBA cihazlarındaki disklerde SMART bilgilerini düzeltin."
+  uk_UA: "Автор: Phachd. Виправлення інформації SMART на дисках на пристроях HBA."
+  vi_VN: "Tác giả: Phachd. Sửa thông tin SMART trên ổ đĩa trên các thiết bị HBA."
+  zh_CN: "作者：Phachd。修复 HBA 设备上磁盘的 SMART 信息。"
+  zh_HK: "作者：Phachd。修复 HBA 设备上磁盘的 SMART 信息。"
+  zh_TW: "作者：Phachd。修复 HBA 设备上磁盘的 SMART 信息。"
+system: false
+all:
+  install-script: "install.sh"
+  copy: "all"
+available-for:
+  apollolake-4.4.180:
+  apollolake-4.4.302:
+  broadwell-4.4.180:
+  broadwell-4.4.302:
+  broadwellnk-4.4.180:
+  broadwellnk-4.4.302:
+  broadwellnkv2-4.4.180:
+  broadwellnkv2-4.4.302:
+  broadwellntbap-4.4.180:
+  broadwellntbap-4.4.302:
+  epyc7002-7.1-5.10.55:
+  epyc7002-7.2-5.10.55:
+  denverton-4.4.180:
+  denverton-4.4.302:
+  geminilake-4.4.180:
+  geminilake-4.4.302:
+  purley-4.4.180:
+  purley-4.4.302:
+  r1000-4.4.180:
+  r1000-4.4.302:
+  v1000-4.4.180:
+  v1000-4.4.302:
