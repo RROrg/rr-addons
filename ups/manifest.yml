@@ -1,6 +1,6 @@
 version: 1
 name: ups
-description:
+description:  # https://wp.gxnas.com/10926.html
   en_US: "Author: GXNAS. Force the standby mode to shutdown when UPS power supply. Parameters: -f - Trigger shutdown task before shutdown; -e - Trigger shutdown task before standby mode (not change to shutdown)."
   ar_SA: "لمؤلف: GXNAS. فرض إيقاف تشغيل وضع الاستعداد عند انقطاع مصدر طاقة UPS. المعلمات: -f - تشغيل مهمة إيقاف التشغيل قبل إيقاف التشغيل؛ -e - تشغيل مهمة إيقاف التشغيل قبل وضع-e - تشغيل مهمة إيقاف التشغيل قبل وضع الاستعداد (لا يتم التغيير إلى إيقاف التشغيل)."
   de_DE: "Autor: GXNAS. Erzwingt das Herunterfahren in den Standby-Modus, wenn die USV-Stromversorgung eingeschaltet ist. Parameter: -f – Herunterfahraufgabe vor dem Herunterfahren auslösen; -e – Herunterfahraufgabe vor dem Standby-Modus auslösen (nicht zum Herunterfahren wechseln)."

@@ -1,6 +1,6 @@
 version: 1
 name: smartctl
-description:
+description:  # https://github.com/332505/syno_smartctl/
   en_US: "Author: Phachd. Fix SMART information on disks on HBA devices."
   ar_SA: "المؤلف: Phachd. إصلاح معلومات SMART على الأقراص على أجهزة HBA."
   de_DE: "Autor: Phachd. Beheben Sie SMART-Informationen auf Festplatten auf HBA-Geräten."
