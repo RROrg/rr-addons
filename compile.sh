@@ -2,18 +2,19 @@
 
 set -e
 
-TMP_PATH="/tmp"
-YQ_BIN="$(command -v yq)"
-if [ -z "${YQ_BIN}" ] || ! ${YQ_BIN} --version 2>/dev/null | grep -q "v4."; then
-  YQ_BIN="${YQ_BIN:-"/usr/bin/yq"}"
-  wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O "${YQ_BIN}" && chmod +x "${YQ_BIN}"
+[ -z "${WORK_PATH}" ] || [ ! -d "${WORK_PATH}" ] && WORK_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+
+TEMP_PATH="/tmp"
+
+if ! command -v yq &>/dev/null || ! yq --version 2>/dev/null | grep -q "v4."; then
+  sudo curl -kL https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/bin/yq && sudo chmod a+x /usr/bin/yq
 fi
 
 ###############################################################################
 #
 # 1 - Path of key
 function hasConfigKey() {
-  [ "$(${YQ_BIN} eval '.'${1}' | has("'${2}'")' "${3}")" == "true" ] && return 0 || return 1
+  [ "$(yq eval '.'${1}' | has("'${2}'")' "${3}")" = "true" ] && return 0 || return 1
 }
 
 ###############################################################################
@@ -22,8 +23,8 @@ function hasConfigKey() {
 # 2 - Path of yaml config file
 # Return Value
 function readConfigKey() {
-  RESULT=$(${YQ_BIN} eval '.'${1}' | explode(.)' "${2}")
-  [ "${RESULT}" == "null" ] && echo "" || echo ${RESULT}
+  local result=$(yq eval '.'${1}' | explode(.)' "${2}" 2>/dev/null)
+  [ "${result}" = "null" ] && echo "" || echo ${result}
 }
 
 ###############################################################################
@@ -32,11 +33,11 @@ function readConfigKey() {
 # 2 - Path of yaml config file
 # Returns array of values
 function readConfigEntriesArray() {
-  ${YQ_BIN} eval '.'${1}' | explode(.) | to_entries | map([.key])[] | .[]' "${2}"
+  yq eval '.'${1}' | explode(.) | to_entries | map([.key])[] | .[]' "${2}" 2>/dev/null
 }
 
 ###############################################################################
-function compile-addon() {
+function compile_addon() {
   # Read manifest file
   MANIFEST="${1}/manifest.yml"
   if [ ! -f "${MANIFEST}" ]; then
@@ -44,7 +45,7 @@ function compile-addon() {
     return 0
   fi
   echo -e "\033[7mProcessing manifest ${MANIFEST}\033[0m"
-  OUT_PATH="${TMP_PATH}/${1}"
+  OUT_PATH="${TEMP_PATH}/${1}"
   rm -rf "${OUT_PATH}"
   mkdir -p "${OUT_PATH}"
   # # Check manifest version
@@ -153,16 +154,15 @@ function compile-addon() {
 
 # Main
 if [ $# -ge 1 ]; then
-  for A in $@; do
-    compile-addon ${A%/}
+  for A in "$@"; do
+    compile_addon "${A%/}"
   done
 else
-  while read D; do
-    DRIVER=$(basename ${D})
+  while read -r D; do
+    DRIVER=$(basename "${D}")
     [ "${DRIVER:0:1}" = "." ] && continue
-    compile-addon ${DRIVER}
-  done < <(find -maxdepth 1 -type d)
+    compile_addon "${DRIVER}"
+  done <<<$(find . -maxdepth 1 -type d)
 fi
-wait
 
 # zip -9 addons-$(cat VERSION 2>/dev/null).zip -j *.addon VERSION
