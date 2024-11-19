@@ -36,7 +36,7 @@ function mountLoaderDisk() {
       for i in {1..3}; do
         rm -rf "/mnt/p${i}"
         mkdir -p "/mnt/p${i}"
-        mount "/dev/synoboo${i}" "/mnt/p${i}" || {
+        mount "/dev/synoboot${i}" "/mnt/p${i}" || {
           echo "Can't mount /dev/synoboot${i}."
           break 2
         }
