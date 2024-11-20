@@ -6,21 +6,7 @@
 # See /LICENSE for more information.
 #
 
-function extractInitrd() {
-  if [ -z "${1}" ] || [ -z "${2}" ]; then
-    return 1
-  fi
-
-  if [ -f "${1}" ]; then
-    rm -rf "${2}"
-    mkdir -p "${2}"
-    (
-      cd "${2}"
-      xz -dc <"${1}" | cpio -idm
-    ) >/dev/null 2>&1 || true
-  fi
-  return 0
-}
+RR_PATH="/tmp/initrd"
 
 function mountLoaderDisk() {
   if [ ! -f "/usr/rr/.mountloader" ]; then
@@ -43,9 +29,9 @@ function mountLoaderDisk() {
       done
 
       if echo "$@" | grep -qw "\-all"; then
-        RR_RAMDISK_FILE="/mnt/p3/initrd-rr"
-        RR_PATH="/tmp/initrd"
-        extractInitrd "${RR_RAMDISK_FILE}" "${RR_PATH}"
+        rm -rf "${RR_PATH}"
+        mkdir -p "${RR_PATH}"
+        (cd "${RR_PATH}" && xz -dc <"/mnt/p3/initrd-rr" | cpio -idm) >/dev/null 2>&1 || true
         if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
           echo "RR initrd work path not found!"
           break
@@ -61,6 +47,9 @@ function mountLoaderDisk() {
           echo "export WORK_PATH=\"${RR_PATH}/opt/rr\""
         fi
       } >"/usr/rr/.mountloader"
+
+      sync
+
       break
     done
   fi
@@ -86,7 +75,6 @@ function unmountLoaderDisk() {
     export LOADER_DISK_PART3=
 
     if echo "$@" | grep -qw "\-all"; then
-      RR_PATH="/tmp/initrd"
       rm -rf "${RR_PATH}"
     fi
     for i in {1..3}; do
