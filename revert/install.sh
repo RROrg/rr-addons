@@ -26,7 +26,7 @@ if [ "${1}" = "late" ]; then
     DEST="/tmpRoot/usr/lib/systemd/system/revert.service"
     {
       echo "[Unit]"
-      echo "Description=revert"
+      echo "Description=RR addon revert daemon"
       echo "After=multi-user.target"
       echo
       echo "[Service]"

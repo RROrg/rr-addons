@@ -19,7 +19,7 @@ if [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/storagepanel.service"
   {
     echo "[Unit]"
-    echo "Description=Modify storage panel(storagepanel)"
+    echo "Description=RR addon storagepanel daemon"
     echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"
     echo "After=smpkg-custom-install.service"
     echo

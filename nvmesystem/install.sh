@@ -59,7 +59,7 @@ elif [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/nvmesystem.service"
   {
     echo "[Unit]"
-    echo "Description=Modify storage panel(nvmesystem)"
+    echo "Description=RR addon nvmesystem daemon"
     echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"
     echo "After=smpkg-custom-install.service"
     echo "After=storagepanel.service" # storagepanel

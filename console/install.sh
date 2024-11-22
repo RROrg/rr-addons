@@ -67,7 +67,7 @@ elif [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/keymap.service"
   {
     echo "[Unit]"
-    echo "Description=Configure keymap"
+    echo "Description=RR addon console daemon"
     echo "After=getty.target"
     echo
     echo "[Service]"

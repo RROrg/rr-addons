@@ -17,7 +17,7 @@ if [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/notify.service"
   {
     echo "[Unit]"
-    echo "Description=rr notify"
+    echo "Description=RR addon notify daemon"
     echo "After=multi-user.target"
     echo
     echo "[Service]"

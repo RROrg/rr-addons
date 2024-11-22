@@ -37,7 +37,7 @@ if [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/nvmevolume.service"
   {
     echo "[Unit]"
-    echo "Description=Modify storage panel(nvmevolume)"
+    echo "Description=RR addon nvmevolume daemon"
     echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"
     echo "After=smpkg-custom-install.service"
     echo "After=storagepanel.service" # storagepanel

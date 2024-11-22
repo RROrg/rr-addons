@@ -25,7 +25,7 @@ elif [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/rndis.service"
   {
     echo "[Unit]"
-    echo "Description=Android USB Network Adapter"
+    echo "Description=RR addon rndis daemon"
     echo "After=multi-user.target"
     echo "ConditionPathExists=/sys/class/net/usb0"
     echo

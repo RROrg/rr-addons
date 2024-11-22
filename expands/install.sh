@@ -17,7 +17,7 @@ if [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/expands.service"
   {
     echo "[Unit]"
-    echo "Description=Expanded miscellaneous"
+    echo "Description=RR addon expands daemon"
     echo "After=multi-user.target"
     echo
     echo "[Service]"

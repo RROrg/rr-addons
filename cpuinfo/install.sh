@@ -18,7 +18,7 @@ if [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/cpuinfo.service"
   {
     echo "[Unit]"
-    echo "Description=Adds correct CPU Info"
+    echo "Description=RR addon cpuinfo daemon"
     echo "After=multi-user.target"
     echo
     echo "[Service]"

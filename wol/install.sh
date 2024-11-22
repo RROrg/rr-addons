@@ -23,7 +23,7 @@ elif [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/wol.service"
   {
     echo "[Unit]"
-    echo "Description=ARPL force WoL on ethN"
+    echo "Description=RR addon wol daemon"
     echo "After=multi-user.target"
     echo
     echo "[Service]"

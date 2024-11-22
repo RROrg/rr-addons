@@ -96,7 +96,7 @@ elif [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/udevrules.service"
   {
     echo "[Unit]"
-    echo "Description=Reload udev rules"
+    echo "Description=RR addon udev daemon"
     echo
     echo "[Service]"
     echo "Type=oneshot"

@@ -18,7 +18,7 @@ if [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/photosfacepatch.service"
   {
     echo "[Unit]"
-    echo "Description=Enable face recognition in Synology Photos"
+    echo "Description=RR addon photosfacepatch daemon"
     echo "After=syno-volume.target syno-space.target"
     echo
     echo "[Service]"

@@ -19,7 +19,7 @@ if [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/codecpatch.service"
   {
     echo "[Unit]"
-    echo "Description=addon codecpatch"
+    echo "Description=RR addon codecpatch daemon"
     echo "After=syno-volume.target syno-space.target"
     echo
     echo "[Service]"

@@ -20,7 +20,7 @@ if [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/maiyunda.service"
   {
     echo "[Unit]"
-    echo "Description=reset button daemon"
+    echo "Description=RR addon maiyunda daemon"
     echo "After=multi-user.target"
     echo
     echo "[Service]"

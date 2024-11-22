@@ -24,7 +24,7 @@ if [ "${1}" = "late" ]; then
   # DEST="/tmpRoot/usr/lib/systemd/system/acpid.service"
   # {
   #   echo "[Unit]"
-  #   echo "Description=ACPI Daemon"
+  #   echo "Description=RR addon acpi daemon"
   #   echo "DefaultDependencies=no"
   #   echo "IgnoreOnIsolate=true"
   #   echo "After=multi-user.target"

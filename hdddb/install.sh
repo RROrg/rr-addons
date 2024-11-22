@@ -17,7 +17,7 @@ if [ "${1}" = "late" ]; then
   DEST="/tmpRoot/usr/lib/systemd/system/hdddb.service"
   {
     echo "[Unit]"
-    echo "Description=HDDs/SSDs drives databases"
+    echo "Description=RR addon hdddb daemon"
     echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"
     echo "After=smpkg-custom-install.service"
     echo
