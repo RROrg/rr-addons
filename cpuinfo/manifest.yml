@@ -1,6 +1,6 @@
 version: 1
 name: cpuinfo
-description:
+description: # https://github.com/GroverLau/syno_cpuinfo
   en_US: "Only make the control panel display the correct CPU information. (By default is automatically obtained, Or customized through parameters, e.g.: -t 'on' --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
   ar_SA: "فقط جعل لوحة التحكم تعرض معلومات الـ CPU الصحيحة. (بشكل افتراضي يتم الحصول عليها تلقائيًا, أو تخصيصها من خلال المعلمات, على سبيل المثال: -t 'on' --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
   de_DE: "Nur die CPU-Informationen anzeigen, die richtig sind. (Standardmäßig werden diese automatisch ermittelt, oder sie können über die Parameter angepasst werden, z. B.: -t 'on' --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
