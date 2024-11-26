@@ -1,6 +1,5 @@
 version: 1
 name: powersched
-compile-script: compile.sh
 description:
   en_US: "A program to configure the RTC according to the DSM power plan, so that the RTC (scheduled power on/off) can work properly."
   ar_SA: "برنامج لتكوين RTC وفقًا لخطة الطاقة DSM، بحيث يمكن لـ RTC (تشغيل/إيقاف الطاقة المجدول) العمل بشكل صحيح."
