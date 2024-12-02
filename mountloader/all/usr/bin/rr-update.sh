@@ -19,7 +19,6 @@ TMP_PATH="/tmp"
 
 USER_CONFIG_FILE="${PART1_PATH}/user-config.yml"
 
-
 CKS_PATH="${PART3_PATH}/cks"
 LKMS_PATH="${PART3_PATH}/lkms"
 ADDONS_PATH="${PART3_PATH}/addons"
@@ -29,6 +28,25 @@ SCRIPTS_PATH="${PART3_PATH}/scripts"
 
 # SYNC configFile.sh
 
+###############################################################################
+# Delete a key in config file
+# 1 - Path of Key
+# 2 - Path of yaml config file
+function deleteConfigKey() {
+  yq eval "del(.${1})" --inplace "${2}" 2>/dev/null
+}
+
+###############################################################################
+# Write to yaml config file
+# 1 - Path of Key
+# 2 - Value
+# 3 - Path of yaml config file
+function writeConfigKey() {
+  local value="${2}"
+  [ "${value}" = "{}" ] && yq eval ".${1} = {}" --inplace "${3}" 2>/dev/null || yq eval ".${1} = \"${value}\"" --inplace "${3}" 2>/dev/null
+}
+
+###############################################################################
 # Read key value from yaml config file
 # 1 - Path of key
 # 2 - Path of yaml config file
@@ -38,6 +56,23 @@ function readConfigKey() {
   [ "${result}" = "null" ] && echo "" || echo "${result}"
 }
 
+###############################################################################
+# Write to yaml config file
+# 1 - Modules
+# 2 - Path of yaml config file
+function mergeConfigModules() {
+  # Error: bad file '-': cannot index array with '8139cp' (strconv.ParseInt: parsing "8139cp": invalid syntax)
+  # When the first key is a pure number, yq will not process it as a string by default. The current solution is to insert a placeholder key.
+  local MS="RRORG\n${1// /\\n}"
+  local L="$(echo -en "${MS}" | awk '{print "modules."$1":"}')"
+  local xmlfile=$(mktemp)
+  echo -en "${L}" | yq -p p -o y >"${xmlfile}"
+  deleteConfigKey "modules.\"RRORG\"" "${xmlfile}"
+  yq eval-all --inplace '. as $item ireduce ({}; . * $item)' --inplace "${2}" "${xmlfile}" 2>/dev/null
+  rm -f "${xmlfile}"
+}
+
+###############################################################################
 # Read Entries as map(key=value) from yaml config file
 # 1 - Path of key
 # 2 - Path of yaml config file
@@ -46,20 +81,13 @@ function readConfigMap() {
   yq eval ".${1} | explode(.) | to_entries | map([.key, .value] | join(\": \")) | .[]" "${2}" 2>/dev/null
 }
 
+###############################################################################
 # Read an array from yaml config file
 # 1 - Path of key
 # 2 - Path of yaml config file
 # Returns array/map of values
 function readConfigArray() {
   yq eval ".${1}[]" "${2}" 2>/dev/null
-}
-# Write to yaml config file
-# 1 - Path of Key
-# 2 - Value
-# 3 - Path of yaml config file
-function writeConfigKey() {
-  local value="${2}"
-  [ "${value}" = "{}" ] && yq eval ".${1} = {}" --inplace "${3}" 2>/dev/null || yq eval ".${1} = \"${value}\"" --inplace "${3}" 2>/dev/null
 }
 
 # Return list of all modules available
@@ -184,9 +212,7 @@ function updateRR() {
           KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
           if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
             writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
-            while read ID DESC; do
-              writeConfigKey "modules.\"${ID}\"" "" "${USER_CONFIG_FILE}"
-            done <<<$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}")
+            mergeConfigModules "$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}" | awk '{print $1}')" "${USER_CONFIG_FILE}"
           fi
         fi
       fi
@@ -303,9 +329,7 @@ function updateModules() {
     KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
     if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
       writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
-      while read ID DESC; do
-        writeConfigKey "modules.\"${ID}\"" "" "${USER_CONFIG_FILE}"
-      done <<<$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}")
+      mergeConfigModules "$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}" | awk '{print $1}')" "${USER_CONFIG_FILE}"
     fi
   fi
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
@@ -398,9 +422,7 @@ function updateCKs() {
     KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
     if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
       writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
-      while read ID DESC; do
-        writeConfigKey "modules.\"${ID}\"" "" "${USER_CONFIG_FILE}"
-      done <<<$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}")
+      mergeConfigModules "$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}" | awk '{print $1}')" "${USER_CONFIG_FILE}"
     fi
   fi
   rm -rf "${TMP_PATH}/update"
