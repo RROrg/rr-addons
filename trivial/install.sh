@@ -24,5 +24,5 @@ elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon trivial - ${1}"
 
   SO_FILE="/tmpRoot/usr/lib/libsynosata.so.1"
-  [ -f "${SO_FILE}.bak" ] && mv -pf "${SO_FILE}.bak" "${SO_FILE}"
+  [ -f "${SO_FILE}.bak" ] && mv -f "${SO_FILE}.bak" "${SO_FILE}"
 fi
