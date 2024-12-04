@@ -39,4 +39,7 @@ sed -i 's/notSupportM2Pool_addOnCard:this.T("disk_info","disk_reason_m2_add_on_c
 sed -i 's/},{isConditionInvalid:0<this.pciSlot,invalidReason:"notSupportM2Pool_addOnCard"//g' "${FILE_JS}"
 gzip -c "${FILE_JS}" >"${FILE_GZ}"
 
+# M.2 drives in M2 adaptor card do not officially support storage pools
+for i in /run/synostorage/disks/nvme*/m2_pool_support; do echo 1 >"${i}"; done
+
 exit 0
