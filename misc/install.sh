@@ -171,7 +171,7 @@ elif [ "${1}" = "late" ]; then
   modprobe acpi-cpufreq
   # CPU performance scaling
   if [ -f /tmpRoot/usr/lib/modules-load.d/70-cpufreq-kernel.conf ]; then
-    CPUFREQ=$(ls -ltr /sys/devices/system/cpu/cpufreq/* 2>/dev/null | wc -l)
+    CPUFREQ=$(ls -l /sys/devices/system/cpu/cpufreq/*/* 2>/dev/null | wc -l)
     if [ ${CPUFREQ} -eq 0 ]; then
       echo "CPU does NOT support CPU Performance Scaling, disabling"
       sed -i 's/^acpi-cpufreq/# acpi-cpufreq/g' /tmpRoot/usr/lib/modules-load.d/70-cpufreq-kernel.conf
@@ -187,8 +187,7 @@ elif [ "${1}" = "late" ]; then
   # crypto-kernel
   if [ -f /tmpRoot/usr/lib/modules-load.d/70-crypto-kernel.conf ]; then
     # crc32c-intel
-    CPUFLAGS=$(cat /proc/cpuinfo 2>/dev/null | grep flags | grep sse4_2 | wc -l)
-    if [ ${CPUFLAGS} -gt 0 ]; then
+    if grep flags /proc/cpuinfo 2>/dev/null | grep -qw sse4_2; then
       echo "CPU Supports SSE4.2, crc32c-intel should load"
     else
       echo "CPU does NOT support SSE4.2, crc32c-intel will not load, disabling"
@@ -196,8 +195,7 @@ elif [ "${1}" = "late" ]; then
     fi
 
     # aesni-intel
-    CPUFLAGS=$(cat /proc/cpuinfo 2>/dev/null | grep flags | grep aes | wc -l)
-    if [ ${CPUFLAGS} -gt 0 ]; then
+    if grep flags /proc/cpuinfo 2>/dev/null | grep -qw aes; then
       echo "CPU Supports AES, aesni-intel should load"
     else
       echo "CPU does NOT support AES, aesni-intel will not load, disabling"
@@ -208,8 +206,7 @@ elif [ "${1}" = "late" ]; then
 
   # Nvidia GPU
   if [ -f /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf ]; then
-    NVIDIADEV=$(cat /proc/bus/pci/devices 2>/dev/null | grep -i 10de | wc -l)
-    if [ ${NVIDIADEV} -eq 0 ]; then
+    if ! grep -iq 10de /proc/bus/pci/devices 2>/dev/null; then
       echo "NVIDIA GPU is not detected, disabling "
       sed -i 's/^nvidia/# nvidia/g' /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf
       sed -i 's/^nvidia-uvm/# nvidia-uvm/g' /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf
