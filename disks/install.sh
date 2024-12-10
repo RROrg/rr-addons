@@ -298,10 +298,10 @@ function dtModel() {
       {
         echo "    usb_slot@${COUNT} {"
         echo "      usb2 {"
-        echo "        usb_port =\"${I}\";"
+        echo "        usb_port = \"${I}\";"
         echo "      };"
         echo "      usb3 {"
-        echo "        usb_port =\"${I}\";"
+        echo "        usb_port = \"${I}\";"
         echo "      };"
         echo "    };"
       } >>"${DEST}"
