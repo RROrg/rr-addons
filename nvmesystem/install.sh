@@ -10,7 +10,7 @@
 
 # PLATFORMS="epyc7002"
 # PLATFORM="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)"
-# if ! echo "${PLATFORMS}" | grep -qw "${PLATFORM}"; then
+# if ! echo "${PLATFORMS}" | grep -wq "${PLATFORM}"; then
 #   echo "${PLATFORM} is not supported nvmesystem addon!"
 #   exit 0
 # fi
@@ -84,7 +84,7 @@ elif [ "${1}" = "late" ]; then
 
     export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
     ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
-    if [ ! -f "${ESYNOSCHEDULER_DB}" ] || ! /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" ".tables" | grep -qw "task"; then
+    if [ ! -f "${ESYNOSCHEDULER_DB}" ] || ! /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" ".tables" | grep -wq "task"; then
       echo "copy esynoscheduler.db"
       mkdir -p "$(dirname "${ESYNOSCHEDULER_DB}")"
       cp -vpf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"

@@ -18,7 +18,7 @@ function use() {
   exit 1
 }
 
-if [ -z "${1}" ] || ! echo "${MODES}" | grep -qw "${1}"; then use; fi
+if [ -z "${1}" ] || ! echo "${MODES}" | grep -wq "${1}"; then use; fi
 
 echo "Rebooting to ${1} mode"
 

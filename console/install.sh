@@ -8,7 +8,7 @@
 
 PLATFORMS="apollolake geminilake epyc7002"
 PLATFORM="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)"
-if ! echo "${PLATFORMS}" | grep -qw "${PLATFORM}"; then
+if ! echo "${PLATFORMS}" | grep -wq "${PLATFORM}"; then
   echo "${PLATFORM} is not supported console addon!"
   exit 0
 fi

@@ -28,7 +28,7 @@ function mountLoaderDisk() {
         }
       done
 
-      if echo "$@" | grep -qw "\-all"; then
+      if echo "$@" | grep -wq "\-all"; then
         rm -rf "${RR_PATH}"
         mkdir -p "${RR_PATH}"
         (cd "${RR_PATH}" && xz -dc <"/mnt/p3/initrd-rr" | cpio -idm) >/dev/null 2>&1 || true
@@ -74,7 +74,7 @@ function unmountLoaderDisk() {
     export LOADER_DISK_PART2=
     export LOADER_DISK_PART3=
 
-    if echo "$@" | grep -qw "\-all"; then
+    if echo "$@" | grep -wq "\-all"; then
       rm -rf "${RR_PATH}"
     fi
     for i in {1..3}; do

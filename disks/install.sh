@@ -40,7 +40,7 @@ function _set_conf_kv() {
 function _check_post_k() {
   local ROOT
   [ "$1" = "rd" ] && ROOT="" || ROOT="/tmpRoot"
-  grep -qr "^_set_conf_kv.*${2}.*" "${ROOT}/sbin/init.post"
+  grep -Eq "^_set_conf_kv.*${2}.*" "${ROOT}/sbin/init.post"
 }
 
 # Check if the raid has been completed currently
@@ -163,19 +163,19 @@ function dtModel() {
         PCIHEAD="$(ls -l /sys/class/scsi_host 2>/dev/null | grep ${P} | head -1)"
         PCIPATH=""
         if [ "$(_kernelVersionCode "$(_kernelVersion)")" -ge "$(_kernelVersionCode "5.10")" ]; then
-          PCIPATH="$(echo "${PCIHEAD}" | grep -oE 'pci[0-9]{4}:[0-9]{2}' | sed 's/pci//')" # 5.10+ kernel
+          PCIPATH="$(echo "${PCIHEAD}" | grep -Eo 'pci[0-9]{4}:[0-9]{2}' | sed 's/pci//')" # 5.10+ kernel
         else
-          PCIPATH="$(echo "${PCIHEAD}" | grep -oE 'pci[0-9]{4}:[0-9]{2}' | sed 's/pci//' | cut -d':' -f2)" # 5.10- kernel
+          PCIPATH="$(echo "${PCIHEAD}" | grep -Eo 'pci[0-9]{4}:[0-9]{2}' | sed 's/pci//' | cut -d':' -f2)" # 5.10- kernel
         fi
         PCISUBS=""
-        for Q in $(echo "${PCIHEAD}" | grep -oE ":..\.."); do PCISUBS="${PCISUBS},${Q//:/}"; done
+        for Q in $(echo "${PCIHEAD}" | grep -Eo ":..\.."); do PCISUBS="${PCISUBS},${Q//:/}"; done
         [ -z "${PCISUBS}" ] && continue
         PCIPATH="${PCIPATH}:${PCISUBS:1}"
 
         IDX=""
         if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && echo "${BOOTDISK_PHYSDEVPATH}" | grep -q "${P}"; then
           IDX=$(ls -l /sys/class/scsi_host 2>/dev/null | grep ${P} | sort -V | grep -n "${BOOTDISK_PHYSDEVPATH%%target*}" | head -1 | cut -d: -f1)
-          if [ -n "${IDX}" ] && echo "${IDX}" | grep -q -E '^[0-9]+$'; then if [ ${IDX} -gt 0 ]; then IDX=$((${IDX} - 1)); else IDX="0"; fi; else IDX=""; fi
+          if [ -n "${IDX}" ] && echo "${IDX}" | grep -Eq '^[0-9]+$'; then if [ ${IDX} -gt 0 ]; then IDX=$((${IDX} - 1)); else IDX="0"; fi; else IDX=""; fi
           echo "bootloader: PCIPATH:${PCIPATH}; IDX:${IDX}"
         fi
 
