@@ -343,8 +343,8 @@ function nondtModel() {
   INTERNALPORTCFG=0
 
   hasUSB=false
-  USBMINIDX=20
-  USBMAXIDX=20
+  USBMINIDX=99
+  USBMAXIDX=00
   for I in $(ls -d /sys/block/sd* 2>/dev/null); do
     IDX=$(_atoi ${I/\/sys\/block\/sd/})
     [ $((${IDX} + 1)) -ge ${MAXDISKS} ] && MAXDISKS=$((${IDX} + 1))
@@ -361,10 +361,10 @@ function nondtModel() {
   done
   # Define 6 is the minimum number of USB disks
   if [ "${hasUSB}" = "false" ]; then
-    USBMINIDX=$((${MAXDISKS} - 1))
-    USBMAXIDX=$((${USBMINIDX} + 6))
+    USBMINIDX=${MAXDISKS}
+    USBMAXIDX=$((${USBMINIDX} + 6 - 1))
   else
-    [ $((${USBMAXIDX} - ${USBMINIDX})) -lt 6 ] && USBMAXIDX=$((${USBMINIDX} + 6))
+    [ $((${USBMAXIDX} - ${USBMINIDX})) -lt $((6 - 1))] && USBMAXIDX=$((${USBMINIDX} + 6 - 1))
   fi
   [ $((${USBMAXIDX} + 1)) -gt ${MAXDISKS} ] && MAXDISKS=$((${USBMAXIDX} + 1))
 
