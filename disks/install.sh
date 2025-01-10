@@ -425,7 +425,7 @@ function nondtModel() {
       echo "bootloader: ${P}"
       continue
     fi
-    PCIEPATH="$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | sed 's/.*\///')"
+    PCIEPATH="$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | rev | cut -d'/' -f2 | rev )"
     if [ -n "${PCIEPATH}" ]; then
       # TODO: Need check?
       # MULTIPATH="$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'/' -f5)"
