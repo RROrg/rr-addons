@@ -425,14 +425,8 @@ function nondtModel() {
       echo "bootloader: ${P}"
       continue
     fi
-    PCIEPATH="$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | sed 's/.*\///')"
+    PCIEPATH="$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2 | awk -F'/' '{if (NF == 4) print $NF; else if (NF > 4) print $(NF-1)}')"
     if [ -n "${PCIEPATH}" ]; then
-      # TODO: Need check?
-      # MULTIPATH="$(cat ${P}/uevent 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'/' -f5)"
-      # if [ -z "${MULTIPATH}" ]; then
-      #   echo "${PCIEPATH} does not support!"
-      #   continue
-      # fi
       grep -q "=\"${PCIEPATH}\"" /etc/extensionPorts && continue # An nvme controller only recognizes one disk
       echo "pci${COUNT}=\"${PCIEPATH}\"" >>/etc/extensionPorts
       COUNT=$((${COUNT} + 1))
