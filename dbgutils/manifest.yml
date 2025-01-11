@@ -17,6 +17,7 @@ description:
   zh_HK: "調試工具，自動捕獲所有階段啟動日誌到 <加載器磁盤>/p1/logs/。"
   zh_TW: "調試工具，自動捕獲所有階段啟動日誌到 <加載器磁盤>/p1/logs/。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: ""

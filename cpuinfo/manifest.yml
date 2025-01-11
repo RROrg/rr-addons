@@ -17,6 +17,7 @@ description: # https://github.com/GroverLau/syno_cpuinfo
   zh_HK: "只讓控制面板顯示正確的CPU信息。(默認是自動獲取的, 或通過參數自定義, 例如: -t 'on' --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
   zh_TW: "只讓控制面板顯示正確的CPU信息。(默認是自動獲取的, 或通過參數自定義, 例如: -t 'on' --vendor 'Intel' --family 'Core i9' --series 'i7-13900ks' --cores 64 --speed 5200)"
 system: false
+params: true
 all:
   install-script: "install.sh"
   copy: "all"

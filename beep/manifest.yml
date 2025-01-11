@@ -17,6 +17,7 @@ description:
   zh_HK: "在啟動和關機時發出哔聲(需要主機有蜂鳴器) 參數: -m : 開機 Mario 和 關機 AxelF"
   zh_TW: "在啟動和關機時發出哔聲(需要主機有蜂鳴器) 參數: -m : 開機 Mario 和 關機 AxelF"
 system: false
+params: true
 all:
   install-script: "install.sh"
   copy: "all"

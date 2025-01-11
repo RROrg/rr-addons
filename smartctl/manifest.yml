@@ -17,6 +17,7 @@ description:  # https://github.com/332505/syno_smartctl/
   zh_HK: "作者：Phachd。修复 HBA 设备上磁盘的 SMART 信息。"
   zh_TW: "作者：Phachd。修复 HBA 设备上磁盘的 SMART 信息。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

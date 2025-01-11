@@ -17,6 +17,7 @@ description:
   zh_HK: "擴展雜項，更新 usb.map，ca-certificates.crt 等。"
   zh_TW: "擴展雜項，更新 usb.map，ca-certificates.crt 等。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

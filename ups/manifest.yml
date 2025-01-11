@@ -17,6 +17,7 @@ description:  # https://wp.gxnas.com/10926.html
   zh_HK: "作者：GXNAS。強制將 UPS 供電時的待機模式修改為關機。參數：-f - 關機前觸發關機任務；-e - 待機模式前發關機任務(不修改為關機)。"
   zh_TW: "作者：GXNAS。強制將 UPS 供電時的待機模式修改為關機。參數：-f - 關機前觸發關機任務；-e - 待機模式前發關機任務(不修改為關機)。"
 system: false
+params: true
 all:
   install-script: "install.sh"
   copy: ""

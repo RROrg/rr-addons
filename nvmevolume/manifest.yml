@@ -17,6 +17,7 @@ description:  # https://github.com/007revad/Synology_enable_M2_volume https://gi
   zh_HK: "作者：007revad & PeterSuh-Q3。允許從儲存管理器中透過 m.2 磁碟建立儲存池和磁碟區。"
   zh_TW: "作者：007revad & PeterSuh-Q3。允許從儲存管理器中透過 m.2 磁碟建立儲存池和磁碟區。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: ""

@@ -17,6 +17,7 @@ description:
   zh_HK: "連接 WiFi。請在 DSM 計劃任務中將 'IFNAME' 'SSID' 'PASSWD' 修改為所需密碼並執行它。"
   zh_TW: "連接 WiFi。請在 DSM 計劃任務中將 'IFNAME' 'SSID' 'PASSWD' 修改為所需密碼並執行它。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

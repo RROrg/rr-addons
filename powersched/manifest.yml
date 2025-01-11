@@ -17,6 +17,7 @@ description:
   zh_HK: "根據 DSM 電源計劃配置 RTC 的程式, 使 RTC(定時開關機) 可以正常工作。"
   zh_TW: "根據 DSM 電源計劃配置 RTC 的程式, 使 RTC(定時開關機) 可以正常工作。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

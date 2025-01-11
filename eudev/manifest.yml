@@ -17,6 +17,7 @@ description:
   zh_HK: "eudev + kmod 自動加載模塊。"
   zh_TW: "eudev + kmod 自動加載模塊。"
 system: true
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

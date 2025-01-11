@@ -17,6 +17,7 @@ description:
   zh_HK: "配置與磁碟相關的設定。"
   zh_TW: "配置與磁碟相關的設定。"
 system: true
+params: true
 all:
   install-script: "install.sh"
   copy: ""

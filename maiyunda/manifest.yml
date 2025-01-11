@@ -17,6 +17,7 @@ description:
   zh_HK: "RESET 按鈕功能適配，按住 3s（聽到哔哔哔後鬆手）重置 admin 密碼為 maiyunda.com 并重置網路，按住 9s（聽到 3次 哔哔哔後鬆手）重置系統（會清空全部數據）。(迈雲達機器)"
   zh_TW: "RESET 按鈕功能適配，按住 3s（聽到哔哔哔後鬆手）重置 admin 密碼為 maiyunda.com 并重置網路，按住 9s（聽到 3次 哔哔哔後鬆手）重置系統（會清空全部數據）。(迈雲達機器)"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

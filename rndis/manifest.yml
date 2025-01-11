@@ -17,6 +17,7 @@ description:
   zh_HK: "Android USB 網路適配器"
   zh_TW: "Android USB 網路介面卡."
 system: true
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

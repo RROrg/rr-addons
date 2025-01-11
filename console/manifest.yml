@@ -17,6 +17,7 @@ description:
   zh_HK: "透過幀緩衝區 (fb) 提供屏幕控制台 (bash) 功能，以允許在屏幕上進行調試，僅支持具有顯卡驅動程序的型號。"
   zh_TW: "透過幀緩衝區 (fb) 提供屏幕控制台 (bash) 功能，以允許在屏幕上進行調試，僅支持具有顯卡驅動程序的型號。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

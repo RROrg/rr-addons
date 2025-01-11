@@ -17,6 +17,7 @@ description:
   zh_HK: "RR更新通知。"
   zh_TW: "RR更新通知。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

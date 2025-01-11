@@ -17,6 +17,7 @@ description:
   zh_HK: "延遲 redpill。"
   zh_TW: "延遲 redpill。"
 system: true
+params: false
 all:
   install-script: "install.sh"
   copy: ""

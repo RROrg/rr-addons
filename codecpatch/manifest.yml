@@ -17,6 +17,7 @@ description:  # https://github.com/wirgen/synocodectool-patch
   zh_HK: "作者：wirgen。此补丁可在Synology的DiskStation Manager 6+上启用转码，无需有效的序列号。"
   zh_TW: "作者：wirgen。此補丁可在Synology的DiskStation Manager 6+上啟用轉碼，無需有效的序列號。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

@@ -17,6 +17,7 @@ description:
   zh_HK: "自動替換 i915.ko（apollolake，geminilake）的設備 ID，僅支持 10 代以下。 （參數VID：PID）"
   zh_TW: "自動替換 i915.ko（apollolake，geminilake）的設備 ID，僅支持 10 代以下。 （參數VID：PID）"
 system: false
+params: true
 all:
   install-script: "install.sh"
   copy: "all"

@@ -17,6 +17,7 @@ description:
   zh_HK: "處理電源按鈕事件的ACPI守护程序, 解决部分環境下電源按鈕無法正常關機的問題."
   zh_TW: "處理電源按鈕事件的ACPI守护程序, 解决部分環境下電源按鈕無法正常關機的問題."
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

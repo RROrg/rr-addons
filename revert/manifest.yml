@@ -17,6 +17,7 @@ description:
   zh_HK: "還原插件修改。"
   zh_TW: "還原插件修改。"
 system: true
+params: false
 all:
   install-script: "install.sh"
   copy: ""

@@ -17,6 +17,7 @@ description:
   zh_HK: "強制啟用網絡設備的 Wake-on-lan(網絡喚醒)。"
   zh_TW: "強制啟用網路設備的 Wake-on-lan(網路喚醒)。"
 system: true
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

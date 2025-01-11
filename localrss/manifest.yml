@@ -17,6 +17,7 @@ description:
   zh_HK: "將 RSS 植入到引導加載程序中，以便可以在線安裝。"
   zh_TW: "將 RSS 植入到引導載入程式中，以便可以在線安裝。"
 system: true
+params: false
 all:
   install-script: "install.sh"
   copy: ""

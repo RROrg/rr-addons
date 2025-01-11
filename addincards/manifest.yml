@@ -17,6 +17,7 @@ description:
   zh_HK: "移除官方 Addin 卡(M2D20, E10G30-T2, ...)对 DSM 型號限制。"
   zh_TW: "移除官方 Addin 卡(M2D20, E10G30-T2, ...)对 DSM 型號限制。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: ""

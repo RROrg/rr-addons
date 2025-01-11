@@ -17,6 +17,7 @@ description:
   zh_HK: "在 DSM 計劃任務中添加一個腳本來掛載/卸載加載器磁碟，供 rr-manager 應用程序使用。"
   zh_TW: "在 DSM 計劃任務中添加一個腳本來掛載/卸載加載器磁碟，供 rr-manager 應用程序使用。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

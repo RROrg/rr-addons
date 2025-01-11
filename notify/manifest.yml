@@ -17,6 +17,7 @@ description:
   zh_HK: "添加 rr notify。"
   zh_TW: "新增 rr notify。"
 system: true
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

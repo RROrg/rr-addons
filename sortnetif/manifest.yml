@@ -17,6 +17,7 @@ description:
   zh_HK: "對網絡接口名稱進行排序。(參數: 空: 按 busid 排序; mac1,mac2,...: 按 macs 序列排序)."
   zh_TW: "對網路介面名稱進行排序。(參數: 空: 按 busid 排序; mac1,mac2,...: 按 macs 序列排序)."
 system: false
+params: true
 all:
   install-script: "install.sh"
   copy: ""

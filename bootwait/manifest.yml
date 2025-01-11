@@ -17,6 +17,7 @@ description:
   zh_HK: "此腳本確保啟動過程等待引导盤磁碟 (/dev/synoboot) 可用之後再啟動其他進程。"
   zh_TW: "此腳本確保啟動過程等待引导盤磁碟 (/dev/synoboot) 可用之後再啟動其他進程。"
 system: true
+params: false
 all:
   install-script: "install.sh"
   copy: ""

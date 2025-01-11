@@ -17,6 +17,7 @@ description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
   zh_HK: "作者：jinlife。此補丁將允許在 VideoStation、AudioStation 和 Photos 等中使用遠程 NFS/CIFS 共享文件夾。"
   zh_TW: "作者：jinlife。此補丁將允許在 VideoStation、AudioStation 和 Photos 等中使用遠程 NFS/CIFS 共享文件夾。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

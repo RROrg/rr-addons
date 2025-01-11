@@ -17,6 +17,7 @@ description:
   zh_HK: "此腳本安裝 sensors 套件，用於監視 CPU 和其他組件的溫度。"
   zh_TW: "此腳本安裝 sensors 套件，用於監視 CPU 和其他組件的溫度。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

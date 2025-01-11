@@ -17,6 +17,7 @@ description:
   zh_HK: "更改存儲面板磁盤顯示（默認為自動，請參閱文檔或 '/usr/bin/storagepanel.sh -h' 了解參數）。"
   zh_TW: "更改存儲面板磁盤顯示（默認為自動，請參閱文檔或 '/usr/bin/storagepanel.sh -h' 了解參數）。"
 system: false
+params: true
 all:
   install-script: "install.sh"
   copy: "all"

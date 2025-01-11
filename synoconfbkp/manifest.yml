@@ -17,6 +17,7 @@ description:
   zh_HK: "在啟動和關機時自動備份系統設定到引導載入器磁碟（<引導載入器磁碟>/p1/scbk/）。參數：$1 - 保存次數，預設 7；$2 - 檔案名稱前綴，預設 \"bkp\"。"
   zh_TW: "在開機和關機時自動備份系統設定到引導載入器磁碟（<引導載入器磁碟>/p1/scbk/）。參數：$1 - 保存次數，預設 7；$2 - 檔案名稱前綴，預設 \"bkp\"。"
 system: false
+params: true
 all:
   install-script: "install.sh"
   copy: "all"

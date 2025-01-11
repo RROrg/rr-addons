@@ -17,6 +17,7 @@ description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
   zh_HK: "作者：jinlife。此補丁將在沒有 GPU 存在的情況下啟用 Synology Photos 中的人臉識別。"
   zh_TW: "作者：jinlife。此補丁將在沒有 GPU 存在的情況下啟用 Synology Photos 中的人臉識別。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"

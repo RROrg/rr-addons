@@ -17,6 +17,7 @@ description:
   zh_HK: "作者：jim3ma。將系統安裝在 m.2 磁盤中（安裝時不能含有任何 SATA 磁盤，僅支持 7.2）。"
   zh_TW: "作者：jim3ma。將系統安裝在 m.2 磁盤中（安裝時不能含有任何 SATA 磁盤，僅支持 7.2）。"
 system: false
+params: false
 all:
   install-script: "install.sh"
   copy: "all"
