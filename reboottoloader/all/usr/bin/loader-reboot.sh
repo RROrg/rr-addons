@@ -11,7 +11,7 @@ if [ ! ${USER} = "root" ]; then
   exec sudo $0 $@
 fi
 
-MODES="config recovery junior bios memtest"
+MODES="config recovery junior uefi memtest"
 
 function use() {
   echo "Use: ${0} [${MODES// /|}]"
