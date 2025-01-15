@@ -6,16 +6,16 @@ description:
   de_DE: "Füge rr notify hinzu."
   es_ES: "Añadir rr notify."
   fr_FR: "Ajouter rr notify."
-  ja_JP: "rr notify を追加します。"
+  ja_JP: "rr notify を追加します."
   ko_KR: "rr notify 를 추가합니다."
   ru_RU: "Добавить rr notify."
   th_TH: "เพิ่ม rr notify"
   tr_TR: "rr notify ekleyin."
   uk_UA: "Додати rr notify."
   vi_VN: "Thêm rr notify."
-  zh_CN: "添加 rr notify。"
-  zh_HK: "添加 rr notify。"
-  zh_TW: "新增 rr notify。"
+  zh_CN: "添加 rr notify."
+  zh_HK: "添加 rr notify."
+  zh_TW: "新增 rr notify."
 system: true
 params: false
 all:

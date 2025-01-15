@@ -13,9 +13,9 @@ description:
   tr_TR: "Genişletilmiş çeşitli, güncellenmiş usb.map, ca-certificates.crt, vb."
   uk_UA: "Розширені різні, оновлена usb.map, ca-certificates.crt тощо."
   vi_VN: "Mở rộng các loại khác nhau, usb.map được cập nhật, ca-certificates.crt, v.v."
-  zh_CN: "扩展杂项，更新 usb.map，ca-certificates.crt 等。"
-  zh_HK: "擴展雜項，更新 usb.map，ca-certificates.crt 等。"
-  zh_TW: "擴展雜項，更新 usb.map，ca-certificates.crt 等。"
+  zh_CN: "扩展杂项, 更新 usb.map, ca-certificates.crt 等."
+  zh_HK: "擴展雜項, 更新 usb.map, ca-certificates.crt 等."
+  zh_TW: "擴展雜項, 更新 usb.map, ca-certificates.crt 等."
 system: false
 params: false
 all:

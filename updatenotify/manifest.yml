@@ -6,16 +6,16 @@ description:
   de_DE: "RR-Update-Benachrichtigung."
   es_ES: "Notificación de actualización de RR."
   fr_FR: "Notification de mise à jour de RR."
-  ja_JP: "RRアップデート通知。"
+  ja_JP: "RR アップデート通知."
   ko_KR: "RR 업데이트 알림."
   ru_RU: "Уведомление об обновлении RR."
   th_TH: "การแจ้งเตือนการอัปเดต RR"
   tr_TR: "RR güncelleme bildirimi."
   uk_UA: "Сповіщення про оновлення RR."
   vi_VN: "Thông báo cập nhật RR."
-  zh_CN: "RR更新通知。"
-  zh_HK: "RR更新通知。"
-  zh_TW: "RR更新通知。"
+  zh_CN: "RR 更新通知."
+  zh_HK: "RR 更新通知."
+  zh_TW: "RR 更新通知."
 system: false
 params: false
 all:

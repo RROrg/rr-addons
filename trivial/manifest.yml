@@ -6,16 +6,16 @@ description:
   de_DE: "Verschiedene Funktionen. (Eine Sammlung einiger unbedeutender Änderungen.)"
   es_ES: "Funciones variadas. (Una colección de algunas modificaciones innecesarias.)"
   fr_FR: "Fonctions diverses. (Une collection de certaines modifications inutiles.)"
-  ja_JP: "その他の機能。(いくつかの不要な変更の集まり。)"
+  ja_JP: "その他の機能. (いくつかの不要な変更の集まり.)"
   ko_KR: "기타 기능. (일부 불필요한 수정의 집합.)"
   ru_RU: "Различные функции. (Набор некоторых ненужных изменений.)"
   th_TH: "ฟังก์ชันเบ็ดเสรจ. (ชุดของการปรับเปลี่ยนบางอย่างที่ไม่จำเป็น.)"
   tr_TR: "Çeşitli iş levler. (Birkaç gereksiz değişiklik.)"
   uk_UA: "Різноманітні функції. (Колекція деяких невимажних модифікацій.)"
   vi_VN: "Các chức năng khác nhau. (Một bộ sửa đổi không cần thiết.)"
-  zh_CN: "杂项功能。(一些不太必要的修改的集合。)"
-  zh_HK: "雜項功能。(一些不太必要的修改的集合。)"
-  zh_TW: "雜項功能。(一些不太必要的修改的集合。)"
+  zh_CN: "杂项功能. (一些不太必要的修改的集合.)"
+  zh_HK: "雜項功能. (一些不太必要的修改的集合.)"
+  zh_TW: "雜項功能. (一些不太必要的修改的集合.)"
 system: false
 params: false
 all:

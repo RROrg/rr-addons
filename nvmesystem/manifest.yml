@@ -6,16 +6,16 @@ description:
   de_DE: "Autor: jim3ma. Installieren Sie das System auf m.2-Disk (unterstützt nur Version 7.2)."
   es_ES: "Autor: jim3ma. Instalar sistema en disco m.2 (no puede contener ningún disco SATA durante la instalación, solo admite 7.2)."
   fr_FR: "Auteur: jim3ma. Installez le système sur le disque m.2 (ne prend pas en charge la version 7.2)."
-  ja_JP: "作者: jim3maシステムを m.2 ディスクにインストールします (インストール中に SATA ディスクを含めることはできません。7.2 のみをサポートします)。"
+  ja_JP: "作者: jim3maシステムを m.2 ディスクにインストールします (インストール中に SATA ディスクを含めることはできません. 7.2 のみをサポートします)."
   ko_KR: "작가: Jim3ma. m.2 디스크에 시스템을 설치합니다(설치 중에는 SATA 디스크를 포함할 수 없으며 7.2만 지원)."
   ru_RU: "Автор: jim3ma. Установите систему на диск m.2 (не может содержать никаких дисков SATA во время установки, поддерживает только 7.2)."
   th_TH: "ผู้เขียน: jim3ma. ติดตั้งระบบบนดิสก์ m.2 (ไม่สามารถมีดิสก์ SATA ใด ๆ ในระหว่างการติดตั้ง รองรับเฉพาะ 7.2)"
   tr_TR: "Yazar: jim3ma. Sistemi bir m.2 diskine kurun (kurulum sırasında herhangi bir SATA diski içeremez, yalnızca 7.2'yi destekler)."
   uk_UA: "Автор: jim3ma. Встановіть систему на диск m.2 (не може містити диски SATA під час встановлення, підтримує лише 7.2)."
   vi_VN: "Tác giả: jim3ma. Cài đặt hệ thống trên đĩa m.2 (không thể chứa bất kỳ đĩa SATA nào trong quá trình cài đặt, chỉ hỗ trợ 7.2)."
-  zh_CN: "作者：jim3ma。将系统安装在 m.2 磁盘中（安装时不能含有任何 SATA 磁盘，仅支持 7.2）。"
-  zh_HK: "作者：jim3ma。將系統安裝在 m.2 磁盤中（安裝時不能含有任何 SATA 磁盤，僅支持 7.2）。"
-  zh_TW: "作者：jim3ma。將系統安裝在 m.2 磁盤中（安裝時不能含有任何 SATA 磁盤，僅支持 7.2）。"
+  zh_CN: "作者: jim3ma. 将系统安装在 m.2 磁盘中 (安装时不能含有任何 SATA 磁盘, 仅支持 7.2) ."
+  zh_HK: "作者: jim3ma. 將系統安裝在 m.2 磁盤中 (安裝時不能含有任何 SATA 磁盤, 僅支持 7.2) ."
+  zh_TW: "作者: jim3ma. 將系統安裝在 m.2 磁盤中 (安裝時不能含有任何 SATA 磁盤, 僅支持 7.2) ."
 system: false
 params: false
 all:

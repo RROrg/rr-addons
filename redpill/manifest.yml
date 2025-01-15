@@ -6,16 +6,16 @@ description:
   de_DE: "Verzögere redpill."
   es_ES: "Retrasar redpill."
   fr_FR: "Retarder redpill."
-  ja_JP: "ディレイredpill。"
+  ja_JP: "ディレイredpill."
   ko_KR: "지연 redpill."
   ru_RU: "Задержка redpill."
   th_TH: "เลื่อน redpill."
   tr_TR: "Redpill'i geciktir."
   uk_UA: "Затримка redpill."
   vi_VN: "Trì hoãn redpill."
-  zh_CN: "延迟 redpill。"
-  zh_HK: "延遲 redpill。"
-  zh_TW: "延遲 redpill。"
+  zh_CN: "延迟 redpill."
+  zh_HK: "延遲 redpill."
+  zh_TW: "延遲 redpill."
 system: true
 params: false
 all:

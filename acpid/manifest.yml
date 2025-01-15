@@ -6,7 +6,7 @@ description:
   de_DE: "ACPI Daemon, der die Power-Button-Ereignisse behandelt, um das Problem zu beheben, dass der Power-Button in einigen Umgebungen nicht herunterfährt."
   es_ES: "Demonio ACPI que maneja los eventos del botón de encendido, solucionando el problema de que el botón de encendido no apague en algunos entornos."
   fr_FR: "Démon ACPI qui gère les événements du bouton d'alimentation, corrigeant le problème du bouton d'alimentation qui ne s'éteint pas dans certains environnements."
-  ja_JP: "電源ボタンのイベントを処理するACPIデーモンで、一部の環境で電源ボタンがシャットダウンしない問題を修正します。"
+  ja_JP: "電源ボタンのイベントを処理するACPIデーモンで、一部の環境で電源ボタンがシャットダウンしない問題を修正します."
   ko_KR: "전원 버튼 이벤트를 처리하는 ACPI 데몬, 일부 환경에서 전원 버튼이 종료되지 않는 문제를 해결합니다."
   ru_RU: "Демон ACPI, обрабатывающий события кнопки питания, исправляющий проблему, когда кнопка питания не выключает в некоторых средах."
   th_TH: "ACPI Daemon ที่จัดการกับเหตุการณ์ปุ่มเปิดเครื่อง, แก้ปัญหาปุ่มเปิดเครื่องไม่ปิดเครื่องในบางสภาพแวดล้อม"

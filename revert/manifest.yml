@@ -6,16 +6,16 @@ description:
   de_DE: "Addons-Modifikationen rückgängig machen."
   es_ES: "Deshacer las modificaciones de los addons."
   fr_FR: "Annuler les modifications des addons."
-  ja_JP: "アドオンの変更を元に戻します。"
+  ja_JP: "アドオンの変更を元に戻します."
   ko_KR: "애드온 수정 사항을 되돌립니다."
   ru_RU: "Отменить изменения аддонов."
   th_TH: "ย้อนกลับการปรับแต่งของส่วนเสริม"
   tr_TR: "Eklentilerin değişikliklerini geri alın."
   uk_UA: "Скасувати зміни додатків."
   vi_VN: "Hoàn tác các thay đổi của các tiện ích."
-  zh_CN: "撤销插件修改。"
-  zh_HK: "還原插件修改。"
-  zh_TW: "還原插件修改。"
+  zh_CN: "撤销插件修改."
+  zh_HK: "還原插件修改."
+  zh_TW: "還原插件修改."
 system: true
 params: false
 all:

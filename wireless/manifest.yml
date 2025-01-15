@@ -6,16 +6,16 @@ description:
   de_DE: "Verbinden Sie WiFi. Bitte ändern Sie 'IFNAME' 'SSID' 'PASSWD' auf das erforderliche Passwort in der DSM geplanten Aufgabe und führen Sie es aus."
   es_ES: "Conecte WiFi. Modifique 'IFNAME' 'SSID' 'PASSWD' a la contraseña requerida en la tarea programada DSM y ejecútela."
   fr_FR: "Connectez-vous au WiFi. Veuillez modifier 'IFNAME' 'SSID' 'PASSWD' au mot de passe requis dans la tâche planifiée DSM et exécutez-la."
-  ja_JP: "WiFiに接続してください。DSMの予約タスクで必要なパスワードに 'IFNAME' 'SSID' 'PASSWD' を変更して実行してください。"
+  ja_JP: "WiFiに接続してください.DSMの予約タスクで必要なパスワードに 'IFNAME' 'SSID' 'PASSWD' を変更して実行してください."
   ko_KR: "WiFi에 연결하십시오. DSM 예약 작업에서 필요한 암호로 'IFNAME' 'SSID' 'PASSWD'를 수정하고 실행하십시오."
   ru_RU: "Подключитесь к WiFi. Пожалуйста, измените 'IFNAME' 'SSID' 'PASSWD' на требуемый пароль в запланированной задаче DSM и выполните ее."
   th_TH: "เชื่อมต่อ WiFi โปรดแก้ไข 'IFNAME' 'SSID' 'PASSWD' เป็นรหัสผ่านที่ต้องการในงานที่ตั้งเวลา DSM และเริ่มการทำงาน"
   tr_TR: "WiFi'ye bağlanın. Lütfen DSM planlanmış görevinde 'IFNAME' 'SSID' 'PASSWD' 'yi gerekli parola için değiştirin ve çalıştırın."
   uk_UA: "Підключіться до WiFi. Будь ласка, змініть 'IFNAME' 'SSID' 'PASSWD' на потрібний пароль у запланованому завданні DSM та виконайте його."
   vi_VN: "Kết nối WiFi. Vui lòng sửa đổi 'IFNAME' 'SSID' 'PASSWD' thành mật khẩu yêu cầu trong tác vụ được lên lịch DSM và thực hiện nó."
-  zh_CN: "连接 WiFi。请在 DSM 计划任务中将 'IFNAME' 'SSID' 'PASSWD' 修改为所需密码并执行它。"
-  zh_HK: "連接 WiFi。請在 DSM 計劃任務中將 'IFNAME' 'SSID' 'PASSWD' 修改為所需密碼並執行它。"
-  zh_TW: "連接 WiFi。請在 DSM 計劃任務中將 'IFNAME' 'SSID' 'PASSWD' 修改為所需密碼並執行它。"
+  zh_CN: "连接 WiFi. 请在 DSM 计划任务中将 'IFNAME' 'SSID' 'PASSWD' 修改为所需密码并执行它."
+  zh_HK: "連接 WiFi. 請在 DSM 計劃任務中將 'IFNAME' 'SSID' 'PASSWD' 修改為所需密碼並執行它."
+  zh_TW: "連接 WiFi. 請在 DSM 計劃任務中將 'IFNAME' 'SSID' 'PASSWD' 修改為所需密碼並執行它."
 system: false
 params: false
 all:

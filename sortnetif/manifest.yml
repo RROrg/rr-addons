@@ -6,16 +6,16 @@ description:
   de_DE: "Sortiere Netzwerk-Schnittstellen-Namen.(Parameter: leer: sortiert nach Bus-ID; mac1,mac2,...: sortiert nach MACs-Sequenz)."
   es_ES: "Ordenar nombre de interfaz de red.(parámetros: vacío: ordenado por busid; mac1,mac2,...: ordenado por secuencia de macs)."
   fr_FR: "Trier le nom de l'interface réseau.(paramètres: vide: trié par busid; mac1,mac2,...: trié par séquence de macs)."
-  ja_JP: "ネットワークインターフェイス名をソートします。(パラメータ: 空: busid でソート; mac1,mac2,...: macs シーケンスでソート)."
+  ja_JP: "ネットワークインターフェイス名をソートします. (パラメータ: 空: busid でソート; mac1,mac2,...: macs シーケンスでソート)."
   ko_KR: "네트워크 인터페이스 이름을 정렬합니다.(매개 변수: 비어 있음: 버스 ID로 정렬; mac1,mac2,...: macs 시퀀스로 정렬)."
   ru_RU: "Сортировать имя сетевого интерфейса.(параметры: пусто: сортировка по busid; mac1,mac2,...: сортировка по последовательности macs)."
   th_TH: "เรียงลำดับชื่ออินเตอร์เฟซเครือข่าย.(พารามิเตอร์: ว่าง: เรียงลำดับตาม busid; mac1,mac2,...: เรียงลำดับตามลำดับ macs)."
   tr_TR: "Ağ arayüz adını sırala.(parametreler: boş: busid'ye göre sıralanmış; mac1,mac2,...: macs sırasına göre sıralanmış)."
   uk_UA: "Сортувати ім'я мережевого інтерфейсу.(параметри: порожній: впорядковано за busid; mac1,mac2,...: впорядковано за послідовністю macs)."
   vi_VN: "Sắp xếp tên giao diện mạng.(tham số: trống: sắp xếp theo busid; mac1,mac2,...: sắp xếp theo chuỗi macs)."
-  zh_CN: "对网络接口名称进行排序。(参数: 空: 按 busid 排序; mac1,mac2,...: 按 macs 序列排序)."
-  zh_HK: "對網絡接口名稱進行排序。(參數: 空: 按 busid 排序; mac1,mac2,...: 按 macs 序列排序)."
-  zh_TW: "對網路介面名稱進行排序。(參數: 空: 按 busid 排序; mac1,mac2,...: 按 macs 序列排序)."
+  zh_CN: "对网络接口名称进行排序. (参数: 空: 按 busid 排序; mac1,mac2,...: 按 macs 序列排序)."
+  zh_HK: "對網絡接口名稱進行排序. (參數: 空: 按 busid 排序; mac1,mac2,...: 按 macs 序列排序)."
+  zh_TW: "對網路介面名稱進行排序. (參數: 空: 按 busid 排序; mac1,mac2,...: 按 macs 序列排序)."
 system: false
 params: true
 all:

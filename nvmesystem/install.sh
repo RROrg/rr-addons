@@ -5,7 +5,7 @@
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
-# From：jim3ma, https://jim.plus/blog/post/jim/synology-installation-with-nvme-disks-only
+# From: jim3ma, https://jim.plus/blog/post/jim/synology-installation-with-nvme-disks-only
 #
 
 # PLATFORMS="epyc7002"

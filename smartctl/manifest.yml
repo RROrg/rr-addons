@@ -6,16 +6,16 @@ description:  # https://github.com/332505/syno_smartctl/
   de_DE: "Autor: Phachd. Beheben Sie SMART-Informationen auf Festplatten auf HBA-Geräten."
   es_ES: "Autor: Phachd. Corregir la información SMART en discos en dispositivos HBA."
   fr_FR: "Auteur: Phachd. Corriger les informations SMART sur les disques sur les périphériques HBA."
-  ja_JP: "作者：Phachd。HBA デバイス上のディスクの SMART 情報を修正します。"
+  ja_JP: "作者: Phachd. HBA デバイス上のディスクの SMART 情報を修正します."
   ko_KR: "저자: Phachd. HBA 장치의 디스크에서 SMART 정보를 수정합니다."
   ru_RU: "Автор: Phachd. Исправление информации SMART на дисках на устройствах HBA."
   th_TH: "ผู้เขียน: Phachd. แก้ไขข้อมูล SMART บนดิสก์บนอุปกรณ์ HBA เท่านั้น"
   tr_TR: "Yazar: Phachd. HBA cihazlarındaki disklerde SMART bilgilerini düzeltin."
   uk_UA: "Автор: Phachd. Виправлення інформації SMART на дисках на пристроях HBA."
   vi_VN: "Tác giả: Phachd. Sửa thông tin SMART trên ổ đĩa trên các thiết bị HBA."
-  zh_CN: "作者：Phachd。修复 HBA 设备上磁盘的 SMART 信息。"
-  zh_HK: "作者：Phachd。修复 HBA 设备上磁盘的 SMART 信息。"
-  zh_TW: "作者：Phachd。修复 HBA 设备上磁盘的 SMART 信息。"
+  zh_CN: "作者: Phachd. 修复 HBA 设备上磁盘的 SMART 信息."
+  zh_HK: "作者: Phachd. 修复 HBA 设备上磁盘的 SMART 信息."
+  zh_TW: "作者: Phachd. 修复 HBA 设备上磁盘的 SMART 信息."
 system: false
 params: false
 all:

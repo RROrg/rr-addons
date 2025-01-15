@@ -6,16 +6,16 @@ description:
   de_DE: "Diese Skript stellt sicher, dass der Startprozess auf das Boot-Laufwerk (/dev/synoboot) wartet, bevorandere Prozesse gestartet werden."
   es_ES: "Este programa garantiza que el proceso de arranque espere hasta que el disco cargado (/dev/synoboot) esté disponible antes de iniciar otros procesos."
   fr_FR: "Le script de démarrage assure que le processus de démarrage attend que le disque de démarrage (/dev/synoboot) soit disponible avant de commencer d'autres processus."
-  ja_JP: "ブートディスク (/dev/synoboot) が利用可能になるまでブートプロセスが待機するようにします。"
+  ja_JP: "ブートディスク (/dev/synoboot) が利用可能になるまでブートプロセスが待機するようにします."
   ko_KR: "이 스크립트는 부팅 프로세스가 부팅 디스크 (/dev/synoboot)가 사용 가능할 때까지 기다리도록 합니다."
   ru_RU: "Этот скрипт гарантирует, что процесс загрузки будет ждать, пока загрузочный диск (/dev/synoboot) не станет доступным, прежде чем запустить другие процессы."
   th_TH: "โปรแกรมนี้จะช่วยให้แน่ใจว่ากระบวนการบูตจะรอจนกว่าดิสก์ที่โหลด (/dev/synoboot) จะพร้อมใช้งานก่อนที่จะเริ่มกระบวนการอื่น"
   tr_TR: "Bu program, önyükleme işleminin diğer işlemleri başlatmadan önce yüklenen diskin (/dev/synoboot) kullanılabilir olmasını beklemesini sağlar."
   uk_UA: "Ця програма гарантує, що процес завантаження очікує, поки завантажений диск (/dev/synoboot) стане доступним, перш ніж запускати інші процеси."
   vi_VN: "Chương trình này đảm bảo rằng quá trình khởi động sẽ đợi cho đến khi đĩa được tải (/dev/synoboot) khả dụng trước khi bắt đầu các quá trình khác."
-  zh_CN: "此脚本确保启动过程等待引导盘磁盘 (/dev/synoboot) 可用之后再启动其他进程。"
-  zh_HK: "此腳本確保啟動過程等待引导盤磁碟 (/dev/synoboot) 可用之後再啟動其他進程。"
-  zh_TW: "此腳本確保啟動過程等待引导盤磁碟 (/dev/synoboot) 可用之後再啟動其他進程。"
+  zh_CN: "此脚本确保启动过程等待引导盘磁盘 (/dev/synoboot) 可用之后再启动其他进程."
+  zh_HK: "此腳本確保啟動過程等待引导盤磁碟 (/dev/synoboot) 可用之後再啟動其他進程."
+  zh_TW: "此腳本確保啟動過程等待引导盤磁碟 (/dev/synoboot) 可用之後再啟動其他進程."
 system: true
 params: false
 all:

@@ -6,16 +6,16 @@ description:
   de_DE: "Legen Sie das Root-Passwort fest und aktivieren Sie ssh/sftp. Bitte ändern Sie PW=\"\" in der DSM-Aufgabenplanung in das gewünschte Passwort und führen Sie die Aufgabe aus."
   es_ES: "Establece la contraseña de root y habilita ssh/sftp. Por favor, modifique PW=\"\" a la contraseña deseada en el Programador de Tareas de DSM y ejecute la tarea."
   fr_FR: "Définissez le mot de passe root et activez ssh/sftp. Veuillez modifier PW=\"\" en le mot de passe souhaité dans le planificateur de tâches DSM et exécutez la tâche."
-  ja_JP: "ルートパスワードを設定し、ssh/sftpを有効にします。DSM タスクスケジューラで PW=\"\" を希望のパスワードに変更してタスクを実行してください。"
+  ja_JP: "ルートパスワードを設定し、ssh/sftpを有効にします. DSM タスクスケジューラで PW=\"\" を希望のパスワードに変更してタスクを実行してください."
   ko_KR: "루트 암호를 설정하고 ssh/sftp를 활성화합니다. DSM 작업 스케줄러에서 PW=\"\"를 원하는 암호로 수정하고 작업을 실행하십시오."
   ru_RU: "Установите пароль root и включите ssh/sftp. Пожалуйста, измените PW=\"\" на желаемый пароль в планировщике задач DSM и запустите задачу."
   th_TH: "ตั้งรหัสผ่าน root และเปิดใช้งาน ssh/sftp โปรดแก้ไข PW=\"\" เป็นรหัสผ่านที่ต้องการในตัวจัดการงาน DSM และเริ่มการทำงาน"
   tr_TR: "Kök parolasını ayarlayın ve ssh/sftp'yi etkinleştirin. Lütfen DSM Görev Zamanlayıcısında PW=\"\"'yi istenen parola olarak değiştirin ve görevi çalıştırın."
   uk_UA: "Встановіть пароль root та увімкніть ssh/sftp. Будь ласка, змініть PW=\"\" на бажаний пароль в планувальнику завдань DSM та запустіть завдання."
   vi_VN: "Đặt mật khẩu root và kích hoạt ssh/sftp. Vui lòng sửa đổi PW=\"\" thành mật khẩu mong muốn trong Lịch trình nhiệm vụ DSM và chạy nhiệm vụ."
-  zh_CN: "设置 root 密码并启用 ssh/sftp。请在 DSM 计划任务中将 PW=\"\" 修改为所需的密码并运行该任务。"
-  zh_HK: "設置 root 密碼並啟用 ssh/sftp。請在 DSM 計劃任務中將 PW=\"\" 修改為所需的密碼並運行該任務。"
-  zh_TW: "設置 root 密碼並啟用 ssh/sftp。請在 DSM 計劃任務中將 PW=\"\" 修改為所需的密碼並執行該任務。"
+  zh_CN: "设置 root 密码并启用 ssh/sftp. 请在 DSM 计划任务中将 PW=\"\" 修改为所需的密码并运行该任务."
+  zh_HK: "設置 root 密碼並啟用 ssh/sftp. 請在 DSM 計劃任務中將 PW=\"\" 修改為所需的密碼並運行該任務."
+  zh_TW: "設置 root 密碼並啟用 ssh/sftp. 請在 DSM 計劃任務中將 PW=\"\" 修改為所需的密碼並執行該任務."
 system: false
 params: false
 all:

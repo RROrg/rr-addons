@@ -6,16 +6,16 @@ description:
   de_DE: "Konfiguriere Einstellungen für Festplatten."
   es_ES: "Configurar la configuración relacionada con los discos."
   fr_FR: "Configurer les paramètres relatifs aux disques."
-  ja_JP: "ディスク関連の設定を構成します。"
+  ja_JP: "ディスク関連の設定を構成します."
   ko_KR: "디스크 관련 설정 구성."
   ru_RU: "Настройка параметров дисков."
   th_TH: "กำหนดค่าที่เกี่ยวข้องกับดิสก์"
   tr_TR: "Disklerle ilgili ayarları yapılandırın."
   uk_UA: "Налаштування параметрів дисків."
   vi_VN: "Cấu hình các thiết lập liên quan đến đĩa."
-  zh_CN: "配置与磁盘相关的设置。"
-  zh_HK: "配置與磁碟相關的設定。"
-  zh_TW: "配置與磁碟相關的設定。"
+  zh_CN: "配置与磁盘相关的设置."
+  zh_HK: "配置與磁碟相關的設定."
+  zh_TW: "配置與磁碟相關的設定."
 system: true
 params: true
 all:

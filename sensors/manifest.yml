@@ -6,16 +6,16 @@ description:
   de_DE: "Dieser Skript installiert das sensors Paket, das verwendet wird, um die Temperatur des CPUs und anderer Komponenten zu überwachen."
   es_ES: "Este script instala el paquete sensors, que se utiliza para monitorear la temperatura de la CPU y otros componentes."
   fr_FR: "Ce script installe le package sensors, qui est utilisé pour surveiller la température du CPU et d'autres composants."
-  ja_JP: "このスクリプトは、CPUおよび他のコンポーネントの温度を監視するために使用されるsensorsパッケージをインストールします。"
+  ja_JP: "このスクリプトは、CPUおよび他のコンポーネントの温度を監視するために使用されるsensorsパッケージをインストールします."
   ko_KR: "이 스크립트는 CPU 및 다른 구성 요소의 온도를 모니터링하는 데 사용되는 sensors 패키지를 설치합니다."
   ru_RU: "Этот скрипт устанавливает пакет sensors, который используется для мониторинга температуры процессора и других компонентов."
   th_TH: "สคริปต์นี้จะติดตั้งแพ็กเกจ sensors ซึ่งใช้สำหรับตรวจสอบอุณหภูมิของ CPU และองค์ประกอบอื่น ๆ"
   tr_TR: "Bu komut dosyası, CPU ve diğer bileşenlerin sıcaklığını izlemek için kullanılan sensors paketini yükler."
   uk_UA: "Цей скрипт встановлює пакет sensors, який використовується для моніторингу температури процесора та інших компонентів."
   vi_VN: "Tập lệnh này cài đặt gói sensors, được sử dụng để giám sát nhiệt độ của CPU và các thành phần khác."
-  zh_CN: "此脚本安装 sensors 工具，用于监视 CPU 和其他组件的温度。"
-  zh_HK: "此腳本安裝 sensors 套件，用於監視 CPU 和其他組件的溫度。"
-  zh_TW: "此腳本安裝 sensors 套件，用於監視 CPU 和其他組件的溫度。"
+  zh_CN: "此脚本安装 sensors 工具, 用于监视 CPU 和其他组件的温度."
+  zh_HK: "此腳本安裝 sensors 套件, 用於監視 CPU 和其他組件的溫度."
+  zh_TW: "此腳本安裝 sensors 套件, 用於監視 CPU 和其他組件的溫度."
 system: false
 params: false
 all:

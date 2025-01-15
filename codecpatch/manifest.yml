@@ -6,16 +6,16 @@ description:  # https://github.com/wirgen/synocodectool-patch
   de_DE: "Autor: wirgen. Dieser Patch ermöglicht die Transkodierung auf Synologys DiskStation Manager 6+ ohne eine gültige Seriennummer."
   es_ES: "Autor: wirgen. Este parche permite la transcodificación en DiskStation Manager 6+ de Synology sin un número de serie válido."
   fr_FR: "Auteur: wirgen. Ce patch permet la transcodage sur DiskStation Manager 6+ de Synology sans numéro de série valide."
-  ja_JP: "作者: wirgen。このパッチは、有効なシリアル番号なしでSynologyのDiskStation Manager 6+でトランスコードを有効にします。"
+  ja_JP: "作者: wirgen. このパッチは、有効なシリアル番号なしでSynologyのDiskStation Manager 6+でトランスコードを有効にします."
   ko_KR: "저자: wirgen. 이 패치는 유효한 시리얼 번호 없이 Synology의 DiskStation Manager 6+에서 트랜스코딩을 활성화합니다."
   ru_RU: "Автор: wirgen. Этот патч позволяет транскодирование на DiskStation Manager 6+ от Synology без действительного серийного номера."
   th_TH: "ผู้เขียน: wirgen. แพตช์นี้ช่วยให้การทำการเข้ารหัสบน DiskStation Manager 6+ ของ Synology ได้โดยไม่ต้องใช้หมายเลขซีเรียลที่ถูกต้อง"
   tr_TR: "Yazar: wirgen. Bu yama, geçerli bir seri numarası olmadan Synology'nin DiskStation Manager 6+ üzerinde transkodlamayı etkinleştirir."
   uk_UA: "Автор: wirgen. Цей патч дозволяє транскодування на DiskStation Manager 6+ від Synology без дійсного серійного номера."
   vi_VN: "Tác giả: wirgen. Bản vá này cho phép chuyển mã trên DiskStation Manager 6+ của Synology mà không cần số sê-ri hợp lệ."
-  zh_CN: "作者：wirgen。此补丁可在Synology的DiskStation Manager 6+上启用转码，无需有效的序列号。"
-  zh_HK: "作者：wirgen。此补丁可在Synology的DiskStation Manager 6+上启用转码，无需有效的序列号。"
-  zh_TW: "作者：wirgen。此補丁可在Synology的DiskStation Manager 6+上啟用轉碼，無需有效的序列號。"
+  zh_CN: "作者: wirgen. 此补丁可在Synology的DiskStation Manager 6+上启用转码, 无需有效的序列号."
+  zh_HK: "作者: wirgen. 此补丁可在Synology的DiskStation Manager 6+上启用转码, 无需有效的序列号."
+  zh_TW: "作者: wirgen. 此補丁可在Synology的DiskStation Manager 6+上啟用轉碼, 無需有效的序列號."
 system: false
 params: false
 all:

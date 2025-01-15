@@ -6,16 +6,16 @@ description:
   de_DE: "Ein Programm zum Konfigurieren des RTC gemäß dem DSM-Energieplan, damit der RTC (geplantes Ein-/Ausschalten) ordnungsgemäß funktionieren kann."
   es_ES: "Un programa para configurar el RTC de acuerdo con el plan de energía de DSM, de modo que el RTC (programado encendido/apagado) pueda funcionar correctamente."
   fr_FR: "Un programme pour configurer le RTC selon le plan d'alimentation DSM, de sorte que le RTC (mise sous tension/arrêt programmée) puisse fonctionner correctement."
-  ja_JP: "DSM 電源計画に従って RTC を構成するプログラムです。これにより RTC（予約電源オン/オフ）が正常に動作します。"
+  ja_JP: "DSM 電源計画に従って RTC を構成するプログラムです. これにより RTC (予約電源オン/オフ) が正常に動作します."
   ko_KR: "DSM 전원 계획에 따라 RTC를 구성하여 RTC(예약 전원/전원 끄기)이 정상적으로 작동하도록합니다."
   ru_RU: "Программа для настройки RTC в соответствии с планом питания DSM, чтобы RTC (запланированное включение/выключение) могло работать правильно."
   th_TH: "โปรแกรมสำหรับกำหนดค่า RTC ตามแผนไฟ DSM โดย RTC (เปิด/ปิดไฟตามกำหนดเวลา) สามารถทำงานได้อย่างถูกต้อง"
   tr_TR: "DSM güç planına göre RTC'yi yapılandırmak için bir program, böylece RTC (zamanlanmış güç açma/kapama) düzgün çalışabilir."
   uk_UA: "Програма для налаштування RTC відповідно до плану живлення DSM, щоб RTC (заплановане ввімкнення/вимкнення) працювало належним чином."
   vi_VN: "Chương trình để cấu hình RTC theo kế hoạch nguồn DSM, để RTC (bật/tắt theo lịch trình) có thể hoạt động đúng cách."
-  zh_CN: "根据 DSM 电源计划配置 RTC 的程序, 使 RTC(定时开关机) 可以正常工作。"
-  zh_HK: "根據 DSM 電源計劃配置 RTC 的程式, 使 RTC(定時開關機) 可以正常工作。"
-  zh_TW: "根據 DSM 電源計劃配置 RTC 的程式, 使 RTC(定時開關機) 可以正常工作。"
+  zh_CN: "根据 DSM 电源计划配置 RTC 的程序, 使 RTC(定时开关机) 可以正常工作."
+  zh_HK: "根據 DSM 電源計劃配置 RTC 的程式, 使 RTC(定時開關機) 可以正常工作."
+  zh_TW: "根據 DSM 電源計劃配置 RTC 的程式, 使 RTC(定時開關機) 可以正常工作."
 system: false
 params: false
 all:

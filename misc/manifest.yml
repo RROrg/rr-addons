@@ -6,16 +6,16 @@ description:
   de_DE: "Verschiedene Funktionen. (Eine Sammlung einiger notwendiger Änderungen.)"
   es_ES: "Funciones variadas. (Una colección de algunas modificaciones necesarias.)"
   fr_FR: "Fonctions diverses. (Une collection de certaines modifications nécessaires.)"
-  ja_JP: "その他の機能。(いくつかの必要な変更の集まり。)"
+  ja_JP: "その他の機能. (いくつかの必要な変更の集まり.)"
   ko_KR: "기타 기능. (일부 필요한 수정의 집합.)"
   ru_RU: "Различные функции. (Набор некоторых необходимых изменений.)"
   th_TH: "ฟังก์ชันเบ็ดเสร็จ. (ชุดของการปรับเปลี่ยนบางอย่างที่จำเป็น.)"
   tr_TR: "Çeşitli iş levler. (Bazı gereksiz değişikliklerin bir koleksiyonu.)"
   uk_UA: "Різноманітні функції. (Колекція деяких необхідних модифікацій.)"
   vi_VN: "Các chức năng khác nhau. (Một bộ sửa đổi cần thiết.)"
-  zh_CN: "杂项功能。(一些必要的修改的集合。)"
-  zh_HK: "雜項功能。(一些必要的修改的集合。)"
-  zh_TW: "雜項功能。(一些必要的修改的集合。)"
+  zh_CN: "杂项功能. (一些必要的修改的集合.)"
+  zh_HK: "雜項功能. (一些必要的修改的集合.)"
+  zh_TW: "雜項功能. (一些必要的修改的集合.)"
 system: true
 params: false
 all:

@@ -6,16 +6,16 @@ description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
   de_DE: "Autor: jinlife. Dieser Patch ermöglicht es, dass ein entfernter NFS/CIFS-Freigabeordner in VideoStation, AudioStation und Photos usw. verwendet wird."
   es_ES: "Autor: jinlife. Este parche permitirá que la carpeta compartida remota NFS/CIFS se utilice en VideoStation, AudioStation y Photos, etc."
   fr_FR: "Auteur: jinlife. Ce correctif permettra à un dossier partagé NFS/CIFS distant d'être utilisé dans VideoStation, AudioStation et Photos, etc."
-  ja_JP: "作者: jinlife。このパッチにより、リモート NFS/CIFS 共有フォルダを VideoStation、AudioStation、Photos などで使用できます。"
+  ja_JP: "作者: jinlife. このパッチにより、リモート NFS/CIFS 共有フォルダを VideoStation、AudioStation、Photos などで使用できます."
   ko_KR: "작성자: jinlife. 이 패치를 사용하면 VideoStation, AudioStation 및 사진 등에서 원격 NFS/CIFS 공유 폴더를 사용할 수 있습니다."
   ru_RU: "Автор: jinlife. Этот патч позволит использовать удаленную общую папку NFS/CIFS в VideoStation, AudioStation и Photos и т. д."
   th_TH: "ผู้เขียน: jinlife. แพตช์นี้จะทำให้โฟลเดอร์ที่แชร์ระยะไกลแบบ NFS/CIFS ใช้ได้ใน VideoStation, AudioStation และ Photos เป็นต้น"
   tr_TR: "Yazar: jinlife. Bu yama, VideoStation, AudioStation ve Fotoğraflar vb. gibi yerlerde uzak NFS/CIFS paylaşılan klasörün kullanılmasına izin verecektir."
   uk_UA: "Автор: jinlife. Цей патч дозволить використовувати віддалену спільну папку NFS/CIFS в VideoStation, AudioStation та Photos тощо."
   vi_VN: "Tác giả: jinlife. Bản vá này sẽ cho phép thư mục chia sẻ NFS/CIFS từ xa được sử dụng trong VideoStation, AudioStation và Photos v.v.."
-  zh_CN: "作者：jinlife。此补丁将允许在 VideoStation、AudioStation 和 Photos 等中使用远程 NFS/CIFS 共享文件夹。"
-  zh_HK: "作者：jinlife。此補丁將允許在 VideoStation、AudioStation 和 Photos 等中使用遠程 NFS/CIFS 共享文件夾。"
-  zh_TW: "作者：jinlife。此補丁將允許在 VideoStation、AudioStation 和 Photos 等中使用遠程 NFS/CIFS 共享文件夾。"
+  zh_CN: "作者: jinlife. 此补丁将允许在 VideoStation、AudioStation 和 Photos 等中使用远程 NFS/CIFS 共享文件夹."
+  zh_HK: "作者: jinlife. 此補丁將允許在 VideoStation、AudioStation 和 Photos 等中使用遠程 NFS/CIFS 共享文件夾."
+  zh_TW: "作者: jinlife. 此補丁將允許在 VideoStation、AudioStation 和 Photos 等中使用遠程 NFS/CIFS 共享文件夾."
 system: false
 params: false
 all:

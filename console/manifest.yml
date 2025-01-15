@@ -6,16 +6,16 @@ description:
   de_DE: "Bietet Bildschirmkonsolen (bash)-Funktionalität über Framebuffer (fb), um das Debuggen auf dem Bildschirm zu ermöglichen, wird nur auf Modellen mit einem Grafiktreiber unterstützt."
   es_ES: "Proporciona la funcionalidad de la consola (bash) de pantalla a través del framebuffer (fb) para permitir la depuración en la pantalla, solo se admite en los modelos con un controlador gráfico."
   fr_FR: "Fournit une fonctionnalité de console d'écran (bash) via framebuffer (fb) pour permettre le débogage sur l'écran, pris en charge uniquement sur les modèles avec un pilote graphique."
-  ja_JP: "グラフィックスドライバを搭載したモデルでのみサポートされる、フレームバッファ (fb) を介した画面コンソール (bash) 機能を提供し、画面上でのデバッグを可能にします。"
+  ja_JP: "グラフィックスドライバを搭載したモデルでのみサポートされる、フレームバッファ (fb) を介した画面コンソール (bash) 機能を提供し、画面上でのデバッグを可能にします."
   ko_KR: "프레임버퍼(fb)를 통해 화면 콘솔(bash) 기능을 제공하여 화면에서 디버깅을 허용하며, 그래픽 드라이버가 있는 모델에서만 지원됩니다."
   ru_RU: "Предоставляет функциональность консоли экрана (bash) через framebuffer (fb) для разрешения отладки на экране, поддерживается только на моделях с графическим драйвером."
   th_TH: "ให้ความสามารถของหน้าจอคอนโซล (bash) ผ่าน framebuffer (fb) เพื่ออนุญาตให้ทำการแก้บั๊กบนหน้าจอ รองรับเฉพาะบนโมเดลที่มีไดรเวอร์กราฟิก"
   tr_TR: "Ekran üzerinde hata ayıklamaya izin vermek için framebuffer (fb) aracılığıyla ekran konsolu (bash) işlevselliği sağlar, yalnızca grafik sürücüsü olan modellerde desteklenir."
   uk_UA: "Надає функціональність консолі екрану (bash) через буфер кадру (fb) для дозволу налагодження на екрані, підтримується лише на моделях з графічним драйвером."
   vi_VN: "Cung cấp chức năng màn hình (bash) qua framebuffer (fb) để cho phép kiểm tra trên màn hình, chỉ được hỗ trợ trên các mô hình có trình điều khiển hình ảnh."
-  zh_CN: "通过帧缓冲区 (fb) 提供屏幕控制台 (bash) 功能，以允许在屏幕上进行调试，仅支持具有显卡驱动程序的型号。"
-  zh_HK: "透過幀緩衝區 (fb) 提供屏幕控制台 (bash) 功能，以允許在屏幕上進行調試，僅支持具有顯卡驅動程序的型號。"
-  zh_TW: "透過幀緩衝區 (fb) 提供屏幕控制台 (bash) 功能，以允許在屏幕上進行調試，僅支持具有顯卡驅動程序的型號。"
+  zh_CN: "通过帧缓冲区 (fb) 提供屏幕控制台 (bash) 功能, 以允许在屏幕上进行调试, 仅支持具有显卡驱动程序的型号."
+  zh_HK: "透過幀緩衝區 (fb) 提供屏幕控制台 (bash) 功能, 以允許在屏幕上進行調試, 僅支持具有顯卡驅動程序的型號."
+  zh_TW: "透過幀緩衝區 (fb) 提供屏幕控制台 (bash) 功能, 以允許在屏幕上進行調試, 僅支持具有顯卡驅動程序的型號."
 system: false
 params: false
 all:
