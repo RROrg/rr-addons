@@ -26,7 +26,12 @@ if [ "${1}" = "late" ]; then
   else
     echo "insert wireless task to esynoscheduler.db"
     /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
-INSERT INTO task VALUES('Wireless', '', 'bootup', '', 0, 0, 0, 0, '', 0, '/usr/bin/wireless_supplicant.sh "wlan0" "SSID" "PASSWD"', 'script', '{}', '', '', '{}', '{}');
+INSERT INTO task VALUES('Wireless', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
+# NAME: The name of the wireless network interface, "*" is All, Support "," segmentation; e.g. wlan0,eth81. (wlan0 = eth80, wlan1 = eth81, ...)
+# SSID: The SSID of the wireless network.
+# PASSWD: The password of the wireless network.
+/usr/bin/wireless_supplicant.sh "NAME" "SSID" "PASSWD"
+', 'script', '{}', '', '', '{}', '{}');
 EOF
   fi
 elif [ "${1}" = "uninstall" ]; then

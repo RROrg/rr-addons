@@ -6,40 +6,35 @@
 # See /LICENSE for more information.
 #
 
-# TODO:
-# 2024-01-11T06:00:34+08:00 test synoscgi_SYNO.Core.Network.TrafficControl.Rules_1_load[28982]: utils.cpp:44 can not get iftype for wlan0
-# [ 1093.186544] SYNO.Core.Syste[29358]: segfault at 0 ip 00007f4bef3bef59 sp 00007ffd65d9fe48 error 4 in libc.so.6[7f4bef298000+14c000]
-
 NAME="${1}"
 SSID="${2}"
 PSK="${3}"
 
-if [ -n "${NAME}" ] && [ -n "${SSID}" ] && [ -n "${PSK}" ]; then
-  # fix iwlwifi module
-  if [ -z "$(ls /sys/class/net/wlan* 2>/dev/null)" ]; then
-    lsmod | grep -Eq "^iwl[m|d]vm" && modprobe -r iwlmvm iwldvm
-    modprobe iwlmvm iwldvm
-    sleep 1
-  fi
-
-  if [ ! -d "/sys/class/net/${NAME}" ]; then
-    echo "Interface ${NAME} not found"
-    exit 1
-  fi
-
-  if [ -f "/var/run/wpa_supplicant.pid.${NAME}" ]; then
-    kill -9 $(cat "/var/run/wpa_supplicant.pid.${NAME}")
-    rm -f "/var/run/wpa_supplicant.pid.${NAME}"
-  fi
-  #rm -f /etc/sysconfig/network-scripts/ifcfg-wlan* /etc.defaults/sysconfig/network-scripts/ifcfg-wlan*
-  #echo -e "DEVICE=${NAME}\nONBOOT=yes\nBOOTPROTO=dhcp\nIPV6INIT=dhcp\nIPV6_ACCEPT_RA=1" >"/etc/sysconfig/network-scripts/ifcfg-${NAME}"
-  #cp -pf "/etc/sysconfig/network-scripts/ifcfg-${NAME}" "/etc.defaults/sysconfig/network-scripts/ifcfg-${NAME}"
-  echo -e "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >"/usr/syno/etc/wpa_supplicant.conf.${NAME}"
-  /usr/sbin/wpa_supplicant -i "${NAME}" -c "/usr/syno/etc/wpa_supplicant.conf.${NAME}" -B -P "/var/run/wpa_supplicant.pid.${NAME}"
-  /usr/syno/sbin/synonet --dhcp "${NAME}"
-
-  # echo "enable=yes" >"/usr/syno/etc/8021X/cfg-${NAME}"
-  # /usr/sbin/wpa_supplicant -Dwired -c "/usr/syno/etc/wpa_supplicant.conf.${NAME}" -i "${NAME}" -qq -B -P "/var/run/wpa_supplicant.pid.${NAME}"
-  # TEST=false "/usr/syno/lib/systemd/scripts/8021x-client.sh" "${NAME}"
-
+if [ -z "${NAME}" ] || [ -z "${SSID}" ] || [ -z "${PSK}" ]; then
+  echo "Usage: $0 <NAME> <SSID> <PSK>"
+  exit 1
 fi
+
+if [ "${NAME}" = "*" ]; then
+  ETHX=$(ls /sys/class/net/ 2>/dev/null | grep 'eth8')
+else
+  ETHX=$(echo "${NAME}" | sed 's/wlan/eth8/g' | tr ',;|' ' ')
+fi
+
+# Ensure ETHX is not empty
+if [ -z "${ETHX}" ]; then
+  echo "No valid network interfaces found."
+  exit 1
+fi
+
+for N in ${ETHX}; do
+  if [ -f "/var/run/wpa_supplicant.pid.${N}" ]; then
+    kill -9 $(cat "/var/run/wpa_supplicant.pid.${N}")
+    rm -f "/var/run/wpa_supplicant.pid.${N}"
+  fi
+
+  echo -e "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >"/usr/syno/etc/wpa_supplicant.conf.${N}"
+  /usr/sbin/wpa_supplicant -i "${N}" -c "/usr/syno/etc/wpa_supplicant.conf.${N}" -qq -B -P "/var/run/wpa_supplicant.pid.${N}"
+  sleep 3
+  /usr/syno/sbin/synonet --dhcp "${N}"
+done
