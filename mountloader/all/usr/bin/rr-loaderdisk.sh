@@ -7,6 +7,7 @@
 #
 
 RR_PATH="/tmp/initrd"
+[ -f "/sbin/rrmdo" ] && RR_SUDO="/sbin/rrmdo" || RR_SUDO=""
 
 function mountLoaderDisk() {
   if [ ! -f "/usr/rr/.mountloader" ]; then
@@ -16,28 +17,28 @@ function mountLoaderDisk() {
         break
       fi
 
-      echo 1 >/proc/sys/kernel/syno_install_flag
+      echo 1 | ${RR_SUDO} tee /proc/sys/kernel/syno_install_flag >/dev/null
 
       # Make folders to mount partitions
       for i in {1..3}; do
-        rm -rf "/mnt/p${i}"
-        mkdir -p "/mnt/p${i}"
-        mount "/dev/synoboot${i}" "/mnt/p${i}" || {
+        ${RR_SUDO} rm -rf "/mnt/p${i}"
+        ${RR_SUDO} mkdir -p "/mnt/p${i}"
+        ${RR_SUDO} mount "/dev/synoboot${i}" "/mnt/p${i}" || {
           echo "Can't mount /dev/synoboot${i}."
           break 2
         }
       done
 
       if echo "$@" | grep -wq "\-all"; then
-        rm -rf "${RR_PATH}"
-        mkdir -p "${RR_PATH}"
-        (cd "${RR_PATH}" && xz -dc <"/mnt/p3/initrd-rr" | cpio -idm) >/dev/null 2>&1 || true
+        ${RR_SUDO} rm -rf "${RR_PATH}"
+        ${RR_SUDO} mkdir -p "${RR_PATH}"
+        (cd "${RR_PATH}" && xz -dc <"/mnt/p3/initrd-rr" | ${RR_SUDO} cpio -idm) >/dev/null 2>&1 || true
         if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
           echo "RR initrd work path not found!"
           break
         fi
       fi
-      mkdir -p /usr/rr
+      ${RR_SUDO} mkdir -p /usr/rr
       {
         echo "export LOADER_DISK=\"/dev/synoboot\""
         echo "export LOADER_DISK_PART1=\"/dev/synoboot1\""
@@ -46,7 +47,8 @@ function mountLoaderDisk() {
         if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
           echo "export WORK_PATH=\"${RR_PATH}/opt/rr\""
         fi
-      } >"/usr/rr/.mountloader"
+      } | ${RR_SUDO} tee "/usr/rr/.mountloader" >/dev/null
+      ${RR_SUDO} chmod 755 "/usr/rr/.mountloader"
 
       sync
 
@@ -57,32 +59,38 @@ function mountLoaderDisk() {
     echo "Loader disk mount failed!"
     return 1
   else
+    ${RR_SUDO} "/usr/rr/.mountloader"
     echo "Loader disk mount success!"
-    . "/usr/rr/.mountloader"
     return 0
   fi
 }
 
 function unmountLoaderDisk() {
   if [ -f "/usr/rr/.mountloader" ]; then
-    rm -f "/usr/rr/.mountloader"
+    {
+      echo "export LOADER_DISK=\"\""
+      echo "export LOADER_DISK_PART1=\"\""
+      echo "export LOADER_DISK_PART2=\"\""
+      echo "export LOADER_DISK_PART3=\"\""
+      if [ -f "${RR_PATH}/opt/rr/menu.sh" ]; then
+        echo "export WORK_PATH=\"\""
+      fi
+    } | ${RR_SUDO} tee "/usr/rr/.mountloader" >/dev/null
+    ${RR_SUDO} chmod 755 "/usr/rr/.mountloader"
+    ${RR_SUDO} "/usr/rr/.mountloader"
+    ${RR_SUDO} rm -f "/usr/rr/.mountloader"
 
     sync
 
-    export LOADER_DISK=
-    export LOADER_DISK_PART1=
-    export LOADER_DISK_PART2=
-    export LOADER_DISK_PART3=
-
     if echo "$@" | grep -wq "\-all"; then
-      rm -rf "${RR_PATH}"
+      ${RR_SUDO} rm -rf "${RR_PATH}"
     fi
     for i in {1..3}; do
-      umount "/mnt/p${i}"
-      rm -rf "/mnt/p${i}"
+      ${RR_SUDO} umount "/mnt/p${i}"
+      ${RR_SUDO} rm -rf "/mnt/p${i}"
     done
 
-    echo 0 >/proc/sys/kernel/syno_install_flag
+    echo 0 | ${RR_SUDO} tee /proc/sys/kernel/syno_install_flag >/dev/null
   fi
   echo "Loader disk umount success!"
   return 0

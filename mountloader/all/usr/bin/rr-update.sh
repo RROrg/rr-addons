@@ -6,6 +6,8 @@
 # See /LICENSE for more information.
 #
 
+[ -f "/sbin/rrmdo" ] && RR_SUDO="/sbin/rrmdo" || RR_SUDO=""
+
 # SYNC consts.sh
 PART1_PATH="/mnt/p1"
 PART2_PATH="/mnt/p2"
@@ -33,7 +35,7 @@ SCRIPTS_PATH="${PART3_PATH}/scripts"
 # 1 - Path of Key
 # 2 - Path of yaml config file
 function deleteConfigKey() {
-  yq eval "del(.${1})" --inplace "${2}" 2>/dev/null
+  ${RR_SUDO} yq eval "del(.${1})" --inplace "${2}" 2>/dev/null
 }
 
 ###############################################################################
@@ -43,7 +45,7 @@ function deleteConfigKey() {
 # 3 - Path of yaml config file
 function writeConfigKey() {
   local value="${2}"
-  [ "${value}" = "{}" ] && yq eval ".${1} = {}" --inplace "${3}" 2>/dev/null || yq eval ".${1} = \"${value}\"" --inplace "${3}" 2>/dev/null
+  [ "${value}" = "{}" ] && ${RR_SUDO} yq eval ".${1} = {}" --inplace "${3}" 2>/dev/null || ${RR_SUDO} yq eval ".${1} = \"${value}\"" --inplace "${3}" 2>/dev/null
 }
 
 ###############################################################################
@@ -52,7 +54,7 @@ function writeConfigKey() {
 # 2 - Path of yaml config file
 # Return Value
 function readConfigKey() {
-  local result=$(yq eval ".${1} | explode(.)" "${2}" 2>/dev/null)
+  local result=$(${RR_SUDO} yq eval ".${1} | explode(.)" "${2}" 2>/dev/null)
   [ "${result}" = "null" ] && echo "" || echo "${result}"
 }
 
@@ -68,7 +70,7 @@ function mergeConfigModules() {
   local xmlfile=$(mktemp)
   echo -en "${L}" | yq -p p -o y >"${xmlfile}"
   deleteConfigKey "modules.\"RRORG\"" "${xmlfile}"
-  yq eval-all --inplace '. as $item ireduce ({}; . * $item)' --inplace "${2}" "${xmlfile}" 2>/dev/null
+  ${RR_SUDO} yq eval-all --inplace '. as $item ireduce ({}; . * $item)' --inplace "${2}" "${xmlfile}" 2>/dev/null
   rm -f "${xmlfile}"
 }
 
@@ -78,7 +80,7 @@ function mergeConfigModules() {
 # 2 - Path of yaml config file
 # Returns map of values
 function readConfigMap() {
-  yq eval ".${1} | explode(.) | to_entries | map([.key, .value] | join(\": \")) | .[]" "${2}" 2>/dev/null
+  ${RR_SUDO} yq eval ".${1} | explode(.) | to_entries | map([.key, .value] | join(\": \")) | .[]" "${2}" 2>/dev/null
 }
 
 ###############################################################################
@@ -87,7 +89,7 @@ function readConfigMap() {
 # 2 - Path of yaml config file
 # Returns array/map of values
 function readConfigArray() {
-  yq eval ".${1}[]" "${2}" 2>/dev/null
+  ${RR_SUDO} yq eval ".${1}[]" "${2}" 2>/dev/null
 }
 
 # Return list of all modules available
@@ -203,9 +205,9 @@ function updateRR() {
   echo '{"progress": "60", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   while IFS=': ' read KEY VALUE; do
     if [ "${KEY: -1}" = "/" ]; then
-      rm -Rf "${VALUE}"/*
-      mkdir -p "${VALUE}"
-      cp -rf "${TMP_PATH}/update/${VALUE}"/* "${VALUE}"
+      ${RR_SUDO} rm -Rf "${VALUE}"/*
+      ${RR_SUDO} mkdir -p "${VALUE}"
+      ${RR_SUDO} cp -rf "${TMP_PATH}/update/${VALUE}"/* "${VALUE}"
       if [ "$(realpath "${VALUE}")" = "$(realpath "${MODULES_PATH}")" ]; then
         if [ -n "${MODEL}" ] && [ -n "${PRODUCTVER}" ]; then
           KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
@@ -217,13 +219,13 @@ function updateRR() {
         fi
       fi
     else
-      mkdir -p "$(dirname "${VALUE}")"
-      cp -f "${TMP_PATH}/update/${VALUE}" "${VALUE}"
+      ${RR_SUDO} mkdir -p "$(dirname "${VALUE}")"
+      ${RR_SUDO} cp -f "${TMP_PATH}/update/${VALUE}" "${VALUE}"
     fi
   done <<<$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")
   rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  touch ${PART1_PATH}/.build
+  ${RR_SUDO} touch ${PART1_PATH}/.build
   sync
   echo '{"progress": "100", "progressmsg": "RR updated success!"}' >"${PROGRESS_FILE}"
   return 0
@@ -273,11 +275,11 @@ function updateAddons() {
     return 1
   fi
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  rm -Rf "${ADDONS_PATH}/"*
-  cp -rf "${TMP_PATH}/update/"* "${ADDONS_PATH}/"
+  ${RR_SUDO} rm -Rf "${ADDONS_PATH}/"*
+  ${RR_SUDO} cp -rf "${TMP_PATH}/update/"* "${ADDONS_PATH}/"
   rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  touch ${PART1_PATH}/.build
+  ${RR_SUDO} touch ${PART1_PATH}/.build
   sync
   echo '{"progress": "100", "progressmsg": "Addons updated success!"}' >"${PROGRESS_FILE}"
   return 0
@@ -316,8 +318,8 @@ function updateModules() {
     return 1
   fi
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  rm -rf "${MODULES_PATH}/"*
-  cp -rf "${TMP_PATH}/update/"* "${MODULES_PATH}/"
+  ${RR_SUDO} rm -rf "${MODULES_PATH}/"*
+  ${RR_SUDO} cp -rf "${TMP_PATH}/update/"* "${MODULES_PATH}/"
   rm -rf "${TMP_PATH}/update"
   if [ $? -ne 0 ]; then
     echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
@@ -333,7 +335,7 @@ function updateModules() {
     fi
   fi
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  touch ${PART1_PATH}/.build
+  ${RR_SUDO} touch ${PART1_PATH}/.build
   sync
   echo '{"progress": "100", "progressmsg": "Modules updated success!"}' >"${PROGRESS_FILE}"
   return 0
@@ -372,11 +374,11 @@ function updateLKMs() {
     return 1
   fi
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  rm -rf "${LKMS_PATH}/"*
-  cp -rf "${TMP_PATH}/update/"* "${LKMS_PATH}/"
+  ${RR_SUDO} rm -rf "${LKMS_PATH}/"*
+  ${RR_SUDO} cp -rf "${TMP_PATH}/update/"* "${LKMS_PATH}/"
   rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  touch ${PART1_PATH}/.build
+  ${RR_SUDO} touch ${PART1_PATH}/.build
   sync
   echo '{"progress": "100", "progressmsg": "LKMs updated success!"}' >"${PROGRESS_FILE}"
   return 0
@@ -415,8 +417,8 @@ function updateCKs() {
     return 1
   fi
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  rm -rf "${CKS_PATH}/"*
-  cp -rf "${TMP_PATH}/update/"* "${CKS_PATH}/"
+  ${RR_SUDO} rm -rf "${CKS_PATH}/"*
+  ${RR_SUDO} cp -rf "${TMP_PATH}/update/"* "${CKS_PATH}/"
   if [ -n "${MODEL}" ] && [ -n "${PRODUCTVER}" ] && [ "${KERNEL}" = "custom" ]; then
     KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
     KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
@@ -427,7 +429,7 @@ function updateCKs() {
   fi
   rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  touch ${PART1_PATH}/.build
+  ${RR_SUDO} touch ${PART1_PATH}/.build
   sync
   echo '{"progress": "100", "progressmsg": "CKs updated success!"}' >"${PROGRESS_FILE}"
   return 0

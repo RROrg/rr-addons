@@ -14,6 +14,10 @@ if [ "${1}" = "late" ]; then
   cp -vpf /usr/bin/yq /tmpRoot/usr/bin/yq
   cp -vpf /usr/bin/cpio /tmpRoot/usr/bin/cpio
   cp -vpf /usr/bin/unzip /tmpRoot/usr/bin/unzip
+  cp -vpf /usr/sbin/rrmdo /tmpRoot/sbin/rrmdo
+  chown root:root /tmpRoot/sbin/rrmdo
+  chmod u+s /tmpRoot/sbin/rrmdo
+
   cp -vpf /usr/bin/rr-update.sh /tmpRoot/usr/bin/rr-update.sh
   cp -vpf /usr/bin/rr-loaderdisk.sh /tmpRoot/usr/bin/rr-loaderdisk.sh
 
@@ -39,6 +43,7 @@ elif [ "${1}" = "uninstall" ]; then
   #rm -f "/tmpRoot/usr/bin/yq"
   #rm -f "/tmpRoot/lib/usr/bin/cpio"
   #rm -f "/tmpRoot/lib/usr/bin/unzip"
+  rm -f "/tmpRoot/sbin/rrmdo"
   rm -f "/tmpRoot/usr/bin/rr-update.sh"
   rm -f "/tmpRoot/usr/bin/rr-loaderdisk.sh"
 
