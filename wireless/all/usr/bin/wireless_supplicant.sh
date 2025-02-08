@@ -29,12 +29,13 @@ fi
 
 for N in ${ETHX}; do
   if [ -f "/var/run/wpa_supplicant.pid.${N}" ]; then
-    kill -9 $(cat "/var/run/wpa_supplicant.pid.${N}")
+    pkill -F "/var/run/wpa_supplicant.pid.${N}"
     rm -f "/var/run/wpa_supplicant.pid.${N}"
   fi
 
   echo -e "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >"/usr/syno/etc/wpa_supplicant.conf.${N}"
   /usr/sbin/wpa_supplicant -i "${N}" -c "/usr/syno/etc/wpa_supplicant.conf.${N}" -qq -B -P "/var/run/wpa_supplicant.pid.${N}"
   sleep 3
-  /usr/syno/sbin/synonet --dhcp "${N}"
+  PRE=$([ -n "$(cat /usr/syno/etc/synoovs/ovs_reg.conf 2>/dev/null)" ] && echo "ovs_" || echo "")
+  /usr/syno/sbin/synonet --dhcp "${PRE}${N}"
 done
