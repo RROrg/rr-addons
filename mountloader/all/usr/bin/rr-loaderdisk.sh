@@ -19,6 +19,11 @@ function mountLoaderDisk() {
 
       echo 1 | ${RR_SUDO} tee /proc/sys/kernel/syno_install_flag >/dev/null
 
+      # Check partitions and ignore errors
+      [ -f "/sbin/fsck.vfat" ] && ${RR_SUDO} fsck.vfat -aw "/dev/synoboot1" >/dev/null 2>&1 || true
+      [ -f "/sbin/fsck.ext2" ] && ${RR_SUDO} fsck.ext2 -p "/dev/synoboot2" >/dev/null 2>&1 || true
+      [ -f "/sbin/fsck.ext4" ] && ${RR_SUDO} fsck.ext4 -p "/dev/synoboot3" >/dev/null 2>&1 || true
+
       # Make folders to mount partitions
       for i in {1..3}; do
         ${RR_SUDO} rm -rf "/mnt/p${i}"
