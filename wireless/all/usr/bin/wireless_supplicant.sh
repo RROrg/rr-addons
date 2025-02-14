@@ -38,4 +38,6 @@ for N in ${ETHX}; do
   sleep 3
   PRE=$([ -n "$(cat /usr/syno/etc/synoovs/ovs_reg.conf 2>/dev/null)" ] && echo "ovs_" || echo "")
   /usr/syno/sbin/synonet --dhcp "${PRE}${N}"
+  sleep 1
+  /usr/sbin/wpa_cli status
 done
