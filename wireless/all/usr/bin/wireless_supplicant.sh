@@ -33,11 +33,12 @@ for N in ${ETHX}; do
     rm -f "/var/run/wpa_supplicant.pid.${N}"
   fi
 
+  PRE=$([ -n "$(cat /usr/syno/etc/synoovs/ovs_reg.conf 2>/dev/null)" ] && echo "ovs_" || echo "")
+  N=${PRE}${N}
   echo -e "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >"/usr/syno/etc/wpa_supplicant.conf.${N}"
   /usr/sbin/wpa_supplicant -i "${N}" -c "/usr/syno/etc/wpa_supplicant.conf.${N}" -qq -B -P "/var/run/wpa_supplicant.pid.${N}"
   sleep 3
-  PRE=$([ -n "$(cat /usr/syno/etc/synoovs/ovs_reg.conf 2>/dev/null)" ] && echo "ovs_" || echo "")
-  /usr/syno/sbin/synonet --dhcp "${PRE}${N}"
+  /usr/syno/sbin/synonet --dhcp "${N}"
   sleep 1
   /usr/sbin/wpa_cli status
 done
