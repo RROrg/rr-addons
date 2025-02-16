@@ -13,6 +13,7 @@ if [ "${1}" = "late" ]; then
 
   cp -vpf /usr/bin/wireless_supplicant.sh /tmpRoot/usr/bin/wireless_supplicant.sh
   cp -vpf /usr/sbin/iw /tmpRoot/usr/sbin/iw
+  cp -vpf /usr/sbin/rfkill /tmpRoot/usr/sbin/rfkill
 
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
@@ -39,6 +40,7 @@ elif [ "${1}" = "uninstall" ]; then
 
   rm -f /tmpRoot/usr/bin/wireless_supplicant.sh
   rm -f /tmpRoot/usr/sbin/iw
+  rm -f /tmpRoot/usr/sbin/rfkill
 
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
