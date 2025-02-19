@@ -1,0 +1,46 @@
+version: 1
+name: vmtools
+description:
+  en_US: "qemu-ga & &open-vm-tools."
+  ar_SA: "qemu-ga & &open-vm-tools."
+  de_DE: "qemu-ga & &open-vm-tools."
+  es_ES: "qemu-ga & &open-vm-tools."
+  fr_FR: "qemu-ga & &open-vm-tools."
+  ja_JP: "qemu-ga & &open-vm-tools."
+  ko_KR: "qemu-ga & &open-vm-tools."
+  ru_RU: "qemu-ga & &open-vm-tools."
+  th_TH: "qemu-ga & &open-vm-tools."
+  tr_TR: "qemu-ga & &open-vm-tools."
+  uk_UA: "qemu-ga & &open-vm-tools."
+  vi_VN: "qemu-ga & &open-vm-tools."
+  zh_CN: "qemu-ga & &open-vm-tools."
+  zh_HK: "qemu-ga & &open-vm-tools."
+  zh_TW: "qemu-ga & &open-vm-tools."
+system: false
+params: false
+all:
+  install-script: "install.sh"
+  copy: "all"
+available-for:
+  apollolake-4.4.180:
+  apollolake-4.4.302:
+  broadwell-4.4.180:
+  broadwell-4.4.302:
+  broadwellnk-4.4.180:
+  broadwellnk-4.4.302:
+  broadwellnkv2-4.4.180:
+  broadwellnkv2-4.4.302:
+  broadwellntbap-4.4.180:
+  broadwellntbap-4.4.302:
+  epyc7002-7.1-5.10.55:
+  epyc7002-7.2-5.10.55:
+  denverton-4.4.180:
+  denverton-4.4.302:
+  geminilake-4.4.180:
+  geminilake-4.4.302:
+  purley-4.4.180:
+  purley-4.4.302:
+  r1000-4.4.180:
+  r1000-4.4.302:
+  v1000-4.4.180:
+  v1000-4.4.302:
