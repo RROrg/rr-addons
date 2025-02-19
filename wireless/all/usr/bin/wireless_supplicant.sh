@@ -36,7 +36,7 @@ for N in ${ETHX}; do
   [ "${ISOVS}" = "true" ] && /etc/rc.network "stop" "ovs_${N}" >/dev/null 2>&1
   echo -e "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >"/usr/syno/etc/wpa_supplicant.conf.${N}"
   /usr/sbin/wpa_supplicant -i "${N}" -c "/usr/syno/etc/wpa_supplicant.conf.${N}" -qq -B -P "/var/run/wpa_supplicant.pid.${N}"
-  sleep 3 
+  sleep 3
   /usr/syno/sbin/synonet --dhcp "${N}"
   sleep 1
   [ "${ISOVS}" = "true" ] && /etc/rc.network "start" "ovs_${N}" >/dev/null 2>&1
