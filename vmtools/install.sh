@@ -26,7 +26,7 @@ if [ "${1}" = "late" ]; then
     mkdir -p /tmpRoot/usr/vmtools/etc/vmware-tools
     {
       echo "[vmtools]"
-      echo "     disable-tools-version = false"
+      echo "    disable-tools-version = false"
       echo "[setenvironment]"
       echo "    vmsvc.LOCALE = it"
       echo "[logging]"
@@ -69,8 +69,8 @@ if [ "${1}" = "late" ]; then
       echo "ConditionPathExists=/dev/virtio-ports/org.qemu.guest_agent.0"
       echo
       echo "[Service]"
-      echo "Environment=\"PATH=/usr/vmtools/bin:/usr/vmtools/sbin:$$PATH\""
-      echo "Environment=\"LD_LIBRARY_PATH=/usr/vmtools/lib:$$LD_LIBRARY_PATH\""
+      echo "Environment=\"PATH=/usr/vmtools/bin:/usr/vmtools/sbin:\$PATH\""
+      echo "Environment=\"LD_LIBRARY_PATH=/usr/vmtools/lib:\$LD_LIBRARY_PATH\""
       echo "ExecStart=/usr/vmtools/bin/qemu-ga -m virtio-serial -p /dev/virtio-ports/org.qemu.guest_agent.0 -t /var/run/ -f /var/run/vmtools.pid"
       echo "Restart=always"
       echo "RestartSec=10"
@@ -86,8 +86,8 @@ if [ "${1}" = "late" ]; then
       echo "After=multi-user.target"
       echo
       echo "[Service]"
-      echo "Environment=\"PATH=/usr/vmtools/bin:/usr/vmtools/sbin:$$PATH\""
-      echo "Environment=\"LD_LIBRARY_PATH=/usr/vmtools/lib:$$LD_LIBRARY_PATH\""
+      echo "Environment=\"PATH=/usr/vmtools/bin:/usr/vmtools/sbin:\$PATH\""
+      echo "Environment=\"LD_LIBRARY_PATH=/usr/vmtools/lib:\$LD_LIBRARY_PATH\""
       echo "ExecStart=-echo Unknown mev"
       echo "Type=oneshot"
       echo
