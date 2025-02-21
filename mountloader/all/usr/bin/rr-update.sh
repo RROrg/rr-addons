@@ -67,11 +67,11 @@ function mergeConfigModules() {
   # When the first key is a pure number, yq will not process it as a string by default. The current solution is to insert a placeholder key.
   local MS="RRORG\n${1// /\\n}"
   local L="$(echo -en "${MS}" | awk '{print "modules."$1":"}')"
-  local xmlfile=$(mktemp)
-  echo -en "${L}" | yq -p p -o y >"${xmlfile}"
+  local xmlfile=$(${RR_SUDO} mktemp)
+  echo -en "${L}" | ${RR_SUDO} yq -p p -o y >"${xmlfile}"
   deleteConfigKey "modules.\"RRORG\"" "${xmlfile}"
   ${RR_SUDO} yq eval-all --inplace '. as $item ireduce ({}; . * $item)' --inplace "${2}" "${xmlfile}" 2>/dev/null
-  rm -f "${xmlfile}"
+  ${RR_SUDO} rm -f "${xmlfile}"
 }
 
 ###############################################################################
@@ -116,7 +116,7 @@ function getAllModules() {
   for F in $(ls ${TMP_PATH}/modules/*.ko 2>/dev/null); do
     local X=$(basename ${F})
     local M=${X:0:-3}
-    local DESC=$(modinfo ${F} 2>/dev/null | awk -F':' '/description:/{ print $2}' | awk '{sub(/^[ ]+/,""); print}')
+    local DESC=$(${RR_SUDO} modinfo ${F} 2>/dev/null | awk -F':' '/description:/{ print $2}' | awk '{sub(/^[ ]+/,""); print}')
     [ -z "${DESC}" ] && DESC="${X}"
     echo "${M} \"${DESC}\""
   done
@@ -150,7 +150,7 @@ function updateRR() {
   fi
   # Check checksums
   echo '{"progress": "20", "progressmsg": "Check checksums ..."}' >"${PROGRESS_FILE}"
-  (cd "${TMP_PATH}/update" && sha256sum --status -c sha256sum)
+  (cd "${TMP_PATH}/update" && ${RR_SUDO} sha256sum --status -c sha256sum)
   if [ $? -ne 0 ]; then
     echo '{"progress": "-3", "progressmsg": "Checksum do not match!"}' >"${PROGRESS_FILE}"
     return 1
@@ -170,8 +170,9 @@ function updateRR() {
   SIZEOLD=0
   while IFS=': ' read KEY VALUE; do
     if [ "${KEY: -1}" = "/" ]; then
-      rm -Rf "${TMP_PATH}/update/${VALUE}"
+      rm -rf "${TMP_PATH}/update/${VALUE}"
       mkdir -p "${TMP_PATH}/update/${VALUE}"
+
       tar -zxf "${TMP_PATH}/update/$(basename "${KEY}").tgz" -C "${TMP_PATH}/update/${VALUE}"
       if [ $? -ne 0 ]; then
         echo '{"progress": "-5", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
@@ -188,7 +189,7 @@ function updateRR() {
     SIZEOLD=$((${SIZEOLD} + ${FSOLD:-0}))
   done <<<$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")
 
-  SIZESPL=$(df -m "${PART3_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
+  SIZESPL=$(${RR_SUDO} df -m "${PART3_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
   if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
     MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "${PART3_PATH}" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
     echo '{"progress": "-6", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
@@ -199,13 +200,13 @@ function updateRR() {
   echo '{"progress": "50", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   while read F; do
     [ -f "${F}" ] && rm -f "${F}"
-    [ -d "${F}" ] && rm -Rf "${F}"
+    [ -d "${F}" ] && rm -rf "${F}"
   done <<<$(readConfigArray "remove" "${TMP_PATH}/update/update-list.yml")
 
   echo '{"progress": "60", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   while IFS=': ' read KEY VALUE; do
     if [ "${KEY: -1}" = "/" ]; then
-      ${RR_SUDO} rm -Rf "${VALUE}"/*
+      ${RR_SUDO} rm -rf "${VALUE}"/*
       ${RR_SUDO} mkdir -p "${VALUE}"
       ${RR_SUDO} cp -rf "${TMP_PATH}/update/${VALUE}"/* "${VALUE}"
       if [ "$(realpath "${VALUE}")" = "$(realpath "${MODULES_PATH}")" ]; then
@@ -226,7 +227,7 @@ function updateRR() {
   rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   ${RR_SUDO} touch ${PART1_PATH}/.build
-  sync
+  ${RR_SUDO} sync
   echo '{"progress": "100", "progressmsg": "RR updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
@@ -275,12 +276,12 @@ function updateAddons() {
     return 1
   fi
   echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  ${RR_SUDO} rm -Rf "${ADDONS_PATH}/"*
+  ${RR_SUDO} rm -rf "${ADDONS_PATH}/"*
   ${RR_SUDO} cp -rf "${TMP_PATH}/update/"* "${ADDONS_PATH}/"
   rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   ${RR_SUDO} touch ${PART1_PATH}/.build
-  sync
+  ${RR_SUDO} sync
   echo '{"progress": "100", "progressmsg": "Addons updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
@@ -336,7 +337,7 @@ function updateModules() {
   fi
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   ${RR_SUDO} touch ${PART1_PATH}/.build
-  sync
+  ${RR_SUDO} sync
   echo '{"progress": "100", "progressmsg": "Modules updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
@@ -379,7 +380,7 @@ function updateLKMs() {
   rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   ${RR_SUDO} touch ${PART1_PATH}/.build
-  sync
+  ${RR_SUDO} sync
   echo '{"progress": "100", "progressmsg": "LKMs updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
@@ -430,7 +431,7 @@ function updateCKs() {
   rm -rf "${TMP_PATH}/update"
   echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
   ${RR_SUDO} touch ${PART1_PATH}/.build
-  sync
+  ${RR_SUDO} sync
   echo '{"progress": "100", "progressmsg": "CKs updated success!"}' >"${PROGRESS_FILE}"
   return 0
 }
