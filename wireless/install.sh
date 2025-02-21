@@ -5,7 +5,7 @@
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
-if [ "${1}" = "patches" ]; then
+if [ "${1}" = "rcExit" ]; then
   echo "Installing addon wireless - ${1}"
 
   SSID="$(cat /proc/cmdline 2>/dev/null | grep -Eo 'wpa.ssid=[^ ]+' | sed 's/wpa.ssid=//' | xxd -r -p)"
