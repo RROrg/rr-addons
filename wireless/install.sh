@@ -8,8 +8,8 @@
 if [ "${1}" = "patches" ]; then
   echo "Installing addon wireless - ${1}"
 
-  SSID="$(cat /proc/cmdline 2>/dev/null | grep -Eo 'wpa.ssid=[^ ]+' | sed 's/wpa.ssid=//')"
-  PSK="$(cat /proc/cmdline 2>/dev/null | grep -Eo 'wpa.psk=[^ ]+' | sed 's/wpa.psk=//')"
+  SSID="$(cat /proc/cmdline 2>/dev/null | grep -Eo 'wpa.ssid=[^ ]+' | sed 's/wpa.ssid=//' | xxd -r -p)"
+  PSK="$(cat /proc/cmdline 2>/dev/null | grep -Eo 'wpa.psk=[^ ]+' | sed 's/wpa.psk=//' | xxd -r -p)"
 
   if [ -n "${SSID}" ] && [ -n "${PSK}" ]; then
     ETHX=$(ls /sys/class/net/ 2>/dev/null | grep '^eth8' | grep -v '^eth8$')
@@ -18,7 +18,7 @@ if [ "${1}" = "patches" ]; then
       tar -zxf /addons/wireless-7.1.tgz -C /
       for N in ${ETHX}; do
         if [ -f "/var/run/wpa_supplicant.pid.${N}" ]; then
-          pkill -F "/var/run/wpa_supplicant.pid.${N}"
+          kill $(cat "/var/run/wpa_supplicant.pid.${N}")
           rm -f "/var/run/wpa_supplicant.pid.${N}"
         fi
         ISOVS=$([ -L "/sys/class/net/ovs_${N}" ] && echo "true" || echo "false")
@@ -28,7 +28,7 @@ if [ "${1}" = "patches" ]; then
         sleep 3
         if [ -x /sbin/udhcpc ]; then # junior
           if [ -f "/etc/dhcpc/dhcpcd-${N}.pid" ]; then
-            pkill -F "/etc/dhcpc/dhcpcd-${N}.pid"
+            kill $(cat "/etc/dhcpc/dhcpcd-${N}.pid")
             rm -f "/etc/dhcpc/dhcpcd-${N}.pid"
           fi
           /sbin/udhcpc -i ${N} -p "/etc/dhcpc/dhcpcd-${N}.pid" -b -x hostname:$(hostname) || true
@@ -49,8 +49,8 @@ elif [ "${1}" = "late" ]; then
   cp -vpf /usr/bin/wireless_supplicant.sh /tmpRoot/usr/bin/wireless_supplicant.sh
   tar -zxf /addons/wireless-7.1.tgz -C /tmpRoot/usr ./sbin/iw ./sbin/rfkill
 
-  SSID="$(cat /proc/cmdline 2>/dev/null | grep -Eo 'wpa.ssid=[^ ]+' | sed 's/wpa.ssid=//')"
-  PSK="$(cat /proc/cmdline 2>/dev/null | grep -Eo 'wpa.psk=[^ ]+' | sed 's/wpa.psk=//')"
+  SSID="$(cat /proc/cmdline 2>/dev/null | grep -Eo 'wpa.ssid=[^ ]+' | sed 's/wpa.ssid=//' | xxd -r -p)"
+  PSK="$(cat /proc/cmdline 2>/dev/null | grep -Eo 'wpa.psk=[^ ]+' | sed 's/wpa.psk=//' | xxd -r -p)"
 
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
@@ -62,10 +62,19 @@ elif [ "${1}" = "late" ]; then
   ENABLE=0
   if [ -n "${SSID}" ] && [ -n "${PSK}" ]; then
     ENABLE=1
-    echo "delete wireless task from esynoscheduler.db"
-    /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
-DELETE FROM task WHERE task_name LIKE 'Wireless';
-EOF
+    ETHX=$(ls /sys/class/net/ 2>/dev/null | grep '^eth8' | grep -v '^eth8$')
+    for N in ${ETHX}; do
+      if [ -f "/var/run/wpa_supplicant.pid.${N}" ]; then
+        kill $(cat "/var/run/wpa_supplicant.pid.${N}")
+        rm -f "/var/run/wpa_supplicant.pid.${N}"
+      fi
+      if [ -x /sbin/udhcpc ]; then # junior
+        if [ -f "/etc/dhcpc/dhcpcd-${N}.pid" ]; then
+          kill $(cat "/etc/dhcpc/dhcpcd-${N}.pid")
+          rm -f "/etc/dhcpc/dhcpcd-${N}.pid"
+        fi
+      fi
+    done
   fi
   if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "Wireless"; then
     echo "wireless task already exists"
