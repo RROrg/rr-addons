@@ -1,0 +1,46 @@
+version: 1
+name: blockupdate
+description:
+  en_US: "Block DSM automatic system update."
+  ar_SA: "قفل التحديثات التلقائية منDSM."
+  de_DE: "Bloquer les mises à jour automatiques du système DSM."
+  es_ES: "Bloquear las actualizaciones automáticas del sistema DSM."
+  fr_FR: "Bloquer les mises à jour automatiques du système DSM."
+  ja_JP: "DSMの自動更新をブロックします。"  
+  ko_KR: "DSM 자동 업데이트를 차단합니다."
+  ru_RU: "Заблокировать автоматические обновления системы DSM."
+  th_TH: "บล็อกอัตโนมัติอัปเดตจากDSM"
+  tr_TR: "DSM otomatik güncellemeleri engelle."
+  uk_UA: "Блокувати автоматичні оновлення системи DSM."
+  vi_VN: "Khóa tự động cập nhật hệ thống DSM."
+  zh_CN: "阻止 DSM 自动系统更新。"
+  zh_HK: "阻止 DSM 自动系统更新。"
+  zh_TW: "阻止 DSM 自动系统更新。"
+system: true
+params: false
+all:
+  install-script: "install.sh"
+  copy: "all"
+available-for:
+  apollolake-4.4.180:
+  apollolake-4.4.302:
+  broadwell-4.4.180:
+  broadwell-4.4.302:
+  broadwellnk-4.4.180:
+  broadwellnk-4.4.302:
+  broadwellnkv2-4.4.180:
+  broadwellnkv2-4.4.302:
+  broadwellntbap-4.4.180:
+  broadwellntbap-4.4.302:
+  epyc7002-7.1-5.10.55:
+  epyc7002-7.2-5.10.55:
+  denverton-4.4.180:
+  denverton-4.4.302:
+  geminilake-4.4.180:
+  geminilake-4.4.302:
+  purley-4.4.180:
+  purley-4.4.302:
+  r1000-4.4.180:
+  r1000-4.4.302:
+  v1000-4.4.180:
+  v1000-4.4.302:

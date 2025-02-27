@@ -6,8 +6,6 @@
 # See /LICENSE for more information.
 #
 
-[ -f "/sbin/rrmdo" ] && RR_SUDO="/sbin/rrmdo" || RR_SUDO=""
-
 # SYNC consts.sh
 PART1_PATH="/mnt/p1"
 PART2_PATH="/mnt/p2"
@@ -68,7 +66,7 @@ function mergeConfigModules() {
   local MS="RRORG\n${1// /\\n}"
   local L="$(echo -en "${MS}" | awk '{print "modules."$1":"}')"
   local xmlfile=$(${RR_SUDO} mktemp)
-  echo -en "${L}" | ${RR_SUDO} yq -p p -o y >"${xmlfile}"
+  ${RR_SUDO} sh -c "echo -en '${L}' | yq -p p -o y >'${xmlfile}'"
   deleteConfigKey "modules.\"RRORG\"" "${xmlfile}"
   ${RR_SUDO} yq eval-all --inplace '. as $item ireduce ({}; . * $item)' --inplace "${2}" "${xmlfile}" 2>/dev/null
   ${RR_SUDO} rm -f "${xmlfile}"
@@ -97,33 +95,46 @@ function readConfigArray() {
 # 2 - Kernel Version
 function getAllModules() {
   local PLATFORM=${1}
-  local KVER=${2}
+  local PKVER=${2}
 
-  if [ -z "${PLATFORM}" ] || [ -z "${KVER}" ]; then
+  if [ -z "${PLATFORM}" ] || [ -z "${PKVER}" ]; then
     echo ""
     return 1
   fi
   # Unzip modules for temporary folder
-  rm -rf "${TMP_PATH}/modules"
-  mkdir -p "${TMP_PATH}/modules"
+  ${RR_SUDO} rm -rf "${TMP_PATH}/modules"
+  ${RR_SUDO} mkdir -p "${TMP_PATH}/modules"
   local KERNEL="$(readConfigKey "kernel" "${USER_CONFIG_FILE}")"
   if [ "${KERNEL}" = "custom" ]; then
-    tar -zxf "${CKS_PATH}/modules-${PLATFORM}-${KVER}.tgz" -C "${TMP_PATH}/modules"
+    ${RR_SUDO} tar -zxf "${CKS_PATH}/modules-${PLATFORM}-${PKVER}.tgz" -C "${TMP_PATH}/modules"
   else
-    tar -zxf "${MODULES_PATH}/${PLATFORM}-${KVER}.tgz" -C "${TMP_PATH}/modules"
+    ${RR_SUDO} tar -zxf "${MODULES_PATH}/${PLATFORM}-${PKVER}.tgz" -C "${TMP_PATH}/modules"
   fi
+  # ${RR_SUDO} chown -R root:root "${TMP_PATH}/modules"
+  # ${RR_SUDO} chmod -R 755 "${TMP_PATH}/modules"
   # Get list of all modules
-  for F in $(ls ${TMP_PATH}/modules/*.ko 2>/dev/null); do
+  for F in $(${RR_SUDO} ls ${TMP_PATH}/modules/*.ko 2>/dev/null); do
     local X=$(basename ${F})
     local M=${X:0:-3}
     local DESC=$(${RR_SUDO} modinfo ${F} 2>/dev/null | awk -F':' '/description:/{ print $2}' | awk '{sub(/^[ ]+/,""); print}')
     [ -z "${DESC}" ] && DESC="${X}"
     echo "${M} \"${DESC}\""
   done
-  rm -rf "${TMP_PATH}/modules"
+  ${RR_SUDO} rm -rf "${TMP_PATH}/modules"
 }
 
 # SYNC menu.sh
+
+function progresslog {
+  local PROGRESS_FILE="${3:-"/tmp/rr_update_progress"}"
+  if [ -f "${PROGRESS_FILE}" ]; then
+    [ ! -w "${PROGRESS_FILE}" ] && ${RR_SUDO} chmod a+rw "${PROGRESS_FILE}"
+  else
+    ${RR_SUDO} touch "${PROGRESS_FILE}"
+    ${RR_SUDO} chmod a+rw "${PROGRESS_FILE}"
+  fi
+  echo "{\"progress\": \"${1}\", \"progressmsg\": \"${2}\"}" | ${RR_SUDO} tee "${3}"
+}
 
 # 1 - update.zip path
 # 2 - progress file path
@@ -131,314 +142,139 @@ function updateRR() {
   local UPDATE_FILE="${1:-"/tmp/update.zip"}"
   local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
 
-  echo '{"progress": "0", "progressmsg": "Update RR ..."}' >"${PROGRESS_FILE}"
+  progresslog "0" "Update RR ..." "${PROGRESS_FILE}"
   if [ ! -d "${PART1_PATH}" ] || [ ! -d "${PART3_PATH}" ]; then
-    echo '{"progress": "-1", "progressmsg": "RR path not found!"}' >"${PROGRESS_FILE}"
+    progresslog "-1" "No loader disk found!" "${PROGRESS_FILE}"
     return 1
   fi
   if [ ! -f "${UPDATE_FILE}" ]; then
-    echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
+    progresslog "-1" "No update file found!" "${PROGRESS_FILE}"
     return 1
   fi
-  echo '{"progress": "10", "progressmsg": "Extracting update file ..."}' >"${PROGRESS_FILE}"
-  rm -rf "${TMP_PATH}/update"
-  mkdir -p "${TMP_PATH}/update"
-  unzip -oq "${UPDATE_FILE}" -d "${TMP_PATH}/update"
+  progresslog "10" "Unzip update file ..." "${PROGRESS_FILE}"
+  ${RR_SUDO} rm -rf "${TMP_PATH}/update"
+  ${RR_SUDO} mkdir -p "${TMP_PATH}/update"
+  ${RR_SUDO} unzip -oq "${UPDATE_FILE}" -d "${TMP_PATH}/update"
   if [ $? -ne 0 ]; then
-    echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
+    progresslog "-2" "Update file unzip failed!" "${PROGRESS_FILE}"
     return 1
   fi
   # Check checksums
-  echo '{"progress": "20", "progressmsg": "Check checksums ..."}' >"${PROGRESS_FILE}"
-  (cd "${TMP_PATH}/update" && ${RR_SUDO} sha256sum --status -c sha256sum)
+  progresslog "20" "Check checksums ..." "${PROGRESS_FILE}"
+  ${RR_SUDO} sh -c "cd '${TMP_PATH}/update' && sha256sum --status -c sha256sum"
   if [ $? -ne 0 ]; then
-    echo '{"progress": "-3", "progressmsg": "Checksum do not match!"}' >"${PROGRESS_FILE}"
+    progresslog "-3" "Update file checksum failed!" "${PROGRESS_FILE}"
     return 1
   fi
   # Check conditions
-  echo '{"progress": "30", "progressmsg": "Check conditions ..."}' >"${PROGRESS_FILE}"
+  progresslog "30" "Check conditions ..." "${PROGRESS_FILE}"
   if [ -f "${TMP_PATH}/update/update-check.sh" ]; then
-    cat "${TMP_PATH}/update/update-check.sh" | bash
+    ${RR_SUDO} chmod a+x "${TMP_PATH}/update/update-check.sh"
+    ${RR_SUDO} "${TMP_PATH}/update/update-check.sh"
     if [ $? -ne 0 ]; then
-      echo '{"progress": "-4", "progressmsg": "Update check failed, The current version does not support upgrading to the latest version!"}' >"${PROGRESS_FILE}"
+      progresslog "-4" "Update file check failed!" "${PROGRESS_FILE}"
       return 1
     fi
   fi
 
-  echo '{"progress": "40", "progressmsg": "Check disk space ..."}' >"${PROGRESS_FILE}"
+  progresslog "40" "Check disk space ..." "${PROGRESS_FILE}"
   SIZENEW=0
   SIZEOLD=0
   while IFS=': ' read KEY VALUE; do
+    VALUE="${VALUE#/}" # Remove leading slash
+    VALUE="${VALUE%/}" # Remove trailing slash
     if [ "${KEY: -1}" = "/" ]; then
-      rm -rf "${TMP_PATH}/update/${VALUE}"
-      mkdir -p "${TMP_PATH}/update/${VALUE}"
+      ${RR_SUDO} rm -rf "${TMP_PATH}/update/${VALUE}"
+      ${RR_SUDO} mkdir -p "${TMP_PATH}/update/${VALUE}/"
 
-      tar -zxf "${TMP_PATH}/update/$(basename "${KEY}").tgz" -C "${TMP_PATH}/update/${VALUE}"
+      ${RR_SUDO} tar -zxf "${TMP_PATH}/update/$(basename "${KEY}").tgz" -C "${TMP_PATH}/update/${VALUE}"
       if [ $? -ne 0 ]; then
-        echo '{"progress": "-5", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
+        progresslog "-5" "Failed to extract update file!" "${PROGRESS_FILE}"
         return 1
       fi
-      rm "${TMP_PATH}/update/$(basename "${KEY}").tgz"
+      # ${RR_SUDO} chown -R root:root "${TMP_PATH}/update/${VALUE}"
+      # ${RR_SUDO} chmod -R 644 "${TMP_PATH}/update/${VALUE}"
+      ${RR_SUDO} rm "${TMP_PATH}/update/$(basename "${KEY}").tgz"
     else
-      mkdir -p "${TMP_PATH}/update/$(dirname "${VALUE}")"
-      mv -f "${TMP_PATH}/update/$(basename "${KEY}")" "${TMP_PATH}/update/${VALUE}"
+      ${RR_SUDO} mkdir -p "${TMP_PATH}/update/$(dirname "/${VALUE}")"
+      ${RR_SUDO} mv -f "${TMP_PATH}/update/$(basename "${KEY}")" "${TMP_PATH}/update/${VALUE}"
     fi
-    FSNEW=$(du -sm "${TMP_PATH}/update/${VALUE}" 2>/dev/null | awk '{print $1}')
-    FSOLD=$(du -sm "${VALUE}" 2>/dev/null | awk '{print $1}')
+    FSNEW=$(${RR_SUDO} du -sm "${TMP_PATH}/update/${VALUE}" 2>/dev/null | awk '{print $1}')
+    FSOLD=$(${RR_SUDO} du -sm "/${VALUE}" 2>/dev/null | awk '{print $1}')
     SIZENEW=$((${SIZENEW} + ${FSNEW:-0}))
     SIZEOLD=$((${SIZEOLD} + ${FSOLD:-0}))
   done <<<$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")
 
   SIZESPL=$(${RR_SUDO} df -m "${PART3_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
   if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
-    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "${PART3_PATH}" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
-    echo '{"progress": "-6", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
+    progresslog "-6" "Not enough disk space! Need ${SIZENEW:-0}MB, but only $((${SIZEOLD:-0} + ${SIZESPL:-0}))MB available." "${PROGRESS_FILE}"
     return 1
   fi
 
   # Process update-list.yml
-  echo '{"progress": "50", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
+  progresslog "50" "Process update-list ..." "${PROGRESS_FILE}"
   while read F; do
-    [ -f "${F}" ] && rm -f "${F}"
-    [ -d "${F}" ] && rm -rf "${F}"
+    [ -f "${F}" ] && ${RR_SUDO} rm -f "${F}"
+    [ -d "${F}" ] && ${RR_SUDO} rm -rf "${F}"
   done <<<$(readConfigArray "remove" "${TMP_PATH}/update/update-list.yml")
 
-  echo '{"progress": "60", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
+  progresslog "60" "Process update-list ..." "${PROGRESS_FILE}"
   while IFS=': ' read KEY VALUE; do
+    progresslog "70" "Update ${VALUE} ..." "${PROGRESS_FILE}"
+    VALUE="${VALUE#/}" # Remove leading slash
+    VALUE="${VALUE%/}" # Remove trailing slash
     if [ "${KEY: -1}" = "/" ]; then
-      ${RR_SUDO} rm -rf "${VALUE}"/*
-      ${RR_SUDO} mkdir -p "${VALUE}"
-      ${RR_SUDO} cp -rf "${TMP_PATH}/update/${VALUE}"/* "${VALUE}"
-      if [ "$(realpath "${VALUE}")" = "$(realpath "${MODULES_PATH}")" ]; then
-        if [ -n "${MODEL}" ] && [ -n "${PRODUCTVER}" ]; then
-          KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
-          KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
-          if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
-            writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
-            mergeConfigModules "$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}" | awk '{print $1}')" "${USER_CONFIG_FILE}"
-          fi
+      ${RR_SUDO} rm -rf "/${VALUE}/"*
+      ${RR_SUDO} mkdir -p "/${VALUE}/"
+      ${RR_SUDO} cp -rf "${TMP_PATH}/update/${VALUE}/". "/${VALUE}/"
+      if [ "$(realpath "/${VALUE}/")" = "$(realpath "${MODULES_PATH}")" ]; then
+        MODEL="$(readConfigKey "model" "${USER_CONFIG_FILE}")"
+        PRODUCTVER="$(readConfigKey "productver" "${USER_CONFIG_FILE}")"
+        PLATFORM="$(readConfigKey "platform" "${USER_CONFIG_FILE}")"
+        KVER="$(readConfigKey "kver" "${USER_CONFIG_FILE}")"
+        KPRE="$(readConfigKey "kpre" "${USER_CONFIG_FILE}")"
+
+        if [ -n "${PLATFORM}" ] && [ -n "${PRODUCTVER}" ] && [ -z "${KVER}" ]; then
+          _release=$(/bin/uname -r)
+          KVER="$(/bin/echo ${_release%%[-+]*} | /usr/bin/cut -d'.' -f1-3)"
+          PLATFORMS="epyc7002"
+          PLATFORM="$(/bin/get_key_value /etc/synoinfo.conf unique | cut -d"_" -f2)"
+          majorversion="$(/bin/get_key_value /etc/VERSION majorversion)"
+          minorversion="$(/bin/get_key_value /etc/VERSION minorversion)"
+          echo "${PLATFORMS}" | grep -wq "${PLATFORM}" && KPRE="${majorversion}.${minorversion}" || KPRE=""
         fi
+        if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
+          progresslog "70" "Update /${VALUE} merge modules ..." "${PROGRESS_FILE}"
+          writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
+          mergeConfigModules "$(getAllModules "${PLATFORM}" "${KPRE:+${KPRE}-}${KVER}" | awk '{print $1}')" "${USER_CONFIG_FILE}"
+        fi
+
       fi
     else
-      ${RR_SUDO} mkdir -p "$(dirname "${VALUE}")"
-      ${RR_SUDO} cp -f "${TMP_PATH}/update/${VALUE}" "${VALUE}"
+      ${RR_SUDO} mkdir -p "$(dirname "/${VALUE}")"
+      ${RR_SUDO} cp -f "${TMP_PATH}/update/${VALUE}" "/${VALUE}"
     fi
   done <<<$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")
-  rm -rf "${TMP_PATH}/update"
-  echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
+
+  ${RR_SUDO} rm -rf "${TMP_PATH}/update"
+  progresslog "90" "Update RR success!" "${PROGRESS_FILE}"
+  ${RR_SUDO} touch ${PART1_PATH}/.upgraded
   ${RR_SUDO} touch ${PART1_PATH}/.build
   ${RR_SUDO} sync
-  echo '{"progress": "100", "progressmsg": "RR updated success!"}' >"${PROGRESS_FILE}"
+  progresslog "100" "Update RR success!" "${PROGRESS_FILE}"
   return 0
 }
 
-# 1 - update.zip path
-# 2 - progress file path
-function updateAddons() {
-  local UPDATE_FILE="${1:-"/tmp/addons.zip"}"
-  local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
-
-  echo '{"progress": "0", "progressmsg": "Update Addons ..."}' >"${PROGRESS_FILE}"
-  if [ ! -d "${PART1_PATH}" ] || [ ! -d "${PART3_PATH}" ]; then
-    echo '{"progress": "-1", "progressmsg": "RR path not found!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  if [ ! -f "${UPDATE_FILE}" ]; then
-    echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  echo '{"progress": "10", "progressmsg": "Extracting update file ..."}' >"${PROGRESS_FILE}"
-  rm -rf "${TMP_PATH}/update"
-  mkdir -p "${TMP_PATH}/update"
-  unzip -oq "${UPDATE_FILE}" -d "${TMP_PATH}/update"
-  if [ $? -ne 0 ]; then
-    echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-
-  for PKG in $(ls ${TMP_PATH}/update/*.addon 2>/dev/null); do
-    ADDON=$(basename ${PKG} .addon)
-    rm -rf "${TMP_PATH}/update/${ADDON}"
-    mkdir -p "${TMP_PATH}/update/${ADDON}"
-    tar -xaf "${PKG}" -C "${TMP_PATH}/update/${ADDON}"
-    if [ $? -ne 0 ]; then
-      echo '{"progress": "-3", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
-      return 1
-    fi
-    rm -f "${PKG}"
-  done
-  SIZENEW="$(du -sm "${TMP_PATH}/update" 2>/dev/null | awk '{print $1}')"
-  SIZEOLD="$(du -sm "${ADDONS_PATH}" 2>/dev/null | awk '{print $1}')"
-  SIZESPL=$(df -m "${ADDONS_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
-  if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
-    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${ADDONS_PATH}")" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
-    echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  ${RR_SUDO} rm -rf "${ADDONS_PATH}/"*
-  ${RR_SUDO} cp -rf "${TMP_PATH}/update/"* "${ADDONS_PATH}/"
-  rm -rf "${TMP_PATH}/update"
-  echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  ${RR_SUDO} touch ${PART1_PATH}/.build
-  ${RR_SUDO} sync
-  echo '{"progress": "100", "progressmsg": "Addons updated success!"}' >"${PROGRESS_FILE}"
-  return 0
+[ -z "${1}" ] && {
+  echo "Usage: $0 [updateRR] [update.zip] [progress file]"
+  exit 1
 }
 
-# 1 - update.zip path
-# 2 - progress file path
-function updateModules() {
-  local UPDATE_FILE="${1:-"/tmp/modules.zip"}"
-  local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
-
-  echo '{"progress": "0", "progressmsg": "Update Modules ..."}' >"${PROGRESS_FILE}"
-  if [ ! -d "${PART1_PATH}" ] || [ ! -d "${PART3_PATH}" ]; then
-    echo '{"progress": "-1", "progressmsg": "RR path not found!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  if [ ! -f "${UPDATE_FILE}" ]; then
-    echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  echo '{"progress": "10", "progressmsg": "Extracting update file ..."}' >"${PROGRESS_FILE}"
-  rm -rf "${TMP_PATH}/update"
-  mkdir -p "${TMP_PATH}/update"
-  unzip -oq "${UPDATE_FILE}" -d "${TMP_PATH}/update"
-  if [ $? -ne 0 ]; then
-    echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-
-  SIZENEW="$(du -sm "${TMP_PATH}/update" 2>/dev/null | awk '{print $1}')"
-  SIZEOLD="$(du -sm "${MODULES_PATH}" 2>/dev/null | awk '{print $1}')"
-  SIZESPL=$(df -m "${MODULES_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
-  if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
-    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${MODULES_PATH}")" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
-    echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  ${RR_SUDO} rm -rf "${MODULES_PATH}/"*
-  ${RR_SUDO} cp -rf "${TMP_PATH}/update/"* "${MODULES_PATH}/"
-  rm -rf "${TMP_PATH}/update"
-  if [ $? -ne 0 ]; then
-    echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  echo '{"progress": "30", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  if [ -n "${MODEL}" ] && [ -n "${PRODUCTVER}" ]; then
-    KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
-    KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
-    if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
-      writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
-      mergeConfigModules "$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}" | awk '{print $1}')" "${USER_CONFIG_FILE}"
-    fi
-  fi
-  echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  ${RR_SUDO} touch ${PART1_PATH}/.build
-  ${RR_SUDO} sync
-  echo '{"progress": "100", "progressmsg": "Modules updated success!"}' >"${PROGRESS_FILE}"
-  return 0
+[ -x "/sbin/rrmdo" ] && RR_SUDO="/sbin/rrmdo" || RR_SUDO=""
+${RR_SUDO} ls /root >/dev/null 2>&1 || {
+  progresslog "-1" "No root permission!" "${3}"
+  echo "No root permission!"
+  exit 1
 }
-
-# 1 - update.zip path
-# 2 - progress file path
-function updateLKMs() {
-  local UPDATE_FILE="${1:-"/tmp/rp-lkms.zip"}"
-  local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
-
-  echo '{"progress": "0", "progressmsg": "Update LKMs ..."}' >"${PROGRESS_FILE}"
-  if [ ! -d "${PART1_PATH}" ] || [ ! -d "${PART3_PATH}" ]; then
-    echo '{"progress": "-1", "progressmsg": "RR path not found!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  if [ ! -f "${UPDATE_FILE}" ]; then
-    echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  echo '{"progress": "10", "progressmsg": "Extracting update file ..."}' >"${PROGRESS_FILE}"
-  rm -rf "${TMP_PATH}/update"
-  mkdir -p "${TMP_PATH}/update"
-  unzip -oq "${UPDATE_FILE}" -d "${TMP_PATH}/update"
-  if [ $? -ne 0 ]; then
-    echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-
-  SIZENEW="$(du -sm "${TMP_PATH}/update" 2>/dev/null | awk '{print $1}')"
-  SIZEOLD="$(du -sm "${LKMS_PATH}" 2>/dev/null | awk '{print $1}')"
-  SIZESPL=$(df -m "${LKMS_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
-  if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
-    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${LKMS_PATH}")" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
-    echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  ${RR_SUDO} rm -rf "${LKMS_PATH}/"*
-  ${RR_SUDO} cp -rf "${TMP_PATH}/update/"* "${LKMS_PATH}/"
-  rm -rf "${TMP_PATH}/update"
-  echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  ${RR_SUDO} touch ${PART1_PATH}/.build
-  ${RR_SUDO} sync
-  echo '{"progress": "100", "progressmsg": "LKMs updated success!"}' >"${PROGRESS_FILE}"
-  return 0
-}
-
-# 1 - update.zip path
-# 2 - progress file path
-function updateCKs() {
-  local UPDATE_FILE="${1:-"/tmp/rr-cks.zip"}"
-  local PROGRESS_FILE="${2:-"/tmp/rr_update_progress"}"
-
-  echo '{"progress": "0", "progressmsg": "Update CKs ..."}' >"${PROGRESS_FILE}"
-  if [ ! -d "${PART1_PATH}" ] || [ ! -d "${PART3_PATH}" ]; then
-    echo '{"progress": "-1", "progressmsg": "RR path not found!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  if [ ! -f "${UPDATE_FILE}" ]; then
-    echo '{"progress": "-1", "progressmsg": "Update file not found!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  echo '{"progress": "10", "progressmsg": "Extracting update file ..."}' >"${PROGRESS_FILE}"
-  rm -rf "${TMP_PATH}/update"
-  mkdir -p "${TMP_PATH}/update"
-  unzip -oq "${UPDATE_FILE}" -d "${TMP_PATH}/update"
-  if [ $? -ne 0 ]; then
-    echo '{"progress": "-2", "progressmsg": "Update file unzip failed!"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-
-  SIZENEW="$(du -sm "${TMP_PATH}/update" 2>/dev/null | awk '{print $1}')"
-  SIZEOLD="$(du -sm "${CKS_PATH}" 2>/dev/null | awk '{print $1}')"
-  SIZESPL=$(df -m "${CKS_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
-  if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
-    MSG="$(printf "Failed to install due to insufficient remaning disk space on local hard drive, consider reallocate your disk %s with at least %sM." "$(dirname "${CKS_PATH}")" "$((${SIZENEW:-0} - ${SIZEOLD:-0} - ${SIZESPL:-0}))")"
-    echo '{"progress": "-3", "progressmsg": "'${MSG}'"}' >"${PROGRESS_FILE}"
-    return 1
-  fi
-  echo '{"progress": "20", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  ${RR_SUDO} rm -rf "${CKS_PATH}/"*
-  ${RR_SUDO} cp -rf "${TMP_PATH}/update/"* "${CKS_PATH}/"
-  if [ -n "${MODEL}" ] && [ -n "${PRODUCTVER}" ] && [ "${KERNEL}" = "custom" ]; then
-    KVER="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kver" "${WORK_PATH}/platforms.yml")"
-    KPRE="$(readConfigKey "platforms.${PLATFORM}.productvers.\"${PRODUCTVER}\".kpre" "${WORK_PATH}/platforms.yml")"
-    if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
-      writeConfigKey "modules" "{}" "${USER_CONFIG_FILE}"
-      mergeConfigModules "$(getAllModules "${PLATFORM}" "$([ -n "${KPRE}" ] && echo "${KPRE}-")${KVER}" | awk '{print $1}')" "${USER_CONFIG_FILE}"
-    fi
-  fi
-  rm -rf "${TMP_PATH}/update"
-  echo '{"progress": "90", "progressmsg": "Process update ..."}' >"${PROGRESS_FILE}"
-  ${RR_SUDO} touch ${PART1_PATH}/.build
-  ${RR_SUDO} sync
-  echo '{"progress": "100", "progressmsg": "CKs updated success!"}' >"${PROGRESS_FILE}"
-  return 0
-}
-
-WORK_PATH="/tmp/initrd/opt/rr"
-PLATFORM="$(readConfigKey "platform" "${USER_CONFIG_FILE}")"
-MODEL="$(readConfigKey "model" "${USER_CONFIG_FILE}")"
-PRODUCTVER="$(readConfigKey "productver" "${USER_CONFIG_FILE}")"
 
 $@

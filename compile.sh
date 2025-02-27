@@ -88,7 +88,7 @@ function compile_addon() {
       if [ -d "${1}/${COPY_PATH}" ]; then
         echo -e "\033[1;35m  Copying folder '${COPY_PATH}'\033[0m"
         mkdir -p "${OUT_PATH}/all/root"
-        cp -R "${1}/${COPY_PATH}/"* "${OUT_PATH}/all/root"
+        cp -r "${1}/${COPY_PATH}/"* "${OUT_PATH}/all/root"
         HAS_FILES=1
       else
         echo -e "\033[1;33m  WARNING: folder '${COPY_PATH}' not found\033[0m"
@@ -133,7 +133,7 @@ function compile_addon() {
       if [ -d "${1}/${COPY_PATH}" ]; then
         echo -e "\033[1;35m  Copying folder '${COPY_PATH}'\033[0m"
         mkdir -p "${OUT_PATH}/${P}/root"
-        cp -R "${1}/${COPY_PATH}/"* "${OUT_PATH}/${P}/root"
+        cp -r "${1}/${COPY_PATH}/"* "${OUT_PATH}/${P}/root"
         HAS_FILES=1
       else
         echo -e "\033[1;33m  WARNING: folder '${1}/${COPY_PATH}' not found\033[0m"

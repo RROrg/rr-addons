@@ -7,7 +7,6 @@
 #
 
 RR_PATH="/tmp/initrd"
-[ -f "/sbin/rrmdo" ] && RR_SUDO="/sbin/rrmdo" || RR_SUDO=""
 
 function mountLoaderDisk() {
   if [ ! -f "/usr/rr/.mountloader" ]; then
@@ -30,16 +29,49 @@ function mountLoaderDisk() {
         ${RR_SUDO} mkdir -p "/mnt/p${i}"
         ${RR_SUDO} mount "/dev/synoboot${i}" "/mnt/p${i}" || {
           echo "Can't mount /dev/synoboot${i}."
+          for i in {1..3}; do
+            ${RR_SUDO} umount "/mnt/p${i}" 2>/dev/null || true
+            ${RR_SUDO} rm -rf "/mnt/p${i}" 2>/dev/null || true
+          done
           break 2
         }
       done
 
       if echo "$@" | grep -wq "\-all"; then
-        ${RR_SUDO} rm -rf "${RR_PATH}"
-        ${RR_SUDO} mkdir -p "${RR_PATH}"
-        (cd "${RR_PATH}" && xz -dc <"/mnt/p3/initrd-rr" | ${RR_SUDO} cpio -idm) >/dev/null 2>&1 || true
-        if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
-          echo "RR initrd work path not found!"
+        INITRD_TOOLPATH="/usr/mountloader"
+        RR_RAMDISK_FILE="/mnt/p3/initrd-rr"
+        if [ -d "${INITRD_TOOLPATH}" ] && [ -f "${RR_RAMDISK_FILE}" ]; then
+          ${RR_SUDO} rm -rf "${RR_PATH}"
+          ${RR_SUDO} mkdir -p "${RR_PATH}"
+
+          PATH=${INITRD_TOOLPATH}/bin:$PATH
+          LD_LIBRARY_PATH=${INITRD_TOOLPATH}/lib:$LD_LIBRARY_PATH
+          INITRD_FORMAT=$(file -b --mime-type "${RR_RAMDISK_FILE}")
+          case "${INITRD_FORMAT}" in
+          *'x-cpio'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && cpio -idm <"${RR_RAMDISK_FILE}" >/dev/null 2>&1" || true ;;
+          *'x-xz'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && xz -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
+          *'x-lz4'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && lz4 -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
+          *'x-lzma'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && lzma -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
+          *'x-bzip2'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && bzip2 -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
+          *'gzip'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && gzip -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
+          *'zstd'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && zstd -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
+          *) ;;
+          esac
+          if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
+            echo "RR initrd work path not found!"
+            rm -rf "${RR_PATH}"
+            for i in {1..3}; do
+              ${RR_SUDO} umount "/mnt/p${i}" 2>/dev/null || true
+              ${RR_SUDO} rm -rf "/mnt/p${i}" 2>/dev/null || true
+            done
+            break
+          fi
+        else
+          echo "RR initrd not found!"
+          for i in {1..3}; do
+            ${RR_SUDO} umount "/mnt/p${i}" 2>/dev/null || true
+            ${RR_SUDO} rm -rf "/mnt/p${i}" 2>/dev/null || true
+          done
           break
         fi
       fi
@@ -53,7 +85,7 @@ function mountLoaderDisk() {
           echo "export WORK_PATH=\"${RR_PATH}/opt/rr\""
         fi
       } | ${RR_SUDO} tee "/usr/rr/.mountloader" >/dev/null
-      ${RR_SUDO} chmod 755 "/usr/rr/.mountloader"
+      ${RR_SUDO} chmod a+x "/usr/rr/.mountloader"
 
       sync
 
@@ -78,10 +110,11 @@ function unmountLoaderDisk() {
       echo "export LOADER_DISK_PART2=\"\""
       echo "export LOADER_DISK_PART3=\"\""
       if [ -f "${RR_PATH}/opt/rr/menu.sh" ]; then
+        ${RR_SUDO} rm -rf "${RR_PATH}" >/dev/null 2>&1 || true
         echo "export WORK_PATH=\"\""
       fi
     } | ${RR_SUDO} tee "/usr/rr/.mountloader" >/dev/null
-    ${RR_SUDO} chmod 755 "/usr/rr/.mountloader"
+    ${RR_SUDO} chmod a+x "/usr/rr/.mountloader"
     ${RR_SUDO} "/usr/rr/.mountloader"
     ${RR_SUDO} rm -f "/usr/rr/.mountloader"
 
@@ -99,6 +132,17 @@ function unmountLoaderDisk() {
   fi
   echo "Loader disk umount success!"
   return 0
+}
+
+[ -z "${1}" ] && {
+  echo " Usage: $0 [mountLoaderDisk|unmountLoaderDisk] [-all]"
+  exit 1
+}
+
+[ -x "/sbin/rrmdo" ] && RR_SUDO="/sbin/rrmdo" || RR_SUDO=""
+${RR_SUDO} ls /root >/dev/null 2>&1 || {
+  echo "No root permission!"
+  exit 1
 }
 
 $@

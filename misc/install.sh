@@ -17,6 +17,43 @@ if [ "${1}" = "early" ]; then
     xxd -r -p >"${SO_FILE}" 2>/dev/null
   rm -f "${SO_FILE}.tmp"
 
+elif [ "${1}" = "patches" ]; then
+  # getty
+  for I in $(cat /proc/cmdline 2>/dev/null | grep -Eo 'getty=[^ ]+' | sed 's/getty=//'); do
+    TTYN="$(echo "${I}" | cut -d',' -f1)"
+    BAUD="$(echo "${I}" | cut -d',' -f2 | cut -d'n' -f1)"
+    echo "ttyS0 ttyS1 ttyS2" | grep -wq "${TTYN}" && continue
+    if [ -n "${TTYN}" ] && [ -e "/dev/${TTYN}" ]; then
+      echo "Starting getty on ${TTYN}"
+      if [ -n "${BAUD}" ]; then
+        /usr/sbin/getty -L "${TTYN}" "${BAUD}" linux &
+      else
+        /usr/sbin/getty -L "${TTYN}" linux &
+      fi
+    fi
+  done
+  # network
+  if grep -q 'network.' /proc/cmdline; then
+    for I in $(grep -Eo 'network.[0-9a-fA-F:]{12,17}=[^ ]*' /proc/cmdline); do
+      MACR="$(echo "${I}" | cut -d. -f2 | cut -d= -f1 | sed 's/://g; s/.*/\L&/')"
+      IPRS="$(echo "${I}" | cut -d= -f2)"
+      for ETH in $(ls /sys/class/net/ 2>/dev/null | grep eth); do
+        MACX=$(cat /sys/class/net/${ETH}/address 2>/dev/null | sed 's/://g; s/.*/\L&/')
+        if [ "${MACR}" = "${MACX}" ]; then
+          echo "Setting IP for ${ETH} to ${IPRS}"
+          mkdir -p /etc/sysconfig/network-scripts
+          echo "DEVICE=${ETH}" >/etc/sysconfig/network-scripts/ifcfg-${ETH}
+          echo "BOOTPROTO=static" >>/etc/sysconfig/network-scripts/ifcfg-${ETH}
+          echo "ONBOOT=yes" >>/etc/sysconfig/network-scripts/ifcfg-${ETH}
+          echo "IPADDR=$(echo "${IPRS}" | cut -d/ -f1)" >>/etc/sysconfig/network-scripts/ifcfg-${ETH}
+          echo "NETMASK=$(echo "${IPRS}" | cut -d/ -f2)" >>/etc/sysconfig/network-scripts/ifcfg-${ETH}
+          echo "GATEWAY=$(echo "${IPRS}" | cut -d/ -f3)" >>/etc/sysconfig/network-scripts/ifcfg-${ETH}
+          echo "${ETH}" >>/etc/ifcfgs
+        fi
+      done
+    done
+  fi
+
 elif [ "${1}" = "rcExit" ]; then
   echo "Installing addon misc - ${1}"
 
@@ -116,43 +153,6 @@ EOF
   # recovery
   if grep -Eq 'force_junior|recovery' /proc/cmdline 2>/dev/null; then
     /usr/syno/web/webman/recovery.cgi
-  fi
-
-elif [ "${1}" = "patches" ]; then
-  # getty
-  for I in $(cat /proc/cmdline 2>/dev/null | grep -Eo 'getty=[^ ]+' | sed 's/getty=//'); do
-    TTYN="$(echo "${I}" | cut -d',' -f1)"
-    BAUD="$(echo "${I}" | cut -d',' -f2 | cut -d'n' -f1)"
-    echo "ttyS0 ttyS1 ttyS2" | grep -wq "${TTYN}" && continue
-    if [ -n "${TTYN}" ] && [ -e "/dev/${TTYN}" ]; then
-      echo "Starting getty on ${TTYN}"
-      if [ -n "${BAUD}" ]; then
-        /usr/sbin/getty -L "${TTYN}" "${BAUD}" linux &
-      else
-        /usr/sbin/getty -L "${TTYN}" linux &
-      fi
-    fi
-  done
-  # network
-  if grep -q 'network.' /proc/cmdline; then
-    for I in $(grep -Eo 'network.[0-9a-fA-F:]{12,17}=[^ ]*' /proc/cmdline); do
-      MACR="$(echo "${I}" | cut -d. -f2 | cut -d= -f1 | sed 's/://g; s/.*/\L&/')"
-      IPRS="$(echo "${I}" | cut -d= -f2)"
-      for ETH in $(ls /sys/class/net/ 2>/dev/null | grep eth); do
-        MACX=$(cat /sys/class/net/${ETH}/address 2>/dev/null | sed 's/://g; s/.*/\L&/')
-        if [ "${MACR}" = "${MACX}" ]; then
-          echo "Setting IP for ${ETH} to ${IPRS}"
-          mkdir -p /etc/sysconfig/network-scripts
-          echo "DEVICE=${ETH}" >/etc/sysconfig/network-scripts/ifcfg-${ETH}
-          echo "BOOTPROTO=static" >>/etc/sysconfig/network-scripts/ifcfg-${ETH}
-          echo "ONBOOT=yes" >>/etc/sysconfig/network-scripts/ifcfg-${ETH}
-          echo "IPADDR=$(echo "${IPRS}" | cut -d/ -f1)" >>/etc/sysconfig/network-scripts/ifcfg-${ETH}
-          echo "NETMASK=$(echo "${IPRS}" | cut -d/ -f2)" >>/etc/sysconfig/network-scripts/ifcfg-${ETH}
-          echo "GATEWAY=$(echo "${IPRS}" | cut -d/ -f3)" >>/etc/sysconfig/network-scripts/ifcfg-${ETH}
-          echo "${ETH}" >>/etc/ifcfgs
-        fi
-      done
-    done
   fi
 
 elif [ "${1}" = "late" ]; then
