@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/usr/bin/env bash
 
 # https://github.com/wirgen/synocodectool-patch
 # 2023/11/1
