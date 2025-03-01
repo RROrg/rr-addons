@@ -277,4 +277,4 @@ ${RR_SUDO} ls /root >/dev/null 2>&1 || {
   exit 1
 }
 
-$@
+"$@"

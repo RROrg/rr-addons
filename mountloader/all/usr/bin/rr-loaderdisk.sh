@@ -29,9 +29,9 @@ function mountLoaderDisk() {
         ${RR_SUDO} mkdir -p "/mnt/p${i}"
         ${RR_SUDO} mount "/dev/synoboot${i}" "/mnt/p${i}" || {
           echo "Can't mount /dev/synoboot${i}."
-          for i in {1..3}; do
-            ${RR_SUDO} umount "/mnt/p${i}" 2>/dev/null || true
-            ${RR_SUDO} rm -rf "/mnt/p${i}" 2>/dev/null || true
+          for j in {1..3}; do
+            ${RR_SUDO} umount "/mnt/p${j}" 2>/dev/null || true
+            ${RR_SUDO} rm -rf "/mnt/p${j}" 2>/dev/null || true
           done
           break 2
         }
@@ -48,29 +48,29 @@ function mountLoaderDisk() {
           LD_LIBRARY_PATH=${INITRD_TOOLPATH}/lib:$LD_LIBRARY_PATH
           INITRD_FORMAT=$(file -b --mime-type "${RR_RAMDISK_FILE}")
           case "${INITRD_FORMAT}" in
-          *'x-cpio'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && cpio -idm <"${RR_RAMDISK_FILE}" >/dev/null 2>&1" || true ;;
-          *'x-xz'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && xz -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
-          *'x-lz4'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && lz4 -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
-          *'x-lzma'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && lzma -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
-          *'x-bzip2'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && bzip2 -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
-          *'gzip'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && gzip -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
-          *'zstd'*) ${RR_SUDO} sh -c "cd "${RR_PATH}" && zstd -dc "${RR_RAMDISK_FILE}" | cpio -idm >/dev/null 2>&1" || true ;;
+          *'x-cpio'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && cpio -idm <${RR_RAMDISK_FILE} >/dev/null 2>&1" || true ;;
+          *'x-xz'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && xz -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+          *'x-lz4'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && lz4 -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+          *'x-lzma'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && lzma -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+          *'x-bzip2'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && bzip2 -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+          *'gzip'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && gzip -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+          *'zstd'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && zstd -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
           *) ;;
           esac
           if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
             echo "RR initrd work path not found!"
             rm -rf "${RR_PATH}"
-            for i in {1..3}; do
-              ${RR_SUDO} umount "/mnt/p${i}" 2>/dev/null || true
-              ${RR_SUDO} rm -rf "/mnt/p${i}" 2>/dev/null || true
+            for j in {1..3}; do
+              ${RR_SUDO} umount "/mnt/p${j}" 2>/dev/null || true
+              ${RR_SUDO} rm -rf "/mnt/p${j}" 2>/dev/null || true
             done
             break
           fi
         else
           echo "RR initrd not found!"
-          for i in {1..3}; do
-            ${RR_SUDO} umount "/mnt/p${i}" 2>/dev/null || true
-            ${RR_SUDO} rm -rf "/mnt/p${i}" 2>/dev/null || true
+          for j in {1..3}; do
+            ${RR_SUDO} umount "/mnt/p${j}" 2>/dev/null || true
+            ${RR_SUDO} rm -rf "/mnt/p${j}" 2>/dev/null || true
           done
           break
         fi
@@ -123,9 +123,9 @@ function unmountLoaderDisk() {
     if echo "$@" | grep -wq "\-all"; then
       ${RR_SUDO} rm -rf "${RR_PATH}"
     fi
-    for i in {1..3}; do
-      ${RR_SUDO} umount "/mnt/p${i}"
-      ${RR_SUDO} rm -rf "/mnt/p${i}"
+    for j in {1..3}; do
+      ${RR_SUDO} umount "/mnt/p${j}" 2>/dev/null || true
+      ${RR_SUDO} rm -rf "/mnt/p${j}" 2>/dev/null || true
     done
 
     echo 0 | ${RR_SUDO} tee /proc/sys/kernel/syno_install_flag >/dev/null
@@ -145,4 +145,4 @@ ${RR_SUDO} ls /root >/dev/null 2>&1 || {
   exit 1
 }
 
-$@
+"$@"

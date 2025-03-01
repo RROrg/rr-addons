@@ -35,7 +35,7 @@ HDD_BAY_LIST=(RACK_0_Bay RACK_2_Bay RACK_4_Bay RACK_8_Bay RACK_10_Bay RACK_12_Ba
 
 if [ "${1}" = "-h" ]; then
   echo "Use: ${0} [HDD_BAY [SSD_BAY]]"
-  echo "  HDD_BAY: ${HDD_BAY_LIST[@]}"
+  echo "  HDD_BAY: ${HDD_BAY_LIST[*]}"
   echo "  SSD_BAY: (row)X(column)"
   echo "  -r: restore"
   echo "  -h: help"
@@ -85,7 +85,7 @@ if [ -n "${SSD_BAY}" ] && [ -z "$(echo "${SSD_BAY}" | sed -n '/^[0-9]\{1,2\}X[0-
 fi
 
 if [ -z "${HDD_BAY}" ]; then
-  IDX="$(echo $(synodisk --enum -t internal 2>/dev/null | grep "Disk id:" | tail -n 1 | cut -d: -f2))"
+  IDX="$(synodisk --enum -t internal 2>/dev/null | grep "Disk id:" | tail -n1 | cut -d: -f2 | xargs)"
   IDX=${IDX:-0}
   while [ ${IDX} -le 60 ]; do
     for i in "${HDD_BAY_LIST[@]}"; do
@@ -97,7 +97,7 @@ if [ -z "${HDD_BAY}" ]; then
 fi
 
 if [ -z "${SSD_BAY}" ]; then
-  IDX="$(echo $(synodisk --enum -t cache 2>/dev/null | grep "Disk id:" | tail -n 1 | cut -d: -f2))"
+  IDX="$(synodisk --enum -t cache 2>/dev/null | grep "Disk id:" | tail -n1 | cut -d: -f2 | xargs)"
   SSD_BAY="$((${IDX:-0} / 8 + 1))X8"
 fi
 

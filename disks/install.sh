@@ -123,7 +123,7 @@ function getUsbPorts() {
     [ ${SPEED} -lt 480 ] && continue
     RBUS=$(cat ${I}/busnum)
     RCHILDS=$(cat ${I}/maxchild)
-    for C in $(seq 1 ${RCHILDS}); do
+    for C in $(seq 1 ${RCHILDS:-0}); do
       local SUB="${RBUS}-${C}"
       if [ -d "${I}/${SUB}" ]; then
         DCLASS=$(cat ${I}/${SUB}/bDeviceClass)
@@ -132,12 +132,12 @@ function getUsbPorts() {
         [ ${SPEED} -lt 480 ] && continue
         local CHILDS=$(cat ${I}/${SUB}/maxchild)
         HAVE_CHILD=1
-        for N in $(seq 1 ${CHILDS}); do
+        for N in $(seq 1 ${CHILDS:-0}); do
           echo -n "${RBUS}-${C}.${N} "
         done
       fi
     done
-    [ ${HAVE_CHILD} -eq 0 ] && for N in $(seq 1 ${RCHILDS}); do echo -n "${RBUS}-${N} "; done
+    [ ${HAVE_CHILD} -eq 0 ] && for N in $(seq 1 ${RCHILDS:-0}); do echo -n "${RBUS}-${N} "; done
   done
   echo
 }

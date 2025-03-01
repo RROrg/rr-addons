@@ -14,8 +14,8 @@ if [ "${1}" = "late" ]; then
   chmod +x "/tmpRoot/usr/rr/revert.sh"
 
   mkdir -p "/tmpRoot/usr/rr/addons/"
-  for F in $(ls /tmpRoot/usr/rr/addons/* 2>/dev/null); do
-    if grep -q "/addons/${F##*/}" "/addons/addons.sh" 2>/dev/null; then continue; fi
+  for F in /tmpRoot/usr/rr/addons/*; do
+    if grep -q "/addons/$(basename "${F}")" "/addons/addons.sh" 2>/dev/null; then continue; fi
     chmod +x "${F}" || true
     "${F}" "uninstall" || true
     rm -f "${F}" || true

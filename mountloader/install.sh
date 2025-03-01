@@ -83,5 +83,5 @@ elif [ "${1}" = "uninstall" ]; then
 #DELETE FROM task WHERE task_name LIKE 'MountLoaderDisk';
 #DELETE FROM task WHERE task_name LIKE 'UnMountLoaderDisk';
 #EOF
-  fi
+#  fi
 fi

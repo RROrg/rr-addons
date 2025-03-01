@@ -16,11 +16,12 @@ if [ "${1}" = "-r" ]; then
 else
   TEXTS_PATH="/usr/local/share/notification/rr"
   CACHE_PATH="/var/cache/texts/rr"
-  for F in $(ls "/usr/syno/synoman/webman/texts" 2>/dev/null); do
-    rm -rf "${TEXTS_PATH}/${F}"
-    mkdir -p "${TEXTS_PATH}/${F}"
-    echo -en '[rr_notify]\nCategory: System\nLevel: NOTIFICATION_INFO\nDesktop: %NOTIFICATION%\n\n\n' >>"${TEXTS_PATH}/${F}/mails"
-    echo -en '[rr_notify_subject]\nCategory: System\nLevel: NOTIFICATION_INFO\nDesktop: %NOTIFICATION%\nSubject: %NOTIFICATION%\n\n%SUBJECT%\n\nFrom %HOSTNAME%\n\n\n' >>"${TEXTS_PATH}/${F}/mails"
+  for F in /usr/syno/synoman/webman/texts/*; do
+    N=$(basename "${F}")
+    rm -rf "${TEXTS_PATH}/${N}"
+    mkdir -p "${TEXTS_PATH}/${N}"
+    echo -en '[rr_notify]\nCategory: System\nLevel: NOTIFICATION_INFO\nDesktop: %NOTIFICATION%\n\n\n' >>"${TEXTS_PATH}/${N}/mails"
+    echo -en '[rr_notify_subject]\nCategory: System\nLevel: NOTIFICATION_INFO\nDesktop: %NOTIFICATION%\nSubject: %NOTIFICATION%\n\n%SUBJECT%\n\nFrom %HOSTNAME%\n\n\n' >>"${TEXTS_PATH}/${N}/mails"
   done
   /bin/rm -rf "${CACHE_PATH}"
   /bin/mkdir -p /var/cache/texts

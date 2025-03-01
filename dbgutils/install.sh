@@ -27,6 +27,7 @@ function getlog() {
 
     modprobe vfat
     echo 1 >/proc/sys/kernel/syno_install_flag
+    [ -f "/sbin/fsck.vfat" ] && fsck.vfat -aw "/dev/synoboot1" >/dev/null 2>&1 || true
     mount "${LOADER_DISK_PART1}" "${WORK_PATH}"
   fi
 
@@ -54,6 +55,7 @@ function getlog() {
 
   sync
   umount "${WORK_PATH}"
+  echo 0 >/proc/sys/kernel/syno_install_flag
   rm -rf "${WORK_PATH}"
 }
 

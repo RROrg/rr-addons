@@ -243,7 +243,7 @@ elif [ "${1}" = "late" ]; then
   rm -vf /tmpRoot/usr/lib/modules-load.d/70-network*.conf
   mkdir -p /tmpRoot/etc/sysconfig/network-scripts
   mkdir -p /tmpRoot/etc.defaults/sysconfig/network-scripts
-  for I in $(ls /etc/sysconfig/network-scripts/ifcfg-eth*); do
+  for I in /etc/sysconfig/network-scripts/ifcfg-eth*; do
     [ ! -f "/tmpRoot/${I}" ] && cp -vpf "${I}" "/tmpRoot/${I}"
     [ ! -f "/tmpRoot/${I/etc/etc.defaults}" ] && cp -vpf "${I}" "/tmpRoot/${I/etc/etc.defaults}"
   done

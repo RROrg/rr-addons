@@ -103,15 +103,8 @@ function compile_addon() {
     rm -rf "${OUT_PATH}/all"
   fi
 
-  # Now check files for individual models
-  unset AVAL_FOR
-  declare -a AVAL_FOR
-  for P in $(readConfigEntriesArray "available-for" "${MANIFEST}"); do
-    AVAL_FOR+=(${P})
-  done
-
   # Loop in each available platform-kver
-  for P in ${AVAL_FOR[@]}; do
+  for P in $(readConfigEntriesArray "available-for" "${MANIFEST}"); do
     echo -e "\033[1;32m Processing '${P}' platform-kver section\033[0m"
     HAS_FILES=0
     # Get name of script to install, if defined. This script has high priority

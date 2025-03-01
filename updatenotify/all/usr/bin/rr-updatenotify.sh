@@ -7,7 +7,7 @@
 #
 
 function Create() {
-  if echo "$(cat /usr/syno/etc/synoschedule.d/root/*.task 2>/dev/null | grep '^name=' | cut -d'=' -f2)" | grep -q "RR-UpdateNotify"; then
+  if grep -q '^name=RR-UpdateNotify' /usr/syno/etc/synoschedule.d/root/*.task; then
     echo "Existence tasks"
   else
     echo "Create tasks"
@@ -19,9 +19,9 @@ function Create() {
 }
 
 function Delete() {
-  for I in $(ls /usr/syno/etc/synoschedule.d/root/*.task); do
-    if [ "$(cat "${I}" 2>/dev/null | grep '^name=' | cut -d'=' -f2)" = "RR-UpdateNotify" ]; then
-      id=$(cat "${I}" | grep '^id=' | cut -d'=' -f2)
+  for I in /usr/syno/etc/synoschedule.d/root/*.task; do
+    if grep -q '^name=RR-UpdateNotify' "${I}"; then
+      id=$(grep '^id=' "${I}" | cut -d'=' -f2)
       [ -n "${id}" ] && synoschedtask --del id=${id}
     fi
   done
@@ -77,7 +77,8 @@ case "${ACTION,,}" in
   Delete
   ;;
 "check")
-  Check
+  shift
+  Check "$@"
   ;;
 *)
   echo "Unknown command!"

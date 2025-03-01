@@ -10,8 +10,8 @@ if [ "${1}" = "patches" ]; then
   echo "Installing addon sortnetif - ${1}"
 
   ETHLIST=""
-  ETHX="$(ls /sys/class/net/ 2>/dev/null | grep eth)" # real network cards list
-  for ETH in ${ETHX}; do
+  for N in /sys/class/net/eth*; do
+    ETH="$(basename "${N}")"
     MAC="$(cat /sys/class/net/${ETH}/address 2>/dev/null | sed 's/://g; s/.*/\L&/')"
     BUS="$(ethtool -i ${ETH} 2>/dev/null | grep bus-info | cut -d' ' -f2)"
     ETHLIST="${ETHLIST}${BUS} ${MAC} ${ETH}\n"
@@ -31,9 +31,9 @@ if [ "${1}" = "patches" ]; then
 
   echo "${ETHSEQ}"
   # sort
-  if [ ! "${ETHSEQ}" = "$(seq 0 $((${ETHNUM:0} - 1)))" ]; then
+  if [ ! "${ETHSEQ}" = "$(seq 0 $((${ETHNUM:-0} - 1)))" ]; then
     /etc/rc.network stop
-    for i in $(seq 0 $((${ETHNUM:0} - 1))); do
+    for i in $(seq 0 $((${ETHNUM:-0} - 1))); do
       ip link set dev "eth${i}" name "tmp${i}"
     done
     I=0

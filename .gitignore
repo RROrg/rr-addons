@@ -7,5 +7,6 @@ VERSION
 addons*.zip
 
 # test
+forcemount
 hibernation
 resetbtn

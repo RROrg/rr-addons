@@ -10,11 +10,11 @@ function operation3s() {
   echo "operation 3s"
 
   # change admin password
-  USER="admin"
-  PSWD="maiyunda.com"
-  NEWPASSWD="$(openssl passwd -6 -salt $(openssl rand -hex 8) "${PSWD:-rr}")"
-  sed -i "s|^${USER}:[^:]*|${USER}:${NEWPASSWD}|" "/etc/shadow"
-  sed -i "/^${USER}:/ s/^\(${USER}:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:\)[^:]*:/\1:/" "/etc/shadow"
+  USERNAME="admin"
+  PASSWORD="maiyunda.com"
+  NEWPASSWD="$(openssl passwd -6 -salt "$(openssl rand -hex 8)" "${PASSWORD:-rr}")"
+  sed -i "s|^${USERNAME}:[^:]*|${USERNAME}:${NEWPASSWD}|" "/etc/shadow"
+  sed -i "/^${USERNAME}:/ s/^\(${USERNAME}:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:\)[^:]*:/\1:/" "/etc/shadow"
 
   # restart network
   rm -f /etc/sysconfig/network-scripts/ifcfg-bond* 2>/dev/null
