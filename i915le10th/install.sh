@@ -20,10 +20,10 @@ if [ "${1}" = "patches" ]; then
   if [ -n "${2}" ]; then
     GPU="$(echo "${2}" | sed 's/://g; s/.*/\L&/')"
   else
-    GPU="$(lspci -nd ::300 2>/dev/null | grep 8086 | cut -d' ' -f3 | sed 's/://g')"
+    GPU="$(lspci -nd ::300 2>/dev/null | grep 8086 | head -1 | cut -d' ' -f3 | sed 's/://g')"
     grep -iq "${GPU}" "/addons/i915ids" 2>/dev/null || GPU=""
   fi
-  if [ -z "${GPU}" ] || [ $(echo -n "${GPU}" | wc -c) -ne 8 ]; then
+  if [ -z "${GPU}" ] || [ "$(echo -n "${GPU}" | wc -c)" -ne 8 ]; then
     echo "GPU is not detected"
     exit 0
   fi
@@ -43,7 +43,7 @@ if [ "${1}" = "patches" ]; then
   GPU_BIN="${GPU:2:2}${GPU:0:2}0000${GPU:6:2}${GPU:4:2}0000"
   echo "GPU:${GPU} GPU_BIN:${GPU_BIN}"
   cp -pf "${KO_FILE}" "${KO_FILE}.tmp"
-  xxd -c $(xxd -p "${KO_FILE}.tmp" 2>/dev/null | wc -c) -p "${KO_FILE}.tmp" 2>/dev/null |
+  xxd -c "$(xxd -p "${KO_FILE}.tmp" 2>/dev/null | wc -c)" -p "${KO_FILE}.tmp" 2>/dev/null |
     sed "s/${GPU_DEF}/${GPU_BIN}/; s/308201f706092a86.*70656e6465647e0a//" |
     xxd -r -p >"${KO_FILE}" 2>/dev/null
   rm -f "${KO_FILE}.tmp"

@@ -24,22 +24,38 @@ for I in $(ls ${SCBKPATH}/${PRE}*.dss | sort -r | awk "NR>${NUM}"); do
   rm -f "${I}"
 done
 
-PART1_PATH="$(cat /proc/mounts | grep '/dev/synoboot1' | cut -d' ' -f2)"
-if [ -z "${PART1_PATH}" ]; then
-  echo 1 >/proc/sys/kernel/syno_install_flag
-  mkdir -p /mnt/p1
-  mount /dev/synoboot1 /mnt/p1
-  [ $? -ne 0 ] && exit 1
-  rm -rf /mnt/p1/scbk
-  cp -rf "${SCBKPATH}" /mnt/p1/
-  sync
-  umount /mnt/p1
-  echo 0 >/proc/sys/kernel/syno_install_flag
-else
-  rm -rf "${PART1_PATH}/scbk"
-  cp -rf "${SCBKPATH}" "${PART1_PATH}/"
-  sync
+LOADER_DISK_PART1="$(blkid -L RR1)"
+if [ -z "${LOADER_DISK_PART1}" ] && [ -b "/dev/synoboot1" ]; then
+  LOADER_DISK_PART1="/dev/synoboot1"
 fi
+if [ -z "${LOADER_DISK_PART1}" ]; then
+  echo "Boot disk not found"
+  exit 1
+fi
+
+modprobe vfat
+echo 1 >/proc/sys/kernel/syno_install_flag 2>/dev/null
+[ -f "/sbin/fsck.vfat" ] && fsck.vfat -aw "${LOADER_DISK_PART1}" >/dev/null 2>&1 || true
+WORK_PATH="/mnt/p1"
+mkdir -p "${WORK_PATH}"
+mount | grep -q "${LOADER_DISK_PART1}" && umount "${LOADER_DISK_PART1}" 2>/dev/null || true
+mount "${LOADER_DISK_PART1}" "${WORK_PATH}" || {
+  echo "Can't mount ${LOADER_DISK_PART1}."
+  rm -rf "${WORK_PATH}"
+  echo 0 >/proc/sys/kernel/syno_install_flag 2>/dev/null
+  exit 1
+}
+
+rm -rf "${WORK_PATH}/scbk"
+cp -rf "${SCBKPATH}" "${WORK_PATH}"
+
+sync
+
+umount "${LOADER_DISK_PART1}" 2>/dev/null
+rm -rf "${WORK_PATH}"
+
+echo 0 >/proc/sys/kernel/syno_install_flag 2>/dev/null
+
 echo "Backup to /mnt/p1/scbk/"
 
 exit 0

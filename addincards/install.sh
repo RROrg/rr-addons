@@ -16,8 +16,8 @@ if [ "${1}" = "late" ]; then
 
   [ ! -f "${FILE}.bak" ] && cp -pf "${FILE}" "${FILE}.bak"
   cp -pf "${FILE}" "${FILE}.tmp"
-  echo -n "" >"${FILE}"
-  for N in $(cat "${FILE}.tmp" 2>/dev/null | grep '\['); do
+  : > "${FILE}"
+  for N in $(grep '\[' "${FILE}.tmp" 2>/dev/null); do
     echo "${N}" >>"${FILE}"
     echo "${MODEL}=yes" >>"${FILE}"
   done

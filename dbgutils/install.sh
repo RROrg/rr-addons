@@ -6,30 +6,32 @@
 # See /LICENSE for more information.
 #
 
-function getlog() {
+getlog() {
   if [ -z "${1}" ]; then
     echo "Usage: ${0} {early|jrExit|rcExit|late|dsm}"
     exit 1
   fi
 
+  LOADER_DISK_PART1="$(blkid -L RR1)"
+  if [ -z "${LOADER_DISK_PART1}" ] && [ -b "/dev/synoboot1" ]; then
+    LOADER_DISK_PART1="/dev/synoboot1"
+  fi
+  if [ -z "${LOADER_DISK_PART1}" ]; then
+    echo "Boot disk not found"
+    exit 1
+  fi
+
+  modprobe vfat
+  echo 1 >/proc/sys/kernel/syno_install_flag 2>/dev/null
+  [ -f "/sbin/fsck.vfat" ] && fsck.vfat -aw "${LOADER_DISK_PART1}" >/dev/null 2>&1 || true
+
   WORK_PATH="/mnt/p1"
   mkdir -p "${WORK_PATH}"
-
-  if ! mount | grep -q "${WORK_PATH}"; then
-    LOADER_DISK_PART1="$(blkid -L RR1)"
-    if [ -z "${LOADER_DISK_PART1}" ] && [ -b "/dev/synoboot1" ]; then
-      LOADER_DISK_PART1="/dev/synoboot1"
-    fi
-    if [ -z "${LOADER_DISK_PART1}" ]; then
-      echo "Boot disk not found"
-      exit 1
-    fi
-
-    modprobe vfat
-    echo 1 >/proc/sys/kernel/syno_install_flag
-    [ -f "/sbin/fsck.vfat" ] && fsck.vfat -aw "/dev/synoboot1" >/dev/null 2>&1 || true
-    mount "${LOADER_DISK_PART1}" "${WORK_PATH}"
-  fi
+  mount | grep -q "${LOADER_DISK_PART1}" && umount "${LOADER_DISK_PART1}" 2>/dev/null || true
+  mount "${LOADER_DISK_PART1}" "${WORK_PATH}" || {
+    echo "Can't mount ${LOADER_DISK_PART1}."
+    exit 1
+  }
 
   DEST_PATH="${WORK_PATH}/logs/${1}"
   rm -rf "${DEST_PATH}"
@@ -54,9 +56,10 @@ function getlog() {
   [ -f "/tmp/installer_sh.log" ] && cp -pf "/tmp/installer_sh.log" "${DEST_PATH}/installer_sh.log" || true
 
   sync
-  umount "${WORK_PATH}"
-  echo 0 >/proc/sys/kernel/syno_install_flag
+  umount "${LOADER_DISK_PART1}" 2>/dev/null
   rm -rf "${WORK_PATH}"
+
+  echo 0 >/proc/sys/kernel/syno_install_flag 2>/dev/null
 }
 
 if [ "${1}" = "early" ]; then

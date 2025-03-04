@@ -6,6 +6,8 @@
 # See /LICENSE for more information.
 #
 
+# shellcheck disable=SC2010
+
 NAME="${1}"
 SSID="${2}"
 PSK="${3}"
@@ -34,7 +36,7 @@ for N in ${ETHX}; do
   fi
   ISOVS=$([ -L "/sys/class/net/ovs_${N}" ] && echo "true" || echo "false")
   [ "${ISOVS}" = "true" ] && /etc/rc.network "stop" "ovs_${N}" >/dev/null 2>&1
-  echo -e "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >"/usr/syno/etc/wpa_supplicant.conf.${N}"
+  echo -en "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >"/usr/syno/etc/wpa_supplicant.conf.${N}"
   /usr/sbin/wpa_supplicant -i "${N}" -c "/usr/syno/etc/wpa_supplicant.conf.${N}" -qq -B -P "/var/run/wpa_supplicant.pid.${N}"
   sleep 3
   /usr/syno/sbin/synonet --dhcp "${N}"

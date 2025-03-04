@@ -5,6 +5,9 @@
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
+
+# shellcheck disable=SC2010
+
 if [ "${1}" = "rcExit" ]; then
   echo "Installing addon wireless - ${1}"
 
@@ -18,20 +21,20 @@ if [ "${1}" = "rcExit" ]; then
       tar -zxf /addons/wireless-7.1.tgz -C /
       for N in ${ETHX}; do
         if [ -f "/var/run/wpa_supplicant.pid.${N}" ]; then
-          kill $(cat "/var/run/wpa_supplicant.pid.${N}")
+          kill "$(cat "/var/run/wpa_supplicant.pid.${N}")"
           rm -f "/var/run/wpa_supplicant.pid.${N}"
         fi
         ISOVS=$([ -L "/sys/class/net/ovs_${N}" ] && echo "true" || echo "false")
         [ "${ISOVS}" = "true" ] && /etc/rc.network "stop" "ovs_${N}" >/dev/null 2>&1
-        echo -e "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >"/usr/syno/etc/wpa_supplicant.conf.${N}"
+        printf "ctrl_interface=/var/run/wpa_supplicant\nupdate_config=1\nnetwork={\n        ssid=\"${SSID}\"\n        priority=1\n        psk=\"${PSK}\"\n}" >"/usr/syno/etc/wpa_supplicant.conf.${N}"
         /usr/sbin/wpa_supplicant -i "${N}" -c "/usr/syno/etc/wpa_supplicant.conf.${N}" -qq -B -P "/var/run/wpa_supplicant.pid.${N}"
         sleep 3
         if [ -x /sbin/udhcpc ]; then # junior
           if [ -f "/etc/dhcpc/dhcpcd-${N}.pid" ]; then
-            kill $(cat "/etc/dhcpc/dhcpcd-${N}.pid")
+            kill "$(cat "/etc/dhcpc/dhcpcd-${N}.pid")"
             rm -f "/etc/dhcpc/dhcpcd-${N}.pid"
           fi
-          /sbin/udhcpc -i ${N} -p "/etc/dhcpc/dhcpcd-${N}.pid" -b -x hostname:$(hostname) || true
+          /sbin/udhcpc -i "${N}" -p "/etc/dhcpc/dhcpcd-${N}.pid" -b -x hostname:"$(hostname)" || true
         fi
         sleep 1
         [ "${ISOVS}" = "true" ] && /etc/rc.network "start" "ovs_${N}" >/dev/null 2>&1
@@ -65,12 +68,12 @@ elif [ "${1}" = "late" ]; then
     ETHX=$(ls /sys/class/net/ 2>/dev/null | grep '^eth8' | grep -v '^eth8$')
     for N in ${ETHX}; do
       if [ -f "/var/run/wpa_supplicant.pid.${N}" ]; then
-        kill $(cat "/var/run/wpa_supplicant.pid.${N}")
+        kill "$(cat "/var/run/wpa_supplicant.pid.${N}")"
         rm -f "/var/run/wpa_supplicant.pid.${N}"
       fi
       if [ -x /sbin/udhcpc ]; then # junior
         if [ -f "/etc/dhcpc/dhcpcd-${N}.pid" ]; then
-          kill $(cat "/etc/dhcpc/dhcpcd-${N}.pid")
+          kill "$(cat "/etc/dhcpc/dhcpcd-${N}.pid")"
           rm -f "/etc/dhcpc/dhcpcd-${N}.pid"
         fi
       fi

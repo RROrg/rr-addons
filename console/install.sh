@@ -39,7 +39,7 @@ elif [ "${1}" = "modules" ]; then
 elif [ "${1}" = "rcExit" ]; then
   # echo "Installing addon console - ${1}"
   # Run only in junior mode (DSM not installed)
-  echo -e "Junior mode\n" >/etc/issue
+  printf "Junior mode\n" >/etc/issue
   echo "Starting getty..."
   /usr/sbin/getty -L 0 tty1 &
   /usr/bin/loadkeys /usr/share/keymaps/i386/${LAYOUT:-qwerty}/${KEYMAP:-us}.map.gz
@@ -56,7 +56,7 @@ elif [ "${1}" = "late" ]; then
 
   tar -zxf /addons/console-7.1.tgz -C /tmpRoot/usr/
   # run when boot installed DSM
-  echo -e "DSM mode\n" >/tmpRoot/etc/issue
+  printf "DSM mode\n" >/tmpRoot/etc/issue
 
   cp -vpf /tmpRoot/usr/lib/systemd/system/serial-getty\@.service /tmpRoot/usr/lib/systemd/system/getty\@tty1.service
   sed -i 's|^ExecStart=.*|ExecStart=-/sbin/agetty %I 115200 linux|' /tmpRoot/usr/lib/systemd/system/getty\@tty1.service

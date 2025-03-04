@@ -6,6 +6,8 @@
 # See /LICENSE for more information.
 #
 
+# shellcheck disable=SC2115
+
 if [ "${1}" = "-r" ]; then
   TEXTS_PATH="/usr/local/share/notification/rr"
   CACHE_PATH="/var/cache/texts/rr"

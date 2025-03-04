@@ -9,7 +9,7 @@ if [ "${1}" = "patches" ]; then
   echo "Installing addon blockupdates - ${1}"
 
   cp -pf /usr/syno/sbin/bootup-smallupdate.sh /usr/syno/sbin/bootup-smallupdate.sh.bak
-  echo -en '#!/bin/sh\nexit 0\n' >/usr/syno/sbin/bootup-smallupdate.sh
+  printf '#!/bin/sh\nexit 0\n' >/usr/syno/sbin/bootup-smallupdate.sh
 
 elif [ "${1}" = "late" ]; then
   echo "Installing addon blockupdates - ${1}"

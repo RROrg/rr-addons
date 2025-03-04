@@ -8,8 +8,9 @@
 
 if [ "${1}" = "jrExit" ]; then
   echo "Installing addon wol - ${1}"
-  for N in $(ls /sys/class/net/ 2>/dev/null | grep eth); do
-    /usr/bin/ethtool -s ${N} wol g 2>/dev/null
+  for F in /sys/class/net/eth*; do
+    ETH="$(basename "${F}")"
+    /usr/bin/ethtool -s "${ETH}" wol g 2>/dev/null
   done
 elif [ "${1}" = "late" ]; then
   echo "Installing addon wol - ${1}"

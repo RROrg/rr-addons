@@ -16,6 +16,10 @@ function mountLoaderDisk() {
         break
       fi
 
+      # Mount partitions
+      modprobe vfat
+      modprobe ext2
+      modprobe ext4
       echo 1 | ${RR_SUDO} tee /proc/sys/kernel/syno_install_flag >/dev/null
 
       # Check partitions and ignore errors
@@ -27,6 +31,7 @@ function mountLoaderDisk() {
       for i in {1..3}; do
         ${RR_SUDO} rm -rf "/mnt/p${i}"
         ${RR_SUDO} mkdir -p "/mnt/p${i}"
+        ${RR_SUDO} mount | grep -q "/dev/synoboot${i}" && ${RR_SUDO} umount "/dev/synoboot${i}" || true
         ${RR_SUDO} mount "/dev/synoboot${i}" "/mnt/p${i}" || {
           echo "Can't mount /dev/synoboot${i}."
           for j in {1..3}; do

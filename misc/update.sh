@@ -6,10 +6,6 @@
 # See /LICENSE for more information.
 #
 
-# all\usr\bin\ethtool
-#     ver: 4.19
-#     url: DSM_HD6500_69057\rd\usr\bin\ethtool
-#     ldd: not a dynamic executable
 # 
 # all\usr\bin\kmod  # will be overwritten by eudev.
 #     ver: 30

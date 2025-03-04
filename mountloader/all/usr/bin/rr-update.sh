@@ -6,6 +6,8 @@
 # See /LICENSE for more information.
 #
 
+# shellcheck disable=SC2034
+
 # SYNC consts.sh
 PART1_PATH="/mnt/p1"
 PART2_PATH="/mnt/p2"
@@ -52,7 +54,8 @@ function writeConfigKey() {
 # 2 - Path of yaml config file
 # Return Value
 function readConfigKey() {
-  local result=$(${RR_SUDO} yq eval ".${1} | explode(.)" "${2}" 2>/dev/null)
+  local result
+  result=$(${RR_SUDO} yq eval ".${1} | explode(.)" "${2}" 2>/dev/null)
   [ "${result}" = "null" ] && echo "" || echo "${result}"
 }
 
@@ -63,13 +66,14 @@ function readConfigKey() {
 function mergeConfigModules() {
   # Error: bad file '-': cannot index array with '8139cp' (strconv.ParseInt: parsing "8139cp": invalid syntax)
   # When the first key is a pure number, yq will not process it as a string by default. The current solution is to insert a placeholder key.
-  local MS="RRORG\n${1// /\\n}"
-  local L="$(echo -en "${MS}" | awk '{print "modules."$1":"}')"
-  local xmlfile=$(${RR_SUDO} mktemp)
-  ${RR_SUDO} sh -c "echo -en '${L}' | yq -p p -o y >'${xmlfile}'"
-  deleteConfigKey "modules.\"RRORG\"" "${xmlfile}"
-  ${RR_SUDO} yq eval-all --inplace '. as $item ireduce ({}; . * $item)' --inplace "${2}" "${xmlfile}" 2>/dev/null
-  ${RR_SUDO} rm -f "${xmlfile}"
+  local MS ML XF
+  MS="RRORG\n${1// /\\n}"
+  ML="$(echo -en "${MS}" | awk '{print "modules."$1":"}')"
+  XF=$(${RR_SUDO} mktemp)
+  ${RR_SUDO} sh -c "echo -en '${ML}' | yq -p p -o y >'${XF}'"
+  deleteConfigKey "modules.\"RRORG\"" "${XF}"
+  ${RR_SUDO} yq eval-all --inplace '. as $item ireduce ({}; . * $item)' --inplace "${2}" "${XF}" 2>/dev/null
+  ${RR_SUDO} rm -f "${XF}"
 }
 
 ###############################################################################
@@ -96,7 +100,7 @@ function readConfigArray() {
 function getAllModules() {
   local PLATFORM=${1}
   local PKVER=${2}
-
+  local KERNEL
   if [ -z "${PLATFORM}" ] || [ -z "${PKVER}" ]; then
     echo ""
     return 1
@@ -104,7 +108,7 @@ function getAllModules() {
   # Unzip modules for temporary folder
   ${RR_SUDO} rm -rf "${TMP_PATH}/modules"
   ${RR_SUDO} mkdir -p "${TMP_PATH}/modules"
-  local KERNEL="$(readConfigKey "kernel" "${USER_CONFIG_FILE}")"
+  KERNEL="$(readConfigKey "kernel" "${USER_CONFIG_FILE}")"
   if [ "${KERNEL}" = "custom" ]; then
     ${RR_SUDO} tar -zxf "${CKS_PATH}/modules-${PLATFORM}-${PKVER}.tgz" -C "${TMP_PATH}/modules"
   else
@@ -114,9 +118,10 @@ function getAllModules() {
   # ${RR_SUDO} chmod -R 755 "${TMP_PATH}/modules"
   # Get list of all modules
   for F in $(${RR_SUDO} ls ${TMP_PATH}/modules/*.ko 2>/dev/null); do
-    local X=$(basename ${F})
-    local M=${X:0:-3}
-    local DESC=$(${RR_SUDO} modinfo ${F} 2>/dev/null | awk -F':' '/description:/{ print $2}' | awk '{sub(/^[ ]+/,""); print}')
+    local X M DESC
+    X=$(basename "${F}")
+    M=$(basename "${F}" .ko)
+    DESC=$(${RR_SUDO} modinfo "${F}" 2>/dev/null | awk -F':' '/description:/{ print $2}' | awk '{sub(/^[ ]+/,""); print}')
     [ -z "${DESC}" ] && DESC="${X}"
     echo "${M} \"${DESC}\""
   done
@@ -180,7 +185,7 @@ function updateRR() {
   progresslog "40" "Check disk space ..." "${PROGRESS_FILE}"
   SIZENEW=0
   SIZEOLD=0
-  while IFS=': ' read KEY VALUE; do
+  while IFS=': ' read -r KEY VALUE; do
     VALUE="${VALUE#/}" # Remove leading slash
     VALUE="${VALUE%/}" # Remove trailing slash
     if [ "${KEY: -1}" = "/" ]; then
@@ -203,7 +208,7 @@ function updateRR() {
     FSOLD=$(${RR_SUDO} du -sm "/${VALUE}" 2>/dev/null | awk '{print $1}')
     SIZENEW=$((${SIZENEW} + ${FSNEW:-0}))
     SIZEOLD=$((${SIZEOLD} + ${FSOLD:-0}))
-  done <<<$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")
+  done <<<"$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")"
 
   SIZESPL=$(${RR_SUDO} df -m "${PART3_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
   if [ ${SIZENEW:-0} -ge $((${SIZEOLD:-0} + ${SIZESPL:-0})) ]; then
@@ -213,13 +218,13 @@ function updateRR() {
 
   # Process update-list.yml
   progresslog "50" "Process update-list ..." "${PROGRESS_FILE}"
-  while read F; do
+  while read -r F; do
     [ -f "${F}" ] && ${RR_SUDO} rm -f "${F}"
     [ -d "${F}" ] && ${RR_SUDO} rm -rf "${F}"
-  done <<<$(readConfigArray "remove" "${TMP_PATH}/update/update-list.yml")
+  done <<<"$(readConfigArray "remove" "${TMP_PATH}/update/update-list.yml")"
 
   progresslog "60" "Process update-list ..." "${PROGRESS_FILE}"
-  while IFS=': ' read KEY VALUE; do
+  while IFS=': ' read -r KEY VALUE; do
     progresslog "70" "Update ${VALUE} ..." "${PROGRESS_FILE}"
     VALUE="${VALUE#/}" # Remove leading slash
     VALUE="${VALUE%/}" # Remove trailing slash
@@ -254,7 +259,7 @@ function updateRR() {
       ${RR_SUDO} mkdir -p "$(dirname "/${VALUE}")"
       ${RR_SUDO} cp -f "${TMP_PATH}/update/${VALUE}" "/${VALUE}"
     fi
-  done <<<$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")
+  done <<<"$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")"
 
   ${RR_SUDO} rm -rf "${TMP_PATH}/update"
   progresslog "90" "Update RR success!" "${PROGRESS_FILE}"

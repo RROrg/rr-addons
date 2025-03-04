@@ -40,6 +40,7 @@ function Check() {
   if echo "$@" | grep -wq "\-p"; then
     TAG="$(curl -skL --connect-timeout 10 "${URL}/tags" | grep "/refs/tags/.*\.zip" | head -1 | sed -E 's/.*\/refs\/tags\/(.*)\.zip.*$/\1/')"
   else
+    # shellcheck disable=SC1083
     TAG="$(curl -skL --connect-timeout 10 -w %{url_effective} -o /dev/null "${URL}/releases/latest" | awk -F'/' '{print $NF}')"
   fi
   [ "${TAG:0:1}" = "v" ] && TAG="${TAG:1}"

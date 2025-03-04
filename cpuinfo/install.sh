@@ -42,7 +42,7 @@ if [ "${1}" = "late" ]; then
   #   [ ! -f "${FILE}.bak" ] && cp -pf "${FILE}" "${FILE}.bak"
   #   sed -i 's|/run/synoscgi.sock;|/run/synoscgi_rr.sock;|' "${FILE}"
   # done
-  # 
+  #
   # mkdir -p "/tmpRoot/usr/lib/systemd/system"
   # DEST="/tmpRoot/usr/lib/systemd/system/synoscgiproxy.service"
   # {
@@ -62,7 +62,7 @@ if [ "${1}" = "late" ]; then
   #   echo "[Install]"
   #   echo "WantedBy=multi-user.target"
   # } >"${DEST}"
-  # 
+  #
   # mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
   # ln -vsf /usr/lib/systemd/system/synoscgiproxy.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/synoscgiproxy.service
 
@@ -86,5 +86,5 @@ elif [ "${1}" = "uninstall" ]; then
   #
   # rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/synoscgiproxy.service"
   # rm -f "/tmpRoot/usr/lib/systemd/system/synoscgiproxy.service"
-  # 
+  #
 fi

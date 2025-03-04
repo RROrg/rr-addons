@@ -6,6 +6,8 @@
 # See /LICENSE for more information.
 #
 
+# shellcheck disable=SC2154
+
 # External incoming required ${MLINK} and ${MCHECKSUM}
 if [ -z "${MLINK}" ] || [ -z "${MCHECKSUM}" ]; then
   echo "MLINK or MCHECKSUM is null"

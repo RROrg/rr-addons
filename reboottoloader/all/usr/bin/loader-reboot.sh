@@ -13,8 +13,8 @@ fi
 
 MODES="config recovery junior uefi memtest"
 
-function use() {
-  echo "Use: ${0} [$(echo "${MODES}" | sed 's/ /|/g') ]"
+use() {
+  echo "Use: ${0} [ $(echo "${MODES}" | sed 's/ /|/g') ]"
   exit 1
 }
 
@@ -22,14 +22,34 @@ if [ -z "${1}" ] || ! echo "${MODES}" | grep -wq "${1}"; then use; fi
 
 echo "Rebooting to ${1} mode"
 
-echo 1 >/proc/sys/kernel/syno_install_flag 2>/dev/null
-mkdir -p /mnt/p1
-mount | grep -q /dev/synoboot1 || mount /dev/synoboot1 /mnt/p1 2>/dev/null
+LOADER_DISK_PART1="$(blkid -L RR1)"
+if [ -z "${LOADER_DISK_PART1}" ] && [ -b "/dev/synoboot1" ]; then
+  LOADER_DISK_PART1="/dev/synoboot1"
+fi
+if [ -z "${LOADER_DISK_PART1}" ]; then
+  echo "Boot disk not found"
+  exit 1
+fi
 
-GRUBPATH="$(dirname "$(find /mnt/p1 -name grub.cfg | head -1)")"
+modprobe vfat
+echo 1 >/proc/sys/kernel/syno_install_flag 2>/dev/null
+[ -f "/sbin/fsck.vfat" ] && fsck.vfat -aw "${LOADER_DISK_PART1}" >/dev/null 2>&1 || true
+WORK_PATH="/mnt/p1"
+mkdir -p "${WORK_PATH}"
+mount | grep -q "${LOADER_DISK_PART1}" && umount "${LOADER_DISK_PART1}" 2>/dev/null || true
+mount "${LOADER_DISK_PART1}" "${WORK_PATH}" || {
+  echo "Can't mount ${LOADER_DISK_PART1}."
+  rm -rf "${WORK_PATH}"
+  echo 0 >/proc/sys/kernel/syno_install_flag 2>/dev/null
+  exit 1
+}
+
+GRUBPATH="$(dirname "$(find "${WORK_PATH}" -name grub.cfg | head -1)")"
 if [ -z "${GRUBPATH}" ]; then
   echo "Error: GRUB path not found"
-  umount /mnt/p1 2>/dev/null
+  umount "${LOADER_DISK_PART1}" 2>/dev/null
+  rm -rf "${WORK_PATH}"
+  echo 0 >/proc/sys/kernel/syno_install_flag 2>/dev/null
   exit 1
 fi
 
@@ -46,7 +66,7 @@ else
       echo "next_entry=${1}"
     } >"${ENVFILE}"
   else
-    sed -i "/^#{1,}$/d" "${ENVFILE}"
+    sed -i "/^#\{1,\}$/d" "${ENVFILE}"
     if grep -q "^next_entry=" "${ENVFILE}"; then
       sed -i "s/^next_entry=.*/next_entry=${1}/" "${ENVFILE}"
     else
@@ -56,7 +76,11 @@ else
   #for i in $(seq 1 $((1024 - $(cat "${ENVFILE}" 2>/dev/null | wc -c)))); do printf "#"; done >> "${ENVFILE}"
   printf '%*s' $((1024 - $(cat "${ENVFILE}" 2>/dev/null | wc -c))) "" | tr ' ' '#' >>"${ENVFILE}"
 fi
+
 sync
-umount /mnt/p1 2>/dev/null
+
+umount "${LOADER_DISK_PART1}" 2>/dev/null
+rm -rf "${WORK_PATH}"
+echo 0 >/proc/sys/kernel/syno_install_flag 2>/dev/null
 
 [ -x /usr/syno/sbin/synopoweroff ] && /usr/syno/sbin/synopoweroff -r || /sbin/reboot

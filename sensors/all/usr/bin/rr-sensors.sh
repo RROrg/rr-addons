@@ -34,6 +34,7 @@ generate_fancontrol_config() {
   # Or use pwmconfig to generate /etc/fancontrol interactively.
   local DEVPATH DEVNAME FCTEMPS FCFANS MINTEMP MAXTEMP MINSTART MINSTOP
   CORETEMP="$(find "/sys/devices/platform/" -name "temp1_input" | grep -E 'coretemp|k10temp' | sed -n 's|.*/\(hwmon.*\/temp1_input\).*|\1|p')"
+  # shellcheck disable=SC2044
   for P in $(find "/sys/devices/platform/" -name "temp1_input"); do
     D="$(echo "${P}" | sed -n 's|.*/\(devices/platform/[^/]*\)/.*|\1|p')"
     I="$(echo "${P}" | sed -n 's|.*hwmon\([0-9]\).*|\1|p')"
