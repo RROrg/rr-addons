@@ -14,11 +14,11 @@
 #   echo "${PLATFORM} is not supported nvmesystem addon!"
 #   exit 0
 # fi
-_BUILD="$(/bin/get_key_value /etc.defaults/VERSION buildnumber)"
-if [ ${_BUILD:-64570} -lt 69057 ]; then
-  echo "${_BUILD} is not supported nvmesystem addon!"
-  exit 0
-fi
+# _BUILD="$(/bin/get_key_value /etc.defaults/VERSION buildnumber)"
+# if [ ${_BUILD:-42218} -lt 42218 ]; then
+#   echo "${_BUILD} is not supported nvmesystem addon!"
+#   exit 0
+# fi
 
 if [ "${1}" = "early" ]; then
   echo "Installing addon nvmesystem - ${1}"
@@ -31,7 +31,7 @@ if [ "${1}" = "early" ]; then
   [ ! -f "${SO_FILE}.bak" ] && cp -pf "${SO_FILE}" "${SO_FILE}.bak"
   cp -f "${SO_FILE}" "${SO_FILE}.tmp"
   xxd -c "$(xxd -p "${SO_FILE}.tmp" 2>/dev/null | wc -c)" -p "${SO_FILE}.tmp" 2>/dev/null |
-    sed "s/4584ed74b7488b4c24083b01/4584ed75b7488b4c24083b01/" |
+    sed "s/4584ed74b7488b4c24083b01/4584ed75b7488b4c24083b01/; s/4584f674b7488b4c24083b01/4584f675b7488b4c24083b01/;" | # P1: [69057,?); P2: [42218,69057);
     xxd -r -p >"${SO_FILE}" 2>/dev/null
   rm -f "${SO_FILE}.tmp"
 
@@ -43,10 +43,12 @@ elif [ "${1}" = "late" ]; then
   # disk/shared_disk_info_enum.c::84 Failed to allocate list in SharedDiskInfoEnum, errno=0x900.
   SO_FILE="/tmpRoot/usr/lib/libhwcontrol.so.1"
   [ ! -f "${SO_FILE}.bak" ] && cp -pf "${SO_FILE}" "${SO_FILE}.bak"
-
   cp -pf "${SO_FILE}" "${SO_FILE}.tmp"
   xxd -c "$(xxd -p "${SO_FILE}.tmp" 2>/dev/null | wc -c)" -p "${SO_FILE}.tmp" 2>/dev/null |
-    sed "s/0f95c00fb6c0488b94240810/0f94c00fb6c0488b94240810/; s/8944240c8b44240809e84409/8944240c8b44240890904409/" |
+    sed "s/0f95c00fb6c0488b94240810/0f94c00fb6c0488b94240810/; s/8944240c8b44240809e84409/8944240c8b44240890904409/" | # [69057,?);     (from SA6400 69057)
+    sed "s/0f95c00fb6c0488b94240810/0f94c00fb6c0488b94240810/; s/85e40f884e0100004585ed0f/85e49090909090904585ed0f/" | # [42962,69057); (from SA6400 42962)
+    sed "s/0f95c00fb6c0488b4c242864/0f94c00fb6c0488b4c242864/; s/85e40f884e0100004585ed0f/85e49090909090904585ed0f/" | # [42962,69057); (from DS920+ 42962)
+    sed "s/0f95c00fb6c04883c408c348/0f94c00fb6c04883c408c348/; s/85e40f88580100004585ed0f/85e49090909090904585ed0f/" | # [42218,42962); (from DS920+ 42218)
     xxd -r -p >"${SO_FILE}" 2>/dev/null
   rm -f "${SO_FILE}.tmp"
 
