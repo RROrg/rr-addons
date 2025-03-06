@@ -119,6 +119,7 @@ function getAllModules() {
   # ${RR_SUDO} chmod -R 755 "${TMP_PATH}/modules"
   # Get list of all modules
   for F in $(${RR_SUDO} ls ${TMP_PATH}/modules/*.ko 2>/dev/null); do
+    [ ! -e "${F}" ] && continue
     local X M DESC
     X=$(basename "${F}")
     M=$(basename "${F}" .ko)

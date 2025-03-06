@@ -23,7 +23,7 @@ if [ "${1}" = "patches" ]; then
     GPU="$(lspci -nd ::300 2>/dev/null | grep 8086 | head -1 | cut -d' ' -f3 | sed 's/://g')"
     grep -iq "${GPU}" "/addons/i915ids" 2>/dev/null || GPU=""
   fi
-  if [ -z "${GPU}" ] || [ "$(echo -n "${GPU}" | wc -c)" -ne 8 ]; then
+  if [ -z "${GPU}" ] || [ "$(printf "%b" "${GPU}" | wc -c)" -ne 8 ]; then
     echo "GPU is not detected"
     exit 0
   fi
@@ -40,7 +40,7 @@ if [ "${1}" = "patches" ]; then
     /usr/sbin/modprobe -r i915
   fi
   GPU_DEF="86800000923e0000"
-  GPU_BIN="${GPU:2:2}${GPU:0:2}0000${GPU:6:2}${GPU:4:2}0000"
+  GPU_BIN="$(echo "${GPU}" | cut -c3-4)$(echo "${GPU}" | cut -c1-2)0000$(echo "${GPU}" | cut -c7-8)$(echo "${GPU}" | cut -c5-6)0000"
   echo "GPU:${GPU} GPU_BIN:${GPU_BIN}"
   cp -pf "${KO_FILE}" "${KO_FILE}.tmp"
   xxd -c "$(xxd -p "${KO_FILE}.tmp" 2>/dev/null | wc -c)" -p "${KO_FILE}.tmp" 2>/dev/null |

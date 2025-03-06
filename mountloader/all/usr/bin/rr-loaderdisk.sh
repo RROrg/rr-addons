@@ -17,9 +17,9 @@ function mountLoaderDisk() {
       fi
 
       # Mount partitions
-      modprobe vfat
-      modprobe ext2
-      modprobe ext4
+      modprobe -q vfat
+      modprobe -q ext2
+      modprobe -q ext4
       echo 1 | ${RR_SUDO} tee /proc/sys/kernel/syno_install_flag >/dev/null
 
       # Check partitions and ignore errors

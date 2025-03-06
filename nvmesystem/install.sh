@@ -94,7 +94,7 @@ elif [ "${1}" = "late" ]; then
     echo "insert RRONBOOTUPRR_UDEV task to esynoscheduler.db"
     /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
 DELETE FROM task WHERE task_name LIKE 'RRONBOOTUPRR_UDEV';
-INSERT INTO task VALUES('RRONBOOTUPRR_UDEV', '', 'bootup', '', 1, 0, 0, 0, '', 0, '$(echo -e "${ONBOOTUP}")', 'script', '{}', '', '', '{}', '{}');
+INSERT INTO task VALUES('RRONBOOTUPRR_UDEV', '', 'bootup', '', 1, 0, 0, 0, '', 0, '$(printf "%b" "${ONBOOTUP}")', 'script', '{}', '', '', '{}', '{}');
 EOF
   fi
 

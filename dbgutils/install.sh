@@ -21,7 +21,7 @@ getlog() {
     exit 1
   fi
 
-  modprobe vfat
+  modprobe -q vfat
   echo 1 >/proc/sys/kernel/syno_install_flag 2>/dev/null
   [ -f "/sbin/fsck.vfat" ] && fsck.vfat -aw "${LOADER_DISK_PART1}" >/dev/null 2>&1 || true
 

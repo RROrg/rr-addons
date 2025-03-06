@@ -18,17 +18,17 @@ if [ "${1}" = "patches" ]; then
     ETHLIST="${ETHLIST}${BUS} ${MAC} ${ETH}\n"
   done
   ETHLISTTMPM=""
-  ETHLISTTMPB="$(echo -e "${ETHLIST}" | sort)"
+  ETHLISTTMPB="$(printf "%b" "${ETHLIST}" | sort)"
   if [ -n "${2}" ]; then
     MACS="$(echo "${2}" | sed 's/://g; s/,/ /g; s/.*/\L&/')"
     for MACX in ${MACS}; do
-      ETHLISTTMPM="${ETHLISTTMPM}$(echo -e "${ETHLISTTMPB}" | grep "${MACX}")\n"
-      ETHLISTTMPB="$(echo -e "${ETHLISTTMPB}" | grep -v "${MACX}")\n"
+      ETHLISTTMPM="${ETHLISTTMPM}$(printf "%b" "${ETHLISTTMPB}" | grep "${MACX}")\n"
+      ETHLISTTMPB="$(printf "%b""${ETHLISTTMPB}" | grep -v "${MACX}")\n"
     done
   fi
-  ETHLIST="$(echo -e "${ETHLISTTMPM}${ETHLISTTMPB}" | grep -v '^$')"
-  ETHSEQ="$(echo -e "${ETHLIST}" | awk '{print $3}' | sed 's/eth//g')"
-  ETHNUM="$(echo -e "${ETHLIST}" | wc -l)"
+  ETHLIST="$(printf "%b" "${ETHLISTTMPM}${ETHLISTTMPB}" | grep -v '^$')"
+  ETHSEQ="$(printf "%b" "${ETHLIST}" | awk '{print $3}' | sed 's/eth//g')"
+  ETHNUM="$(printf "%b" "${ETHLIST}" | wc -l)"
 
   echo "${ETHSEQ}"
   # sort
