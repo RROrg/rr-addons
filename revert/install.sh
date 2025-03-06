@@ -15,7 +15,8 @@ if [ "${1}" = "late" ]; then
 
   mkdir -p "/tmpRoot/usr/rr/addons/"
   for F in /tmpRoot/usr/rr/addons/*; do
-    if grep -q "/addons/$(basename "${F}")" "/addons/addons.sh" 2>/dev/null; then continue; fi
+    [ ! -e "${F}" ] && continue
+    grep -q "/addons/$(basename "${F}")" "/addons/addons.sh" 2>/dev/null && continue
     chmod +x "${F}" || true
     "${F}" "uninstall" || true
     rm -f "${F}" || true

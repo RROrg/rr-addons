@@ -9,6 +9,7 @@
 if [ "${1}" = "jrExit" ]; then
   echo "Installing addon wol - ${1}"
   for F in /sys/class/net/eth*; do
+    [ ! -e "${F}" ] && continue
     ETH="$(basename "${F}")"
     /usr/bin/ethtool -s "${ETH}" wol g 2>/dev/null
   done

@@ -19,11 +19,12 @@ else
   TEXTS_PATH="/usr/local/share/notification/rr"
   CACHE_PATH="/var/cache/texts/rr"
   for F in /usr/syno/synoman/webman/texts/*; do
-    N=$(basename "${F}")
-    rm -rf "${TEXTS_PATH}/${N}"
-    mkdir -p "${TEXTS_PATH}/${N}"
-    echo -en '[rr_notify]\nCategory: System\nLevel: NOTIFICATION_INFO\nDesktop: %NOTIFICATION%\n\n\n' >>"${TEXTS_PATH}/${N}/mails"
-    echo -en '[rr_notify_subject]\nCategory: System\nLevel: NOTIFICATION_INFO\nDesktop: %NOTIFICATION%\nSubject: %NOTIFICATION%\n\n%SUBJECT%\n\nFrom %HOSTNAME%\n\n\n' >>"${TEXTS_PATH}/${N}/mails"
+    [ ! -e "${F}" ] && continue
+    NAME=$(basename "${F}")
+    rm -rf "${TEXTS_PATH}/${NAME}"
+    mkdir -p "${TEXTS_PATH}/${NAME}"
+    echo -en '[rr_notify]\nCategory: System\nLevel: NOTIFICATION_INFO\nDesktop: %NOTIFICATION%\n\n\n' >>"${TEXTS_PATH}/${NAME}/mails"
+    echo -en '[rr_notify_subject]\nCategory: System\nLevel: NOTIFICATION_INFO\nDesktop: %NOTIFICATION%\nSubject: %NOTIFICATION%\n\n%SUBJECT%\n\nFrom %HOSTNAME%\n\n\n' >>"${TEXTS_PATH}/${NAME}/mails"
   done
   /bin/rm -rf "${CACHE_PATH}"
   /bin/mkdir -p /var/cache/texts

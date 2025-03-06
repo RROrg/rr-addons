@@ -38,6 +38,7 @@ elif [ "${1}" = "patches" ]; then
       MACR="$(echo "${I}" | cut -d. -f2 | cut -d= -f1 | sed 's/://g; s/.*/\L&/')"
       IPRS="$(echo "${I}" | cut -d= -f2)"
       for F in /sys/class/net/eth*; do
+        [ ! -e "${F}" ] && continue
         ETH="$(basename "${F}")"
         MACX=$(cat "/sys/class/net/${ETH}/address" 2>/dev/null | sed 's/://g; s/.*/\L&/')
         if [ "${MACR}" = "${MACX}" ]; then
@@ -247,6 +248,7 @@ elif [ "${1}" = "late" ]; then
   IFPATH1="/tmpRoot/etc/sysconfig/network-scripts"
   IFPATH2="/tmpRoot/etc.defaults/sysconfig/network-scripts"
   for F in /etc/sysconfig/network-scripts/ifcfg-eth*; do
+    [ ! -e "${F}" ] && continue
     I="$(basename "${F}")"
     [ ! -f "${IFPATH1}/${I}" ] && mkdir -p "${IFPATH1}" && cp -vpf "${F}" "${IFPATH1}/${I}"
     [ ! -f "${IFPATH2}/${I}" ] && mkdir -p "${IFPATH2}" && cp -vpf "${F}" "${IFPATH2}/${I}"

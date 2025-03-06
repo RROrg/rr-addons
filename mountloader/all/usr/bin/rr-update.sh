@@ -69,7 +69,8 @@ function mergeConfigModules() {
   local MS ML XF
   MS="RRORG\n${1// /\\n}"
   ML="$(echo -en "${MS}" | awk '{print "modules."$1":"}')"
-  XF=$(${RR_SUDO} mktemp)
+  XF=$(${RR_SUDO} mktemp 2>/dev/null)
+  XF=${XF:-/tmp/tmp.XXXXXXXXXX}
   ${RR_SUDO} sh -c "echo -en '${ML}' | yq -p p -o y >'${XF}'"
   deleteConfigKey "modules.\"RRORG\"" "${XF}"
   ${RR_SUDO} yq eval-all --inplace '. as $item ireduce ({}; . * $item)' --inplace "${2}" "${XF}" 2>/dev/null

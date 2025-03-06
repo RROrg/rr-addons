@@ -35,6 +35,7 @@ _set_conf_kv() {
     echo "${2}=\"${3}\"" >>"${FILE}"
     # continue
   done
+  return 0
 }
 
 # Check if the user has customized the key
@@ -125,18 +126,19 @@ checkSynoboot() {
 
 # USB ports
 getUsbPorts() {
-  for I in /sys/bus/usb/devices/usb*; do
+  for F in /sys/bus/usb/devices/usb*; do
+    [ ! -e "${F}" ] && continue
     local RCHILDS RBUS HAVE_CHILD=0
-    [ ! "$(cat "${I}/bDeviceClass" 2>/dev/null)" = "09" ] && continue
-    [ "$(cat "${I}/speed" 2>/dev/null)" -lt 480 ] && continue
-    RCHILDS=$(cat ${I}/maxchild 2>/dev/null)
-    RBUS=$(cat "${I}/busnum" 2>/dev/null)
+    [ ! "$(cat "${F}/bDeviceClass" 2>/dev/null)" = "09" ] && continue
+    [ "$(cat "${F}/speed" 2>/dev/null)" -lt 480 ] && continue
+    RCHILDS=$(cat ${F}/maxchild 2>/dev/null)
+    RBUS=$(cat "${F}/busnum" 2>/dev/null)
     for C in $(seq 1 ${RCHILDS:-0}); do
-      if [ -d "${I}/${RBUS:-0}-${C}" ]; then
-        [ ! "$(cat "${I}/${RBUS:-0}-${C}/bDeviceClass" 2>/dev/null)" = "09" ] && continue
-        [ "$(cat "${I}/${RBUS:-0}-${C}/speed" 2>/dev/null)" -lt 480 ] && continue
+      if [ -d "${F}/${RBUS:-0}-${C}" ]; then
+        [ ! "$(cat "${F}/${RBUS:-0}-${C}/bDeviceClass" 2>/dev/null)" = "09" ] && continue
+        [ "$(cat "${F}/${RBUS:-0}-${C}/speed" 2>/dev/null)" -lt 480 ] && continue
         HAVE_CHILD=1
-        CHILDS=$(cat "${I}/${RBUS:-0}-${C}/maxchild" 2>/dev/null)
+        CHILDS=$(cat "${F}/${RBUS:-0}-${C}/maxchild" 2>/dev/null)
         for N in $(seq 1 ${CHILDS:-0}); do
           printf "${RBUS:-0}-${C}.${N} "
         done
@@ -275,12 +277,13 @@ dtModel() {
     # NVME ports
     COUNT=0
     POWER_LIMIT=""
-    for P in /sys/block/nvme*; do
-      if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && [ "${BOOTDISK_PHYSDEVPATH}" = "$(cat "${P}/uevent" 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
-        echo "bootloader: ${P}"
+    for F in /sys/block/nvme*; do
+      [ ! -e "${F}" ] && continue
+      if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && [ "${BOOTDISK_PHYSDEVPATH}" = "$(cat "${F}/uevent" 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+        echo "bootloader: ${F}"
         continue
       fi
-      PCIEPATH="$(grep 'pciepath' "${P}/device/syno_block_info" 2>/dev/null | cut -d'=' -f2)"
+      PCIEPATH="$(grep 'pciepath' "${F}/device/syno_block_info" 2>/dev/null | cut -d'=' -f2)"
       if [ -n "${PCIEPATH}" ]; then
         grep -q "pcie_root = \"${PCIEPATH}\";" ${DEST} && continue # An nvme controller only recognizes one disk
         [ $((${#POWER_LIMIT} + 2)) -gt 30 ] && break               # POWER_LIMIT string length limit 30 characters
@@ -355,10 +358,11 @@ nondtModel() {
   hasUSB=false
   USBMINIDX=99
   USBMAXIDX=00
-  for I in /sys/block/sd*; do
-    IDX=$(_atoi "$(echo "${I}" | sed -E 's/^.*\/sd(.*)$/\1/')")
+  for F in /sys/block/sd*; do
+    [ ! -e "${F}" ] && continue
+    IDX=$(_atoi "$(echo "${F}" | sed -E 's/^.*\/sd(.*)$/\1/')")
     [ $((${IDX} + 1)) -ge ${MAXDISKS} ] && MAXDISKS=$((${IDX} + 1))
-    ISUSB="$(cat "${I}/uevent" 2>/dev/null | grep PHYSDEVPATH | grep usb)"
+    ISUSB="$(cat "${F}/uevent" 2>/dev/null | grep PHYSDEVPATH | grep usb)"
     if [ -n "${ISUSB}" ]; then
       if [ "${hasUSB}" = "false" ]; then
         [ ${IDX} -lt ${USBMINIDX} ] && USBMINIDX=${IDX}
@@ -430,12 +434,13 @@ nondtModel() {
   # NVME
   COUNT=1
   echo "[pci]" >/etc/extensionPorts
-  for P in /sys/block/nvme*; do
-    if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && [ "${BOOTDISK_PHYSDEVPATH}" = "$(cat "${P}/uevent" 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
-      echo "bootloader: ${P}"
+  for F in /sys/block/nvme*; do
+    [ ! -e "${F}" ] && continue
+    if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && [ "${BOOTDISK_PHYSDEVPATH}" = "$(cat "${F}/uevent" 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+      echo "bootloader: ${F}"
       continue
     fi
-    PCIEPATH="$(cat "${P}/uevent" 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2 | awk -F'/' '{if (NF == 4) print $NF; else if (NF > 4) print $(NF-1)}')"
+    PCIEPATH="$(cat "${F}/uevent" 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2 | awk -F'/' '{if (NF == 4) print $NF; else if (NF > 4) print $(NF-1)}')"
     if [ -n "${PCIEPATH}" ]; then
       grep -q "=\"${PCIEPATH}\"" /etc/extensionPorts && continue # An nvme controller only recognizes one disk
       echo "pci${COUNT}=\"${PCIEPATH}\"" >>/etc/extensionPorts

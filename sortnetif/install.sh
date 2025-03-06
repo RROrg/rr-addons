@@ -11,6 +11,7 @@ if [ "${1}" = "patches" ]; then
 
   ETHLIST=""
   for F in /sys/class/net/eth*; do
+    [ ! -e "${F}" ] && continue
     ETH="$(basename "${F}")"
     MAC="$(cat "/sys/class/net/${ETH}/address" 2>/dev/null | sed 's/://g; s/.*/\L&/')"
     BUS="$(ethtool -i "${ETH}" 2>/dev/null | grep "bus-info" | cut -d' ' -f2)"

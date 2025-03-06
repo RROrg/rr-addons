@@ -28,12 +28,13 @@ if [ "${1}" = "patches" ]; then
   echo "BOOTDISK_PHYSDEVPATH=${BOOTDISK_PHYSDEVPATH}"
 
   rm -f /etc/nvmePorts
-  for P in /sys/block/nvme*; do
-    if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && [ "${BOOTDISK_PHYSDEVPATH}" = "$(cat "${P}/uevent" 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
-      echo "bootloader: ${P}"
+  for F in /sys/block/nvme*; do
+    [ ! -e "${F}" ] && continue
+    if [ -n "${BOOTDISK_PHYSDEVPATH}" ] && [ "${BOOTDISK_PHYSDEVPATH}" = "$(cat "${F}/uevent" 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2)" ]; then
+      echo "bootloader: ${F}"
       continue
     fi
-    PCIEPATH="$(cat "${P}/uevent" 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2 | awk -F'/' '{if (NF == 4) print $NF; else if (NF > 4) print $(NF-1)}')"
+    PCIEPATH="$(cat "${F}/uevent" 2>/dev/null | grep 'PHYSDEVPATH' | cut -d'=' -f2 | awk -F'/' '{if (NF == 4) print $NF; else if (NF > 4) print $(NF-1)}')"
     if [ -n "${PCIEPATH}" ]; then
       grep -q "${PCIEPATH}" /etc/nvmePorts && continue # An nvme controller only recognizes one disk
       echo "${PCIEPATH}" >>/etc/nvmePorts

@@ -19,9 +19,10 @@ function Create() {
 }
 
 function Delete() {
-  for I in /usr/syno/etc/synoschedule.d/root/*.task; do
-    if grep -q '^name=RR-UpdateNotify' "${I}"; then
-      id=$(grep '^id=' "${I}" | cut -d'=' -f2)
+  for F in /usr/syno/etc/synoschedule.d/root/*.task; do
+    [ ! -e "${F}" ] && continue
+    if grep -q '^name=RR-UpdateNotify' "${F}"; then
+      id=$(grep '^id=' "${F}" | cut -d'=' -f2)
       [ -n "${id}" ] && synoschedtask --del id=${id}
     fi
   done
