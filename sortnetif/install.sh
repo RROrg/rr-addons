@@ -23,14 +23,14 @@ if [ "${1}" = "patches" ]; then
     MACS="$(echo "${2}" | sed 's/://g; s/,/ /g; s/.*/\L&/')"
     for MACX in ${MACS}; do
       ETHLISTTMPM="${ETHLISTTMPM}$(printf "%b" "${ETHLISTTMPB}" | grep "${MACX}")\n"
-      ETHLISTTMPB="$(printf "%b""${ETHLISTTMPB}" | grep -v "${MACX}")\n"
+      ETHLISTTMPB="$(printf "%b" "${ETHLISTTMPB}" | grep -v "${MACX}")\n"
     done
   fi
   ETHLIST="$(printf "%b" "${ETHLISTTMPM}${ETHLISTTMPB}" | grep -v '^$')"
   ETHSEQ="$(printf "%b" "${ETHLIST}" | awk '{print $3}' | sed 's/eth//g')"
-  ETHNUM="$(printf "%b" "${ETHLIST}" | wc -l)"
+  ETHNUM="$(echo "${ETHSEQ}" | wc -l)" # 'wc -l' is incompatible with 'printf "%b" "${ETHLIST}"'
 
-  echo "${ETHSEQ}"
+  printf "%b\n" "${ETHLIST}"
   # sort
   if [ ! "${ETHSEQ}" = "$(seq 0 $((${ETHNUM:-0} - 1)))" ]; then
     /etc/rc.network stop
