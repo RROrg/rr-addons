@@ -177,7 +177,7 @@ function updateRR() {
   progresslog "30" "Check conditions ..." "${PROGRESS_FILE}"
   if [ -f "${TMP_PATH}/update/update-check.sh" ]; then
     ${RR_SUDO} chmod a+x "${TMP_PATH}/update/update-check.sh"
-    ${RR_SUDO} "${TMP_PATH}/update/update-check.sh"
+    ${RR_SUDO} bash "${TMP_PATH}/update/update-check.sh"
     if [ $? -ne 0 ]; then
       progresslog "-4" "Update file check failed!" "${PROGRESS_FILE}"
       return 1
@@ -283,5 +283,14 @@ ${RR_SUDO} ls /root >/dev/null 2>&1 || {
   echo "No root permission!"
   exit 1
 }
+
+exec 268>"${TMP_PATH}/rr-update.lock"
+flock -n 268 || {
+  progresslog "-99" "Another menu is running!" "${3}"
+  echo "Another menu is running!"
+  exit 1
+}
+
+trap 'flock -u 268; rm -f "${TMP_PATH}/rr-update.lock"' EXIT INT TERM HUP
 
 "$@"
