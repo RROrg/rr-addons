@@ -274,21 +274,19 @@ function updateRR() {
 
 [ -z "${1}" ] && {
   echo "Usage: $0 [updateRR] [update.zip] [progress file]"
-  exit 1
+  exit 11
 }
 
 [ -x "/sbin/rrmdo" ] && RR_SUDO="/sbin/rrmdo" || RR_SUDO=""
 ${RR_SUDO} ls /root >/dev/null 2>&1 || {
-  progresslog "-1" "No root permission!" "${3}"
   echo "No root permission!"
-  exit 1
+  exit 12
 }
 
 exec 268>"${TMP_PATH}/rr-update.lock"
 flock -n 268 || {
-  progresslog "-99" "Another menu is running!" "${3}"
   echo "Another menu is running!"
-  exit 1
+  exit 91
 }
 
 trap 'flock -u 268; rm -f "${TMP_PATH}/rr-update.lock"' EXIT INT TERM HUP
