@@ -20,7 +20,6 @@ if [ "${1}" = "late" ]; then
   {
     echo "[Unit]"
     echo "Description=RR addon cpuinfo daemon"
-    echo "After=multi-user.target"
     echo "After=synoscgi.service nginx.service"
     echo
     echo "[Service]"
@@ -48,7 +47,7 @@ if [ "${1}" = "late" ]; then
   # {
   #   echo "[Unit]"
   #   echo "Description=RR addon synoscgiproxy daemon"
-  #   echo "After=network.target"
+  #   echo "After=network.target nginx.service"
   #   echo
   #   echo "[Service]"
   #   echo "Type=simple"
