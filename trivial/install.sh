@@ -38,6 +38,11 @@ if [ "${1}" = "late" ]; then
     xxd -r -p >"${SO_FILE}" 2>/dev/null
   rm -f "${SO_FILE}.tmp"
 
+  # syno-dump-core
+  SH_FILE="/tmpRoot/usr/syno/sbin/syno-dump-core.sh"
+  [ ! -f "${SH_FILE}.bak" ] && cp -pf "${SH_FILE}" "${SH_FILE}.bak"
+  printf '#!/bin/sh\nexit 0\n' >"${SH_FILE}"
+
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon trivial - ${1}"
 
@@ -49,4 +54,8 @@ elif [ "${1}" = "uninstall" ]; then
 
   SO_FILE="/tmpRoot/usr/lib/libhwcontrol.so.1"
   [ -f "${SO_FILE}.bak" ] && mv -f "${SO_FILE}.bak" "${SO_FILE}"
+
+  SH_FILE="/tmpRoot/usr/syno/sbin/syno-dump-core.sh"
+  [ -f "${SH_FILE}.bak" ] && mv -f "${SH_FILE}.bak" "${SH_FILE}"
+
 fi
