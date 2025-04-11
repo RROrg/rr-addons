@@ -1,0 +1,46 @@
+version: 1
+name: apppatch
+description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
+  en_US: "Fixed bugs in Synology Photos, local_display, and other apps."
+  ar_SA: "إصلاح الأخطاء في تطبيقات Synology Photos و local_display وغيرها."
+  de_DE: "Fehlerbehebungen in Synology Photos, local_display und anderen Apps."
+  es_ES: "Correcciones de errores en Synology Photos, local_display y otras aplicaciones."
+  fr_FR: "Corrections de bugs dans Synology Photos, local_display et d'autres applications."
+  ja_JP: "Synology Photos、local_display などのアプリケーションにおけるバグの修正。"
+  ko_KR: "Synology Photos, local_display 등의 애플리케이션에서 버그를 수정합니다."
+  ru_RU: "Исправления ошибок в Synology Photos, local_display и других приложениях."
+  th_TH: "แก้ไขปัญหาใน Synology Photos, local_display และอื่นๆ"
+  tr_TR: "Synology Photos, local_display ve diğer uygulamalarda hata düzeltmeleri."
+  uk_UA: "Виправлення помилок в Synology Photos, local_display та інших додатках."
+  vi_VN: "Sửa lỗi trong Synology Photos, local_display và các ứng dụng khác."
+  zh_CN: "修复 Synology Photos、local_display 等应用程序中的错误。"
+  zh_HK: "修復 Synology Photos、local_display 等應用程式中的錯誤。"
+  zh_TW: "修復 Synology Photos、local_display 等應用程式中的錯誤。"
+system: false
+params: false
+all:
+  install-script: "install.sh"
+  copy: "all"
+available-for:
+  apollolake-4.4.180:
+  apollolake-4.4.302:
+  broadwell-4.4.180:
+  broadwell-4.4.302:
+  broadwellnk-4.4.180:
+  broadwellnk-4.4.302:
+  broadwellnkv2-4.4.180:
+  broadwellnkv2-4.4.302:
+  broadwellntbap-4.4.180:
+  broadwellntbap-4.4.302:
+  epyc7002-7.1-5.10.55:
+  epyc7002-7.2-5.10.55:
+  denverton-4.4.180:
+  denverton-4.4.302:
+  geminilake-4.4.180:
+  geminilake-4.4.302:
+  purley-4.4.180:
+  purley-4.4.302:
+  r1000-4.4.180:
+  r1000-4.4.302:
+  v1000-4.4.180:
+  v1000-4.4.302:
