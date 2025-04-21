@@ -15,8 +15,9 @@ if [ "${1}" = "-r" ]; then
   [ -f "${SO_FILE}.bak" ] && mv -f "${SO_FILE}.bak" "${SO_FILE}"
 
   # Surveillance Station -- local_display
-  [ -d "/var/packages/SurveillanceStation/target/@SSData/AddOns/LocalDisplay" ] &&
-    rm -f "/volume1/@appstore/SurveillanceStation/@SSData/AddOns/LocalDisplay/disabled"
+  SS_PATH="/var/packages/SurveillanceStation/target"
+  [ -d "${SS_PATH}/@SSData/AddOns/LocalDisplay" ] &&
+    rm -f "${SS_PATH}/@SSData/AddOns/LocalDisplay/disabled"
 else
   # Synology Photos
   # From: /usr/local/lib/systemd/system/pkg-SynologyPhotos-js-server.service
@@ -41,10 +42,11 @@ else
   fi
 
   # Surveillance Station -- local_display
-  if [ -d "/var/packages/SurveillanceStation/target/@SSData/AddOns/LocalDisplay" ]; then
-    echo -n "" >"/volume1/@appstore/SurveillanceStation/@SSData/AddOns/LocalDisplay/disabled"
-    if [ -d "/var/packages/SurveillanceStation/target/local_display" ]; then
-      rm -rf "/var/packages/SurveillanceStation/target/local_display/.config/chromium-local-display/BrowserMetrics/"*
+  SS_PATH="/var/packages/SurveillanceStation/target"
+  if [ -d "${SS_PATH}/@SSData/AddOns/LocalDisplay" ]; then
+    echo -n "" >"${SS_PATH}/@SSData/AddOns/LocalDisplay/disabled"
+    if [ -d "${SS_PATH}/local_display" ]; then
+      rm -rf "${SS_PATH}/local_display/.config/chromium-local-display/BrowserMetrics/"*
     fi
   fi
 fi
