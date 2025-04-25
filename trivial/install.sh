@@ -76,6 +76,11 @@ if [ "${1}" = "late" ]; then
   _blocklog "f_messages_failed_to_check" "Failed to check"
   _blocklog "f_messages_failed_to_update" "Failed to update"
   _blocklog "f_messages_sata_chip_name" "Can't get sata chip name"
+  _blocklog "f_scemd_redundant_power_chec" "redundant_power_chec"
+  _blocklog "f_scemd_fan_fan_" "fan/fan_"
+  _blocklog "f_synoscgi_fan_fan_" "fan/fan_"
+  _blocklog "f_synoplugin_plugin_action" "plugin_action"
+  _blocklog "f_synoplugin_package_action" "package_action"
 
   # syno-dump-core
   SH_FILE="/tmpRoot/usr/syno/sbin/syno-dump-core.sh"
