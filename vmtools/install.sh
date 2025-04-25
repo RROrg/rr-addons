@@ -56,6 +56,7 @@ if [ "${1}" = "late" ]; then
       echo "Environment=\"PATH=/usr/vmtools/bin:/usr/vmtools/sbin:\$PATH\""
       echo "Environment=\"LD_LIBRARY_PATH=/usr/vmtools/lib:\$LD_LIBRARY_PATH\""
       echo "ExecStart=/usr/vmtools/bin/vmtoolsd -c ${VMWARE_CONF} --common-path=${COMMON_PATH} --plugin-path=${PLUGINS_PATH} -b /var/run/vmtools.pid"
+      echo "ExecReload=/bin/kill -HUP \$MAINPID"
       echo "Restart=always"
       echo "RestartSec=10"
       echo
@@ -76,6 +77,7 @@ if [ "${1}" = "late" ]; then
       echo "Environment=\"PATH=/usr/vmtools/bin:/usr/vmtools/sbin:\$PATH\""
       echo "Environment=\"LD_LIBRARY_PATH=/usr/vmtools/lib:\$LD_LIBRARY_PATH\""
       echo "ExecStart=/usr/vmtools/bin/qemu-ga -m virtio-serial -p /dev/virtio-ports/org.qemu.guest_agent.0 -t /var/run/ -f /var/run/vmtools.pid"
+      echo "ExecReload=/bin/kill -HUP \$MAINPID"
       echo "Restart=always"
       echo "RestartSec=10"
       echo
@@ -90,12 +92,15 @@ if [ "${1}" = "late" ]; then
       echo "After=multi-user.target"
       echo
       echo "[Service]"
-      echo "Type=forking"
+      echo "Type=oneshot"
+      # echo "Type=forking"
       # echo "PIDFile=/var/run/vmtools.pid"
       echo "Environment=\"PATH=/usr/vmtools/bin:/usr/vmtools/sbin:\$PATH\""
       echo "Environment=\"LD_LIBRARY_PATH=/usr/vmtools/lib:\$LD_LIBRARY_PATH\""
       echo "ExecStart=-echo Unknown mev"
-      echo "Type=oneshot"
+      # echo "ExecReload=/bin/kill -HUP \$MAINPID"
+      # echo "Restart=always"
+      # echo "RestartSec=10"
       echo
       echo "[Install]"
       echo "WantedBy=multi-user.target"
