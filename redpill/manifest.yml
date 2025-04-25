@@ -21,6 +21,3 @@ params: false
 all:
   install-script: "install.sh"
   copy: ""
-available-for:
-  epyc7002-7.1-5.10.55:
-  epyc7002-7.2-5.10.55:

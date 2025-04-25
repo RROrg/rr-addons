@@ -21,9 +21,3 @@ params: false
 all:
   install-script: "install.sh"
   copy: ""
-available-for:
-  apollolake-4.4.180:
-  apollolake-4.4.302:
-  broadwellnk-4.4.180:
-  broadwellnk-4.4.302:
-  
