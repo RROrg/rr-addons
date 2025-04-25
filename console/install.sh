@@ -6,7 +6,7 @@
 # See /LICENSE for more information.
 #
 
-PLATFORMS="apollolake geminilake epyc7002"
+PLATFORMS="v1000nk epyc7002 apollolake geminilake"
 PLATFORM="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)"
 if ! echo "${PLATFORMS}" | grep -wq "${PLATFORM}"; then
   echo "${PLATFORM} is not supported console addon!"

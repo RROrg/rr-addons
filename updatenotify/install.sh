@@ -33,7 +33,7 @@ if [ "${1}" = "late" ]; then
   mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
   ln -vsf /usr/lib/systemd/system/rr-updatenotify.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/rr-updatenotify.service
 elif [ "${1}" = "uninstall" ]; then
-  echo "Installing addon rr-updatenotify - ${1}"
+  echo "Installing addon updatenotify - ${1}"
 
   rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/rr-updatenotify.service"
   rm -f "/tmpRoot/usr/lib/systemd/system/rr-updatenotify.service"

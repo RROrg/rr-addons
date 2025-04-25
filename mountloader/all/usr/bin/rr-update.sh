@@ -244,11 +244,13 @@ function updateRR() {
         if [ -n "${PLATFORM}" ] && [ -n "${PRODUCTVER}" ] && [ -z "${KVER}" ]; then
           _release=$(/bin/uname -r)
           KVER="$(/bin/echo ${_release%%[-+]*} | /usr/bin/cut -d'.' -f1-3)"
-          PLATFORMS="epyc7002"
-          PLATFORM="$(/bin/get_key_value /etc/synoinfo.conf unique | cut -d"_" -f2)"
-          majorversion="$(/bin/get_key_value /etc/VERSION majorversion)"
-          minorversion="$(/bin/get_key_value /etc/VERSION minorversion)"
-          echo "${PLATFORMS}" | grep -wq "${PLATFORM}" && KPRE="${majorversion}.${minorversion}" || KPRE=""
+          if [ "$(echo "${KVER:-4}" | cut -d'.' -f1)" -lt 5 ]; then
+            KPRE=""
+          else
+            majorversion="$(/bin/get_key_value /etc/VERSION majorversion)"
+            minorversion="$(/bin/get_key_value /etc/VERSION minorversion)"
+            KPRE="${majorversion}.${minorversion}"
+          fi
         fi
         if [ -n "${PLATFORM}" ] && [ -n "${KVER}" ]; then
           progresslog "70" "Update /${VALUE} merge modules ..." "${PROGRESS_FILE}"

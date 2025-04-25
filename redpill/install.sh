@@ -6,10 +6,9 @@
 # See /LICENSE for more information.
 #
 
-PLATFORMS="epyc7002"
-PLATFORM="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)"
-if ! echo "${PLATFORMS}" | grep -wq "${PLATFORM}"; then
-  echo "${PLATFORM} is not supported redpill addon!"
+_release=$(/bin/uname -r)
+if [ "$(/bin/echo ${_release%%[-+]*} | /usr/bin/cut -d'.' -f1)" -lt 5 ]; then
+  echo " Kernel version < 5 is not supported redpill addon!"
   exit 0
 fi
 
