@@ -24,9 +24,10 @@ if [ "${1}" = "late" ]; then
     echo "After=multi-user.target"
     echo
     echo "[Service]"
-    echo "Type=oneshot"
-    echo "RemainAfterExit=yes"
-    echo "ExecStart=-/usr/bin/maiyunda.sh"
+    echo "Type=forking"
+    echo "ExecStart=/usr/bin/maiyunda.sh"
+    echo "ExecReload=pkill -f /usr/bin/maiyunda.sh"
+    echo "Restart=always"
     echo
     echo "[Install]"
     echo "WantedBy=multi-user.target"

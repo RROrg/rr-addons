@@ -6,9 +6,13 @@
 # See /LICENSE for more information.
 #
 
-function operation3s() {
-  echo "operation 3s"
+function _log() {
+  echo "maiyunda: $*"
+  /bin/logger -p "error" -t "maiyunda" "$@"
+}
 
+function operation3s() {
+  _log "operation 3s"
   # change admin password
   USERNAME="admin"
   PASSWORD="maiyunda.com"
@@ -27,7 +31,7 @@ function operation3s() {
 }
 
 function operation9s() {
-  echo "operation 9s"
+  _log "operation 9s"
   if [ -x "/usr/bin/loader-reboot.sh" ]; then
     # junior reset
     /usr/bin/loader-reboot.sh "junior"
@@ -38,7 +42,7 @@ function operation9s() {
 }
 
 function operation18s() {
-  echo "operation 18s"
+  _log "operation 18s"
   # factory reset
   synowebapi --exec api=SYNO.Core.System method=reset version=1
 }
