@@ -50,13 +50,10 @@ if [ "${1}" = "late" ]; then
   #   echo "After=network.target nginx.service"
   #   echo
   #   echo "[Service]"
-  #   echo "Type=simple"
+  #   echo "Type=forking"
   #   echo "ExecStart=/usr/sbin/synoscgiproxy"
-  #   echo "ExecReload=/bin/kill -HUP \$MAINPID"
+  #   echo "ExecReload=pkill -f /usr/sbin/synoscgiproxy"
   #   echo "Restart=always"
-  #   echo "RestartSec=3"
-  #   echo "StartLimitInterval=60"
-  #   echo "StartLimitBurst=3"
   #   echo
   #   echo "[Install]"
   #   echo "WantedBy=multi-user.target"
