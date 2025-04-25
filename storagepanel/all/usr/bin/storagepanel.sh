@@ -85,7 +85,7 @@ if [ -n "${SSD_BAY}" ] && [ -z "$(echo "${SSD_BAY}" | sed -n '/^[0-9]\{1,2\}X[0-
 fi
 
 if [ -z "${HDD_BAY}" ]; then
-  IDX="$(synodisk --enum -t internal 2>/dev/null | grep "Disk id:" | tail -n1 | cut -d: -f2 | xargs)"
+  IDX="$(synodisk --enum -t internal 2>/dev/null | grep "Disk id:" | cut -d: -f2 | sort -n | tail -n1 | xargs)"
   IDX=${IDX:-0}
   while [ ${IDX} -le 60 ]; do
     for i in "${HDD_BAY_LIST[@]}"; do
@@ -97,8 +97,8 @@ if [ -z "${HDD_BAY}" ]; then
 fi
 
 if [ -z "${SSD_BAY}" ]; then
-  IDX="$(synodisk --enum -t cache 2>/dev/null | grep "Disk id:" | tail -n1 | cut -d: -f2 | xargs)"
-  SSD_BAY="$((${IDX:-0} / 8 + 1))X8"
+  IDX="$(synodisk --enum -t cache 2>/dev/null | grep "Disk id:" | cut -d: -f2 | sort -n | tail -n1 | xargs)"
+  [ "${IDX:-0}" -le 8 ] && SSD_BAY="1X${IDX:-0}" || SSD_BAY="$((${IDX:-0} / 8 + 1))X8"
 fi
 
 [ ! -f "${FILE_GZ}.bak" ] && cp -pf "${FILE_GZ}" "${FILE_GZ}.bak"
