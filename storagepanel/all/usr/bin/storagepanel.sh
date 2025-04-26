@@ -85,19 +85,26 @@ if [ -n "${SSD_BAY}" ] && [ -z "$(echo "${SSD_BAY}" | sed -n '/^[0-9]\{1,2\}X[0-
 fi
 
 if [ -z "${HDD_BAY}" ]; then
-  IDX="$(synodisk --enum -t internal 2>/dev/null | grep "Disk id:" | cut -d: -f2 | sort -n | tail -n1 | xargs)"
-  IDX=${IDX:-0}
-  while [ ${IDX} -le 60 ]; do
+  if [ -f "/run/model.dtb" ]; then  # if [ ! "$(/bin/get_key_value /etc/synoinfo.conf supportportmappingv2)" = "yes" ]; then
+    IDX="$(grep -ao "internal_slot@" "/run/model.dtb" | wc -w)"
+  else
+    IDX="$(synodisk --enum -t internal 2>/dev/null | grep "Disk id:" | cut -d: -f2 | sort -n | tail -n1 | xargs)"
+  fi
+  while [ ${IDX:-0} -le 60 ]; do
     for i in "${HDD_BAY_LIST[@]}"; do
-      echo "${i}" | grep -q "_${IDX}_" && HDD_BAY="${i}" && break 2
+      echo "${i}" | grep -q "_${IDX:-0}_" && HDD_BAY="${i}" && break 2
     done
-    IDX=$((IDX + 1))
+    IDX=$((${IDX:-0} + 1))
   done
   HDD_BAY=${HDD_BAY:-RACK_60_Bay}
 fi
 
 if [ -z "${SSD_BAY}" ]; then
-  IDX="$(synodisk --enum -t cache 2>/dev/null | grep "Disk id:" | cut -d: -f2 | sort -n | tail -n1 | xargs)"
+  if [ -f "/run/model.dtb" ]; then  # if [ ! "$(/bin/get_key_value /etc/synoinfo.conf supportportmappingv2)" = "yes" ]; then
+    IDX="$(grep -ao "nvme_slot@" "/run/model.dtb" | wc -w)"
+  else
+    IDX="$(synodisk --enum -t cache 2>/dev/null | grep "Disk id:" | cut -d: -f2 | sort -n | tail -n1 | xargs)"
+  fi
   [ "${IDX:-0}" -le 8 ] && SSD_BAY="1X${IDX:-0}" || SSD_BAY="$((${IDX:-0} / 8 + 1))X8"
 fi
 
