@@ -19,7 +19,8 @@ if [ "${1}" = "late" ]; then
   {
     echo "[Unit]"
     echo "Description=RR addon apppatch daemon"
-    echo "After=syno-packages.target"
+    echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"
+    echo "After=smpkg-custom-install.service"
     # echo "ConditionPathExists=|/var/packages/SynologyPhotos"
     # echo "ConditionPathExists=|/var/packages/SurveillanceStation"
     echo
@@ -39,7 +40,8 @@ if [ "${1}" = "late" ]; then
   {
     echo "[Unit]"
     echo "Description=RR addon apppatch path"
-    echo "After=syno-packages.target"
+    echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"
+    echo "After=smpkg-custom-install.service"
     echo "ConditionPathExists=/var/packages"
     echo
     echo "[Path]"
