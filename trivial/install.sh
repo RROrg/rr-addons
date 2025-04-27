@@ -34,7 +34,7 @@ if [ "${1}" = "late" ]; then
   #[ ! -f "${SO_FILE}.bak" ] && cp -pf "${SO_FILE}" "${SO_FILE}.bak"
   #cp -pf "${SO_FILE}" "${SO_FILE}.tmp"
   #xxd -c "$(xxd -p "${SO_FILE}.tmp" 2>/dev/null | wc -c)" -p "${SO_FILE}.tmp" 2>/dev/null |
-  #  sed "s/8d1512840900bf03000000e8d0fcfdff/8D1512840900BF030000009090909090/; s/8d159a810900bf03000000e858fafdff/8D159A810900BF030000009090909090/" |
+  #  sed "s/8d1512840900bf03000000e8d0fcfdff/8d1512840900bf030000009090909090/; s/8d159a810900bf03000000e858fafdff/8d159a810900bf030000009090909090/" |
   #  xxd -r -p >"${SO_FILE}" 2>/dev/null
   #rm -f "${SO_FILE}.tmp"
 
