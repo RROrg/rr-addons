@@ -70,6 +70,8 @@ if [ "${1}" = "-r" ]; then
     mv -f "${FILE_GZ}.bak" "${FILE_GZ}"
     gzip -dc "${FILE_GZ}" >"${FILE_JS}"
   fi
+  SM_KEY="sm_machine_img_config_name"
+  synosetkeyvalue "/etc.defaults/synoinfo.conf" "${SM_KEY}" "$(synogetkeyvalue /etc/synoinfo.conf "${SM_KEY}")"
   exit
 fi
 
@@ -116,5 +118,8 @@ OLD="driveShape:\"Mdot2-shape\",major:\"row\",rowDir:\"UD\",colDir:\"LR\",driveS
 NEW="driveShape:\"Mdot2-shape\",major:\"row\",rowDir:\"UD\",colDir:\"LR\",driveSection:\[{top:14,left:18,rowCnt:${SSD_BAY%%X*},colCnt:${SSD_BAY##*X},xGap:6,yGap:6}\]},"
 sed -i "s/\"${_UNIQUE}\",//g; s/,\"${_UNIQUE}\"//g; s/${HDD_BAY}:\[\"/${HDD_BAY}:\[\"${_UNIQUE}\",\"/g; s/M2X1:\[\"/M2X1:\[\"${_UNIQUE}\",\"/g; s/${OLD}/${NEW}/g" "${FILE_JS}"
 gzip -c "${FILE_JS}" >"${FILE_GZ}"
+
+SM_KEY="sm_machine_img_config_name"
+synosetkeyvalue "/etc.defaults/synoinfo.conf" "${SM_KEY}" "" # "${HDD_BAY}-M2X1"
 
 exit 0
