@@ -61,6 +61,43 @@ elif [ "${1}" = "patches" ]; then
 elif [ "${1}" = "rcExit" ]; then
   echo "Installing addon misc - ${1}"
 
+  #DSM_MODEL="$(/bin/get_key_value /etc/synoinfo.conf upnpmodelname)"
+  #DSM_MODEL=$(echo "${DSM_MODEL}" | tr 'A-Z' 'a-z')
+  #DB_FILE="$(ls /var/lib/disk-compatibility/${DSM_MODEL}*.db 2>/dev/null | head -1)"
+  #
+  #for D in /sys/block/*; do
+  #  [ ! -e "${D}" ] && continue
+  #  [ ! -e "${D}/device/syno_block_info" ] && continue
+  #
+  #  model=$(cat "${D}/device/model" 2>/dev/null | xargs)
+  #  rev=$(cat "${D}/device/rev" 2>/dev/null | xargs)
+  #  sz=$(cat "${D}/size" 2>/dev/null | xargs)
+  #  ss=$(cat "${D}/queue/hw_sector_size" 2>/dev/null | xargs)
+  #  size=$((${sz:-0} * ${ss:-0} / 1024 / 1024 / 1024))
+  #
+  #  grep -q "\"${model}\"" "${DB_FILE}" && continue
+  #  VDATA="{
+  #        \"size_gb\": ${size},
+  #        \"compatibility_interval\": [
+  #            {
+  #                \"compatibility\": \"support\",
+  #                \"not_yet_rolling_status\": \"support\",
+  #                \"fw_dsm_update_status_notify\": false,
+  #                \"barebone_installable\": true,
+  #                \"barebone_installable_v2\": \"auto\",
+  #                \"smart_test_ignore\": true,
+  #                \"smart_attr_ignore\": true
+  #            }
+  #        ]
+  #    }"
+  #  MDATA="\"${model}\":{\"${rev}\":${VDATA},\"default\":${VDATA}}"
+  #  echo "${D} - ${MDATA}"
+  #  jq ".disk_compatbility_info += {${MDATA}}" "${DB_FILE}" >temp.json && mv temp.json "${DB_FILE}"
+  #done
+
+  SH_FILE="/usr/syno/share/get_hcl_invalid_disks.sh"
+  [ -f "${SH_FILE}" ] && cp -pf "${SH_FILE}" "${SH_FILE}.bak" && printf '#!/bin/sh\nexit 0\n' >"${SH_FILE}"
+
   mkdir -p /usr/syno/web/webman
   # clear system disk space
   cat >/usr/syno/web/webman/clean_system_disk.cgi <<EOF
