@@ -14,6 +14,11 @@
 
 ROOT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
+# jq
+TAG="$(curl -skL "https://github.com/jqlang/jq/tags" | grep "/refs/tags/.*\.zip" | head -1 | sed -E 's/.*\/refs\/tags\/(.*)\.zip.*$/\1/')"
+echo "Downloading jq ${TAG}"
+curl -#kL "https://github.com/jqlang/jq/releases/download/${TAG}/jq-linux-amd64" -o ${ROOT_PATH}/all/usr/bin/jq
+
 # yq
 TAG="$(curl -skL "https://github.com/mikefarah/yq/tags" | grep "/refs/tags/.*\.zip" | head -1 | sed -E 's/.*\/refs\/tags\/(.*)\.zip.*$/\1/')"
 echo "Downloading yq ${TAG}"
