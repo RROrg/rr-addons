@@ -35,10 +35,12 @@ if [ "${1}" = "late" ]; then
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon updatenotify - ${1}"
 
+  rm -f /tmpRoot/usr/bin/pup
+
   rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/rr-updatenotify.service"
   rm -f "/tmpRoot/usr/lib/systemd/system/rr-updatenotify.service"
 
   [ ! -f "/tmpRoot/usr/rr/revert.sh" ] && echo '#!/usr/bin/env bash' >/tmpRoot/usr/rr/revert.sh && chmod +x /tmpRoot/usr/rr/revert.sh
   echo "/usr/bin/rr-updatenotify.sh delete" >>/tmpRoot/usr/rr/revert.sh
-  echo "rm -f /usr/bin/pup /usr/bin/rr-updatenotify.sh" >>/tmpRoot/usr/rr/revert.sh
+  echo "rm -f /usr/bin/rr-updatenotify.sh" >>/tmpRoot/usr/rr/revert.sh
 fi
