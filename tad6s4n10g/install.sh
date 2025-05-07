@@ -47,9 +47,8 @@ if [ "${1}" = "early" ]; then
   done
   # 00:17.0 SATA controller [0106]: Intel Corporation Device [8086:54d3]
   PCIEPATH=0000:00:17.0
-  NGFF_NUM=$(ls -ld /sys/block/sata* 2>/dev/null | grep -c "0000:00:17.0")
-  if [ "${NGFF_NUM:-0}" -gt 0 ]; then
-    for I in $(seq 0 $((${NGFF_NUM} - 1))); do
+  if ls -ld /sys/block/sata* 2>/dev/null | grep -q "${PCIEPATH}"; then
+    for I in $(seq 0 1); do
       COUNT=$((${COUNT} + 1))
       {
         echo "    internal_slot@${COUNT} {"
@@ -65,21 +64,18 @@ if [ "${1}" = "early" ]; then
 
   COUNT=0
   # 04:00.0 Non-Volatile memory controller [0108]: Device [1ed0:2283]
-  PCIEPATH=0000:00:1d.0,00.0
-  NVME_NUM=$((4 - ${NGFF_NUM:-0}))
+  PCIEPATH=0000:00:1d.N,00.0
   POWER_LIMIT=""
-  if [ "${NVME_NUM:-0}" -gt 0 ]; then
-    for I in $(seq 0 $((${NVME_NUM} - 1))); do
-      POWER_LIMIT="${POWER_LIMIT:+${POWER_LIMIT},}0"
-      COUNT=$((${COUNT} + 1))
-      {
-        echo "    nvme_slot@${COUNT} {"
-        echo "        pcie_root = \"${PCIEPATH}\";"
-        echo "        port_type = \"ssdcache\";"
-        echo "    };"
-      } >>"${DEST}"
-    done
-  fi
+  for I in $(seq 0 3); do
+    POWER_LIMIT="${POWER_LIMIT:+${POWER_LIMIT},}0"
+    COUNT=$((${COUNT} + 1))
+    {
+      echo "    nvme_slot@${COUNT} {"
+      echo "        pcie_root = \"$(echo ${PCIEPATH} | sed "s/N/${I}/")\";"
+      echo "        port_type = \"ssdcache\";"
+      echo "    };"
+    } >>"${DEST}"
+  done
   [ -n "${POWER_LIMIT}" ] && sed -i "s/power_limit = .*/power_limit = \"${POWER_LIMIT}\";/" "${DEST}" || sed -i '/power_limit/d' "${DEST}"
 
   COUNT=0
@@ -99,6 +95,14 @@ if [ "${1}" = "early" ]; then
   done
 
   echo "};" >>"${DEST}"
+
+  # fix pcie_root prefix
+  _release=$(/bin/uname -r)
+  if [ "$(/bin/echo ${_release%%[-+]*} | /usr/bin/cut -d'.' -f1)" -lt 5 ]; then
+    sed -i 's/"0000:00:/"00:/g' "${DEST}"
+  else
+    sed -i 's/"00:/"0000:00:/g' "${DEST}"
+  fi
 
 elif [ "${1}" = "late" ]; then
   echo "Installing addon tad6s4n10g - ${1}"
