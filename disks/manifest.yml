@@ -20,4 +20,4 @@ system: true
 params: true
 all:
   install-script: "install.sh"
-  copy: ""
+  copy: "all"
