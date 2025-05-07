@@ -16,9 +16,11 @@ elif [ "${1}" = "late" ]; then
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
-  sed -i 's|rss_server=.*$|rss_server=http://127.0.0.1/autoupdate/genRSS.php|' /tmpRoot/etc/synoinfo.conf /tmpRoot/etc.defaults/synoinfo.conf
-  sed -i 's|rss_server_ssl=.*$|rss_server_ssl=https://127.0.0.1/autoupdate/genRSS.php|' /tmpRoot/etc/synoinfo.conf /tmpRoot/etc.defaults/synoinfo.conf
-  sed -i 's|rss_server_v2=.*$|rss_server_v2=https://127.0.0.1/autoupdate/v2/getList|' /tmpRoot/etc/synoinfo.conf /tmpRoot/etc.defaults/synoinfo.conf
+  for F in "/tmpRoot/etc/synoinfo.conf" "/tmpRoot/etc.defaults/synoinfo.conf"; do
+    /bin/set_key_value "${F}" "rss_server" "http://127.0.0.1/autoupdate/genRSS.php"
+    /bin/set_key_value "${F}" "rss_server_ssl" "https://127.0.0.1/autoupdate/genRSS.php"
+    /bin/set_key_value "${F}" "rss_server_v2" "https://127.0.0.1/autoupdate/v2/getList"
+  done
 
   rm -rf /tmpRoot/var/update/check_result/*
   mkdir -p /tmpRoot/var/update/check_result
@@ -29,9 +31,11 @@ elif [ "${1}" = "late" ]; then
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon blockupdates - ${1}"
 
-  sed -i 's|rss_server=.*$|rss_server="http://update7.synology.com/autoupdate/genRSS.php"|' /tmpRoot/etc/synoinfo.conf /tmpRoot/etc.defaults/synoinfo.conf
-  sed -i 's|rss_server_ssl=.*$|rss_server_ssl="https://update7.synology.com/autoupdate/genRSS.php"|' /tmpRoot/etc/synoinfo.conf /tmpRoot/etc.defaults/synoinfo.conf
-  sed -i 's|rss_server_v2=.*$|rss_server_v2="https://update7.synology.com/autoupdate/v2/getList"|' /tmpRoot/etc/synoinfo.conf /tmpRoot/etc.defaults/synoinfo.conf
+  for F in "/tmpRoot/etc/synoinfo.conf" "/tmpRoot/etc.defaults/synoinfo.conf"; do
+    /bin/set_key_value "${F}" "rss_server" "http://update7.synology.com/autoupdate/genRSS.php"
+    /bin/set_key_value "${F}" "rss_server_ssl" "https://update7.synology.com/autoupdate/genRSS.php"
+    /bin/set_key_value "${F}" "rss_server_v2" "https://update7.synology.com/autoupdate/v2/getList"
+  done
 
   rm -rf /tmpRoot/var/update/check_result/*
 

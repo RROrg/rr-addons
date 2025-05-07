@@ -61,45 +61,27 @@ elif [ "${1}" = "patches" ]; then
 elif [ "${1}" = "rcExit" ]; then
   echo "Installing addon misc - ${1}"
 
-  #DSM_MODEL="$(/bin/get_key_value /etc/synoinfo.conf upnpmodelname)"
-  #DSM_MODEL=$(echo "${DSM_MODEL}" | tr 'A-Z' 'a-z')
-  #DB_FILE="$(ls /var/lib/disk-compatibility/${DSM_MODEL}*.db 2>/dev/null | head -1)"
-  #
-  #for D in /sys/block/*; do
-  #  [ ! -e "${D}" ] && continue
-  #  [ ! -e "${D}/device/syno_block_info" ] && continue
-  #
-  #  model=$(cat "${D}/device/model" 2>/dev/null | xargs)
-  #  rev=$(cat "${D}/device/rev" 2>/dev/null | xargs)
-  #  sz=$(cat "${D}/size" 2>/dev/null | xargs)
-  #  ss=$(cat "${D}/queue/hw_sector_size" 2>/dev/null | xargs)
-  #  size=$((${sz:-0} * ${ss:-0} / 1024 / 1024 / 1024))
-  #
-  #  grep -q "\"${model}\"" "${DB_FILE}" && continue
-  #  VDATA="{
-  #        \"size_gb\": ${size},
-  #        \"compatibility_interval\": [
-  #            {
-  #                \"compatibility\": \"support\",
-  #                \"not_yet_rolling_status\": \"support\",
-  #                \"fw_dsm_update_status_notify\": false,
-  #                \"barebone_installable\": true,
-  #                \"barebone_installable_v2\": \"auto\",
-  #                \"smart_test_ignore\": true,
-  #                \"smart_attr_ignore\": true
-  #            }
-  #        ]
-  #    }"
-  #  MDATA="\"${model}\":{\"${rev}\":${VDATA},\"default\":${VDATA}}"
-  #  echo "${D} - ${MDATA}"
-  #  jq ".disk_compatbility_info += {${MDATA}}" "${DB_FILE}" >temp.json && mv temp.json "${DB_FILE}"
-  #done
+  # enable telnet
+  sed -i 's/^root:x:0:0/root::0:0/' /etc/passwd
+  inetd
 
+  # invalid_disks
+  # method 1
   SH_FILE="/usr/syno/share/get_hcl_invalid_disks.sh"
   [ -f "${SH_FILE}" ] && cp -pf "${SH_FILE}" "${SH_FILE}.bak" && printf '#!/bin/sh\nexit 0\n' >"${SH_FILE}"
+  # method 2
+  # while true; do [ ! -f "/tmp/installable_check_pass" ] && touch "/tmp/installable_check_pass"; sleep 1; done &  # using a while loop in case DSM is running in a VM
+
+  # error message
+  if [ ! -b /dev/synoboot ] || [ ! -b /dev/synoboot1 ] || [ ! -b /dev/synoboot2 ] || [ ! -b /dev/synoboot3 ]; then
+    sed -i 's/c("welcome","desc_install")/"Error: The bootloader disk is not successfully mounted, the installation will fail."/' /usr/syno/web/main.js 2>/dev/null
+  fi
+
+  # disable DisabledPortDisks
+  sed -i 's/^DisabledPortDisks=.*$/DisabledPortDisks=""/' /usr/syno/web/webman/get_state.cgi 2>/dev/null
 
   mkdir -p /usr/syno/web/webman
-  # clear system disk space
+  # clean_system_disk.cgi
   cat >/usr/syno/web/webman/clean_system_disk.cgi <<EOF
 #!/bin/sh
 
@@ -119,7 +101,7 @@ fi
 EOF
   chmod +x /usr/syno/web/webman/clean_system_disk.cgi
 
-  # reboot to loader
+  # reboot_to_loader.cgi
   cat >/usr/syno/web/webman/reboot_to_loader.cgi <<EOF
 #!/bin/sh
 
@@ -133,7 +115,7 @@ fi
 EOF
   chmod +x /usr/syno/web/webman/reboot_to_loader.cgi
 
-  # get logs
+  # get_logs.cgi
   cat >/usr/syno/web/webman/get_logs.cgi <<EOF
 #!/bin/sh
 
@@ -148,11 +130,6 @@ echo "==== Messages log ===="
 cat /var/log/messages
 EOF
   chmod +x /usr/syno/web/webman/get_logs.cgi
-
-  # error message
-  if [ ! -b /dev/synoboot ] || [ ! -b /dev/synoboot1 ] || [ ! -b /dev/synoboot2 ] || [ ! -b /dev/synoboot3 ]; then
-    sed -i 's/c("welcome","desc_install")/"Error: The bootloader disk is not successfully mounted, the installation will fail."/' /usr/syno/web/main.js
-  fi
 
   # recovery.cgi
   cat >/usr/syno/web/webman/recovery.cgi <<EOF
@@ -192,12 +169,14 @@ EOF
   chmod +x /usr/syno/web/webman/recovery.cgi
 
   # recovery
-  if grep -Eq 'force_junior|recovery' /proc/cmdline 2>/dev/null; then
+  if grep -Eq "recovery" /proc/cmdline 2>/dev/null; then
     /usr/syno/web/webman/recovery.cgi
   fi
 
 elif [ "${1}" = "late" ]; then
   echo "Installing addon misc - ${1}"
+  mkdir -p "/tmpRoot/usr/rr/addons/"
+  # cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
   echo "Killing ttyd ..."
   /usr/bin/killall ttyd 2>/dev/null || true
@@ -205,12 +184,18 @@ elif [ "${1}" = "late" ]; then
   echo "Killing dufs ..."
   /usr/bin/killall dufs 2>/dev/null || true
 
-  cp -vpf /usr/bin/beep /tmpRoot/usr/bin/beep
-  cp -vpdf /usr/lib/libubsan.so* /tmpRoot/usr/lib/
+  # synoinfo.conf
+  cp -vpf "/addons/synoinfo.conf" /tmpRoot/usr/rr/addons/synoinfo.conf
+  for KEY in $(cat "/addons/synoinfo.conf" 2>/dev/null | cut -d= -f1); do
+    [ -z "${KEY}" ] && continue
+    VALUE="$(/bin/get_key_value /etc/synoinfo.conf "${KEY}")" # Do not use the value in /addons/synoinfo.conf
+    echo "Setting ${KEY} to ${VALUE}"
+    for F in "/tmpRoot/etc/synoinfo.conf" "/tmpRoot/etc.defaults/synoinfo.conf"; do /bin/set_key_value "${F}" "${KEY}" "${VALUE}"; done
+  done
 
+  # CPU performance scaling
   mount -t sysfs sysfs /sys
   modprobe acpi-cpufreq
-  # CPU performance scaling
   if [ -f /tmpRoot/usr/lib/modules-load.d/70-cpufreq-kernel.conf ]; then
     CPUFREQ=$(ls -l /sys/devices/system/cpu/cpufreq/*/* 2>/dev/null | wc -l)
     if [ ${CPUFREQ} -eq 0 ]; then
@@ -240,25 +225,25 @@ elif [ "${1}" = "late" ]; then
       echo "CPU Supports AES, aesni-intel should load"
     else
       echo "CPU does NOT support AES, aesni-intel will not load, disabling"
-      sed -i 's/support_aesni_intel="yes"/support_aesni_intel="no"/' /tmpRoot/etc/synoinfo.conf /tmpRoot/etc.defaults/synoinfo.conf
+      for F in "/tmpRoot/etc/synoinfo.conf" "/tmpRoot/etc.defaults/synoinfo.conf"; do /bin/set_key_value "${F}" "support_aesni_intel" "no"; done
       sed -i 's/^aesni-intel/# aesni-intel/g' /tmpRoot/usr/lib/modules-load.d/70-crypto-kernel.conf
     fi
   fi
 
   # Nvidia GPU
-  if [ -f /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf ]; then
-    if ! grep -iq 10de /proc/bus/pci/devices 2>/dev/null; then
-      echo "NVIDIA GPU is not detected, disabling "
-      sed -i 's/^nvidia/# nvidia/g' /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf
-      sed -i 's/^nvidia-uvm/# nvidia-uvm/g' /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf
-    else
-      echo "NVIDIA GPU is detected, nothing to do"
-    fi
+  if grep -iq 10de /proc/bus/pci/devices 2>/dev/null; then
+    for F in "/tmpRoot/etc/synoinfo.conf" "/tmpRoot/etc.defaults/synoinfo.conf"; do /bin/set_key_value "${F}" "support_nvidia_gpu" "yes"; done
+    [ -f /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf ] && sed -i 's/^# nvidia/nvidia/g' /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf
+  else
+    for F in "/tmpRoot/etc/synoinfo.conf" "/tmpRoot/etc.defaults/synoinfo.conf"; do /bin/set_key_value "${F}" "support_nvidia_gpu" "no"; done
+    [ -f /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf ] && sed -i 's/^nvidia/# nvidia/g' /tmpRoot/usr/lib/modules-load.d/70-syno-nvidia-gpu.conf
   fi
 
   # service
   SERVICE_PATH="/tmpRoot/usr/lib/systemd/system"
-  sed -i 's|ExecStart=/|ExecStart=-/|g' ${SERVICE_PATH}/syno-oob-check-status.service ${SERVICE_PATH}/SynoInitEth.service ${SERVICE_PATH}/syno_update_disk_logs.service
+  sed -i 's|ExecStart=/|ExecStart=-/|g' ${SERVICE_PATH}/SynoInitEth.service 2>/dev/null
+  sed -i 's|ExecStart=/|ExecStart=-/|g' ${SERVICE_PATH}/syno-oob-check-status.service 2>/dev/null
+  sed -i 's|ExecStart=/|ExecStart=-/|g' ${SERVICE_PATH}/syno_update_disk_logs.service 2>/dev/null
 
   # getty
   for I in $(cat /proc/cmdline 2>/dev/null | grep -Eo 'getty=[^ ]+' | sed 's/getty=//'); do
@@ -279,6 +264,12 @@ elif [ "${1}" = "late" ]; then
   # sdcard
   [ ! -f /tmpRoot/usr/lib/udev/script/sdcard.sh.bak ] && cp -vpf /tmpRoot/usr/lib/udev/script/sdcard.sh /tmpRoot/usr/lib/udev/script/sdcard.sh.bak
   printf '#!/bin/sh\nexit 0\n' >/tmpRoot/usr/lib/udev/script/sdcard.sh
+
+  # beep
+  cp -vpf /usr/bin/beep /tmpRoot/usr/bin/beep
+  cp -vpdf /usr/lib/libubsan.so* /tmpRoot/usr/lib/
+  # [ ! -f /tmpRoot/usr/syno/bin/synoschedtool.bak ] && cp -vpf /tmpRoot/usr/syno/bin/synoschedtool /tmpRoot/usr/syno/bin/synoschedtool.bak
+  # printf '#!/bin/sh\ncase "${1}" in\n  --beep)\n  beep -r ${2}\n  ;;\n  *)\n    /usr/syno/bin/synoschedtool.bak "$@"  ;;\nesac\n' >/tmpRoot/usr/syno/bin/synoschedtool
 
   # network
   rm -vf /tmpRoot/usr/lib/modules-load.d/70-network*.conf
