@@ -23,6 +23,11 @@ function CopyBtnOpt3s() {
   synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Copy-Button\"
 }
 
+function ResetBtnOpt3s() {
+  _log "Reset-Button pressed"
+  synowebapi -s --exec api=SYNO.Core.System method=reset version=1
+}
+
 function _beep() {
   local t=1
   [[ "${1}" =~ ^[0-9]+$ ]] && t="${1}"
@@ -30,6 +35,23 @@ function _beep() {
   # shellcheck disable=SC2034
   for i in $(seq 1 ${t}); do
     beep -l 1 -l 1 -D 3 -r 20
+    sleep 0.1
+  done
+}
+
+function _NetBtnLed() {
+  :
+}
+
+function _CopyBtnLed() {
+  local t=1
+  [[ "${1}" =~ ^[0-9]+$ ]] && t="${1}"
+
+  # shellcheck disable=SC2034
+  for i in $(seq 1 ${t}); do
+    outb 1 "0xA00" 0 
+    sleep 0.1
+    outb 0 "0xA00" 0
     sleep 0.1
   done
 }
@@ -52,7 +74,7 @@ function main() {
       if [ $((NetBtntimeout % 3)) -eq 0 ]; then
         # NetBtnpressed=false
         NetBtntimeout=0
-        _beep 3 &
+        #_beep 3 &
         NetBtnOpt3s &
       fi
     else
@@ -67,7 +89,8 @@ function main() {
       if [ $((CopyBtntimeout % 3)) -eq 0 ]; then
         # CopyBtnpressed=false
         CopyBtntimeout=0
-        _beep 3 &
+        #_beep 3 &
+        _CopyBtnLed 3 &
         CopyBtnOpt3s &
       fi
     else
@@ -77,7 +100,5 @@ function main() {
   done
 
 }
-
-modprobe it87 >/dev/null 2>&1
 
 main

@@ -6,8 +6,99 @@
 # See /LICENSE for more information.
 #
 
+# shellcheck disable=SC2010
+
 if [ "${1}" = "early" ]; then
   echo "Installing addon tad6s4n10g - ${1}"
+
+  if [ ! "$(/bin/get_key_value /etc/synoinfo.conf supportportmappingv2)" = "yes" ]; then
+    echo "non-DT models is not supported tad6s4n10g addon early!"
+    exit 0
+  fi
+
+  UNIQUE="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique)"
+  DEST="/addons/model.dts"
+  mkdir -p "$(dirname "${DEST}" 2>/dev/null)"
+  {
+    echo "/dts-v1/;"
+    echo "/ {"
+    echo "    compatible = \"Synology\";"
+    echo "    model = \"${UNIQUE}\";"
+    echo "    version = <0x01>;"
+    echo "    power_limit = \"\";"
+  } >"${DEST}"
+
+  COUNT=0
+  # 02:00.0 SATA controller [0106]: ASMedia Technology Inc. ASM1166 Serial ATA Controller [1b21:1166] (rev 02)
+  # removing the mlx5 network card 0000:00:1c.0,00.0
+  # inserting the mlx5 network card 0000:00:1c.2,00.0
+  ls -ld /sys/block/sata* 2>/dev/null | grep -q "0000:00:1c.0" && PCIEPATH=0000:00:1c.0,00.0 || PCIEPATH=0000:00:1c.2,00.0
+  for I in $(seq 5 -1 0); do
+    COUNT=$((${COUNT} + 1))
+    {
+      echo "    internal_slot@${COUNT} {"
+      echo "        protocol_type = \"sata\";"
+      echo "        ahci {"
+      echo "            pcie_root = \"${PCIEPATH}\";"
+      echo "            ata_port = <0x$(printf '%02X' ${I})>;"
+      echo "        };"
+      echo "    };"
+    } >>"${DEST}"
+  done
+  # 00:17.0 SATA controller [0106]: Intel Corporation Device [8086:54d3]
+  PCIEPATH=0000:00:17.0
+  NGFF_NUM=$(ls -ld /sys/block/sata* 2>/dev/null | grep -c "0000:00:17.0")
+  if [ "${NGFF_NUM:-0}" -gt 0 ]; then
+    for I in $(seq 0 $((${NGFF_NUM} - 1))); do
+      COUNT=$((${COUNT} + 1))
+      {
+        echo "    internal_slot@${COUNT} {"
+        echo "        protocol_type = \"sata\";"
+        echo "        ahci {"
+        echo "            pcie_root = \"${PCIEPATH}\";"
+        echo "            ata_port = <0x$(printf '%02X' ${I})>;"
+        echo "        };"
+        echo "    };"
+      } >>"${DEST}"
+    done
+  fi
+
+  COUNT=0
+  # 04:00.0 Non-Volatile memory controller [0108]: Device [1ed0:2283]
+  PCIEPATH=0000:00:1d.0,00.0
+  NVME_NUM=$((4 - ${NGFF_NUM:-0}))
+  POWER_LIMIT=""
+  if [ "${NVME_NUM:-0}" -gt 0 ]; then
+    for I in $(seq 0 $((${NVME_NUM} - 1))); do
+      POWER_LIMIT="${POWER_LIMIT:+${POWER_LIMIT},}0"
+      COUNT=$((${COUNT} + 1))
+      {
+        echo "    nvme_slot@${COUNT} {"
+        echo "        pcie_root = \"${PCIEPATH}\";"
+        echo "        port_type = \"ssdcache\";"
+        echo "    };"
+      } >>"${DEST}"
+    done
+  fi
+  [ -n "${POWER_LIMIT}" ] && sed -i "s/power_limit = .*/power_limit = \"${POWER_LIMIT}\";/" "${DEST}" || sed -i '/power_limit/d' "${DEST}"
+
+  COUNT=0
+  # usb
+  for I in 1-1 2-1.1 2-1.2 2-1.3 2-1.4 3-3.1 3-3.2 3-3.3 3-3.4 4-1 4-2 4-3 4-4; do
+    COUNT=$((${COUNT} + 1))
+    {
+      echo "    usb_slot@${COUNT} {"
+      echo "      usb2 {"
+      echo "        usb_port = \"${I}\";"
+      echo "      };"
+      echo "      usb3 {"
+      echo "        usb_port = \"${I}\";"
+      echo "      };"
+      echo "    };"
+    } >>"${DEST}"
+  done
+
+  echo "};" >>"${DEST}"
 
 elif [ "${1}" = "late" ]; then
   echo "Installing addon tad6s4n10g - ${1}"
