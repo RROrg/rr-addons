@@ -13,22 +13,25 @@ if [ "${1}" = "late" ]; then
 
   mkdir -p /tmpRoot/usr/vmtools
   tar -zxf /addons/vmtools-7.1.tgz -C /tmpRoot/usr/vmtools
+  ln -vsf /usr/vmtools/etc/open-vm-tools /tmpRoot/etc/open-vm-tools
+  ln -vsf /usr/vmtools/lib/open-vm-tools /tmpRoot/lib/open-vm-tools
+  ln -vsf /usr/vmtools/share/open-vm-tools /tmpRoot/share/open-vm-tools
+
+  VMTOOLS_PATH="/usr/vmtools"
+  VMTOOLS_PID="/var/run/vmtools.pid"
 
   mkdir -p "/tmpRoot/usr/lib/systemd/system"
   DEST="/tmpRoot/usr/lib/systemd/system/vmtools.service"
+
   if grep -Eq 'mev=vmware' /proc/cmdline; then
+    VMWARE_CONF="${VMTOOLS_PATH}/etc/vmware-tools/tools.conf"
+    COMMON_PATH="${VMTOOLS_PATH}/lib/open-vm-tools/plugins"
+    PLUGINS_PATH="${COMMON_PATH}/vmsvc"
 
-    VMTOOLS_PATH="/usr/vmtools"
-    COMMON_PATH=${VMTOOLS_PATH}/lib/open-vm-tools/plugins
-    PLUGINS_PATH=${COMMON_PATH}/vmsvc
-
-    VMWARE_CONF="/usr/vmtools/etc/vmware-tools/tools.conf"
     mkdir -p /tmpRoot/usr/vmtools/etc/vmware-tools
     {
       echo "[vmtools]"
       echo "    disable-tools-version = false"
-      echo "[setenvironment]"
-      echo "    vmsvc.LOCALE = it"
       echo "[logging]"
       echo "    log = true"
       echo "    vmsvc.level = debug"
@@ -38,10 +41,10 @@ if [ "${1}" = "late" ]; then
       echo "    vmtoolsd.handler = file"
       echo "    vmtoolsd.data = /var/log/vmtoolsd.rr.log"
       echo "[powerops]"
-      echo "    poweron-script=${VMTOOLS_PATH}/etc/vmware-tools/poweron-vm-default"
-      echo "    poweroff-script=${VMTOOLS_PATH}/etc/vmware-tools/poweroff-vm-default"
-      echo "    resume-script=${VMTOOLS_PATH}/etc/vmware-tools/resume-vm-default"
-      echo "    suspend-script=${VMTOOLS_PATH}/etc/vmware-tools/suspend-vm-default"
+      echo "    poweron-script = ${VMTOOLS_PATH}/etc/vmware-tools/poweron-vm-default"
+      echo "    poweroff-script = ${VMTOOLS_PATH}/etc/vmware-tools/poweroff-vm-default"
+      echo "    resume-script = ${VMTOOLS_PATH}/etc/vmware-tools/resume-vm-default"
+      echo "    suspend-script = ${VMTOOLS_PATH}/etc/vmware-tools/suspend-vm-default"
     } >"/tmpRoot${VMWARE_CONF}"
 
     {
@@ -52,10 +55,10 @@ if [ "${1}" = "late" ]; then
       echo
       echo "[Service]"
       echo "Type=forking"
-      echo "PIDFile=/var/run/vmtools.pid"
-      echo "Environment=\"PATH=/usr/vmtools/bin:/usr/vmtools/sbin:\$PATH\""
-      echo "Environment=\"LD_LIBRARY_PATH=/usr/vmtools/lib:\$LD_LIBRARY_PATH\""
-      echo "ExecStart=/usr/vmtools/bin/vmtoolsd -c ${VMWARE_CONF} --common-path=${COMMON_PATH} --plugin-path=${PLUGINS_PATH} -b /var/run/vmtools.pid"
+      echo "PIDFile=${VMTOOLS_PID}"
+      echo "Environment=\"PATH=${VMTOOLS_PATH}/bin:${VMTOOLS_PATH}/sbin:\$PATH\""
+      echo "Environment=\"LD_LIBRARY_PATH=${VMTOOLS_PATH}/lib:\$LD_LIBRARY_PATH\""
+      echo "ExecStart=${VMTOOLS_PATH}/bin/vmtoolsd -c ${VMWARE_CONF} --common-path=${COMMON_PATH} --plugin-path=${PLUGINS_PATH} -b ${VMTOOLS_PID}"
       echo "ExecReload=/bin/kill -HUP \$MAINPID"
       echo "Restart=always"
       echo "RestartSec=10"
@@ -64,19 +67,20 @@ if [ "${1}" = "late" ]; then
       echo "WantedBy=multi-user.target"
     } >"${DEST}"
   elif grep -Eq 'mev=kvm|mev=qemu' /proc/cmdline; then
+    GUEST_AGENT="/dev/virtio-ports/org.qemu.guest_agent.0"
     {
       echo "[Unit]"
       echo "Description=RR addon vmtools daemon"
       echo "IgnoreOnIsolate=true"
       echo "After=multi-user.target"
-      echo "ConditionPathExists=/dev/virtio-ports/org.qemu.guest_agent.0"
+      echo "ConditionPathExists=${GUEST_AGENT}"
       echo
       echo "[Service]"
       echo "Type=forking"
-      echo "PIDFile=/var/run/vmtools.pid"
-      echo "Environment=\"PATH=/usr/vmtools/bin:/usr/vmtools/sbin:\$PATH\""
-      echo "Environment=\"LD_LIBRARY_PATH=/usr/vmtools/lib:\$LD_LIBRARY_PATH\""
-      echo "ExecStart=/usr/vmtools/bin/qemu-ga -m virtio-serial -p /dev/virtio-ports/org.qemu.guest_agent.0 -t /var/run/ -f /var/run/vmtools.pid"
+      echo "PIDFile=${VMTOOLS_PID}"
+      echo "Environment=\"PATH=${VMTOOLS_PATH}/bin:${VMTOOLS_PATH}/sbin:\$PATH\""
+      echo "Environment=\"LD_LIBRARY_PATH=${VMTOOLS_PATH}/lib:\$LD_LIBRARY_PATH\""
+      echo "ExecStart=${VMTOOLS_PATH}/bin/qemu-ga -m virtio-serial -p ${GUEST_AGENT} -t /var/run/ -d -f ${VMTOOLS_PID}"
       echo "ExecReload=/bin/kill -HUP \$MAINPID"
       echo "Restart=always"
       echo "RestartSec=10"
@@ -94,9 +98,9 @@ if [ "${1}" = "late" ]; then
       echo "[Service]"
       echo "Type=oneshot"
       # echo "Type=forking"
-      # echo "PIDFile=/var/run/vmtools.pid"
-      echo "Environment=\"PATH=/usr/vmtools/bin:/usr/vmtools/sbin:\$PATH\""
-      echo "Environment=\"LD_LIBRARY_PATH=/usr/vmtools/lib:\$LD_LIBRARY_PATH\""
+      # echo "PIDFile=${VMTOOLS_PID}"
+      echo "Environment=\"PATH=${VMTOOLS_PATH}/bin:${VMTOOLS_PATH}/sbin:\$PATH\""
+      echo "Environment=\"LD_LIBRARY_PATH=${VMTOOLS_PATH}/lib:\$LD_LIBRARY_PATH\""
       echo "ExecStart=-echo Unknown mev"
       # echo "ExecReload=/bin/kill -HUP \$MAINPID"
       # echo "Restart=always"
@@ -115,5 +119,8 @@ elif [ "${1}" = "uninstall" ]; then
   rm -f "/tmpRoot/usr/lib/systemd/system/multi-user.target.wants/vmtools.service"
   rm -f "/tmpRoot/usr/lib/systemd/system/vmtools.service"
 
+  rm -rf /tmpRoot/share/open-vm-tools
+  rm -rf /tmpRoot/lib/open-vm-tools
+  rm -rf /tmpRoot/etc/open-vm-tools
   rm -rf /tmpRoot/usr/vmtools
 fi
