@@ -290,6 +290,14 @@ dtModel() {
     echo "};" >>"${DEST}"
   fi
 
+  # fix pcie_root prefix
+  _release=$(/bin/uname -r)
+  if [ "$(/bin/echo ${_release%%[-+]*} | /usr/bin/cut -d'.' -f1)" -lt 5 ]; then
+    sed -i 's/"0000:00:/"00:/g' "${DEST}"
+  else
+    sed -i 's/"00:/"0000:00:/g' "${DEST}"
+  fi
+
   # fix model name
   UNIQUE=$(__get_conf_kv unique)
   sed -i "0,/version = .*;/s/model = \".*\";/model = \"${UNIQUE}\";/" "${DEST}"
@@ -448,7 +456,8 @@ nondtModel() {
   fi
 }
 
-checkAlldisk
+
+[ -z "$(/sbin/blkid -L RR3 2>/dev/null)" ] && checkAlldisk
 
 BOOTDISK_PART3_PATH="$(/sbin/blkid -L RR3 2>/dev/null)"
 if [ -n "${BOOTDISK_PART3_PATH}" ]; then
@@ -471,11 +480,12 @@ echo "BOOTDISK_PHYSDEVPATH=${BOOTDISK_PHYSDEVPATH}"
 echo "BOOTDISK_PCIEPATH=${BOOTDISK_PCIEPATH}"
 echo "BOOTDISK_ATAPORT=${BOOTDISK_ATAPORT}"
 
+checkSynoboot
+
 ###################
 
 case ${1} in
 "--create")
-  checkSynoboot
   if [ "$(__get_conf_kv supportportmappingv2)" = "yes" ]; then
     dtModel
   else
