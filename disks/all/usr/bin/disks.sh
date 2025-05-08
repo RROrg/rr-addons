@@ -300,8 +300,8 @@ dtModel() {
   if grep -q "nvme_slot@" "${DEST}" 2>/dev/null; then
     __set_conf_kv "supportnvme" "yes"
     __set_conf_kv "support_m2_pool" "yes"
-    __set_conf_kv "support_ssd_cache" "yes"
-    __set_conf_kv "support_write_cache" "yes"
+    #__set_conf_kv "support_ssd_cache" "yes"  # block nvmesystem addon
+    #__set_conf_kv "support_write_cache" "yes"
   fi
 
   dtc -I dts -O dtb "${DEST}" >/etc/model.dtb
@@ -461,8 +461,8 @@ nondtModel() {
   if [ "${COUNT}" -gt 0 ]; then
     __set_conf_kv "supportnvme" "yes"
     __set_conf_kv "support_m2_pool" "yes"
-    __set_conf_kv "support_ssd_cache" "yes"
-    __set_conf_kv "support_write_cache" "yes"
+    #__set_conf_kv "support_ssd_cache" "yes"  # block nvmesystem addon
+    #__set_conf_kv "support_write_cache" "yes"
   fi
 }
 
