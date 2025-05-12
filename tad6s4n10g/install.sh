@@ -33,7 +33,8 @@ if [ "${1}" = "early" ]; then
   # removing the mlx5 network card 0000:00:1c.0,00.0
   # inserting the mlx5 network card 0000:00:1c.2,00.0
   ls -ld /sys/block/sata* 2>/dev/null | grep -q "0000:00:1c.0" && PCIEPATH=0000:00:1c.0,00.0 || PCIEPATH=0000:00:1c.2,00.0
-  for I in $(seq 5 -1 0); do
+  # for I in $(seq 5 -1 0); do # Reverse order
+  for I in $(seq 0 5); do  # Positive order
     COUNT=$((${COUNT} + 1))
     {
       echo "    internal_slot@${COUNT} {"

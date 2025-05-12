@@ -87,7 +87,7 @@ if [ -n "${SSD_BAY}" ] && [ -z "$(echo "${SSD_BAY}" | sed -n '/^[0-9]\{1,2\}X[0-
 fi
 
 if [ -z "${HDD_BAY}" ]; then
-  if [ -f "/run/model.dtb" ]; then  # if [ ! "$(/bin/get_key_value /etc/synoinfo.conf supportportmappingv2)" = "yes" ]; then
+  if [ -f "/run/model.dtb" ]; then # if [ ! "$(/bin/get_key_value /etc/synoinfo.conf supportportmappingv2)" = "yes" ]; then
     IDX="$(grep -ao "internal_slot@" "/run/model.dtb" | wc -w)"
   else
     IDX="$(synodisk --enum -t internal 2>/dev/null | grep "Disk id:" | cut -d: -f2 | sort -n | tail -n1 | xargs)"
@@ -102,7 +102,7 @@ if [ -z "${HDD_BAY}" ]; then
 fi
 
 if [ -z "${SSD_BAY}" ]; then
-  if [ -f "/run/model.dtb" ]; then  # if [ ! "$(/bin/get_key_value /etc/synoinfo.conf supportportmappingv2)" = "yes" ]; then
+  if [ -f "/run/model.dtb" ]; then # if [ ! "$(/bin/get_key_value /etc/synoinfo.conf supportportmappingv2)" = "yes" ]; then
     IDX="$(grep -ao "nvme_slot@" "/run/model.dtb" | wc -w)"
   else
     IDX="$(synodisk --enum -t cache 2>/dev/null | grep "Disk id:" | cut -d: -f2 | sort -n | tail -n1 | xargs)"
@@ -113,10 +113,14 @@ fi
 [ ! -f "${FILE_GZ}.bak" ] && cp -pf "${FILE_GZ}" "${FILE_GZ}.bak"
 
 gzip -dc "${FILE_GZ}" >"${FILE_JS}"
+
 echo "storagepanel set to ${HDD_BAY} ${SSD_BAY}"
 OLD="driveShape:\"Mdot2-shape\",major:\"row\",rowDir:\"UD\",colDir:\"LR\",driveSection:\[{top:14,left:18,rowCnt:[0-9]\+,colCnt:[0-9]\+,xGap:6,yGap:6}\]},"
 NEW="driveShape:\"Mdot2-shape\",major:\"row\",rowDir:\"UD\",colDir:\"LR\",driveSection:\[{top:14,left:18,rowCnt:${SSD_BAY%%X*},colCnt:${SSD_BAY##*X},xGap:6,yGap:6}\]},"
 sed -i "s/\"${_UNIQUE}\",//g; s/,\"${_UNIQUE}\"//g; s/${HDD_BAY}:\[\"/${HDD_BAY}:\[\"${_UNIQUE}\",\"/g; s/M2X1:\[\"/M2X1:\[\"${_UNIQUE}\",\"/g; s/${OLD}/${NEW}/g" "${FILE_JS}"
+if [ -f "/usr/lib/systemd/system/tad6s4n10g.service" ]; then
+  sed -i 's|major:"row",rowDir:"UD",colDir:"LR",driveSection:\[{top:22,left:26,rowCnt:1,|major:"row",rowDir:"DU",colDir:"RL",driveSection:\[{top:22,left:26,rowCnt:1,|g' "${FILE_JS}"
+fi
 gzip -c "${FILE_JS}" >"${FILE_GZ}"
 
 SM_KEY="sm_machine_img_config_name"
