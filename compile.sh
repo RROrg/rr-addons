@@ -8,7 +8,7 @@ set -e
 
 TEMP_PATH="/tmp"
 
-if ! type yq &>/dev/null || ! yq --version 2>/dev/null | grep -q "v4."; then
+if ! type yq >/dev/null 2>&1 || ! yq --version 2>/dev/null | grep -q "v4."; then
   sudo curl -kL https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/bin/yq && sudo chmod a+x /usr/bin/yq
 fi
 
