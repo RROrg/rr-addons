@@ -38,7 +38,7 @@ elif [ "${1}" = "modules" ]; then
   /usr/sbin/modprobe pcspeaker
   /usr/sbin/modprobe pcspkr
   # modprobe modules for the sensors
-  for I in coretemp k10temp hwmon-vid it87 nct6683 nct6775 adt7470 adt7475; do
+  for I in coretemp k10temp hwmon-vid it87 nct6683 nct6775 adt7470 adt7475 adm1021 adm1031 adm9240 lm75 lm78 lm90; do
     /usr/sbin/modprobe "${I}"
   done
 
