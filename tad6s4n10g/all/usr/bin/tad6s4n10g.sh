@@ -11,94 +11,136 @@ function _log() {
   /bin/logger -p "error" -t "tad6s4n10g" "$@"
 }
 
-function NetBtnOpt3s() {
-  _log "Net-Button pressed"
-  # synowebapi -s --exec api=SYNO.Core.EventScheduler method=list version=1
-  synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Net-Button\"
+function btnOpt() {
+  _log "${1} Button ${2}s Option"
+  case "${1}-${2}" in
+  Net-3)
+    synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Net-Button-3s\"
+    ;;
+  Net-9)
+    synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Net-Button-9s\"
+    ;;
+  Copy-3)
+    synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Copy-Button-3s\"
+    ;;
+  Copy-9)
+    synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Copy-Button-9s\"
+    ;;
+  Reset-3)
+    # restart network
+    rm -f /etc/sysconfig/network-scripts/ifcfg-bond* 2>/dev/null
+    rm -f /etc/sysconfig/network-scripts/ifcfg-eth* 2>/dev/null
+    cp -f /etc.defaults/sysconfig/network-scripts/ifcfg-bond* /etc/sysconfig/network-scripts/ 2>/dev/null
+    cp -f /etc.defaults/sysconfig/network-scripts/ifcfg-eth* /etc/sysconfig/network-scripts/ 2>/dev/null
+    /etc/rc.network restart
+    ;;
+  Reset-9)
+    # change admin password
+    USERNAME="admin"
+    PASSWORD="mi-d.cn"
+    NEWPASSWD="$(openssl passwd -6 -salt "$(openssl rand -hex 8)" "${PASSWORD:-rr}")"
+    sed -i "s|^${USERNAME}:[^:]*|${USERNAME}:${NEWPASSWD}|" "/etc/shadow"
+    sed -i "/^${USERNAME}:/ s/^\(${USERNAME}:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:\)[^:]*:/\1:/" "/etc/shadow"
+    synowebapi -s --exec api=SYNO.Core.User method=set version=1 name=\"admin\" cannot_chg_passwd=false expired=\"normal\"
+    ;;
+  Reset-15)
+    if [ -x "/usr/bin/loader-reboot.sh" ]; then
+      # junior reset
+      /usr/bin/loader-reboot.sh "junior"
+    # else
+    #   # factory reset
+    #   synowebapi -s --exec api=SYNO.Core.System method=reset version=1
+    fi
+    ;;
+  *)
+    _log "Unknown button option: ${1}-${2}"
+    ;;
+  esac &
 }
 
-function CopyBtnOpt3s() {
-  _log "Copy-Button pressed"
-  # synowebapi -s --exec api=SYNO.Core.EventScheduler method=list version=1
-  synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Copy-Button\"
-}
-
-function ResetBtnOpt3s() {
-  _log "Reset-Button pressed"
-  synowebapi -s --exec api=SYNO.Core.System method=reset version=1
-}
-
-function _beep() {
-  local t=1
+function btnLed() {
+  local t=3
   [[ "${1}" =~ ^[0-9]+$ ]] && t="${1}"
 
   # shellcheck disable=SC2034
   for i in $(seq 1 ${t}); do
-    beep -l 1 -l 1 -D 3 -r 20
-    sleep 0.1
-  done
-}
-
-function _NetBtnLed() {
-  :
-}
-
-function _CopyBtnLed() {
-  local t=1
-  [[ "${1}" =~ ^[0-9]+$ ]] && t="${1}"
-
-  # shellcheck disable=SC2034
-  for i in $(seq 1 ${t}); do
-    outb 1 "0xA00" 0 
-    sleep 0.1
+    outb 1 "0xA00" 0
+    sleep 0.5
     outb 0 "0xA00" 0
-    sleep 0.1
-  done
+    sleep 0.5
+  done &
+}
+
+function btnBeep() {
+  local t=3
+  [[ "${1}" =~ ^[0-9]+$ ]] && t="${1}"
+  # beep -l 1 -l 1 -D 3 -r "${t}" &
 }
 
 function main() {
-  NetBtntimeout=0
-  # NetBtnpressed=false
-  NetBtnbvalue="$(inb "0xA00" 3)"
+  NetBtnTimeout=0
+  NetBtnPressed=0
+  NetBtnBaseVal="$(inb "0xA00" 3)"
 
-  CopyBtntimeout=0
-  # CopyBtnpressed=false
-  CopyBtnbvalue="$(inb "0xA04" 6)"
+  CopyBtnTimeout=0
+  CopyBtnPressed=0
+  CopyBtnBaseVal="$(inb "0xA04" 6)"
+
+  ResetBtnTimeout=0
+  ResetBtnPressed=0
+  ResetBtnBaseVal="$(inb "0xA03" 6)"
 
   while true; do
     sleep 1
-    NetBtncval="$(inb "0xA00" 3)"
-    if [ ! "${NetBtncval}" = "${NetBtnbvalue}" ]; then
-      # NetBtnpressed=true
-      NetBtntimeout=$((NetBtntimeout + 1))
-      if [ $((NetBtntimeout % 3)) -eq 0 ]; then
-        # NetBtnpressed=false
-        NetBtntimeout=0
-        #_beep 3 &
-        NetBtnOpt3s &
+
+    NetBtnCurtVal="$(inb "0xA00" 3)"
+    if [ ! "${NetBtnCurtVal}" = "${NetBtnBaseVal}" ]; then
+      NetBtnTimeout=$((NetBtnTimeout + 1))
+      if echo "3 9" | grep -wq "${NetBtnTimeout}"; then
+        NetBtnPressed=${NetBtnTimeout}
+        btnLed 3
+        btnBeep 3
       fi
     else
-      # NetBtnpressed=false
-      NetBtntimeout=0
+      NetBtnTimeout=0
+      if [ ${NetBtnPressed} -ne 0 ]; then
+        btnOpt Net ${NetBtnPressed}
+        NetBtnPressed=0
+      fi
     fi
 
-    CopyBtncval="$(inb "0xA04" 6)"
-    if [ ! "${CopyBtncval}" = "${CopyBtnbvalue}" ]; then
-      # CopyBtnpressed=true
-      CopyBtntimeout=$((CopyBtntimeout + 1))
-      if [ $((CopyBtntimeout % 3)) -eq 0 ]; then
-        # CopyBtnpressed=false
-        CopyBtntimeout=0
-        #_beep 3 &
-        _CopyBtnLed 3 &
-        CopyBtnOpt3s &
+    CopyBtnCurtVal="$(inb "0xA04" 6)"
+    if [ ! "${CopyBtnCurtVal}" = "${CopyBtnBaseVal}" ]; then
+      CopyBtnTimeout=$((CopyBtnTimeout + 1))
+      if echo "3 9" | grep -wq "${CopyBtnTimeout}"; then
+        CopyBtnPressed=${CopyBtnTimeout}
+        btnLed 3
+        btnBeep 3
       fi
     else
-      # CopyBtnpressed=false
-      CopyBtntimeout=0
+      CopyBtnTimeout=0
+      if [ ${CopyBtnPressed} -ne 0 ]; then
+        btnOpt Copy ${CopyBtnPressed}
+        CopyBtnPressed=0
+      fi
+    fi
+
+    ResetBtnCurtVal="$(inb "0xA03" 6)"
+    if [ ! "${ResetBtnCurtVal}" = "${ResetBtnBaseVal}" ]; then
+      ResetBtnTimeout=$((ResetBtnTimeout + 1))
+      if echo "3 9 15" | grep -wq "${ResetBtnTimeout}"; then
+        ResetBtnPressed=${ResetBtnTimeout}
+        btnLed 3
+        btnBeep 3
+      fi
+    else
+      ResetBtnTimeout=0
+      if [ ${ResetBtnPressed} -ne 0 ]; then
+        btnOpt Reset ${ResetBtnPressed}
+        ResetBtnPressed=0
+      fi
     fi
   done
-
 }
 
-main
+main &

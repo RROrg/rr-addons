@@ -34,7 +34,7 @@ if [ "${1}" = "early" ]; then
   # inserting the mlx5 network card 0000:00:1c.2,00.0
   ls -ld /sys/block/sata* 2>/dev/null | grep -q "0000:00:1c.0" && PCIEPATH=0000:00:1c.0,00.0 || PCIEPATH=0000:00:1c.2,00.0
   # for I in $(seq 5 -1 0); do # Reverse order
-  for I in $(seq 0 5); do  # Positive order
+  for I in $(seq 0 5); do # Positive order
     COUNT=$((${COUNT} + 1))
     {
       echo "    internal_slot@${COUNT} {"
@@ -122,27 +122,63 @@ elif [ "${1}" = "late" ]; then
     mkdir -p "$(dirname "${ESYNOSCHEDULER_DB}")"
     cp -vpf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
   fi
-  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "Net-Button"; then
-    echo "Net-Button task already exists"
+  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "Net-Button-3s"; then
+    echo "Net-Button-3s task already exists"
   else
-    echo "insert Net-Button task to esynoscheduler.db"
+    echo "insert Net-Button-3s task to esynoscheduler.db"
     /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
-DELETE FROM task WHERE task_name LIKE 'Net-Button';
-INSERT INTO task VALUES('Net-Button', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
-# Please enter the command to be executed when the Net-Button is pressed.
-echo "This person is lazy, he does not want to write anything."
+DELETE FROM task WHERE task_name LIKE 'Net-Button-3s';
+INSERT INTO task VALUES('Net-Button-3s', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
+# 长按 Net 按钮 3s(Led 闪烁3次) 后松开, 将自动触发该任务.
+# Press and hold the Net button for 3 seconds (the LED flashes 3 times) and then release it to automatically trigger the task.
+# 请在下面输入你需要执行的操作.
+# Please enter the command you need to execute below.
+echo "Net-Button-3s."
 ', 'script', '{}', '', '', '{}', '{}');
 EOF
   fi
-  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "Copy-Button"; then
-    echo "Copy-Button task already exists"
+  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "Net-Button-9s"; then
+    echo "Net-Button-9s task already exists"
   else
-    echo "insert Copy-Button task to esynoscheduler.db"
+    echo "insert Net-Button-9s task to esynoscheduler.db"
     /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
-DELETE FROM task WHERE task_name LIKE 'Copy-Button';
-INSERT INTO task VALUES('Copy-Button', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
-# Please enter the command to be executed when the Copy-Button is pressed.
-echo "This person is lazy, he does not want to write anything."
+DELETE FROM task WHERE task_name LIKE 'Net-Button-9s';
+INSERT INTO task VALUES('Net-Button-9s', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
+# 长按 Net 按钮 9s(Led 闪烁3次 x 2) 后松开, 将自动触发该任务.
+# Press and hold the Net button for 3 seconds (the LED flashes 3 times x 2) and then release it to automatically trigger the task.
+# 请在下面输入你需要执行的操作.
+# Please enter the command you need to execute below.
+echo "Net-Button-9s."
+', 'script', '{}', '', '', '{}', '{}');
+EOF
+  fi
+  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "Copy-Button-3s"; then
+    echo "Copy-Button-3s task already exists"
+  else
+    echo "insert Copy-Button-3s task to esynoscheduler.db"
+    /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
+DELETE FROM task WHERE task_name LIKE 'Copy-Button-3s';
+INSERT INTO task VALUES('Copy-Button-3s', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
+# 长按 Copy 按钮 3s(Led 闪烁3次) 后松开, 将自动触发该任务.
+# Press and hold the Copy button for 3 seconds (the LED flashes 3 times) and then release it to automatically trigger the task.
+# 请在下面输入你需要执行的操作.
+# Please enter the command you need to execute below.
+echo "Copy-Button-3s."
+', 'script', '{}', '', '', '{}', '{}');
+EOF
+  fi
+  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "Copy-Button-9s"; then
+    echo "Copy-Button-9s task already exists"
+  else
+    echo "insert Copy-Button-9s task to esynoscheduler.db"
+    /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
+DELETE FROM task WHERE task_name LIKE 'Copy-Button-9s';
+INSERT INTO task VALUES('Copy-Button-9s', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
+# 长按 Copy 按钮 9s(Led 闪烁3次 x 2) 后松开, 将自动触发该任务.
+# Press and hold the Copy button for 3 seconds (the LED flashes 3 times x 2) and then release it to automatically trigger the task.
+# 请在下面输入你需要执行的操作.
+# Please enter the command you need to execute below.
+echo "Copy-Button-9s."
 ', 'script', '{}', '', '', '{}', '{}');
 EOF
   fi
@@ -181,8 +217,10 @@ elif [ "${1}" = "uninstall" ]; then
   if [ -f "${ESYNOSCHEDULER_DB}" ]; then
     echo "delete beep task from esynoscheduler.db"
     CopyBtn"${ESYNOSCHEDULER_DB}" <<EOF
-DELETE FROM task WHERE task_name LIKE 'Net-Button';
-DELETE FROM task WHERE task_name LIKE 'Copy-Button';
+DELETE FROM task WHERE task_name LIKE 'Net-Button-3s';
+DELETE FROM task WHERE task_name LIKE 'Net-Button-9s';
+DELETE FROM task WHERE task_name LIKE 'Copy-Button-3s';
+DELETE FROM task WHERE task_name LIKE 'Copy-Button-9s';
 EOF
   fi
 fi
