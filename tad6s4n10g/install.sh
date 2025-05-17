@@ -192,7 +192,7 @@ EOF
     echo "[Service]"
     echo "Type=forking"
     echo "ExecStart=/usr/bin/tad6s4n10g.sh"
-    echo "ExecReload=pkill -f /usr/bin/tad6s4n10g.sh"
+    echo "ExecReload=/usr/bin/pkill -f /usr/bin/tad6s4n10g.sh"
     echo "Restart=always"
     echo
     echo "[Install]"

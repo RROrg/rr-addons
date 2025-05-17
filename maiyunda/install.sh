@@ -26,7 +26,7 @@ if [ "${1}" = "late" ]; then
     echo "[Service]"
     echo "Type=forking"
     echo "ExecStart=/usr/bin/maiyunda.sh"
-    echo "ExecReload=pkill -f /usr/bin/maiyunda.sh"
+    echo "ExecReload=/usr/bin/pkill -f /usr/bin/maiyunda.sh"
     echo "Restart=always"
     echo
     echo "[Install]"

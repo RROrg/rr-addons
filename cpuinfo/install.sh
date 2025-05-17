@@ -52,7 +52,7 @@ if [ "${1}" = "late" ]; then
   #   echo "[Service]"
   #   echo "Type=forking"
   #   echo "ExecStart=/usr/sbin/synoscgiproxy"
-  #   echo "ExecReload=pkill -f /usr/sbin/synoscgiproxy"
+  #   echo "ExecReload=/usr/bin/pkill -f /usr/sbin/synoscgiproxy"
   #   echo "Restart=always"
   #   echo
   #   echo "[Install]"

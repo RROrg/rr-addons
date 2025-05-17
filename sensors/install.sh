@@ -52,7 +52,7 @@ EOF
     echo "[Service]"
     echo "Type=forking"
     echo "ExecStart=/usr/bin/rr-sensors.sh"
-    echo "ExecReload=pkill -f /usr/bin/rr-sensors.sh"
+    echo "ExecReload=/usr/bin/pkill -f /usr/bin/rr-sensors.sh"
     echo "Restart=always"
     echo
     echo "[Install]"
