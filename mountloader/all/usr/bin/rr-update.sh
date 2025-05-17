@@ -120,12 +120,11 @@ function getAllModules() {
   # Get list of all modules
   for F in $(${RR_SUDO} ls ${TMP_PATH}/modules/*.ko 2>/dev/null); do
     [ ! -e "${F}" ] && continue
-    local X M DESC
-    X=$(basename "${F}")
-    M=$(basename "${F}" .ko)
-    DESC=$(${RR_SUDO} modinfo "${F}" 2>/dev/null | awk -F':' '/description:/{ print $2}' | awk '{sub(/^[ ]+/,""); print}')
-    [ -z "${DESC}" ] && DESC="${X}"
-    echo "${M} \"${DESC}\""
+    local N DESC
+    N="$(basename "${F}" .ko)"
+    DESC="$(${RR_SUDO} modinfo -F description "${F}" 2>/dev/null)"
+    DESC="$(echo "${DESC}" | sed -E 's/["\n]/ /g' | xargs)"
+    echo "${N} \"${DESC:-${N}}\""
   done
   ${RR_SUDO} rm -rf "${TMP_PATH}/modules"
 }
