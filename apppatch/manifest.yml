@@ -1,21 +1,21 @@
 version: 1
 name: apppatch
 description:  # https://github.com/jinlife/Synology_Photos_Face_Patch
-  en_US: "Fixed bugs in Synology Photos, local_display, and other apps."
-  ar_SA: "إصلاح الأخطاء في تطبيقات Synology Photos و local_display وغيرها."
-  de_DE: "Fehlerbehebungen in Synology Photos, local_display und anderen Apps."
-  es_ES: "Correcciones de errores en Synology Photos, local_display y otras aplicaciones."
-  fr_FR: "Corrections de bugs dans Synology Photos, local_display et d'autres applications."
-  ja_JP: "Synology Photos、local_display などのアプリケーションにおけるバグの修正。"
-  ko_KR: "Synology Photos, local_display 등의 애플리케이션에서 버그를 수정합니다."
-  ru_RU: "Исправления ошибок в Synology Photos, local_display и других приложениях."
-  th_TH: "แก้ไขปัญหาใน Synology Photos, local_display และอื่นๆ"
-  tr_TR: "Synology Photos, local_display ve diğer uygulamalarda hata düzeltmeleri."
-  uk_UA: "Виправлення помилок в Synology Photos, local_display та інших додатках."
-  vi_VN: "Sửa lỗi trong Synology Photos, local_display và các ứng dụng khác."
-  zh_CN: "修复 Synology Photos、local_display 等应用程序中的错误。"
-  zh_HK: "修復 Synology Photos、local_display 等應用程式中的錯誤。"
-  zh_TW: "修復 Synology Photos、local_display 等應用程式中的錯誤。"
+  en_US: "Fix Synology Photos unable to delete photos under non-genuine SN, close local_display to prevent generating a large number of BrowserMetrics files."
+  ar_SA: "إصلاح Synology Photos غير قادر على حذف الصور تحت رقم SN غير الأصلي، إغلاق local_display لمنع إنشاء عدد كبير من ملفات BrowserMetrics."
+  de_DE: "Beheben Sie, dass Synology Photos unter einer nicht originalen SN keine Fotos löschen kann, schließen Sie local_display, um zu verhindern, dass eine große Anzahl von BrowserMetrics-Dateien generiert wird."
+  es_ES: "Arreglar Synology Photos que no puede eliminar fotos bajo un SN no genuino, cerrar local_display para evitar generar una gran cantidad de archivos BrowserMetrics."
+  fr_FR: "Corrigez Synology Photos qui ne peut pas supprimer de photos sous un SN non authentique, fermez local_display pour éviter de générer un grand nombre de fichiers BrowserMetrics."
+  ja_JP: "Synology Photos が非正規 SN の下で写真を削除できない問題を修正し、local_display を閉じて大量の BrowserMetrics ファイルが生成されるのを防ぎます。"
+  ko_KR: "비정품 SN에서 사진을 삭제할 수 없는 Synology Photos를 수정하고 local_display를 닫아 많은 BrowserMetrics 파일이 생성되는 것을 방지합니다."
+  ru_RU: "Исправление Synology Photos, который не может удалить фотографии под ненастоящим SN, закройте local_display, чтобы предотвратить создание большого количества файлов BrowserMetrics."
+  th_TH: "แก้ไข Synology Photos ไม่สามารถลบภาพถ่ายได้เมื่อใช้ SN ไม่จริง และปิด local_display เพื่อป้องกันการสร้างไฟล์ BrowserMetrics เกินจำนวนมาก"
+  tr_TR: "Synology Photos'ın non-orijinal SN altında fotoğrafı silme yeteneğini düzeltin, local_display'i kapatın ve çok fazla BrowserMetrics dosyası oluşturmaması için."
+  uk_UA: "Виправлення Synology Photos, який не може видаляти фотографії під неоригінальним SN, закрийте local_display, щоб уникнути створення великої кількості файлів BrowserMetrics."
+  vi_VN: "Sửa lỗi Synology Photos không thể xóa hình ảnh dưới SN không chính xác, đóng local_display để ngăn chặn việc tạo nhiều tệp BrowserMetrics."
+  zh_CN: "修复 Synology Photos 在非正版SN下无法删除照片的问题、关闭 local_display 防止生成大量 BrowserMetrics文件。"
+  zh_HK: "修復 Synology Photos 在非正版SN下無法刪除照片的問題、關閉 local_display 防止生成大量 BrowserMetrics文件。"
+  zh_TW: "修復 Synology Photos 在非正版SN下無法刪除照片的問題、關閉 local_display 防止生成大量 BrowserMetrics文件。"
 system: false
 params: false
 all:

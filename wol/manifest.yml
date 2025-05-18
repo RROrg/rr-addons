@@ -13,9 +13,9 @@ description:
   tr_TR: "Ağ cihazları için Wake-on-lan'ı zorla etkinleştirin."
   uk_UA: "Примусове включення Wake-on-lan для мережевих пристроїв."
   vi_VN: "Có;puxáy awake-on-lan cho thiết bị mạng."
-  zh_CN: "强制启用网络设备的 Wake-on-lan (网络唤醒)."
-  zh_HK: "強制啟用網絡設備的 Wake-on-lan (網絡喚醒)."
-  zh_TW: "強制啟用網路設備的 Wake-on-lan (網路喚醒)."
+  zh_CN: "强制启用网络设备的 Wake-on-lan."
+  zh_HK: "強制啟用網絡設備的 Wake-on-lan."
+  zh_TW: "強制啟用網路設備的 Wake-on-lan."
 system: true
 params: false
 all:

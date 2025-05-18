@@ -1,21 +1,21 @@
 version: 1
 name: nvmesystem
 description:
-  en_US: "Author: jim3ma. Install system on m.2 disk (can't contain any SATA disk during installation, only supports DT mdoels)."
-  ar_SA: "المؤلف: jim3ma. تثبيت نظام على القرص m.2 (لا يمكن أن يحتوي على أي قرص SATA أثناء التثبيت ، يدعم فقط DT)."
-  de_DE: "Autor: jim3ma. Installieren Sie das System auf einem m.2-Disk (kann keine SATA-Disk während der Installation enthalten, unterstützt nur DT-Modell)."    
-  es_ES: "Autor: jim3ma. Instalar el sistema en un disco m.2 (no puede contener ninguna unidad SATA durante la instalación, solo admite modelos DT)."
-  fr_FR: "Auteur: jim3ma. Installez le système sur un disque m.2 (ne peut contenir aucune unité SATA pendant l'installation, ne prend que les modèles DT)."
-  ja_JP: "著者: jim3ma. m.2 ディスクにシステムをインストール (インストール中に SATA ディスクを含めることはできません、DT モデルのみをサポートします)."
-  ko_KR: "저자: jim3ma. m.2 디스크에 시스템을 설치 (설치 중에 SATA 디스크를 포함할 수 없으며, DT 모델만 지원합니다)."
-  ru_RU: "Автор: jim3ma. Установить систему на диск m.2 (не может содержать SATA-диск во время установки, поддерживает только модели DT)."
-  th_TH: "ผู้เขียน: jim3ma. ติดตั้งระบบบนแผง m.2 (ไม่สามารถมีหน่วย SATA ในระหว่างการติดตั้งได้ และเฉพาะโมเดล DT เท่านั้น)."
-  tr_TR: "Yazar: jim3ma. m.2 disk üzerine sistem yükleyin (kurulum sırasında herhangi bir SATA disk içeremez, yalnızca DT modellerini destekler)."
-  uk_UA: "Автор: jim3ma. Установить систему на диск m.2 (не может содержать SATA-диск во время установки, поддерживает только модели DT)."  
-  vi_VN: "Người tạo: jim3ma. Cài đặt hệ thống trên m.2 (không thể chứa đĩa SATA trong quá trình cài đặt, chỉ hỗ trợ mô hình DT)."
-  zh_CN: "作者: jim3ma. 在 m.2 盘上安装系统 (在安装过程中不能包含 SATA 盘，仅支持 DT 型号)."
-  zh_HK: "作者: jim3ma. 在 m.2 盤上安裝系統 (在安裝過程中不能包含 SATA 盤，僅支持 DT 模型)."
-  zh_TW: "作者: jim3ma. 在 m.2 盤上安裝系統 (在安裝過程中不能包含 SATA 盤，僅支持 DT 模型)."
+  en_US: "Author: jim3ma. Install system on NVME disk (can't contain any SATA disk during installation, only supports DT mdoels)."
+  ar_SA: "المؤلف: jim3ma. تثبيت نظام على القرص NVME (لا يمكن أن يحتوي على أي قرص SATA أثناء التثبيت ، يدعم فقط DT)."
+  de_DE: "Autor: jim3ma. Installieren Sie das System auf einem NVME-Disk (kann keine SATA-Disk während der Installation enthalten, unterstützt nur DT-Modell)."    
+  es_ES: "Autor: jim3ma. Instalar el sistema en un disco NVME (no puede contener ninguna unidad SATA durante la instalación, solo admite modelos DT)."
+  fr_FR: "Auteur: jim3ma. Installez le système sur un disque NVME (ne peut contenir aucune unité SATA pendant l'installation, ne prend que les modèles DT)."
+  ja_JP: "著者: jim3ma. NVME ディスクにシステムをインストール (インストール中に SATA ディスクを含めることはできません、DT モデルのみをサポートします)."
+  ko_KR: "저자: jim3ma. NVME 디스크에 시스템을 설치 (설치 중에 SATA 디스크를 포함할 수 없으며, DT 모델만 지원합니다)."
+  ru_RU: "Автор: jim3ma. Установить систему на диск NVME (не может содержать SATA-диск во время установки, поддерживает только модели DT)."
+  th_TH: "ผู้เขียน: jim3ma. ติดตั้งระบบบนแผง NVME (ไม่สามารถมีหน่วย SATA ในระหว่างการติดตั้งได้ และเฉพาะโมเดล DT เท่านั้น)."
+  tr_TR: "Yazar: jim3ma. NVME disk üzerine sistem yükleyin (kurulum sırasında herhangi bir SATA disk içeremez, yalnızca DT modellerini destekler)."
+  uk_UA: "Автор: jim3ma. Установить систему на диск NVME (не может содержать SATA-диск во время установки, поддерживает только модели DT)."  
+  vi_VN: "Người tạo: jim3ma. Cài đặt hệ thống trên NVME (không thể chứa đĩa SATA trong quá trình cài đặt, chỉ hỗ trợ mô hình DT)."
+  zh_CN: "作者: jim3ma. 在 NVME 盘上安装系统 (在安装过程中不能包含 SATA 盘，仅支持 DT 型号)."
+  zh_HK: "作者: jim3ma. 在 NVME 盤上安裝系統 (在安裝過程中不能包含 SATA 盤，僅支持 DT 模型)."
+  zh_TW: "作者: jim3ma. 在 NVME 盤上安裝系統 (在安裝過程中不能包含 SATA 盤，僅支持 DT 模型)."
 system: false
 params: false
 all:

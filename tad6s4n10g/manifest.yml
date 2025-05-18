@@ -13,9 +13,9 @@ description:
   tr_TR: "TANK TAD6S4N10G DTS üretimini ve düğme olaylarını kontrol etmek için kullanılır, lütfen olay içeriğini kendiniz değiştirin. Planlı görevdeki Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s dört görevin içeriği."
   uk_UA: "Використовується для керування генерацією DTS TANK TAD6S4N10G та подіями кнопок, будь ласка, змініть вміст події самостійно. Вміст чотирьох завдань Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s у запланованому завданні."
   vi_VN: "Được sử dụng để kiểm soát việc tạo DTS của TANK TAD6S4N10G và các sự kiện nút, vui lòng tự sửa đổi nội dung sự kiện. Nội dung của bốn tác vụ Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s trong tác vụ đã lên lịch."
-  zh_CN: "用于控制TANK TAD6S4N10G DTS生成 和 按钮事件, 事件内容请自行修改 计划任务中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 4 个任务的内容."
-  zh_HK: "用於控制TANK TAD6S4N10G DTS生成 和 按鈕事件, 事件內容請自行修改 計劃任務中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 4 個任務的內容."
-  zh_TW: "用於控制TANK TAD6S4N10G DTS生成 和 按鈕事件, 事件內容請自行修改 計劃任務中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 4 個任務的內容."
+  zh_CN: "用于控制TANK TAD6S4N10G DTS生成 和 按钮事件, 事件内容请自行修改 计划任务中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 几个任务的内容."
+  zh_HK: "用於控制TANK TAD6S4N10G DTS生成 和 按鈕事件, 事件內容請自行修改 計劃任務中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 幾個任務的內容."
+  zh_TW: "用於控制TANK TAD6S4N10G DTS生成 和 按鈕事件, 事件內容請自行修改 計劃任務中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 幾個任務的內容."
 system: false
 params: false
 all:

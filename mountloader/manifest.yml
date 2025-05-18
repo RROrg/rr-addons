@@ -1,21 +1,21 @@
 version: 1
 name: mountloader
 description:
-  en_US: "Add a script to mount/unmount loader disk in the DSM scheduled task, For use by the rr-manager applications."
-  ar_SA: "أضف سكريبت لتثبيت/إلغاء تثبيت قرص الشحن في المهمة المجدولة DSM، للاستخدام من قبل تطبيقات rr-manager."
-  de_DE: "Fügen Sie ein Skript hinzu, um die Loader-Disk in der DSM-geplanten Aufgabe zu mounten/zu entladen, für die Verwendung durch die rr-manager-Anwendungen."
-  es_ES: "Agregue un script para montar/desmontar el disco de carga en la tarea programada DSM, para uso por las aplicaciones rr-manager."
-  fr_FR: "Ajoutez un script pour monter/démonter le disque de chargement dans la tâche planifiée DSM, pour une utilisation par les applications rr-manager."
-  ja_JP: "DSM のスケジュールされたタスクでローダーディスクをマウント/アンマウントするスクリプトを追加します. rr-manager アプリケーションで使用します."
-  ko_KR: "DSM 예약 작업에서 로더 디스크를 마운트/언마운트하는 스크립트를 추가하십시오. rr-manager 응용 프로그램에서 사용합니다."
-  ru_RU: "Добавьте скрипт для монтирования/размонтирования диска загрузчика в запланированной задаче DSM, для использования приложениями rr-manager."
-  th_TH: "เพิ่มสคริปต์เพื่อติดตั้ง/ถอดติดตั้งดิสก์โหลดในงานที่ตั้งเวลา DSM สำหรับใช้โดยแอปพลิเคชัน rr-manager"
-  tr_TR: "DSM zamanlanmış görevinde yükleyici diski bağlamak/çıkarmak için bir betik ekleyin, rr-manager uygulamaları tarafından kullanılmak üzere."
-  uk_UA: "Додайте сценарій для монтування/розмонтовування диска завантажувача в запланованому завданні DSM, для використання програмами rr-manager."
-  vi_VN: "Thêm một tập lệnh để gắn / tháo gắn đĩa loader trong nhiệm vụ được lên lịch DSM, để sử dụng bởi các ứng dụng rr-manager."
-  zh_CN: "在 DSM 计划任务中添加一个脚本来挂载/卸载加载器磁盘, 供 rr-manager 应用程序使用."
-  zh_HK: "在 DSM 計劃任務中添加一個腳本來掛載/卸載加載器磁碟, 供 rr-manager 應用程序使用."
-  zh_TW: "在 DSM 計劃任務中添加一個腳本來掛載/卸載加載器磁碟, 供 rr-manager 應用程序使用."
+  en_US: "Mount boot disk and upgrade boot script under DSM system, for rr-manager application."
+  ar_SA: "تثبيت قرص التمهيد وترقية البرنامج النصي للتمهيد تحت نظام DSM، لتطبيق rr-manager."
+  de_DE: "Mounten Sie das Startlaufwerk und aktualisieren Sie das Startskript unter dem DSM-System für die rr-manager-Anwendung."
+  es_ES: "Montar el disco de arranque y actualizar el script de arranque en el sistema DSM, para la aplicación rr-manager."
+  fr_FR: "Monter le disque de démarrage et mettre à jour le script de démarrage sous le système DSM, pour l'application rr-manager."
+  ja_JP: "DSM システムでブート ディスクをマウントし、rr-manager アプリケーション用のブート スクリプトをアップグレードします。"
+  ko_KR: "DSM 시스템에서 부팅 디스크를 마운트하고 rr-manager 응용 프로그램을 위한 부팅 스크립트를 업그레이드합니다."
+  ru_RU: "Подключите загрузочный диск и обновите загрузочный скрипт в системе DSM для приложения rr-manager."
+  th_TH: "ในระบบ DSM เมานต์ดิสก์บูตและอัปเกรดสคริปต์บูตสำหรับแอปพลิเคชัน rr-manager"
+  tr_TR: "DSM sisteminde başlangıç diskini bağlayın ve rr-manager uygulamasında başlangıç betiğini güncelleyin."
+  uk_UA: "З'єднати стартовий диск та оновити стартовий скрипт в системі DSM для додатку rr-manager."
+  vi_VN: "Đồng bộ hóa đĩa khởi động và cập nhật script khởi động trong hệ thống DSM, cho ứng dụng rr-manager."
+  zh_CN: "在 DSM 系统下挂载引导磁盘和升级引导的脚本, 供 rr-manager 应用程序使用."
+  zh_HK: "在 DSM 系統下掛載引導磁碟和升級引導的腳本, 供 rr-manager 應用程序使用."
+  zh_TW: "在 DSM 系統下掛載引導磁碟和升級引導的腳本, 供 rr-manager 應用程序使用."
 system: false
 params: false
 all:

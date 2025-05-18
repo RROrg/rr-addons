@@ -1,21 +1,21 @@
 version: 1
 name: vmtools
 description:
-  en_US: "qemu-ga & open-vm-tools."
-  ar_SA: "qemu-ga & open-vm-tools."
-  de_DE: "qemu-ga & open-vm-tools."
-  es_ES: "qemu-ga & open-vm-tools."
-  fr_FR: "qemu-ga & open-vm-tools."
-  ja_JP: "qemu-ga & open-vm-tools."
-  ko_KR: "qemu-ga & open-vm-tools."
-  ru_RU: "qemu-ga & open-vm-tools."
-  th_TH: "qemu-ga & open-vm-tools."
-  tr_TR: "qemu-ga & open-vm-tools."
-  uk_UA: "qemu-ga & open-vm-tools."
-  vi_VN: "qemu-ga & open-vm-tools."
-  zh_CN: "qemu-ga & open-vm-tools."
-  zh_HK: "qemu-ga & open-vm-tools."
-  zh_TW: "qemu-ga & open-vm-tools."
+  en_US: "Automatically install qemu-ga or open-vm-tools according to the environment. (Physical machines are not enabled by default, no need to cancel)"
+  ar_SA: "تثبيت qemu-ga أو open-vm-tools تلقائيًا وفقًا للبيئة. (لا يتم تمكين الأجهزة المادية بشكل افتراضي، ولا حاجة للإلغاء)"
+  de_DE: "Installieren Sie qemu-ga oder open-vm-tools automatisch entsprechend der Umgebung. (Physische Maschinen sind standardmäßig nicht aktiviert, keine Notwendigkeit zum Abbrechen)"
+  es_ES: "Instalar qemu-ga o open-vm-tools automáticamente según la entorno. (Las máquinas físicas no están activadas de forma predeterminada, no es necesario cancelar)"
+  fr_FR: "Installer automatiquement qemu-ga ou open-vm-tools en fonction de l'environnement. (Les machines physiques ne sont pas activées par défaut, pas besoin d'annuler)"
+  ja_JP: "環境に応じて qemu-ga または open-vm-tools を自動的にインストールします。 (物理マシンはデフォルトで有効になっていないため、キャンセルする必要はありません)"
+  ko_KR: "환경에 따라 qemu-ga 또는 open-vm-tools를 자동으로 설치합니다. (물리적 머신은 기본적으로 활성화되지 않으므로 취소할 필요가 없습니다)"
+  ru_RU: "Автоматическая установка qemu-ga или open-vm-tools в зависимости от окружения. (Физические машины по умолчанию не включены, отменять не нужно)"
+  th_TH: "ติดตั้ง qemu-ga หรือ open-vm-tools โดยอัตโนมัติตามสภาพแวดล้อม (เครื่องจริงจะไม่เปิดใช้งานตามค่าเริ่มต้น ไม่จำเป็นต้องยกเลิก)"
+  tr_TR: "Ortamına göre qemu-ga veya open-vm-tools'u otomatik olarak yükleyin. (Fiziksel makineler varsayılan olarak etkinleştirilmez, iptal etmeye gerek yok)"
+  uk_UA: "Автоматична установка qemu-ga або open-vm-tools відповідно до середовища. (Фізичні машини за замовчуванням не активовані, скасовувати не потрібно)"
+  vi_VN: " Tự động cài đặt qemu-ga hoặc open-vm-tools theo môi trường. (Máy vật lý không được kích hoạt theo mặc định, không cần hủy bỏ)"
+  zh_CN: "根据环境自动安装 qemu-ga 或者 open-vm-tools. (物理机默认不会启用, 不需要取消)"
+  zh_HK: "根据环境自动安装 qemu-ga 或者 open-vm-tools. (物理机默认不会启用, 不需要取消)"
+  zh_TW: "根據環境自動安裝 qemu-ga 或者 open-vm-tools. (物理機默認不會啟用, 不需要取消)"
 system: false
 params: false
 all:
