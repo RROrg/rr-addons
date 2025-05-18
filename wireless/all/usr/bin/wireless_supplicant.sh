@@ -31,7 +31,7 @@ fi
 
 for N in ${ETHX}; do
   if [ -f "/var/run/wpa_supplicant.pid.${N}" ]; then
-    pkill -F "/var/run/wpa_supplicant.pid.${N}"
+    /usr/bin/pkill -F "/var/run/wpa_supplicant.pid.${N}"
     rm -f "/var/run/wpa_supplicant.pid.${N}"
   fi
   ISOVS=$([ -L "/sys/class/net/ovs_${N}" ] && echo "true" || echo "false")
