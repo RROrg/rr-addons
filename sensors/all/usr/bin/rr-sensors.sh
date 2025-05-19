@@ -20,7 +20,7 @@ _log() {
 
 set_fan_conf() {
   for F in "/etc/synoinfo.conf" "/etc.defaults/synoinfo.conf"; do
-    for K in "support_fan" "supportadt7490" "support_fan_adjust_dual_mode"; do
+    for K in "support_fan" "support_fan_adjust_dual_mode"; do
       /usr/syno/bin/synosetkeyvalue "${F}" "${K}" "${1:-"no"}"
     done
   done
@@ -83,7 +83,8 @@ main() {
   FanBaseMode=""
   while true; do
     sleep 1
-    FanCurtMode="$(/usr/bin/rr-sensors)"
+    FanType="$(/bin/get_key_value /etc/synoinfo.conf fan_config_type_internal 2>/dev/null)"
+    case "${FanType}" in fullfan | full) FanCurtMode="0" ;; coolfan | high) FanCurtMode="1" ;; quietfan | low) FanCurtMode="2" ;; *) FanCurtMode="-1" ;; esac
     if echo "0 1 2" | grep -wq "${FanCurtMode}"; then
       if [ ! "${FanCurtMode}" = "${FanBaseMode}" ]; then
         _log "Fan speed mode changed from ${FanBaseMode} to ${FanCurtMode}"

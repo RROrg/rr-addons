@@ -12,7 +12,6 @@ if [ "${1}" = "late" ]; then
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
   tar -zxf /addons/sensors-7.1.tgz -C /tmpRoot/usr/
-  cp -vpf /usr/bin/rr-sensors /tmpRoot/usr/bin/rr-sensors
   cp -vpf /usr/bin/rr-sensors.sh /tmpRoot/usr/bin/rr-sensors.sh
 
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
@@ -69,7 +68,6 @@ elif [ "${1}" = "uninstall" ]; then
   rm -f "/tmpRoot/usr/lib/systemd/system/sensors.service"
 
   rm -f /tmpRoot/etc/fancontrol
-  rm -f /tmpRoot/usr/bin/rr-sensors
   rm -f /tmpRoot/usr/bin/rr-sensors.sh
 
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
