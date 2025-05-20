@@ -1,21 +1,21 @@
 version: 1
 name: tad6s4n10g
 description:
-  en_US: "Used to control TANK TAD6S4N10G DTS generation and button events, please modify the event content by yourself. The content of the four tasks Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s in the scheduled task."
-  ar_SA: "استخدم للتحكم في توليد DTS لـ TANK TAD6S4N10G وأحداث الزر، يرجى تعديل محتوى الحدث بنفسك. محتوى المهام الأربع Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s في المهمة المجدولة."
-  de_DE: "Verwendet, um die DTS-Generierung und die Tastenereignisse von TANK TAD6S4N10G zu steuern. Bitte ändern Sie den Ereignisinhalt selbst. Der Inhalt der vier Aufgaben Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s in der geplanten Aufgabe."
-  es_ES: "Utilizado para controlar la generación de DTS de TANK TAD6S4N10G y eventos de botones, modifique el contenido del evento usted mismo. El contenido de las cuatro tareas Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s en la tarea programada."
-  fr_FR: "Utilisé pour contrôler la génération de DTS de TANK TAD6S4N10G et les événements de bouton, veuillez modifier le contenu de l'événement vous-même. Le contenu des quatre tâches Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s dans la tâche planifiée."
-  ja_JP: "Tank TAD6S4N10GのDTS生成とボタンイベントを制御するために使用されます。イベント内容はご自身で修正してください。スケジュールされたタスクの4つのタスクNet-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9sの内容。"
-  ko_KR: "Tank TAD6S4N10G의 DTS 생성 및 버튼 이벤트를 제어하는 데 사용됩니다. 이벤트 내용은 직접 수정하십시오. 예약된 작업의 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 4개의 작업 내용입니다."
-  ru_RU: "Используется для управления генерацией DTS TANK TAD6S4N10G и событиями кнопок, пожалуйста, измените содержимое события самостоятельно. Содержимое четырех задач Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s в запланированной задаче."
-  th_TH: "ใช้ในการควบคุมการสร้าง DTS ของ TANK TAD6S4N10G และเหตุการณ์ปุ่มโปรดแก้ไขเนื้อหาของเหตุการณ์ด้วยตนเอง เนื้อหาของสี่งาน Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s ในงานที่กำหนดเวลา"
-  tr_TR: "TANK TAD6S4N10G DTS üretimini ve düğme olaylarını kontrol etmek için kullanılır, lütfen olay içeriğini kendiniz değiştirin. Planlı görevdeki Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s dört görevin içeriği."
-  uk_UA: "Використовується для керування генерацією DTS TANK TAD6S4N10G та подіями кнопок, будь ласка, змініть вміст події самостійно. Вміст чотирьох завдань Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s у запланованому завданні."
-  vi_VN: "Được sử dụng để kiểm soát việc tạo DTS của TANK TAD6S4N10G và các sự kiện nút, vui lòng tự sửa đổi nội dung sự kiện. Nội dung của bốn tác vụ Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s trong tác vụ đã lên lịch."
-  zh_CN: "用于控制TANK TAD6S4N10G DTS生成 和 按钮事件, 事件内容请自行修改 计划任务中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 几个任务的内容."
-  zh_HK: "用於控制TANK TAD6S4N10G DTS生成 和 按鈕事件, 事件內容請自行修改 計劃任務中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 幾個任務的內容."
-  zh_TW: "用於控制TANK TAD6S4N10G DTS生成 和 按鈕事件, 事件內容請自行修改 計劃任務中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 幾個任務的內容."
+  en_US: "Control TANK TAD6S4N10G machine DTS generation and button events, please modify the content of the Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s tasks in the scheduled tasks."
+  ar_SA: "التحكم في توليد DTS لجهاز TANK TAD6S4N10G وأحداث الأزرار، يرجى تعديل محتوى المهام المجدولة Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s."
+  de_DE: "Steuerung der DTS-Generierung und der Tastenereignisse der TANK TAD6S4N10G-Maschine. Bitte ändern Sie den Inhalt der Aufgaben Net-Button-3s, Net-Button-9s, Copy-Button-3s und Copy-Button-9s im Zeitplan."
+  es_ES: "Control de la generación de DTS de la máquina TANK TAD6S4N10G y eventos de botones, por favor modifique el contenido de las tareas programadas Net-Button-3s, Net-Button-9s, Copy-Button-3s y Copy-Button-9s."
+  fr_FR: "Contrôle de la génération DTS de la machine TANK TAD6S4N10G et des événements de boutons, veuillez modifier le contenu des tâches planifiées Net-Button-3s, Net-Button-9s, Copy-Button-3s et Copy-Button-9s."
+  ja_JP: "Tank TAD6S4N10G マシンの DTS 生成とボタン イベントを制御します。スケジュールされたタスクの Net-Button-3s、Net-Button-9s、Copy-Button-3s、および Copy-Button-9s の内容を変更してください。"
+  ko_KR: "TANK TAD6S4N10G 기계의 DTS 생성 및 버튼 이벤트를 제어합니다. 예약된 작업의 Net-Button-3s, Net-Button-9s, Copy-Button-3s 및 Copy-Button-9s의 내용을 수정하십시오."
+  ru_RU: "Управление генерацией DTS и событиями кнопок машины TANK TAD6S4N10G, пожалуйста, измените содержимое задач Net-Button-3s, Net-Button-9s, Copy-Button-3s и Copy-Button-9s в планировщике."
+  th_TH: "ควบคุมการสร้าง DTS ของเครื่อง TANK TAD6S4N10G และเหตุการณ์ปุ่มโปรดแก้ไขเนื้อหาของงานที่กำหนดเวลา Net-Button-3s, Net-Button-9s, Copy-Button-3s และ Copy-Button-9s"
+  tr_TR: "TANK TAD6S4N10G makinesinin DTS üretimini ve düğme olaylarını kontrol edin, lütfen planlı görevlerdeki Net-Button-3s, Net-Button-9s, Copy-Button-3s ve Copy-Button-9s görevlerinin içeriğini değiştirin."
+  uk_UA: "Контроль генерації DTS машини TANK TAD6S4N10G та подій кнопок, будь ласка, змініть вміст запланованих завдань Net-Button-3s, Net-Button-9s, Copy-Button-3s та Copy-Button-9s."
+  vi_VN: "Điều khiển việc tạo DTS của máy TANK TAD6S4N10G và sự kiện nút, vui lòng sửa đổi nội dung của các tác vụ đã lên lịch Net-Button-3s, Net-Button-9s, Copy-Button-3s và Copy-Button-9s."
+  zh_CN: "用于控制TANK TAD6S4N10G 机器的 DTS 生成 和 按钮事件, 事件内容请自行修改 计划任务中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 几个任务的内容."
+  zh_HK: "用於控制TANK TAD6S4N10G 機器的 DTS 生成 和 按鈕事件, 事件內容請自行修改 計劃任務中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 幾個任務的內容."
+  zh_TW: "用於控制TANK TAD6S4N10G 機器的 DTS 生成 和 按鈕事件, 事件內容請自行修改 計劃任務中 Net-Button-3s Net-Button-9s Copy-Button-3s Copy-Button-9s 幾個任務的內容."
 system: false
 params: false
 all:
