@@ -6,7 +6,6 @@
 # See /LICENSE for more information.
 #
 
-#
 if [ "${1}" = "patches" ]; then
   echo "Installing addon disks - ${1}"
 
