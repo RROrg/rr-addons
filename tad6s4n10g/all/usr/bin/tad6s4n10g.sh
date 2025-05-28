@@ -46,6 +46,7 @@ function btnOpt() {
     synowebapi -s --exec api=SYNO.Core.User method=set version=1 name=\"admin\" cannot_chg_passwd=false expired=\"normal\"
     ;;
   Reset-15)
+    sleep 3
     if [ -x "/usr/bin/loader-reboot.sh" ]; then
       # junior reset
       /usr/bin/loader-reboot.sh "junior"
@@ -76,7 +77,7 @@ function btnLed() {
 function btnBeep() {
   local t=3
   [[ "${1}" =~ ^[0-9]+$ ]] && t="${1}"
-  # beep -l 1 -l 1 -D 3 -r "${t}" &
+  beep -r "${t}" &
 }
 
 function main() {
