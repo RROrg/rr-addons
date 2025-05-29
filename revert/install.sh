@@ -47,16 +47,8 @@ if [ "${1}" = "late" ]; then
   fi
 
   # backup current loader configs
-  rm -rf "/tmpRoot/usr/rr/backup"
-  if [ -d "/usr/rr/backup" ]; then
-    mkdir -p "/tmpRoot/usr/rr/backup"
-    cp -rpf /usr/rr/backup/* "/tmpRoot/usr/rr/backup/"
+  if [ -d "/usr/rr" ]; then
+    mkdir -p "/tmpRoot/usr/rr"
+    cp -rpf /usr/rr/* "/tmpRoot/usr/rr/"
   fi
-
-  # Version
-  {
-    echo "LOADERLABEL=\"${LOADERLABEL}\""
-    echo "LOADERRELEASE=\"${LOADERRELEASE}\""
-    echo "LOADERVERSION=\"${LOADERVERSION}\""
-  } >"/tmpRoot/usr/rr/VERSION"
 fi
