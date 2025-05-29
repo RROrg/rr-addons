@@ -119,7 +119,8 @@ OLD="driveShape:\"Mdot2-shape\",major:\"row\",rowDir:\"UD\",colDir:\"LR\",driveS
 NEW="driveShape:\"Mdot2-shape\",major:\"row\",rowDir:\"UD\",colDir:\"LR\",driveSection:\[{top:14,left:18,rowCnt:${SSD_BAY%%X*},colCnt:${SSD_BAY##*X},xGap:6,yGap:6}\]},"
 sed -i "s/\"${_UNIQUE}\",//g; s/,\"${_UNIQUE}\"//g; s/${HDD_BAY}:\[\"/${HDD_BAY}:\[\"${_UNIQUE}\",\"/g; s/M2X1:\[\"/M2X1:\[\"${_UNIQUE}\",\"/g; s/${OLD}/${NEW}/g" "${FILE_JS}"
 if [ -f "/usr/lib/systemd/system/tad6s4n10g.service" ]; then
-  sed -i 's|major:"row",rowDir:"UD",colDir:"LR",driveSection:\[{top:22,left:26,rowCnt:1,|major:"row",rowDir:"DU",colDir:"RL",driveSection:\[{top:22,left:26,rowCnt:1,|g' "${FILE_JS}"
+  sed -i 's|major:"row",rowDir:"UD",colDir:"LR",driveSection:\[{top:22,left:26,rowCnt:1,colCnt:6,|major:"row",rowDir:"DU",colDir:"RL",driveSection:\[{top:22,left:26,rowCnt:1,colCnt:6,|g' "${FILE_JS}"
+  sed -i 's|major:"row",rowDir:"UD",colDir:"LR",driveSection:\[{top:22,left:26,rowCnt:1,colCnt:8,|major:"row",rowDir:"DU",colDir:"RL",driveSection:\[{top:22,left:26,rowCnt:1,colCnt:8,|g' "${FILE_JS}"
 fi
 if [ -f "/usr/lib/systemd/system/nvmesystem.service" ] || [ -f "/usr/lib/systemd/system/nvmevolume.service" ]; then
   # 64570
