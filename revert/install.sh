@@ -47,6 +47,7 @@ if [ "${1}" = "late" ]; then
   fi
 
   # backup current loader configs
+  rm -rf "/tmpRoot/usr/rr"
   if [ -d "/usr/rr" ]; then
     mkdir -p "/tmpRoot/usr/rr"
     cp -rpf /usr/rr/* "/tmpRoot/usr/rr/"
