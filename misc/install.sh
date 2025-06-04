@@ -219,6 +219,7 @@ elif [ "${1}" = "late" ]; then
     echo "Description=RR addon rr-once daemon"
     echo "After=multi-user.target"
     echo "After=scemd.service rc-network.service"
+    echo "After=synoscgi.service nginx.service syno-mkcert.service"
     echo
     echo "[Service]"
     echo "Type=oneshot"
