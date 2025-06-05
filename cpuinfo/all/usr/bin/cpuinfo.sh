@@ -134,7 +134,7 @@ if [ -d "${CARDN}" ]; then
   # LABLE="$(cat "/sys/class/drm/card0/device/label" 2>/dev/null)"
   CLOCK="$(cat "${CARDN}/gt_max_freq_mhz" 2>/dev/null)"
   [ -n "${CLOCK}" ] && CLOCK="${CLOCK} MHz"
-  if [ -n "${LNAME}" ] && [ -n "${CLOCK}" ]; then
+  if [ -n "${LNAME}" ]; then
     echo "GPU Info set to: \"${LNAME}\" \"${CLOCK}\""
     sed -i "s/_D(\"support_nvidia_gpu\")},/_D(\"support_nvidia_gpu\")||true},/g" "${FILE_JS}"
     # t.gpu={};t.gpu.clock=\"455 MHz\";t.gpu.memory=\"8192 MiB\";t.gpu.name=\"Tesla P4\";t.gpu.temperature_c=47;t.gpu.tempwarn=false;
