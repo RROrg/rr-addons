@@ -47,6 +47,7 @@ EOF
     echo "[Unit]"
     echo "Description=RR addon sensors daemon"
     echo "After=multi-user.target"
+    echo "After=scemd.service"
     echo
     echo "[Service]"
     echo "Type=forking"
