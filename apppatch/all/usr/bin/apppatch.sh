@@ -14,6 +14,10 @@ if [ "${1}" = "-r" ]; then
   SO_FILE="/var/packages/SynologyPhotos/target/usr/lib/libsynophoto-plugin-platform.so.1.0"
   [ -f "${SO_FILE}.bak" ] && mv -f "${SO_FILE}.bak" "${SO_FILE}"
 
+  # HybridShare
+  FILE=/var/packages/HybridShare/target/ui/C2FS.js
+  [ -f "${FILE}.bak" ] && mv -f "${FILE}.bak" "${FILE}" && gzip -c "${FILE}" >"${FILE}.gz"
+
   # Surveillance Station -- local_display
   SS_PATH="/var/packages/SurveillanceStation/target"
   [ -d "${SS_PATH}/@SSData/AddOns/LocalDisplay" ] &&
@@ -39,6 +43,14 @@ else
     PatchELFSharp "${SO_FILE}" "_ZN9synophoto6plugin8platform18IsSupportedConceptEv" "B8 01 00 00 00 C3"
     # force no Gpu
     PatchELFSharp "${SO_FILE}" "_ZN9synophoto6plugin8platform23IsSupportedIENetworkGpuEv" "B8 00 00 00 00 C3"
+  fi
+
+  # HybridShare
+  FILE=/var/packages/HybridShare/target/ui/C2FS.js
+  if [ -f "${FILE}" ]; then
+    [ ! -f "${FILE}.bak" ] && cp -pf "${FILE}" "${FILE}.bak"
+    sed -i 's/Beijing/Xeijing/' "${FILE}"
+    gzip -c "${FILE}" >"${FILE}.gz"
   fi
 
   # Surveillance Station -- local_display
