@@ -212,7 +212,8 @@ elif [ "${1}" = "late" ]; then
   ln -vsf /usr/lib/systemd/system/rr-misc.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/rr-misc.service
 
   # rr-once
-  cp -vpf /usr/bin/rr-misc.sh /tmpRoot/usr/bin/rr-misc.sh
+  cp -vpf /usr/bin/rr-once.sh /tmpRoot/usr/bin/rr-once.sh
+
   DEST="/tmpRoot/usr/lib/systemd/system/rr-once.service"
   {
     echo "[Unit]"
