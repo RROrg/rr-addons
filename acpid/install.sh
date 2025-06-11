@@ -11,38 +11,13 @@ if [ "${1}" = "late" ]; then
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
-  tar -zxf /addons/acpid-7.1.tgz -C /tmpRoot/usr/ ./bin ./sbin ./lib
-  tar -zxf /addons/acpid-7.1.tgz -C /tmpRoot/ ./etc
-  sed -i '/^Exec/s|=/|=-/|g' /tmpRoot/usr/lib/systemd/system/acpid.service
+  tar -zxf /addons/acpid-7.1.tgz -C /tmpRoot/
+
   if [ -f /usr/lib/modules/button.ko ]; then
     cp -vpf /usr/lib/modules/button.ko /tmpRoot/usr/lib/modules/button.ko
   else
     echo "No button.ko found"
   fi
-
-  # mkdir -p "/tmpRoot/usr/lib/systemd/system"
-  # DEST="/tmpRoot/usr/lib/systemd/system/acpid.service"
-  # {
-  #   echo "[Unit]"
-  #   echo "Description=RR addon acpi daemon"
-  #   echo "DefaultDependencies=no"
-  #   echo "IgnoreOnIsolate=true"
-  #   echo "After=multi-user.target"
-  #   echo
-  #   echo "[Service]"
-  #   echo "Type=forking"
-  #   echo "Restart=always"
-  #   echo "RestartSec=30"
-  #   echo "PIDFile=/var/run/acpid.pid"
-  #   echo "ExecStartPre=-/usr/sbin/modprobe button"
-  #   echo "ExecStart=-/usr/sbin/acpid"
-  #   echo "ExecStopPost=-/usr/sbin/modprobe -r button"
-  #   echo
-  #   echo "[X-Synology]"
-  #   echo "Author=Virtualization Team"
-  # } >"${DEST}"
-  # mkdir -vp /tmpRoot/usr/lib/systemd/system/multi-user.target.wants
-  # ln -vsf /usr/lib/systemd/system/acpid.service /tmpRoot/usr/lib/systemd/system/multi-user.target.wants/acpid.service
 
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon acpid - ${1}"
@@ -52,6 +27,7 @@ elif [ "${1}" = "uninstall" ]; then
 
   rm -rf /tmpRoot/etc/acpi
   rm -f /tmpRoot/usr/bin/acpi_listen
+  rm -f /tmpRoot/usr/bin/acpitool
   rm -f /tmpRoot/usr/sbin/acpid
   rm -f /tmpRoot/usr/sbin/kacpimon
 fi
