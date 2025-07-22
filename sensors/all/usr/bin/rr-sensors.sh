@@ -36,7 +36,7 @@ generate_fancontrol_config() {
   # Or use pwmconfig to generate /etc/fancontrol interactively.
   local DEVPATH DEVNAME FCTEMPS FCFANS MINTEMP MAXTEMP MINSTART MINSTOP
 
-  CORETEMP="$(find "/sys/devices/platform/" -name "temp1_input" | grep -E 'coretemp|k10temp' | sed -n 's|.*/\(hwmon.*\/temp1_input\).*|\1|p')"
+  CORETEMP="$(find "/sys/devices/platform/" -name "temp1_input" | grep -E 'coretemp|k10temp' | head -1 | sed -n 's|.*/\(hwmon.*\/temp1_input\).*|\1|p')"
   # shellcheck disable=SC2044
   for P in $(find "/sys/devices/platform/" -type f -name "temp1_input"); do
     D="$(echo "${P}" | sed -n 's|.*/\(devices/platform/[^/]*\)/.*|\1|p')"
@@ -91,9 +91,19 @@ main() {
       if [ ! "${FanCurtMode}" = "${FanBaseMode}" ]; then
         _log "Fan speed mode changed from ${FanBaseMode} to ${FanCurtMode}"
         FanBaseMode="${FanCurtMode}"
-        generate_fancontrol_config "${FanBaseMode}"
+        if [ 0 = "${FanBaseMode}" ] && [ -f "/etc/fancontrol.full" ]; then
+          cp -f "/etc/fancontrol.full" "/etc/fancontrol"
+        elif [ 1 = "${FanBaseMode}" ] && [ -f "/etc/fancontrol.high" ]; then
+          cp -f "/etc/fancontrol.high" "/etc/fancontrol"
+        elif [ 2 = "${FanBaseMode}" ] && [ -f "/etc/fancontrol.low" ]; then
+          cp -f "/etc/fancontrol.low" "/etc/fancontrol"
+        else
+          generate_fancontrol_config "${FanBaseMode}"
+        fi
         /usr/bin/pkill -f "/usr/sbin/fancontrol" && rm -f "/run/fancontrol.pid"
+        sleep 1
         /usr/sbin/fancontrol &
+        _log "fancontrol.pid $(cat /run/fancontrol.pid 2>/dev/null || echo "not running")"
       fi
     fi
   done
