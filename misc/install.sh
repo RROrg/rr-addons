@@ -109,6 +109,7 @@ elif [ "${1}" = "late" ]; then
   done
 
   # lspci
+  mkdir -vp /tmpRoot/usr/local/share
   cp -vpf /usr/local/share/pci.ids.gz /tmpRoot/usr/local/share/pci.ids.gz
 
   # CPU performance scaling
