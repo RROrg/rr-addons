@@ -108,6 +108,9 @@ elif [ "${1}" = "late" ]; then
     for F in "/tmpRoot/etc/synoinfo.conf" "/tmpRoot/etc.defaults/synoinfo.conf"; do /bin/set_key_value "${F}" "${KEY}" "${VALUE}"; done
   done
 
+  # lspci
+  cp -vpf /usr/local/share/pci.ids.gz /tmpRoot/usr/local/share/pci.ids.gz
+
   # CPU performance scaling
   mount -t sysfs sysfs /sys
   modprobe acpi-cpufreq

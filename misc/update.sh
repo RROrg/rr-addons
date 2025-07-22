@@ -14,6 +14,8 @@
 
 ROOT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
+curl -#kL "https://pci-ids.ucw.cz/v2.2/pci.ids.gz" -o ${ROOT_PATH}/all/usr/local/share/pci.ids.gz
+
 # jq
 TAG="$(curl -skL "https://github.com/jqlang/jq/tags" | grep "/refs/tags/.*\.zip" | head -1 | sed -E 's/.*\/refs\/tags\/(.*)\.zip.*$/\1/')"
 echo "Downloading jq ${TAG}"
