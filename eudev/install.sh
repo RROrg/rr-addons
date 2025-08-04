@@ -35,11 +35,11 @@ elif [ "${1}" = "modules" ]; then
   # Remove from memory to not conflict with RAID mount scripts
   /usr/bin/killall udevd
   # modprobe modules for the beep
-  /usr/sbin/modprobe pcspeaker
-  /usr/sbin/modprobe pcspkr
+  /usr/sbin/modprobe pcspeaker || true
+  /usr/sbin/modprobe pcspkr || true
   # modprobe modules for the sensors
   for I in drivetemp coretemp k10temp hwmon-vid it87 nct6683 nct6775 adt7470 adt7475 adm1021 adm1031 adm9240 lm75 lm78 lm90; do
-    /usr/sbin/modprobe "${I}"
+    /usr/sbin/modprobe "${I}" || true
   done
 
   # Remove kvm module
