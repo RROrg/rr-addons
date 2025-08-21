@@ -106,6 +106,7 @@ main() {
         _log "fancontrol.pid $(cat /run/fancontrol.pid 2>/dev/null || echo "not running")"
       fi
     fi
+    rm -f /etc/synoinfo.conf.?????? 2>/dev/null
   done
 }
 
