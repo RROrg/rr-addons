@@ -14,15 +14,14 @@ for F in /usr/rr/once.d/*; do
       trap - INT QUIT TSTP
       set start
       # shellcheck source=/usr/rr/once.d/*
-      . "${F}"
+      . "${F}" && rm -f "${F}" 2>/dev/null
     )
     ;;
   *)
     # No sh extension, so fork subprocess.
     chmod +x "${F}" 2>/dev/null
-    "${F}" start
+    "${F}" start && rm -f "${F}" 2>/dev/null
     ;;
   esac
 done
 
-rm -f /usr/rr/once.d/* 2>/dev/null
