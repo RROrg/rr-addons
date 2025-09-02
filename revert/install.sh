@@ -47,8 +47,8 @@ if [ "${1}" = "late" ]; then
   fi
 
   # backup current loader configs
-  rm -rf "/tmpRoot/usr/rr/backup"
-  if [ -d "/usr/rr/backup" ]; then
-    cp -rpf /usr/rr/backup/* "/tmpRoot/usr/rr/backup/"
-  fi
+  rm -rf "/tmpRoot/usr/rr/VERSION" "/tmpRoot/usr/rr/backup"
+  [ -f "/usr/rr/VERSION" ] && cp -pf /usr/rr/VERSION "/tmpRoot/usr/rr/VERSION"
+  [ -d "/usr/rr/backup" ] && cp -rpf /usr/rr/backup/* "/tmpRoot/usr/rr/backup/"
+
 fi
