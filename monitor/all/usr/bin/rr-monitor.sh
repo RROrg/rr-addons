@@ -16,9 +16,12 @@ on)
     _off=$(echo "${row}" | jq -r '.dpms.off')
 
     if [ "${_status}" = "connected" ] && [ "${_value}" != "${_on}" ]; then
-      echo "Enabling DPMS on display id ${_id} (current: ${_value}, on: ${_on})"
       dpmstest -w ${_id}:${_on} 2>/dev/null
     fi
+  done
+  for F in /sys/class/graphics/fb*; do
+    [ ! -e "${F}" ] && continue
+    echo 0 >"${F}/blank"
   done
   ;;
 off)
@@ -30,9 +33,12 @@ off)
     _off=$(echo "${row}" | jq -r '.dpms.off')
 
     if [ "${_status}" = "connected" ] && [ "${_value}" != "${_off}" ]; then
-      echo "Disabling DPMS on display id ${_id} (current: ${_value}, off: ${_off})"
       dpmstest -w ${_id}:${_off} 2>/dev/null
     fi
+  done
+  for F in /sys/class/graphics/fb*; do
+    [ ! -e "${F}" ] && continue
+    echo 1 >"${F}/blank"
   done
   ;;
 *)
