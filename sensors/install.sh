@@ -24,7 +24,7 @@ if [ "${1}" = "late" ]; then
   if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -E "Fancontrol" -A12 | grep -Eq "^FANMODES=(.*)$"; then
     echo "Fancontrol task already exists"
   else
-      echo "insert sensors task to esynoscheduler.db"
+    echo "insert sensors task to esynoscheduler.db"
     /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
 DELETE FROM task WHERE task_name LIKE 'Fancontrol';
 INSERT INTO task VALUES('Fancontrol', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
@@ -56,6 +56,8 @@ EOF
     echo "ExecStart=/usr/bin/rr-sensors.sh"
     echo "ExecReload=/usr/bin/pkill -f /usr/bin/rr-sensors.sh"
     echo "Restart=always"
+    echo "StartLimitBurst=5"
+    echo "StartLimitInterval=10"
     echo
     echo "[Install]"
     echo "WantedBy=multi-user.target"
