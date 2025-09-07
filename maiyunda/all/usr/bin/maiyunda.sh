@@ -19,7 +19,7 @@ function btnOpt() {
     for F in /etc/sysconfig/network-scripts/ifcfg-* /etc.defaults/sysconfig/network-scripts/ifcfg-*; do
       [ ! -e "${F}" ] && continue
       echo "${F}" | grep -Eq "\-lo$|\-tun$|\-eth99$" && continue
-      sed -i "s|^BOOTPROTO=.*|BOOTPROTO=dhcp|; s|^ONBOOT=.*|ONBOOT=yes|; s|^IPV6INIT=.*|IPV6INIT=dhcp|; /^IPADDR/d; /NETMASK/d; /GATEWAY/d; /DNS1/d; /DNS2/d" "${F}"
+      sed -i "s|^BOOTPROTO=.*|BOOTPROTO=dhcp|; s|^ONBOOT=.*|ONBOOT=yes|; s|^IPV6INIT=.*|IPV6INIT=auto_dhcp|; /^IPADDR/d; /NETMASK/d; /GATEWAY/d; /DNS1/d; /DNS2/d" "${F}"
     done
     sed -i 's/_mtu=".*"$/_mtu="1500"/g' /etc/synoinfo.conf /etc.defaults/synoinfo.conf
     systemctl restart rc-network.service
