@@ -80,7 +80,8 @@ function btnBeep() {
   beep -r "${t}" &
 }
 
-function main() {
+function btnMain() {
+	_log "Buttons monitoring started"
   NetBtnTimeout=0
   NetBtnPressed=0
   NetBtnBaseVal="$(inb "0xA00" 3)"
@@ -146,4 +147,20 @@ function main() {
   done
 }
 
-main &
+function sdcMain() {
+	_log "CardReader monitoring started"
+  CRPATH="/sys/devices/pci0000:00/0000:00:0d.0/usb2/2-1/2-1.4"
+  while true; do
+	  UDISK="$(echo ${CRPATH}/*/*/*/*/block/usb* 2>/dev/null | head -1 | xargs -n1 basename)"
+    if cat /proc/partitions 2>/dev/null | grep -wq "${UDISK}"; then
+      sleep 1
+      continue
+    fi
+    echo 0 >${CRPATH}/authorized
+    echo 1 >${CRPATH}/authorized
+    sleep 4
+  done
+}
+
+btnMain &
+# sdcMain &

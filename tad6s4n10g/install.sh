@@ -122,7 +122,7 @@ elif [ "${1}" = "late" ]; then
     mkdir -p "$(dirname "${ESYNOSCHEDULER_DB}")"
     cp -vpf /addons/esynoscheduler.db "${ESYNOSCHEDULER_DB}"
   fi
-  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -q "Net-Button-3s"; then
+  if echo "SELECT * FROM task;" | /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" | grep -E "Net-Button-3s" -A11 | grep -Eq "usb2/2-1/2-1.4/authorized"; then
     echo "Net-Button-3s task already exists"
   else
     echo "insert Net-Button-3s task to esynoscheduler.db"
@@ -131,6 +131,11 @@ DELETE FROM task WHERE task_name LIKE 'Net-Button-3s';
 INSERT INTO task VALUES('Net-Button-3s', '', 'bootup', '', 0, 0, 0, 0, '', 0, '
 # 长按 Net 按钮 3s(Led 闪烁3次) 后松开, 将自动触发该任务.
 # Press and hold the Net button for 3 seconds (the LED flashes 3 times) and then release it to automatically trigger the task.
+#
+# 请确保 SD 卡已插入到设备后再触发该任务.
+echo 0 >/sys/devices/pci0000:00/0000:00:0d.0/usb2/2-1/2-1.4/authorized
+echo 1 >/sys/devices/pci0000:00/0000:00:0d.0/usb2/2-1/2-1.4/authorized
+#
 # 请在下面输入你需要执行的操作.
 # Please enter the command you need to execute below.
 echo "Net-Button-3s."
