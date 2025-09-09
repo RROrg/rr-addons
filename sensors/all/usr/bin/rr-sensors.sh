@@ -106,7 +106,7 @@ main() {
         _log "fancontrol.pid $(cat /run/fancontrol.pid 2>/dev/null || echo "not running")"
       fi
     fi
-    rm -f /etc/synoinfo.conf.?????? 2>/dev/null
+    find /etc -maxdepth 1 -type f -name 'synoinfo.conf.??????' -mmin +0.5 -exec rm -f {} \; 2>/dev/null
   done
 }
 
