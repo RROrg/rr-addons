@@ -7,7 +7,7 @@
 #
 
 if [ "${1}" = "late" ]; then
-  echo "Installing addon updatenotify - ${1}"
+  echo "Installing addon ups - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
@@ -40,7 +40,7 @@ INSERT INTO task VALUES('StopScsiTarget', '', 'shutdown', '', 1, 0, 0, 0, '', 0,
 EOF
   fi
 elif [ "${1}" = "uninstall" ]; then
-  echo "Installing addon rr-updatenotify - ${1}"
+  echo "Installing addon ups - ${1}"
 
   FILE="/tmpRoot/usr/syno/bin/synoups"
   [ -f "${FILE}.bak" ] && mv -f "${FILE}.bak" "${FILE}"
