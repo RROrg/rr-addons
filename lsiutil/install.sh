@@ -10,7 +10,7 @@ if [ "${1}" = "late" ]; then
   echo "Installing addon lsiutil - ${1}"
   mkdir -p "/tmpRoot/usr/rr/addons/"
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
-  
+
   cp -vpf /usr/sbin/lsiutil /tmpRoot/usr/sbin/lsiutil
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon lsiutil - ${1}"
