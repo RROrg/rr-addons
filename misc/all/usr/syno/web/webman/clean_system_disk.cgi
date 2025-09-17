@@ -6,7 +6,7 @@
 # See /LICENSE for more information.
 #
 
-echo -ne "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
+echo -en "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
 
 if [ -b /dev/md0 ]; then
   mkdir -p /mnt/md0

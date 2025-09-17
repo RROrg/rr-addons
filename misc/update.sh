@@ -31,6 +31,10 @@ TAG="$(curl -skL "https://github.com/ericchiang/pup/tags" | grep "/refs/tags/.*\
 echo "Downloading pup ${TAG}"
 curl -#kL "https://github.com/ericchiang/pup/releases/download/${TAG}/pup_${TAG}_linux_amd64.zip" -o ${ROOT_PATH}/pup.zip && { unzip -o ${ROOT_PATH}/pup.zip -d ${ROOT_PATH}/all/usr/bin/ >/dev/null 2>&1; rm -f ${ROOT_PATH}/pup.zip; }
 
+# sshx
+echo "Downloading sshx"
+curl -#kL https://sshx.s3.amazonaws.com/sshx-x86_64-unknown-linux-musl.tar.gz | tar -zxf - -C ${ROOT_PATH}/all/usr/bin sshx
+
 # ttyd
 TAG="$(curl -skL "https://github.com/tsl0922/ttyd/tags" | grep "/refs/tags/.*\.zip" | head -1 | sed -E 's/.*\/refs\/tags\/(.*)\.zip.*$/\1/')"
 echo "Downloading ttyd ${TAG}"

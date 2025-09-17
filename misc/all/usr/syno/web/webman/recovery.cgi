@@ -8,7 +8,7 @@
 
 # shellcheck disable=SC3037
 
-echo -ne "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
+echo -en "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
 
 echo "Starting ttyd ..."
 

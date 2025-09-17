@@ -6,7 +6,7 @@
 # See /LICENSE for more information.
 #
 
-echo -ne "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
+echo -en "Content-type: text/plain; charset=\"UTF-8\"\r\n\r\n"
 
 echo "==== proc cmdline ===="
 cat /proc/cmdline
