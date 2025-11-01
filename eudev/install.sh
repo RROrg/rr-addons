@@ -16,6 +16,12 @@ if [ "${1}" = "early" ]; then
 elif [ "${1}" = "modules" ]; then
   echo "Installing addon eudev - ${1}"
 
+  if grep -q 'RR@RR' /proc/version 2>/dev/null && lspci -nd ::300 2>/dev/null | grep -q 8086; then
+	  mv -vf /usr/lib/modules/update/* /usr/lib/modules/ 2>/dev/null || true
+	else
+	  rm -rf /usr/lib/modules/update 2>/dev/null || true
+	fi
+
   # mv -f /usr/lib/udev/rules.d/60-persistent-storage.rules /usr/lib/udev/rules.d/60-persistent-storage.rules.bak
   # mv -f /usr/lib/udev/rules.d/60-persistent-storage-tape.rules /usr/lib/udev/rules.d/60-persistent-storage-tape.rules.bak
   # mv -f /usr/lib/udev/rules.d/80-net-name-slot.rules /usr/lib/udev/rules.d/80-net-name-slot.rules.bak
