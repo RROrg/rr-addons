@@ -18,7 +18,9 @@ if [ "${1}" = "late" ]; then
   [ ! -f "${FILE}.bak" ] && cp -pf "${FILE}" "${FILE}.bak"
 
   cp -pf "${FILE}.bak" "${FILE}"
-  sed -i 's|^.*PermitRootLogin.*$|PermitRootLogin yes|' ${FILE}
+  sed -i 's|^.*PermitRootLogin .*$|PermitRootLogin yes|' ${FILE}
+  # sed -i 's|^.*PubkeyAuthentication .*$|PubkeyAuthentication yes|' ${FILE}
+  # sed -i 's|^.*PasswordAuthentication .*$|PasswordAuthentication yes|' ${FILE}
   sed -i 's|^Subsystem.*$|Subsystem	sftp	/usr/lib/openssh/sftp-server|' ${FILE}
 
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
