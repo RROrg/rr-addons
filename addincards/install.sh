@@ -22,9 +22,12 @@ if [ "${1}" = "late" ]; then
     echo "${MODEL}=yes" >>"${FILE}"
   done
   rm -f "${FILE}.tmp"
+  cp -pf "${FILE}" "${FILE/etc/etc.defaults}"
+
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon addincards - ${1}"
 
   FILE="/tmpRoot/usr/syno/etc/adapter_cards.conf"
   [ -f "${FILE}.bak" ] && mv -f "${FILE}.bak" "${FILE}"
+  cp -pf "${FILE}" "${FILE/etc/etc.defaults}"
 fi
