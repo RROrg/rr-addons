@@ -17,10 +17,10 @@ elif [ "${1}" = "modules" ]; then
   echo "Installing addon eudev - ${1}"
 
   if grep -q 'RR@RR' /proc/version 2>/dev/null && lspci -nd ::300 2>/dev/null | grep -q 8086; then
-	  mv -vf /usr/lib/modules/update/* /usr/lib/modules/ 2>/dev/null || true
-	else
-	  rm -rf /usr/lib/modules/update 2>/dev/null || true
-	fi
+    mv -vf /usr/lib/modules/update/* /usr/lib/modules/ 2>/dev/null || true
+  else
+    rm -rf /usr/lib/modules/update 2>/dev/null || true
+  fi
 
   # mv -f /usr/lib/udev/rules.d/60-persistent-storage.rules /usr/lib/udev/rules.d/60-persistent-storage.rules.bak
   # mv -f /usr/lib/udev/rules.d/60-persistent-storage-tape.rules /usr/lib/udev/rules.d/60-persistent-storage-tape.rules.bak
@@ -75,7 +75,7 @@ elif [ "${1}" = "late" ]; then
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   isChange=false
   /tmpRoot/bin/cp -rnf /usr/lib/firmware/* /tmpRoot/usr/lib/firmware/
-	/tmpRoot/bin/rm -rf /tmpRoot/usr/lib/firmware/iwlwifi*.pnvm 2>/dev/null || true  # for <= v25.9.7 to avoid firmware crash
+  /tmpRoot/bin/rm -rf /tmpRoot/usr/lib/firmware/iwlwifi*.pnvm 2>/dev/null || true  # for <= v25.9.7 to avoid firmware crash
   if grep -q 'RR@RR' /proc/version 2>/dev/null; then
     if [ -d /tmpRoot/usr/lib/modules.bak ]; then
       /tmpRoot/bin/rm -rf /tmpRoot/usr/lib/modules

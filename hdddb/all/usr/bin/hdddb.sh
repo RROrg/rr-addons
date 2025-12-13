@@ -1603,91 +1603,91 @@ sed -i '/^};/d' "$2"
 if [[ $1 == E10M20-T1 ]] || [[ $1 == M2D20 ]]; then
     cat >> "$2" <<EOM2D
 
-	$1 {
-		compatible = "Synology";
-		model = "synology_${1,,}";
-		power_limit = "14.85,14.85";
+  $1 {
+    compatible = "Synology";
+    model = "synology_${1,,}";
+    power_limit = "14.85,14.85";
 
-		m2_card@1 {
+    m2_card@1 {
 
-			nvme {
-				pcie_postfix = "00.0,08.0,00.0";
-				port_type = "ssdcache";
-			};
-		};
+      nvme {
+        pcie_postfix = "00.0,08.0,00.0";
+        port_type = "ssdcache";
+      };
+    };
 
-		m2_card@2 {
+    m2_card@2 {
 
-			nvme {
-				pcie_postfix = "00.0,04.0,00.0";
-				port_type = "ssdcache";
-			};
-		};
-	};
+      nvme {
+        pcie_postfix = "00.0,04.0,00.0";
+        port_type = "ssdcache";
+      };
+    };
+  };
 };
 EOM2D
 
 elif [[ $1 == M2D18 ]]; then
     cat >> "$2" <<EOM2D18
 
-	M2D18 {
-		compatible = "Synology";
-		model = "synology_m2d18";
-		power_limit = "9.9,9.9";
+  M2D18 {
+    compatible = "Synology";
+    model = "synology_m2d18";
+    power_limit = "9.9,9.9";
 
-		m2_card@1 {
+    m2_card@1 {
 
-			ahci {
-				pcie_postfix = "00.0,03.0,00.0";
-				ata_port = <0x00>;
-			};
+      ahci {
+        pcie_postfix = "00.0,03.0,00.0";
+        ata_port = <0x00>;
+      };
 
-			nvme {
-				pcie_postfix = "00.0,04.0,00.0";
-				port_type = "ssdcache";
-			};
-		};
+      nvme {
+        pcie_postfix = "00.0,04.0,00.0";
+        port_type = "ssdcache";
+      };
+    };
 
-		m2_card@2 {
+    m2_card@2 {
 
-			ahci {
-				pcie_postfix = "00.0,03.0,00.0";
-				ata_port = <0x01>;
-			};
+      ahci {
+        pcie_postfix = "00.0,03.0,00.0";
+        ata_port = <0x01>;
+      };
 
-			nvme {
-				pcie_postfix = "00.0,05.0,00.0";
-				port_type = "ssdcache";
-			};
-		};
-	};
+      nvme {
+        pcie_postfix = "00.0,05.0,00.0";
+        port_type = "ssdcache";
+      };
+    };
+  };
 };
 EOM2D18
 
 elif [[ $1 == M2D17 ]]; then
     cat >> "$2" <<EOM2D17
 
-	M2D17 {
-		compatible = "Synology";
-		model = "synology_m2d17";
-		power_limit = "9.9,9.9";
+  M2D17 {
+    compatible = "Synology";
+    model = "synology_m2d17";
+    power_limit = "9.9,9.9";
 
-		m2_card@1 {
+    m2_card@1 {
 
-			ahci {
-				pcie_postfix = "00.0,03.0,00.0";
-				ata_port = <0x00>;
-			};
-		};
+      ahci {
+        pcie_postfix = "00.0,03.0,00.0";
+        ata_port = <0x00>;
+      };
+    };
 
-		m2_card@2 {
+    m2_card@2 {
 
-			ahci {
-				pcie_postfix = "00.0,03.0,00.0";
-				ata_port = <0x01>;
-			};
-		};
-	};
+      ahci {
+        pcie_postfix = "00.0,03.0,00.0";
+        ata_port = <0x01>;
+      };
+    };
+  };
 };
 EOM2D17
 
