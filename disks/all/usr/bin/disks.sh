@@ -86,7 +86,7 @@ _itol() {
 
 # Check if the disk is lossed
 checkAlldisk() {
-  for F in /sys/block/*; do
+  for F in $(LC_ALL=C printf '%s\n' /sys/block/* | sort -V); do
     [ ! -e "${F}" ] && continue
     N="$(basename "${F}" 2>/dev/null)"
 
@@ -129,7 +129,7 @@ checkSynoboot() {
 
 # USB ports
 getUsbPorts() {
-  for F in /sys/bus/usb/devices/usb*; do
+  for F in $(LC_ALL=C printf '%s\n' /sys/bus/usb/devices/usb* | sort -V); do
     [ ! -e "${F}" ] && continue
     RCHILDS=0
     RBUS=0
@@ -174,7 +174,7 @@ dtModel() {
 
     HDDSORT="$(grep -wq "hddsort" /proc/cmdline 2>/dev/null && echo "true" || echo "false")"
 
-    for F in /sys/block/sata*; do
+    for F in $(LC_ALL=C printf '%s\n' /sys/block/sata* | sort -V); do
       [ ! -e "${F}" ] && continue
       PCIEPATH="$(grep 'pciepath' "${F}/device/syno_block_info" 2>/dev/null | cut -d'=' -f2)"
       ATAPORT="$(grep 'ata_port_no' "${F}/device/syno_block_info" 2>/dev/null | cut -d'=' -f2)"
@@ -228,7 +228,7 @@ dtModel() {
     # NVME ports
     COUNT=0
     POWER_LIMIT=""
-    for F in /sys/block/nvme*; do
+    for F in $(LC_ALL=C printf '%s\n' /sys/block/nvme* | sort -V); do
       [ ! -e "${F}" ] && continue
       PCIEPATH="$(grep 'pciepath' "${F}/device/syno_block_info" 2>/dev/null | cut -d'=' -f2)"
       if [ -z "${PCIEPATH}" ]; then
@@ -368,7 +368,7 @@ nondtModel() {
   hasUSB=false
   USBMINIDX=99
   USBMAXIDX=00
-  for F in /sys/block/sd*; do
+  for F in $(LC_ALL=C printf '%s\n' /sys/block/sd* | sort -V); do
     [ ! -e "${F}" ] && continue
     IDX=$(_atoi "$(echo "${F}" | sed -E 's/^.*\/sd(.*)$/\1/')")
     [ $((${IDX} + 1)) -ge ${MAXDISKS} ] && MAXDISKS=$((${IDX} + 1))
@@ -442,7 +442,7 @@ nondtModel() {
   # NVME
   COUNT=0
   echo "[pci]" >/etc/extensionPorts
-  for F in /sys/block/nvme*; do
+  for F in $(LC_ALL=C printf '%s\n' /sys/block/nvme* | sort -V); do
     [ ! -e "${F}" ] && continue
     PHYSDEVPATH="$(awk -F= '/PHYSDEVPATH/ {print $2}' "${F}/uevent" 2>/dev/null)"
     if [ -z "${PHYSDEVPATH}" ]; then

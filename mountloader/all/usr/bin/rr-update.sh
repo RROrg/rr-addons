@@ -118,7 +118,7 @@ function getAllModules() {
   # ${RR_SUDO} chown -R root:root "${TMP_PATH}/modules"
   # ${RR_SUDO} chmod -R 755 "${TMP_PATH}/modules"
   # Get list of all modules
-  for F in $(${RR_SUDO} ls ${TMP_PATH}/modules/*.ko 2>/dev/null); do
+  for F in $(LC_ALL=C ${RR_SUDO} printf '%s\n' ${TMP_PATH}/modules/*.ko 2>/dev/null | sort -V); do
     [ ! -e "${F}" ] && continue
     local N DESC
     N="$(basename "${F}" .ko)"

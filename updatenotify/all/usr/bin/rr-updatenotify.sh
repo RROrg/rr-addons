@@ -19,7 +19,7 @@ function Create() {
 }
 
 function Delete() {
-  for F in /usr/syno/etc/synoschedule.d/root/*.task; do
+  for F in $(LC_ALL=C printf '%s\n' /usr/syno/etc/synoschedule.d/root/*.task | sort -V); do
     [ ! -e "${F}" ] && continue
     if grep -q '^name=RR-UpdateNotify' "${F}"; then
       id=$(grep '^id=' "${F}" | cut -d'=' -f2)

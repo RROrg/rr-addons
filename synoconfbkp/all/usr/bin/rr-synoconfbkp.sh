@@ -20,7 +20,7 @@ mkdir -p "${SCBKPATH}"
 /usr/syno/bin/synoconfbkp export --filepath="${SCBKPATH}/${FILENAME}"
 echo "Backup to ${SCBKPATH}/${FILENAME}"
 
-for I in $(ls ${SCBKPATH}/${PRE}*.dss | sort -r | awk "NR>${NUM}"); do
+for I in $(LC_ALL=C printf '%s\n' ${SCBKPATH}/${PRE}*.dss | sort -r | awk "NR>${NUM}"); do
   rm -f "${I}"
 done
 

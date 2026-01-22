@@ -18,7 +18,7 @@ if [ "${1}" = "-r" ]; then
 else
   TEXTS_PATH="/usr/local/share/notification/rr"
   CACHE_PATH="/var/cache/texts/rr"
-  for F in /usr/syno/synoman/webman/texts/*; do
+  for F in $(LC_ALL=C printf '%s\n' /usr/syno/synoman/webman/texts/* | sort -V); do
     [ ! -e "${F}" ] && continue
     NAME=$(basename "${F}")
     rm -rf "${TEXTS_PATH}/${NAME}"

@@ -16,7 +16,7 @@ function btnOpt() {
   case "${1}-${2}" in
   Reset-3)
     # restart network
-    for F in /etc/sysconfig/network-scripts/ifcfg-* /etc.defaults/sysconfig/network-scripts/ifcfg-*; do
+    for F in $(LC_ALL=C printf '%s\n' /etc/sysconfig/network-scripts/ifcfg-* /etc.defaults/sysconfig/network-scripts/ifcfg-* | sort -V); do
       [ ! -e "${F}" ] && continue
       ETHX=$(echo "${F}" | sed -E 's/.*ifcfg-(.*)$/\1/')
       case "${ETHX}" in
