@@ -68,11 +68,11 @@ elif [ "${1}" = "rcExit" ]; then
   inetd
 
   # invalid_disks
-  # method 1
-  SH_FILE="/usr/syno/share/get_hcl_invalid_disks.sh"
-  [ -f "${SH_FILE}" ] && cp -pf "${SH_FILE}" "${SH_FILE}.bak" && printf '#!/bin/sh\nexit 0\n' >"${SH_FILE}"
+  # method 1 # (block dsm system migrate)
+  # SH_FILE="/usr/syno/share/get_hcl_invalid_disks.sh"
+  # [ -f "${SH_FILE}" ] && cp -pf "${SH_FILE}" "${SH_FILE}.bak" && printf '#!/bin/sh\nexit 0\n' >"${SH_FILE}"
   # method 2
-  # while true; do [ ! -f "/tmp/installable_check_pass" ] && touch "/tmp/installable_check_pass"; sleep 1; done &  # using a while loop in case DSM is running in a VM
+  while true; do [ ! -f "/tmp/installable_check_pass" ] && touch "/tmp/installable_check_pass"; sleep 1; done &  # using a while loop in case DSM is running in a VM
 
   # error message
   if [ ! -b /dev/synoboot ] || [ ! -b /dev/synoboot1 ] || [ ! -b /dev/synoboot2 ] || [ ! -b /dev/synoboot3 ]; then
