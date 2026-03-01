@@ -16,8 +16,21 @@ if [ "${1}" = "early" ]; then
 elif [ "${1}" = "modules" ]; then
   echo "Installing addon eudev - ${1}"
 
-  if grep -q 'RR@RR' /proc/version 2>/dev/null && lspci -nd ::300 2>/dev/null | grep -q 8086; then
-    mv -vf /usr/lib/modules/update/* /usr/lib/modules/ 2>/dev/null || true
+  if [ -f "/usr/lib/modules/update/i915.ko" ] && lspci -nd ::300 2>/dev/null | grep -Eq '8086:[0-9a-fA-F]{4}'; then
+    GPU="$(lspci -nd ::300 2>/dev/null | grep -Eo '8086:[0-9a-fA-F]{4}' | head -n1 | sed 's/://')"
+    PCI="pci:v0000$(echo "${GPU:-}" | cut -c1-4)d0000$(echo "${GPU:-}" | cut -c5-8)"
+    if modinfo -F alias "/usr/lib/modules/i915.ko" 2>/dev/null | grep -iq "${PCI}"; then
+      echo "base i915.ko supports ${GPU}"
+      rm -rf /usr/lib/modules/update 2>/dev/null || true
+    else
+      if modinfo -F alias "/usr/lib/modules/update/i915.ko" 2>/dev/null | grep -iq "${PCI}"; then
+        echo "update i915.ko supports ${GPU}"
+        mv -vf /usr/lib/modules/update/* /usr/lib/modules/ 2>/dev/null
+      else
+        echo "No i915.ko supports ${GPU}"
+        rm -rf /usr/lib/modules/update 2>/dev/null || true
+      fi
+    fi
   else
     rm -rf /usr/lib/modules/update 2>/dev/null || true
   fi
@@ -75,7 +88,7 @@ elif [ "${1}" = "late" ]; then
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   isChange=false
   /tmpRoot/bin/cp -rnf /usr/lib/firmware/* /tmpRoot/usr/lib/firmware/
-  /tmpRoot/bin/rm -rf /tmpRoot/usr/lib/firmware/iwlwifi*.pnvm 2>/dev/null || true  # for <= v25.9.7 to avoid firmware crash
+  /tmpRoot/bin/rm -rf /tmpRoot/usr/lib/firmware/iwlwifi*.pnvm 2>/dev/null || true # for <= v25.9.7 to avoid firmware crash
   if grep -q 'RR@RR' /proc/version 2>/dev/null; then
     if [ -d /tmpRoot/usr/lib/modules.bak ]; then
       /tmpRoot/bin/rm -rf /tmpRoot/usr/lib/modules
