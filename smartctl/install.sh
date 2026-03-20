@@ -13,9 +13,9 @@ if [ "${1}" = "late" ]; then
 
   FILE="/tmpRoot/usr/bin/smartctl"
   [ ! -f "${FILE}.bak" ] && cp -pf "${FILE}" "${FILE}.bak"
-  
+
   cp -vpf /usr/bin/smartctl.sh "${FILE}"
-  
+
 elif [ "${1}" = "uninstall" ]; then
   echo "Installing addon smartctl - ${1}"
 

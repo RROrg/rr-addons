@@ -46,7 +46,7 @@ elif [ "${1}" = "late" ]; then
   done
 
 elif [ "${1}" = "uninstall" ]; then
-  echo "Installing addon beep - ${1}"
+  echo "Uninstalling addon disks - ${1}"
 
   rm -rf "/tmpRoot/usr/bin/disks.sh"
   rm -rf "/tmpRoot/usr/lib/udev/rules.d/04-system-disk-dtb.rules"

@@ -22,10 +22,10 @@ if [ "${1}" = "early" ]; then
   {
     echo "/dts-v1/;"
     echo "/ {"
-    echo "    compatible = \"Synology\";"
+    echo '    compatible = "Synology";'
     echo "    model = \"${UNIQUE}\";"
     echo "    version = <0x01>;"
-    echo "    power_limit = \"\";"
+    echo '    power_limit = "";'
   } >"${DEST}"
 
   COUNT=0
@@ -35,10 +35,10 @@ if [ "${1}" = "early" ]; then
   ls -ld /sys/block/sata* 2>/dev/null | grep -q "0000:00:1c.0" && PCIEPATH=0000:00:1c.0,00.0 || PCIEPATH=0000:00:1c.2,00.0
   # for I in $(seq 5 -1 0); do # Reverse order
   for I in $(seq 0 5); do # Positive order
-    COUNT=$((${COUNT} + 1))
+    COUNT=$((COUNT + 1))
     {
       echo "    internal_slot@${COUNT} {"
-      echo "        protocol_type = \"sata\";"
+      echo '        protocol_type = "sata";'
       echo "        ahci {"
       echo "            pcie_root = \"${PCIEPATH}\";"
       echo "            ata_port = <0x$(printf '%02X' ${I})>;"
@@ -50,10 +50,10 @@ if [ "${1}" = "early" ]; then
   PCIEPATH=0000:00:17.0
   if ls -ld /sys/block/sata* 2>/dev/null | grep -q "${PCIEPATH}"; then
     for I in $(seq 0 1); do
-      COUNT=$((${COUNT} + 1))
+      COUNT=$((COUNT + 1))
       {
         echo "    internal_slot@${COUNT} {"
-        echo "        protocol_type = \"sata\";"
+        echo '        protocol_type = "sata";'
         echo "        ahci {"
         echo "            pcie_root = \"${PCIEPATH}\";"
         echo "            ata_port = <0x$(printf '%02X' ${I})>;"
@@ -69,11 +69,11 @@ if [ "${1}" = "early" ]; then
   POWER_LIMIT=""
   for I in $(seq 0 3); do
     POWER_LIMIT="${POWER_LIMIT:+${POWER_LIMIT},}0"
-    COUNT=$((${COUNT} + 1))
+    COUNT=$((COUNT + 1))
     {
       echo "    nvme_slot@${COUNT} {"
       echo "        pcie_root = \"$(echo ${PCIEPATH} | sed "s/N/${I}/")\";"
-      echo "        port_type = \"ssdcache\";"
+      echo '        port_type = "ssdcache";'
       echo "    };"
     } >>"${DEST}"
   done
@@ -82,7 +82,7 @@ if [ "${1}" = "early" ]; then
   COUNT=0
   # usb
   for I in 1-1 2-1.1 2-1.2 2-1.3 2-1.4 3-3.1 3-3.2 3-3.3 3-3.4 4-1 4-2 4-3 4-4; do
-    COUNT=$((${COUNT} + 1))
+    COUNT=$((COUNT + 1))
     {
       echo "    usb_slot@${COUNT} {"
       echo "      usb2 {"

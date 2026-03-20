@@ -72,17 +72,17 @@ ACTION="${1}"
 [ -z "${ACTION}" ] && ACTION="check"
 
 case "${ACTION,,}" in
-"create")
-  Create
-  ;;
-"delete")
-  Delete
-  ;;
-"check")
-  shift
-  Check "$@"
-  ;;
-*)
-  echo "Unknown command!"
-  ;;
+  "create")
+    Create
+    ;;
+  "delete")
+    Delete
+    ;;
+  "check")
+    shift
+    Check "$@"
+    ;;
+  *)
+    echo "Unknown command!"
+    ;;
 esac

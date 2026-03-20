@@ -50,17 +50,17 @@ else
     IFS=' ' read -ra models <<<"$(grep -m1 'model name' /proc/cpuinfo 2>/dev/null | cut -d: -f2 | xargs)"
     for P in "${models[@]}"; do
       PL=$(echo "${P}" | sed 's/.*/\L&/')
-      if [[ "${PL:0:1}" == "@" ]] || [[ "${PL:0:1}" == "-" ]] || [[ "${PL}" == "with" ]] || [[ "${PL}" == "w/" ]]; then
+      if [ "${PL:0:1}" = "@" ] || [ "${PL:0:1}" = "-" ] || [ "${PL}" = "with" ] || [ "${PL}" = "w/" ]; then
         break
       fi
-      if [[ "${PL}" == "cpu" ]] || [[ "${PL}" == "processor" ]] || [[ "${PL}" == gen* ]] || [[ "${PL}" == *th ]] || [[ "${PL}" == *-core* ]]; then
+      if [ "${PL}" = "cpu" ] || [ "${PL}" = "processor" ] || [[ ${PL} == gen* ]] || [[ ${PL} == *th ]] || [[ ${PL} == *-core* ]]; then
         continue
       fi
-      if [[ -z "${VENDOR}" ]]; then
+      if [ -z "${VENDOR}" ]; then
         VENDOR="${P}"
-      elif [[ -z "${FAMILY}" ]]; then
+      elif [ -z "${FAMILY}" ]; then
         FAMILY="${P}"
-      elif [[ -z "${SERIES}" ]]; then
+      elif [ -z "${SERIES}" ]; then
         SERIES="${P}"
       else
         SERIES="${SERIES} ${P}"
@@ -91,7 +91,7 @@ else
       fi
     fi
   fi
-  sed -i "s/_D(\"support_nvidia_gpu\")},/_D(\"support_nvidia_gpu\")||true},/g" "${FILE_JS}"
+  sed -i 's/_D("support_nvidia_gpu")},/_D("support_nvidia_gpu")||true},/g' "${FILE_JS}"
   sed -i 's/,t,i,s)}/,t,i,e.sys_temp?s+" \| "+this.renderTempFromC(e.sys_temp):s)}/g' "${FILE_JS}"
   sed -i 's/,C,D);/,C,t.gpu.temperature_c?D+" \| "+this.renderTempFromC(t.gpu.temperature_c):D);/g' "${FILE_JS}"
   sed -i 's/_T("rcpower",n),/_T("rcpower", n)?e.fan_list?_T("rcpower", n) + e.fan_list.map(fan => ` | ${fan} RPM`).join(""):_T("rcpower", n):e.fan_list?e.fan_list.map(fan => `${fan} RPM`).join(" | "):_T("rcpower", n),/g' "${FILE_JS}"
@@ -115,7 +115,7 @@ else
       disown ${PROXY_PID}
       # 设置进程优先级，降低被 OOM killer 杀死的概率
       if [ -d "/proc/${PROXY_PID}" ]; then
-        echo -1000 > "/proc/${PROXY_PID}/oom_score_adj" 2>/dev/null || true
+        echo -1000 >"/proc/${PROXY_PID}/oom_score_adj" 2>/dev/null || true
         renice -n -10 ${PROXY_PID} >/dev/null 2>&1 || true
       fi
       [ ! -f "/etc/nginx/nginx.conf.bak" ] && cp -pf /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak

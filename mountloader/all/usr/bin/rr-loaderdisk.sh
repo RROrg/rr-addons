@@ -53,14 +53,14 @@ function mountLoaderDisk() {
           LD_LIBRARY_PATH=${INITRD_TOOLPATH}/lib:$LD_LIBRARY_PATH
           INITRD_FORMAT=$(file -b --mime-type "${RR_RAMDISK_FILE}")
           case "${INITRD_FORMAT}" in
-          *'x-cpio'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && cpio -idm <${RR_RAMDISK_FILE} >/dev/null 2>&1" || true ;;
-          *'x-xz'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && xz -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
-          *'x-lz4'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && lz4 -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
-          *'x-lzma'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && lzma -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
-          *'x-bzip2'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && bzip2 -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
-          *'gzip'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && gzip -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
-          *'zstd'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && zstd -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
-          *) ;;
+            *'x-cpio'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && cpio -idm <${RR_RAMDISK_FILE} >/dev/null 2>&1" || true ;;
+            *'x-xz'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && xz -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+            *'x-lz4'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && lz4 -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+            *'x-lzma'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && lzma -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+            *'x-bzip2'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && bzip2 -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+            *'gzip'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && gzip -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+            *'zstd'*) ${RR_SUDO} sh -c "cd ${RR_PATH} && zstd -dc ${RR_RAMDISK_FILE} | cpio -idm >/dev/null 2>&1" || true ;;
+            *) ;;
           esac
           if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
             echo "RR initrd work path not found!"
@@ -82,10 +82,10 @@ function mountLoaderDisk() {
       fi
       ${RR_SUDO} mkdir -p /usr/rr
       {
-        echo "export LOADER_DISK=\"/dev/synoboot\""
-        echo "export LOADER_DISK_PART1=\"/dev/synoboot1\""
-        echo "export LOADER_DISK_PART2=\"/dev/synoboot2\""
-        echo "export LOADER_DISK_PART3=\"/dev/synoboot3\""
+        echo 'export LOADER_DISK="/dev/synoboot"'
+        echo 'export LOADER_DISK_PART1="/dev/synoboot1"'
+        echo 'export LOADER_DISK_PART2="/dev/synoboot2"'
+        echo 'export LOADER_DISK_PART3="/dev/synoboot3"'
         if [ ! -f "${RR_PATH}/opt/rr/menu.sh" ]; then
           echo "export WORK_PATH=\"${RR_PATH}/opt/rr\""
         fi
@@ -110,13 +110,13 @@ function mountLoaderDisk() {
 function unmountLoaderDisk() {
   if [ -f "/usr/rr/.mountloader" ]; then
     {
-      echo "export LOADER_DISK=\"\""
-      echo "export LOADER_DISK_PART1=\"\""
-      echo "export LOADER_DISK_PART2=\"\""
-      echo "export LOADER_DISK_PART3=\"\""
+      echo 'export LOADER_DISK=""'
+      echo 'export LOADER_DISK_PART1=""'
+      echo 'export LOADER_DISK_PART2=""'
+      echo 'export LOADER_DISK_PART3=""'
       if [ -f "${RR_PATH}/opt/rr/menu.sh" ]; then
         ${RR_SUDO} rm -rf "${RR_PATH}" >/dev/null 2>&1 || true
-        echo "export WORK_PATH=\"\""
+        echo 'export WORK_PATH=""'
       fi
     } | ${RR_SUDO} tee "/usr/rr/.mountloader" >/dev/null
     ${RR_SUDO} chmod a+x "/usr/rr/.mountloader"

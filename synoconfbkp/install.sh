@@ -12,7 +12,7 @@ if [ "${1}" = "late" ]; then
   cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
   cp -vpf /usr/bin/rr-synoconfbkp.sh /tmpRoot/usr/bin/rr-synoconfbkp.sh
-  
+
   export LD_LIBRARY_PATH=/tmpRoot/bin:/tmpRoot/lib
   ESYNOSCHEDULER_DB="/tmpRoot/usr/syno/etc/esynoscheduler/esynoscheduler.db"
   if [ ! -f "${ESYNOSCHEDULER_DB}" ] || ! /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" ".tables" | grep -qw "task"; then

@@ -20,8 +20,8 @@ if [ "${1}" = "-r" ]; then
 
   # Surveillance Station -- local_display
   SS_PATH="/var/packages/SurveillanceStation/target"
-  [ -d "${SS_PATH}/@SSData/AddOns/LocalDisplay" ] &&
-    rm -f "${SS_PATH}/@SSData/AddOns/LocalDisplay/disabled"
+  [ -d "${SS_PATH}/@SSData/AddOns/LocalDisplay" ] \
+    && rm -f "${SS_PATH}/@SSData/AddOns/LocalDisplay/disabled"
 else
   # Synology Photos
   # From: /usr/local/lib/systemd/system/pkg-SynologyPhotos-js-server.service

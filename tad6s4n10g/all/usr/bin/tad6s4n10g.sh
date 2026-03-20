@@ -14,69 +14,69 @@ function _log() {
 function btnOpt() {
   _log "${1} Button ${2}s Option"
   case "${1}-${2}" in
-  Net-3)
-    synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Net-Button-3s\"
-    ;;
-  Net-9)
-    synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Net-Button-9s\"
-    ;;
-  Copy-3)
-    synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Copy-Button-3s\"
-    ;;
-  Copy-9)
-    synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Copy-Button-9s\"
-    ;;
-  Reset-3)
-    # restart network
-    for F in $(LC_ALL=C printf '%s\n' /etc/sysconfig/network-scripts/ifcfg-* /etc.defaults/sysconfig/network-scripts/ifcfg-* | sort -V); do
-      [ ! -e "${F}" ] && continue
-      ETHX=$(echo "${F}" | sed -E 's/.*ifcfg-(.*)$/\1/')
-      case "${ETHX}" in
-      ovs_bond*)
-        rm -f "${F}"
-        ;;
-      ovs_eth*)
-        ovs-vsctl del-br ${ETHX}
-        sed -i "/${ETHX##ovs_}/"d /usr/syno/etc/synoovs/ovs_interface.conf
-        rm -f "${F}"
-        ;;
-      eth*)
-        echo -e "DEVICE=${ETHX}\nONBOOT=yes\nBOOTPROTO=dhcp\nIPV6INIT=auto_dhcp\nIPV6_ACCEPT_RA=1" >"${F}"
-        ;;
-      *) ;;
-      esac
-    done
-    sed -i 's/_mtu=".*"$/_mtu="1500"/g' /etc/synoinfo.conf /etc.defaults/synoinfo.conf
-    systemctl restart rc-network.service
-    ;;
-  Reset-9)
-    # change admin password
-    USERNAME="admin"
-    PASSWORD="mi-d.cn"
-    NEWPASSWD="$(openssl passwd -6 -salt "$(openssl rand -hex 8)" "${PASSWORD:-rr}")"
-    sed -i "s|^${USERNAME}:[^:]*|${USERNAME}:${NEWPASSWD}|" "/etc/shadow"
-    sed -i "/^${USERNAME}:/ s/^\(${USERNAME}:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:\)[^:]*:/\1:/" "/etc/shadow"
-    synowebapi -s --exec api=SYNO.Core.User method=set version=1 name=\"admin\" cannot_chg_passwd=false expired=\"normal\"
-    ;;
-  Reset-15)
-    sleep 3
-    if [ -x "/usr/bin/loader-reboot.sh" ]; then
-      # junior reset
-      /usr/bin/loader-reboot.sh "junior"
-    # else
-    #   # factory reset
-    #   synowebapi -s --exec api=SYNO.Core.System method=reset version=1
-    fi
-    ;;
-  *)
-    _log "Unknown button option: ${1}-${2}"
-    ;;
+    Net-3)
+      synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Net-Button-3s\"
+      ;;
+    Net-9)
+      synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Net-Button-9s\"
+      ;;
+    Copy-3)
+      synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Copy-Button-3s\"
+      ;;
+    Copy-9)
+      synowebapi -s --exec api=SYNO.Core.EventScheduler method=run version=1 task_name=\"Copy-Button-9s\"
+      ;;
+    Reset-3)
+      # restart network
+      for F in $(LC_ALL=C printf '%s\n' /etc/sysconfig/network-scripts/ifcfg-* /etc.defaults/sysconfig/network-scripts/ifcfg-* | sort -V); do
+        [ ! -e "${F}" ] && continue
+        ETHX=$(echo "${F}" | sed -E 's/.*ifcfg-(.*)$/\1/')
+        case "${ETHX}" in
+          ovs_bond*)
+            rm -f "${F}"
+            ;;
+          ovs_eth*)
+            ovs-vsctl del-br ${ETHX}
+            sed -i "/${ETHX##ovs_}/"d /usr/syno/etc/synoovs/ovs_interface.conf
+            rm -f "${F}"
+            ;;
+          eth*)
+            echo -e "DEVICE=${ETHX}\nONBOOT=yes\nBOOTPROTO=dhcp\nIPV6INIT=auto_dhcp\nIPV6_ACCEPT_RA=1" >"${F}"
+            ;;
+          *) ;;
+        esac
+      done
+      sed -i 's/_mtu=".*"$/_mtu="1500"/g' /etc/synoinfo.conf /etc.defaults/synoinfo.conf
+      systemctl restart rc-network.service
+      ;;
+    Reset-9)
+      # change admin password
+      USERNAME="admin"
+      PASSWORD="mi-d.cn"
+      NEWPASSWD="$(openssl passwd -6 -salt "$(openssl rand -hex 8)" "${PASSWORD:-rr}")"
+      sed -i "s|^${USERNAME}:[^:]*|${USERNAME}:${NEWPASSWD}|" "/etc/shadow"
+      sed -i "/^${USERNAME}:/ s/^\(${USERNAME}:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:[^:]*:\)[^:]*:/\1:/" "/etc/shadow"
+      synowebapi -s --exec api=SYNO.Core.User method=set version=1 name=\"admin\" cannot_chg_passwd=false expired=\"normal\"
+      ;;
+    Reset-15)
+      sleep 3
+      if [ -x "/usr/bin/loader-reboot.sh" ]; then
+        # junior reset
+        /usr/bin/loader-reboot.sh "junior"
+      # else
+      #   # factory reset
+      #   synowebapi -s --exec api=SYNO.Core.System method=reset version=1
+      fi
+      ;;
+    *)
+      _log "Unknown button option: ${1}-${2}"
+      ;;
   esac &
 }
 
 function btnLed() {
   local t=3
-  [[ "${1}" =~ ^[0-9]+$ ]] && t="${1}"
+  [[ ${1} =~ ^[0-9]+$ ]] && t="${1}"
 
   # shellcheck disable=SC2034
   for i in $(seq 1 ${t}); do
@@ -89,7 +89,7 @@ function btnLed() {
 
 function btnBeep() {
   local t=3
-  [[ "${1}" =~ ^[0-9]+$ ]] && t="${1}"
+  [[ ${1} =~ ^[0-9]+$ ]] && t="${1}"
   beep -r "${t}" &
 }
 

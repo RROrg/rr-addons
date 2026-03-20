@@ -42,7 +42,7 @@ _check_rootraidstatus() {
   [ -f "/sys/block/md0/md/array_state" ] || return 1
   STATE=$(cat "/sys/block/md0/md/array_state" 2>/dev/null)
   case ${STATE} in
-  "clear" | "inactive" | "suspended" | "readonly" | "read-auto") return 1 ;;
+    "clear" | "inactive" | "suspended" | "readonly" | "read-auto") return 1 ;;
   esac
   return 0
 }
@@ -54,8 +54,8 @@ _atoi() {
   NUM=0
   IDX=0
   while [ ${IDX} -lt ${#DISKNAME} ]; do
-    N=$(($(printf '%d' "'$(expr substr "${DISKNAME}" $((${IDX} + 1)) 1)") - $(printf '%d' "'a") + 1))
-    BIT=$(($(expr length "${DISKNAME}") - 1 - ${IDX}))
+    N=$(($(printf '%d' "'$(expr substr "${DISKNAME}" $((IDX + 1)) 1)") - $(printf '%d' "'a") + 1))
+    BIT=$(($(expr length "${DISKNAME}") - 1 - IDX))
     # shellcheck disable=SC3019
     NUM=$((NUM + (BIT == 0 ? N : 26 ** BIT * N)))
     IDX=$((IDX + 1))
@@ -73,8 +73,8 @@ _itol() {
   while [ ${NUM} -gt 0 ]; do
     if [ "$((NUM & 1))" = 1 ]; then
       case $((IDX / 26)) in
-      0) dev="$(printf sd\\x"$(printf "%x" "$((IDX % 26 + $(printf '%d' "'a")))")")" ;;                                                              # sda-z
-      *) dev="$(printf sd\\x"$(printf "%x" "$((IDX / 26 - 1 + $(printf '%d' "'a")))")"\\x"$(printf "%x" "$((IDX % 26 + $(printf '%d' "'a")))")")" ;; # sdaa-zz
+        0) dev="$(printf sd\\x"$(printf "%x" "$((IDX % 26 + $(printf '%d' "'a")))")")" ;;                                                              # sda-z
+        *) dev="$(printf sd\\x"$(printf "%x" "$((IDX / 26 - 1 + $(printf '%d' "'a")))")"\\x"$(printf "%x" "$((IDX % 26 + $(printf '%d' "'a")))")")" ;; # sdaa-zz
       esac
       DISKLIST="${DISKLIST:+${DISKLIST}${IFS}}${dev}"
     fi
@@ -163,10 +163,10 @@ dtModel() {
     {
       echo "/dts-v1/;"
       echo "/ {"
-      echo "    compatible = \"Synology\";"
-      echo "    model = \"\";"
+      echo '    compatible = "Synology";'
+      echo '    model = "";'
       echo "    version = <0x01>;"
-      echo "    power_limit = \"\";"
+      echo '    power_limit = "";'
     } >"${DEST}"
 
     # SATA ports
@@ -191,7 +191,7 @@ dtModel() {
       PORTNUM=$(ls -ld /sys/devices/pci0000:00/*$(echo "${PCIEPATH}" | sed 's/,/\/*:/g')/ata* 2>/dev/null | wc -l)
       if [ "${HDDSORT}" = "true" ] && [ "${PORTNUM}" -gt 0 ]; then
         CONTPCI=${PCIEPATH}
-        for I in $(seq 0 $((${PORTNUM} - 1))); do
+        for I in $(seq 0 $((PORTNUM - 1))); do
           if [ "${BOOTDISK_PCIEPATH}" = "${PCIEPATH}" ] && ([ -z "${ATAPORT}" ] || [ "${BOOTDISK_ATAPORT}" = "${I}" ]); then
             _log "bootloader: ${F}"
             continue
@@ -199,7 +199,7 @@ dtModel() {
           COUNT=$((COUNT + 1))
           {
             echo "    internal_slot@${COUNT} {"
-            echo "        protocol_type = \"sata\";"
+            echo '        protocol_type = "sata";'
             echo "        ${DRIVER} {"
             echo "            pcie_root = \"${PCIEPATH}\";"
             [ -n "${ATAPORT}" ] && echo "            ata_port = <0x$(printf '%02X' ${I})>;"
@@ -216,7 +216,7 @@ dtModel() {
         COUNT=$((COUNT + 1))
         {
           echo "    internal_slot@${COUNT} {"
-          echo "        protocol_type = \"sata\";"
+          echo '        protocol_type = "sata";'
           echo "        ${DRIVER} {"
           echo "            pcie_root = \"${PCIEPATH}\";"
           [ -n "${ATAPORT}" ] && echo "            ata_port = <0x$(printf '%02X' ${ATAPORT})>;"
@@ -248,7 +248,7 @@ dtModel() {
       {
         echo "    nvme_slot@${COUNT} {"
         echo "        pcie_root = \"${PCIEPATH}\";"
-        echo "        port_type = \"ssdcache\";"
+        echo '        port_type = "ssdcache";'
         echo "    };"
       } >>"${DEST}"
     done
@@ -373,7 +373,7 @@ nondtModel() {
   for F in $(LC_ALL=C printf '%s\n' /sys/block/sd* | sort -V); do
     [ ! -e "${F}" ] && continue
     IDX=$(_atoi "$(echo "${F}" | sed -E 's/^.*\/sd(.*)$/\1/')")
-    [ $((${IDX} + 1)) -ge ${MAXDISKS} ] && MAXDISKS=$((${IDX} + 1))
+    [ $((IDX + 1)) -ge ${MAXDISKS} ] && MAXDISKS=$((IDX + 1))
     if grep "PHYSDEVPATH" "${F}/uevent" 2>/dev/null | grep -q "usb"; then
       if [ "${hasUSB}" = "false" ]; then
         [ ${IDX} -lt ${USBMINIDX} ] && USBMINIDX=${IDX}
@@ -387,11 +387,11 @@ nondtModel() {
   # Define 6 is the minimum number of USB disks
   if [ "${hasUSB}" = "false" ]; then
     USBMINIDX=${MAXDISKS}
-    USBMAXIDX=$((${USBMINIDX} + 6 - 1))
+    USBMAXIDX=$((USBMINIDX + 6 - 1))
   else
-    [ $((${USBMAXIDX} - ${USBMINIDX})) -lt $((6 - 1)) ] && USBMAXIDX=$((${USBMINIDX} + 6 - 1))
+    [ $((USBMAXIDX - USBMINIDX)) -lt $((6 - 1)) ] && USBMAXIDX=$((USBMINIDX + 6 - 1))
   fi
-  [ $((${USBMAXIDX} + 1)) -gt ${MAXDISKS} ] && MAXDISKS=$((${USBMAXIDX} + 1))
+  [ $((USBMAXIDX + 1)) -gt ${MAXDISKS} ] && MAXDISKS=$((USBMAXIDX + 1))
 
   if _check_user_conf "maxdisks"; then
     MAXDISKS=$(($(__get_conf_kv maxdisks)))
@@ -411,7 +411,7 @@ nondtModel() {
     printf 'get usbportcfg=0x%.2x\n' "${USBPORTCFG}"
   else
     # shellcheck disable=SC3019
-    USBPORTCFG=$(($((2 ** $((${USBMAXIDX} + 1)) - 1)) ^ $((2 ** ${USBMINIDX} - 1))))
+    USBPORTCFG=$(($((2 ** $((USBMAXIDX + 1)) - 1)) ^ $((2 ** USBMINIDX - 1))))
     __set_conf_kv "usbportcfg" "$(printf '0x%.2x' ${USBPORTCFG})"
     printf 'set usbportcfg=0x%.2x\n' "${USBPORTCFG}"
   fi
@@ -428,7 +428,7 @@ nondtModel() {
     printf 'get internalportcfg=0x%.2x\n' "${INTERNALPORTCFG}"
   else
     # shellcheck disable=SC3019
-    INTERNALPORTCFG=$(($((2 ** ${MAXDISKS} - 1)) ^ ${USBPORTCFG} ^ ${ESATAPORTCFG}))
+    INTERNALPORTCFG=$(($((2 ** MAXDISKS - 1)) ^ USBPORTCFG ^ ESATAPORTCFG))
     __set_conf_kv "internalportcfg" "$(printf "0x%.2x" ${INTERNALPORTCFG})"
     printf 'set internalportcfg=0x%.2x\n' "${INTERNALPORTCFG}"
   fi
@@ -525,31 +525,31 @@ checkSynoboot
 ###################
 
 case ${1} in
-"--create")
-  if [ "$(__get_conf_kv supportportmappingv2)" = "yes" ]; then
-    dtModel
-  else
-    nondtModel
-  fi
-  ;;
-"--update")
-  if [ "$(__get_conf_kv supportportmappingv2)" = "yes" ]; then
-    if [ ! -f "/etc/user_model.dts" ]; then
-      dtUpdate "${2:-}"
+  "--create")
+    if [ "$(__get_conf_kv supportportmappingv2)" = "yes" ]; then
+      dtModel
+    else
+      nondtModel
     fi
-  else
-    if ! _check_user_conf "usbportcfg" || ! _check_user_conf "esataportcfg" || ! _check_user_conf "internalportcfg"; then
-      nondtUpdate "${2:-}"
+    ;;
+  "--update")
+    if [ "$(__get_conf_kv supportportmappingv2)" = "yes" ]; then
+      if [ ! -f "/etc/user_model.dts" ]; then
+        dtUpdate "${2:-}"
+      fi
+    else
+      if ! _check_user_conf "usbportcfg" || ! _check_user_conf "esataportcfg" || ! _check_user_conf "internalportcfg"; then
+        nondtUpdate "${2:-}"
+      fi
     fi
-  fi
-  ;;
-*)
-  echo "Usage: $0 [--create|--update]"
-  echo
-  echo "       --create: create dts file and update synoinfo.conf"
-  echo "       --update: update dts file and update synoinfo.conf"
-  exit 1
-  ;;
+    ;;
+  *)
+    echo "Usage: $0 [--create|--update]"
+    echo
+    echo "       --create: create dts file and update synoinfo.conf"
+    echo "       --update: update dts file and update synoinfo.conf"
+    exit 1
+    ;;
 esac
 
 exit 0

@@ -72,7 +72,7 @@ function mergeConfigModules() {
   XF=$(${RR_SUDO} mktemp 2>/dev/null)
   XF=${XF:-/tmp/tmp.XXXXXXXXXX}
   ${RR_SUDO} sh -c "echo -en '${ML}' | yq -p p -o y >'${XF}'"
-  deleteConfigKey "modules.\"RRORG\"" "${XF}"
+  deleteConfigKey 'modules."RRORG"' "${XF}"
   ${RR_SUDO} yq eval-all --inplace '. as $item ireduce ({}; . * $item)' --inplace "${2}" "${XF}" 2>/dev/null
   ${RR_SUDO} rm -f "${XF}"
 }
@@ -207,8 +207,8 @@ function updateRR() {
     fi
     FSNEW=$(${RR_SUDO} du -sm "${TMP_PATH}/update/${VALUE}" 2>/dev/null | awk '{print $1}')
     FSOLD=$(${RR_SUDO} du -sm "/${VALUE}" 2>/dev/null | awk '{print $1}')
-    SIZENEW=$((${SIZENEW} + ${FSNEW:-0}))
-    SIZEOLD=$((${SIZEOLD} + ${FSOLD:-0}))
+    SIZENEW=$((SIZENEW + ${FSNEW:-0}))
+    SIZEOLD=$((SIZEOLD + ${FSOLD:-0}))
   done <<<"$(readConfigMap "replace" "${TMP_PATH}/update/update-list.yml")"
 
   SIZESPL=$(${RR_SUDO} df -m "${PART3_PATH}" 2>/dev/null | awk 'NR==2 {print $4}')
