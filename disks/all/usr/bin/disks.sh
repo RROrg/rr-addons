@@ -156,6 +156,9 @@ getUsbPorts() {
 dtModel() {
   _log dtModel
 
+  # model name
+  UNIQUE=$(__get_conf_kv unique)
+
   DEST="/etc/model.dts"
   [ -f "/addons/model.dts" ] && cp -vpf "/addons/model.dts" "${DEST}"
   if [ ! -f "${DEST}" ]; then # Users can put their own dts.
@@ -164,7 +167,7 @@ dtModel() {
       echo "/dts-v1/;"
       echo "/ {"
       echo '    compatible = "Synology";'
-      echo '    model = "";'
+      echo "    model = \"${UNIQUE}\";"
       echo "    version = <0x01>;"
       echo '    power_limit = "";'
     } >"${DEST}"
@@ -228,32 +231,55 @@ dtModel() {
     done
 
     # NVME ports
-    COUNT=0
-    POWER_LIMIT=""
-    for F in $(LC_ALL=C printf '%s\n' /sys/block/nvme* | sort -V); do
-      [ ! -e "${F}" ] && continue
-      PCIEPATH="$(grep 'pciepath' "${F}/device/syno_block_info" 2>/dev/null | cut -d'=' -f2)"
-      if [ -z "${PCIEPATH}" ]; then
-        _log "unknown: ${F}"
-        continue
-      fi
-      if [ "${BOOTDISK_PCIEPATH}" = "${PCIEPATH}" ]; then
-        _log "bootloader: ${F}"
-        continue
-      fi
-      grep -q "pcie_root = \"${PCIEPATH}\";" ${DEST} && continue # An nvme controller only recognizes one disk
-      [ $((${#POWER_LIMIT} + 2)) -gt 30 ] && break               # POWER_LIMIT string length limit 30 characters
-      POWER_LIMIT="${POWER_LIMIT:+${POWER_LIMIT},}0"
-      COUNT=$((COUNT + 1))
-      {
-        echo "    nvme_slot@${COUNT} {"
-        echo "        pcie_root = \"${PCIEPATH}\";"
-        echo '        port_type = "ssdcache";'
-        echo "    };"
-      } >>"${DEST}"
-    done
-    [ -n "${POWER_LIMIT}" ] && sed -i "s/power_limit = .*/power_limit = \"${POWER_LIMIT}\";/" "${DEST}" || sed -i '/power_limit/d' "${DEST}"
-
+    if echo "${UNIQUE}" | grep -q 'epyc7003ntb'; then
+      for F in $(LC_ALL=C printf '%s\n' /sys/block/nvme* | sort -V); do
+        [ ! -e "${F}" ] && continue
+        PCIEPATH="$(grep 'pciepath' "${F}/device/syno_block_info" 2>/dev/null | cut -d'=' -f2)"
+        if [ -z "${PCIEPATH}" ]; then
+          _log "unknown: ${F}"
+          continue
+        fi
+        if [ "${BOOTDISK_PCIEPATH}" = "${PCIEPATH}" ]; then
+          _log "bootloader: ${F}"
+          continue
+        fi
+        grep -q "pcie_root = \"${PCIEPATH}\";" ${DEST} && continue # An nvme controller only recognizes one disk
+        COUNT=$((COUNT + 1))
+        {
+          echo "    internal_slot@${COUNT} {"
+          echo "        nvme {"
+          echo "            pcie_root = \"${PCIEPATH}\";"
+          echo "        };"
+          echo "    };"
+        } >>"${DEST}"
+      done
+    else
+      COUNT=0
+      POWER_LIMIT=""
+      for F in $(LC_ALL=C printf '%s\n' /sys/block/nvme* | sort -V); do
+        [ ! -e "${F}" ] && continue
+        PCIEPATH="$(grep 'pciepath' "${F}/device/syno_block_info" 2>/dev/null | cut -d'=' -f2)"
+        if [ -z "${PCIEPATH}" ]; then
+          _log "unknown: ${F}"
+          continue
+        fi
+        if [ "${BOOTDISK_PCIEPATH}" = "${PCIEPATH}" ]; then
+          _log "bootloader: ${F}"
+          continue
+        fi
+        grep -q "pcie_root = \"${PCIEPATH}\";" ${DEST} && continue # An nvme controller only recognizes one disk
+        [ $((${#POWER_LIMIT} + 2)) -gt 30 ] && break               # POWER_LIMIT string length limit 30 characters
+        POWER_LIMIT="${POWER_LIMIT:+${POWER_LIMIT},}0"
+        COUNT=$((COUNT + 1))
+        {
+          echo "    nvme_slot@${COUNT} {"
+          echo "        pcie_root = \"${PCIEPATH}\";"
+          echo '        port_type = "ssdcache";'
+          echo "    };"
+        } >>"${DEST}"
+      done
+      [ -n "${POWER_LIMIT}" ] && sed -i "s/power_limit = .*/power_limit = \"${POWER_LIMIT}\";/" "${DEST}" || sed -i '/power_limit/d' "${DEST}"
+    fi
     # USB ports
     COUNT=0
     for I in $(getUsbPorts); do
@@ -281,7 +307,6 @@ dtModel() {
   fi
 
   # fix model name
-  UNIQUE=$(__get_conf_kv unique)
   sed -i "0,/version = .*;/s/model = \".*\";/model = \"${UNIQUE}\";/" "${DEST}"
 
   MAXDISKS=$(grep -c "internal_slot@" "${DEST}" 2>/dev/null)
@@ -489,10 +514,15 @@ nondtUpdate() {
 if type flock >/dev/null 2>&1 && type trap >/dev/null 2>&1; then
   LOCKFILE="/var/run/disks.lock"
   exec 3>"$LOCKFILE"
-  flock -w 60 3 || {
-    _log "Failed to acquire lock after 60 seconds. Exiting."
-    exit 1
-  }                                                      # 60 seconds timeout
+  LOCK_WAIT=0
+  while ! flock -n 3; do
+    LOCK_WAIT=$((LOCK_WAIT + 1))
+    if [ ${LOCK_WAIT} -ge 60 ]; then
+      _log "Failed to acquire lock after 60 seconds. Exiting."
+      exit 1
+    fi
+    sleep 1
+  done
   trap 'flock -u 3; rm -f "$LOCKFILE"' EXIT INT TERM HUP # Release lock on exit or error or signal or hangup
 fi
 

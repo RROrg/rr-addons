@@ -18,6 +18,9 @@ if [ "${1}" = "early" ]; then
     | xxd -r -p >"${SO_FILE}" 2>/dev/null
   rm -f "${SO_FILE}.tmp"
 
+  # for epyc7003ntb console error "sh: invalid number 'Read error'"
+  sed -i 's/^main "\$@"$/# main "\$@"/' "/usr/syno/sbin/i2c_hb_checker.sh" 2>/dev/null || true
+
 elif [ "${1}" = "patches" ]; then
   # getty
   for I in $(cat /proc/cmdline 2>/dev/null | grep -Eo 'getty=[^ ]+' | sed 's/getty=//'); do
@@ -77,6 +80,9 @@ elif [ "${1}" = "rcExit" ]; then
     sleep 1
   done & # using a while loop in case DSM is running in a VM
 
+  # for epyc7003ntb web error "无法连接到另一台控制器"
+  sed -i 's/check_ntb_connection$/exit 0 # check_ntb_connection/' "/usr/syno/share/clusterInstall.sh" 2>/dev/null || true
+
   # error message
   while true; do
     if [ ! -b /dev/synoboot ] || [ ! -b /dev/synoboot1 ] || [ ! -b /dev/synoboot2 ] || [ ! -b /dev/synoboot3 ]; then
@@ -92,10 +98,10 @@ elif [ "${1}" = "rcExit" ]; then
     sleep 1
   done &
   # disable DisabledPortDisks
-  sed -i 's/^DisabledPortDisks=.*$/DisabledPortDisks=""/' /usr/syno/web/webman/get_state.cgi 2>/dev/null
+  sed -i 's/^DisabledPortDisks=.*$/DisabledPortDisks=""/' /usr/syno/web/webman/get_state.cgi 2>/dev/null || true
 
   # reboot
-  sed -i 's/reboot$/reboot -f/' /usr/syno/web/webman/reboot.cgi 2>/dev/null
+  sed -i 's/reboot$/reboot -f/' /usr/syno/web/webman/reboot.cgi 2>/dev/null || true
 
   # recovery
   if grep -wq "recovery" /proc/cmdline 2>/dev/null && [ -x /usr/syno/web/webman/recovery.cgi ]; then
