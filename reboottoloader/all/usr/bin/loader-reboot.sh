@@ -7,7 +7,7 @@
 #
 
 # Sanity checks
-if [ "$(id -u)" -ne 0 ]; then
+if [ ! "${USER}" = "root" ]; then
   exec sudo "$0" "$@"
 fi
 
