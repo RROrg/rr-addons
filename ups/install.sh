@@ -34,9 +34,9 @@ if [ "${1}" = "late" ]; then
     echo "insert start/stop ScsiTarget task to esynoscheduler.db"
     /tmpRoot/bin/sqlite3 "${ESYNOSCHEDULER_DB}" <<EOF
 DELETE FROM task WHERE task_name LIKE 'StartScsiTarget';
-INSERT INTO task VALUES('StartScsiTarget', '', 'bootup', '', 1, 0, 0, 0, '', 0, "synopkg start ScsiTarget", 'script', '{}', '', '', '{}', '{}');
+INSERT INTO task VALUES('StartScsiTarget', '', 'bootup', '', 1, 0, 0, 0, '', 0, 'synopkg start ScsiTarget', 'script', '{}', '', '', '{}', '{}');
 DELETE FROM task WHERE task_name LIKE 'StopScsiTarget';
-INSERT INTO task VALUES('StopScsiTarget', '', 'shutdown', '', 1, 0, 0, 0, '', 0, "synopkg stop ScsiTarget", 'script', '{}', '', '', '{}', '{}');
+INSERT INTO task VALUES('StopScsiTarget', '', 'shutdown', '', 1, 0, 0, 0, '', 0, 'synopkg stop ScsiTarget', 'script', '{}', '', '', '{}', '{}');
 EOF
   fi
 elif [ "${1}" = "uninstall" ]; then
