@@ -96,7 +96,7 @@ patch_storage_settings() {
 }
 
 clear_pool_compatibility() {
-  for FILE in /var/lib/space/pool_compatibility /var/lib/space/pool_compatibility_legacy; do
+  for FILE in /run/space/pool_compatibility /run/space/pool_compatibility_legacy /var/lib/space/pool_compatibility /var/lib/space/pool_compatibility_legacy; do
     [ -f "${FILE}" ] || continue
     TMP="${FILE}.tmp.$$"
     awk -F= '
