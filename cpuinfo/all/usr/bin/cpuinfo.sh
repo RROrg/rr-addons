@@ -88,15 +88,26 @@ else
       MEMORY="$(awk '{s=(strtonum($2)-strtonum($1)+1)/1048576} (and(strtonum($3),0x200))&&(and(strtonum($3),0x2000))&&(and(strtonum($3),0x40000))&&s>0{print int(s) " MiB"; exit}' "${CARDN}/device/resource" 2>/dev/null)"
       if [ -n "${LNAME}" ] && [ -n "${CLOCK}" ] && [ -n "${MEMORY}" ]; then
         echo "GPU Info set to: \"${LNAME}\" \"${CLOCK}\" \"${MEMORY}\""
-        # t.gpu={};t.gpu.clock=\"455 MHz\";t.gpu.memory=\"8192 MiB\";t.gpu.name=\"Tesla P4\";t.gpu.temperature_c=47;t.gpu.tempwarn=false;
-        sed -i "s/t=this.getActiveApi(t);let/t=this.getActiveApi(t);if(!t.gpu){t.gpu={};t.gpu.clock=\"${CLOCK}\";t.gpu.memory=\"${MEMORY}\";t.gpu.name=\"${LNAME}\";}let/g" "${FILE_JS}"
+        if grep -q 'support_nvidia_gpu' "${FILE_JS}"; then
+          # t.gpu={};t.gpu.clock=\"455 MHz\";t.gpu.memory=\"8192 MiB\";t.gpu.name=\"Tesla P4\";t.gpu.temperature_c=47;t.gpu.tempwarn=false;
+          sed -i "s/t=this.getActiveApi(t);let/t=this.getActiveApi(t);if(!t.gpu){t.gpu={};t.gpu.clock=\"${CLOCK}\";t.gpu.memory=\"${MEMORY}\";t.gpu.name=\"${LNAME}\";}let/g" "${FILE_JS}"
+        else
+          # b.gpu_info=[{name:\"Tesla P4\",status:\"compatible\",clock:\"455 MHz\",memory:\"8192 MiB\",pci_slot_num:\"0000:00:1c.0\",built_in_gpu_slot_num:\"\",temperature_c:47,tempwarn:false}];
+          PCISLOT="${PCIDN:-}"
+          sed -i "s/t=this.getActiveApi(t);let/t=this.getActiveApi(t);if(!b.support_gpu){b.support_gpu=true;b.gpu_info=[{name:\"${LNAME}\",status:\"compatible\",clock:\"${CLOCK}\",memory:\"${MEMORY}\",pci_slot_num:\"${PCISLOT}\",built_in_gpu_slot_num:\"\",temperature_c:0,tempwarn:false}];}let/g" "${FILE_JS}"
+        fi
       fi
     fi
   fi
-  sed -i 's/_D("support_nvidia_gpu")},/_D("support_nvidia_gpu")||true},/g' "${FILE_JS}"
-  sed -i 's/,t,i,s)}/,t,i,e.sys_temp?s+" \| "+this.renderTempFromC(e.sys_temp):s)}/g' "${FILE_JS}"
-  sed -i 's/,C,D);/,C,t.gpu.temperature_c?D+" \| "+this.renderTempFromC(t.gpu.temperature_c):D);/g' "${FILE_JS}"
-  sed -i 's/_T("rcpower",n),/_T("rcpower", n)?e.fan_list?_T("rcpower", n) + e.fan_list.map(fan => ` | ${fan} RPM`).join(""):_T("rcpower", n):e.fan_list?e.fan_list.map(fan => `${fan} RPM`).join(" | "):_T("rcpower", n),/g' "${FILE_JS}"
+  if grep -q 'support_nvidia_gpu' "${FILE_JS}"; then
+    sed -i 's/_D("support_nvidia_gpu")},/_D("support_nvidia_gpu")||true},/g' "${FILE_JS}"
+    sed -i 's/,t,i,s)}/,t,i,e.sys_temp?s+" \| "+this.renderTempFromC(e.sys_temp):s)}/g' "${FILE_JS}"
+    sed -i 's/,C,D);/,C,t.gpu.temperature_c?D+" \| "+this.renderTempFromC(t.gpu.temperature_c):D);/g' "${FILE_JS}"
+    sed -i 's/_T("rcpower",n),/_T("rcpower", n)?e.fan_list?_T("rcpower", n) + e.fan_list.map(fan => ` | ${fan} RPM`).join(""):_T("rcpower", n):e.fan_list?e.fan_list.map(fan => `${fan} RPM`).join(" | "):_T("rcpower", n),/g' "${FILE_JS}"
+  else
+    sed -i 's/,t,i,n)}/,t,i,e.sys_temp?n+" \| "+this.renderTempFromC(e.sys_temp):n)}/g' "${FILE_JS}"
+    sed -i 's/_T("rcpower",s),/_T("rcpower", s)?e.fan_list?_T("rcpower", s) + e.fan_list.map(fan => ` | ${fan} RPM`).join(""):_T("rcpower", s):e.fan_list?e.fan_list.map(fan => `${fan} RPM`).join(" | "):_T("rcpower", s),/g' "${FILE_JS}"
+  fi
 
   # sed -i 's/(d.push([_T("status","status_version"),t.firmware_ver,f]);)/\1d.push(["bootloader",t.bootloader_ver,f]);/g' "${FILE_JS}"
 
