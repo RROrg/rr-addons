@@ -20,6 +20,7 @@ if [ "${1}" = "late" ]; then
     echo "Description=RR addon diskcompat daemon"
     echo "Wants=smpkg-custom-install.service pkgctl-StorageManager.service"
     echo "After=smpkg-custom-install.service"
+    echo "After=synoscheduler.target"
     echo
     echo "[Service]"
     echo "Type=oneshot"
