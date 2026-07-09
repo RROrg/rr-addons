@@ -6,6 +6,8 @@
 # See /LICENSE for more information.
 #
 
+PLATFORM="$(/bin/get_key_value /etc.defaults/synoinfo.conf unique | cut -d"_" -f2)"
+
 if [ "${1}" = "early" ]; then
   echo "Installing addon misc - ${1}"
 
@@ -18,8 +20,11 @@ if [ "${1}" = "early" ]; then
     | xxd -r -p >"${SO_FILE}" 2>/dev/null
   rm -f "${SO_FILE}.tmp"
 
-  # for epyc7003ntb console error "sh: invalid number 'Read error'"
-  sed -i 's/^main "\$@"$/# main "\$@"/' "/usr/syno/sbin/i2c_hb_checker.sh" 2>/dev/null || true
+  if echo "epyc7003ntb" | grep -wq "${PLATFORM}"; then
+    # for epyc7003ntb console error "sh: invalid number 'Read error'"
+    sed -i 's/^main "\$@"$/# main "\$@"/' "/usr/syno/sbin/i2c_hb_checker.sh" 2>/dev/null || true
+    sed -i -E 's/169\.254\.4\.(1|2)/127.0.0.1/g; s/ --interface ntb_eth[0-9]{1,2}//g; s/check_ntb_connection$/exit 0 # check_ntb_connection/' /usr/syno/share/clusterInstall.sh || true
+  fi
 
 elif [ "${1}" = "patches" ]; then
   # getty
@@ -113,11 +118,11 @@ elif [ "${1}" = "late" ]; then
   mkdir -p "/tmpRoot/usr/rr/addons/"
   # cp -pf "${0}" "/tmpRoot/usr/rr/addons/"
 
-  echo "Killing ttyd ..."
+  echo "Killing ttyd dufs ..."
   /usr/bin/killall ttyd 2>/dev/null || true
-
-  echo "Killing dufs ..."
   /usr/bin/killall dufs 2>/dev/null || true
+  cp -pf /usr/sbin/ttyd /tmpRoot/usr/sbin/ttyd
+  cp -pf /usr/sbin/dufs /tmpRoot/usr/sbin/dufs
 
   # synoinfo.conf
   cp -vpf "/addons/synoinfo.conf" /tmpRoot/usr/rr/addons/synoinfo.conf
@@ -211,6 +216,7 @@ elif [ "${1}" = "late" ]; then
       ln -vsf /usr/lib/systemd/system/getty\@${TTYN}.service /tmpRoot/usr/lib/systemd/system/getty.target.wants/getty\@${TTYN}.service
     fi
   done
+
   # rr-misc
   cp -vpf /usr/bin/rr-misc.sh /tmpRoot/usr/bin/rr-misc.sh
   cp -vpf /usr/sbin/durex /tmpRoot/usr/sbin/durex
