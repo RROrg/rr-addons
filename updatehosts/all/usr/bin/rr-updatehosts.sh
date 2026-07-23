@@ -65,11 +65,12 @@ function Hosts() {
     local DOMAIN="${1}"
     local IP=""
     [ -z "${DOMAIN}" ] && return 1
+    # LC_ALL=C ping -c 1 -W 1 "${DOMAIN}" >/dev/null 2>&1 && return 0
     # Try Cloudflare DoH
     [ -z "${IP}" ] && IP="$(curl -skL --connect-timeout 5 "https://cloudflare-dns.com/dns-query?name=${DOMAIN}&type=A" -H "accept: application/dns-json" 2>/dev/null | jq -r '.Answer[]? | select(.type == 1) | .data' 2>/dev/null | head -1)"
     # Try Google DoH
     [ -z "${IP}" ] && IP="$(curl -skL --connect-timeout 5 "https://dns.google/resolve?name=${DOMAIN}&type=A" 2>/dev/null | jq -r '.Answer[]? | select(.type == 1) | .data' 2>/dev/null | head -1)"
-    # Try AliDNS
+    # Try AliDNS DoH
     [ -z "${IP}" ] && IP="$(curl -skL --connect-timeout 5 "https://dns.alidns.com/resolve?name=${DOMAIN}&type=A" 2>/dev/null | jq -r '.Answer[]? | select(.type == 1) | .data' 2>/dev/null | head -1)"
     [ -n "${IP}" ] && printf '%- 16s%s\n' "${IP}" "${DOMAIN}"
     return 0
