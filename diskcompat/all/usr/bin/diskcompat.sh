@@ -120,6 +120,10 @@ refresh_runtime() {
     printf 'support\n' >"${DISK_DIR}/force_compatibility" 2>/dev/null || true
     printf '1\n' >"${DISK_DIR}/smart_attr_ignore" 2>/dev/null || true
     printf '1\n' >"${DISK_DIR}/smart_test_ignore" 2>/dev/null || true
+    # DSM 7.4 treats the presence of sys_not_support as a boolean flag.  The
+    # file is normally empty, so writing "support" to compatibility alone does
+    # not clear drive_status_key=disknotsupported.
+    rm -f "${DISK_DIR}/sys_not_support" 2>/dev/null || true
     printf '%s' "${SUPPORT_ACTION}" >"${DISK_DIR}/compatibility_action" 2>/dev/null || true
     rm -f "${DISK_DIR}/compatibility.lock" "${DISK_DIR}/compatibility_action.lock" 2>/dev/null || true
   done <"${DISKS}"
