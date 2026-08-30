@@ -26,6 +26,7 @@ DOMAINS=(
   archive.synology.com
   update7.synology.com
   pkgupdate7.synology.com
+  dataautoupdate7.synology.com
   global.download.synology.com
   webec.synology.com
   fileres.synology.com
