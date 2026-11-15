@@ -67,14 +67,24 @@ patch_database() {
       --argjson size "${SIZE}" \
       --argjson interval "${SUPPORT_INTERVAL}" \
       '
+      # DSM uses one interval more than the number of version boundaries.
+      # Rebuild missing intervals in databases patched by older diskcompat versions.
+      def support_intervals:
+        ((.dsm_ver // []) | length) as $boundaries
+        | (.compatibility_interval // []) as $existing
+        | .compatibility_interval = [
+            range(0; $boundaries + 1) as $index
+            | ($existing[$index] // {}) + $interval
+          ];
+
       .disk_compatbility_info[$model] //= {}
       | .disk_compatbility_info[$model].default //= {}
       | if $size > 0 then .disk_compatbility_info[$model].default.size_gb = $size else . end
-      | .disk_compatbility_info[$model].default.compatibility_interval = [$interval]
+      | .disk_compatbility_info[$model].default |= support_intervals
       | if $firm != "" then
           .disk_compatbility_info[$model][$firm] //= {}
           | .disk_compatbility_info[$model][$firm].fw_buildnumber //= 1
-          | .disk_compatbility_info[$model][$firm].compatibility_interval = [$interval]
+          | .disk_compatbility_info[$model][$firm] |= support_intervals
         else . end
       ' "${TMP}" >"${TMP}.new" && mv -f "${TMP}.new" "${TMP}" || {
       rm -f "${TMP}" "${TMP}.new"
